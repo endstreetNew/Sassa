@@ -1,0 +1,244 @@
+@inject Navigation Navigate
+@inject SessionService sessionservice
+@inject BRMDbService db
+@inject StaticService sservice
+@inject ProgressService og
+@inject ReportDataService rs
+@inject IAlertService toast
+
+<br/>
+<div>
+@if(!IsDashboardLoaded)
+{
+        <div class="row">
+            <span><strong>Filter Options</strong></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                        <div class="input-group mb-1">
+                            <span class="input-group-text">From Quarter</span>
+                            <select class="form-select" @bind="fromQuarter">
+                                <option selected>select...</option>
+                                @foreach (var val in StaticDataService.QuarterList())
+                                {
+                                    <option value="@val.Key">@val.Key</option>
+                                }
+                            </select>
+                        </div>
+            </div>
+                        <div class="col">
+                        <div class="input-group mb-1">
+                            <span class="input-group-text">To Quarter</span>
+                            <select class="form-select" @bind="toQuarter">
+                                <option selected>select...</option>
+                                @foreach (var val in StaticDataService.QuarterList())
+                                {
+                                    <option value="@val.Key">@val.Key</option>
+                                }
+                            </select>
+                        </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-1">
+                    <span class="input-group-text">Region</span>
+                    <select class="form-select" @bind="office.RegionId">
+                        <option value="" selected>All...</option>
+                        @foreach (var region in sservice.GetRegions())
+                        {
+                            <option value="@region.Key">@region.Value</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                 <div class="input-group mb-1">
+                        <span class="input-group-text">Office</span>
+                        <select class="form-select" @bind="office.OfficeId">
+                            <option value="" selected>All...</option>
+                            @foreach (var val in sservice.GetOffices(office.RegionId))
+                            {
+                                <option value="@val.OfficeId">@val.OfficeName</option>
+                            }
+                        </select>
+                    </div>
+             </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            <button class="btn btn-primary active" @onclick="btnLoadProgress_Click">Load Detail</button>
+            </div>
+        </div>
+    }
+    else
+    {
+                 <div class="row">
+                    <span><strong>Progress for Region: @office.RegionName Office: @office.OfficeName</strong></span>
+                </div>
+                 <div class="row">
+                    <span><strong>Period: @fromQuarter  to @toQuarter</strong></span>
+                </div>
+                <div class="row">
+                <div class="col-12">
+
+                     <table class="table table-sm" style="font-size:x-small;">
+                        <thead>
+                            <tr class="table-header">
+                                <th scope="col"></th>
+                                <th scope="col">Quarter</th>
+                               @* <th scope="col">Total Grants</th>*@
+                                <th scope="col">Captured</th>
+                                @*<th scope="col">Online</th>*@
+                                <th scope="col">% Captured</th>
+                                <th scope="col">% Missing</th>
+                                <th scope="col">Scanned</th>
+                                <th scope="col">Loaded in CS</th>
+                                <th scope="col">At TDW</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (QuarterDetail u in quarters)
+                            {
+                                <tr>
+                                    <td style="cursor: pointer;font-size:12px;font-weight:bold;"><span class="@expandedClass" aria-hidden="true" @onclick="@(() => ExpandSummary(u))">@(u.IsExpanded ? "-" : "+")</span></td>
+                                    <td>@u.Quarter.FinancialQuarter</td>
+                                    @*<td>@u.Total</td>*@
+                                    <td>@u.Captured</td>
+                                    @*<td>@u.OnlineApplications</td>*@
+                                    <td>@u.PercentageCaptured</td>
+                                    <td>@u.PercentageMissing</td>
+                                    <td>@u.Scanned</td>
+                                    <td>@u.CsLoaded</td>
+                                    <td>@u.TdwSent</td>
+                                </tr>
+                                if(u.IsExpanded)
+                                {
+                                   <tr>
+                                        <td colspan="9">
+                                            <table class="table table-sm" style="font-size:x-small;">
+                                            <thead>
+                                                <tr class="table-header">
+                                                    <th scope="col"></th>
+                                                    <th scope="col">MONTH</th>
+                                                    @*<th scope="col">SOCPEN</th>*@
+                                                    <th scope="col">BRM</th>
+                                                    <th scope="col">SCAN</th>
+                                                    <th scope="col">ContentServer</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                @foreach (var d in u.MonthDetail)
+                                                {
+                                                    <tr>
+                                                        <td style="cursor: pointer;font-size:12px;font-weight:bold;"><span class="@expandedClass" aria-hidden="true" @onclick="@(() => Expand(d))">@(d.IsExpanded ? "-" : "+")</span></td>
+                                                        <td>@(new DateTime(2010, d.Month, 1).ToString("MMM", CultureInfo.InvariantCulture))</td>
+                                                        @*<td>@d.Total</td>*@
+                                                        <td>@d.Captured</td>
+                                                        <td>@d.Scanned</td>
+                                                        <td>@d.CsLoaded</td>
+                                                    </tr>
+                                                    if(d.IsExpanded)
+                                                    {
+                                                       <tr>
+                                                            <td colspan="6">
+                                                                <DailyProgressDetail DayDetail="@d.DayDetail"></DailyProgressDetail>
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+                                                }
+                                            </tbody>
+                                        </table>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+            </div>
+            <div class="row">
+                <div class="col">
+                <button class="btn btn-primary active" @onclick="btnResetProgress_Click">Close Dashboard</button>
+                </div>
+            </div>
+
+}
+</div>
+
+@code {
+    protected UserOffice office = new();
+    string fromQuarter = "";
+    string toQuarter ="";
+    //string fromMonth;
+    //string toMonth;
+    bool IsDashboardLoaded;
+    ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddMonths(-1), ToDate = DateTime.Now };
+    string expandedClass = "";//"oi caret-bottom";
+    string expandedText = "+";
+
+    List<QuarterDetail> quarters = new List<QuarterDetail>();
+
+    protected override void OnInitialized()
+    {
+        office = sessionservice.session.Office;
+        IsDashboardLoaded = false;
+    }
+
+    protected async Task btnLoadProgress_Click()
+    {
+        try
+        {
+            //DateTime from = new DateTime(int.Parse(fromMonth.Split('|')[1]), int.Parse(fromMonth.Split('|')[0]), 1);
+            //DateTime to = new DateTime(int.Parse(toMonth.Split('|')[1]), int.Parse(toMonth.Split('|')[0]), DateTime.DaysInMonth(int.Parse(toMonth.Split('|')[1]), int.Parse(toMonth.Split('|')[0])));
+            //var monthYear = fromMonth.Split('|');
+            //int month = int.Parse(monthYear[0]);
+            //int year = int.Parse(monthYear[1]);
+            //await Task.Delay(100);
+            if (string.IsNullOrEmpty(office.OfficeId))
+            {
+                toast.Info($"Please select an office for this dashboard.");
+                return;
+            }
+            else
+            {
+                office.OfficeName = sservice.GetOfficeName(office.OfficeId);
+            }
+            if (string.IsNullOrEmpty(fromQuarter) || string.IsNullOrEmpty(toQuarter))
+            {
+                toast.Info($"Please check your period filter, it is invalid");
+                return;
+            }
+            await Task.Delay(100);
+            toast.Info($"Progress Dashboard loading...");
+            quarters = await og.GetCaptureProgress(StaticDataService.QuarterList()[fromQuarter],StaticDataService.QuarterList()[toQuarter], office);
+            IsDashboardLoaded = true;
+        }
+        catch
+        {
+            toast.Info($"Please check your Filter, it is invalid");
+        }
+    }
+
+    protected void btnResetProgress_Click()
+    {
+        IsDashboardLoaded = false;
+    }
+
+    protected void ExpandSummary(QuarterDetail u)
+    {
+        u.IsExpanded = !u.IsExpanded;
+       // expandedClass = u.IsExpanded ? "oi oi-caret-bottom" : "oi oi-caret-right";
+        expandedText = u.IsExpanded ? "-" : "+";
+    }
+
+    protected void Expand(MonthDetail u)
+    {
+        u.IsExpanded = !u.IsExpanded;
+       // expandedClass = u.IsExpanded ? "oi oi-caret-bottom" : "oi oi-caret-right";
+        expandedText = u.IsExpanded ? "-" : "+";
+    }
+}

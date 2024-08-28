@@ -1,0 +1,105 @@
+﻿@page "/tdwbatchcover/{tdwBatch:int}"
+@layout PrintLayout
+
+@inject TdwBatchService db
+@inject IJSRuntime Js
+
+@inject Navigation Navigation
+
+@using Sassa.BRM.Data.ViewModels;
+
+<div>
+    <button class="btn btn-primary" @onclick="btnCancel_Click">Back</button>
+    <button @onclick="btnPrintReceipt_Click" class="btn btn-primary active">Print</button>
+</div>
+
+<div class="printme">
+    @if (boxes.Any())
+    {
+        <div class="col">
+            <div class="row">
+                @*style="height: 100%; display: block;">*@
+                <div class="col">
+                    @*style="width: 30%; float: left; display: inline-block">*@
+                    <img src="images/sassa_logoSmall.jpg" width="100" />
+                </div>
+                <div class="col">
+                    @*style="width: 40%; display: inline-block; height: 100px; text-align: center; padding-top: 10px;">*@
+                    <h5>TDW Batch Cover :</h5>
+                </div>
+                <div class="col">
+                    <div>@batchDate</div>
+                    <div><strong>Batch : @tdwBatch</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col"><strong>Total no of boxes @boxes.Count</strong></div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <table class="table table-sm" style="font-size:small;">
+                    <thead>
+                        <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Box No</th>
+                            <th scope="col">MiniBoxes</th>
+                            <th scope="col">Files</th>
+                            <th scope="col">Region</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (TdwBatchViewModel p in boxes)
+                        {
+                            <tr>
+                                <td>@p.User</td>
+                                <td>@p.BoxNo</td>
+                                <td>@p.MiniBoxes</td>
+                                <td>@p.Files</td>
+                                <td>@p.Region</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Loading..</p>
+    }
+</div>
+
+
+
+@code {
+
+
+    [Parameter]
+    public int tdwBatch { get; set; }
+
+    protected List<TdwBatchViewModel> boxes = new List<TdwBatchViewModel>();
+    protected DateTime? batchDate = DateTime.Now;
+
+    protected override async Task OnInitializedAsync()
+    {
+        boxes = await db.GetTdwBatch(tdwBatch);
+        if(boxes.Any())batchDate = boxes.First().TdwSendDate;
+    }
+
+
+    private void btnCancel_Click()
+    {
+        Navigation.NavigateTo($"boxing/4");
+    }
+
+    private async Task btnPrintReceipt_Click()
+    {
+        await Js.InvokeVoidAsync("printPage");
+    }
+
+}

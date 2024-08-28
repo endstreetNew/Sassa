@@ -1,0 +1,23 @@
+﻿<div class="input-group input-group-sm">
+    <div class="input-group-prepend"><span class="input-group-text">TDW Box </span></div>
+    <input type="text" class="form-control" @bind-value="@rebox.BoxNo">
+    <span type="number" class="input-group-text text-end" disabled>@rebox.BoxCount</span>
+    <div class="input-group-prepend"><span class="input-group-text">Mini Box Number</span></div>
+    <input type="number" class="form-control text-sm-start"  @bind-value="@rebox.MiniBox" min="1" max="5">
+    <span type="number" class="input-group-text text-end" disabled>@rebox.MiniBoxCount</span>
+    <span type="text" class="input-group-text " disabled>@rebox.RegType</span>
+    <button class="btn btn-primary active float-right" Text="Load" @onclick="btnLoadBox_Click">Load </button>
+</div>
+
+@code {
+    [Parameter]
+    public Reboxing rebox { get; set; } = new();
+
+    [Parameter]
+    public EventCallback OnloadBox { get; set; }
+
+    private void btnLoadBox_Click()
+    {
+        OnloadBox.InvokeAsync();
+    }
+}

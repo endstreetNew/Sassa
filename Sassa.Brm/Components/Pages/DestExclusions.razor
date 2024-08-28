@@ -1,0 +1,172 @@
+﻿@inject SessionService sessionservice
+@inject BRMDbService db
+@inject IAlertService toast
+
+<br />
+<h5>Add Exclusion(s)</h5>
+<div class="whitearea" style="width:50%;">
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-1">
+                <span class="input-group-text">Exclusion Type</span>
+                <select class="form-select" @bind="@exclusionType">
+                    <option selected>select...</option>
+                    @foreach (var val in StaticDataService.ExclusionTypes)
+                    {
+                        <option value="@val">@val</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-1">
+                <span class="input-group-text">Destruction Year</span>
+                <select class="form-select" @bind="@destructionYear">
+                    <option selected>@destructionYear</option>
+                    @foreach (var val in StaticDataService.DestructionYears)
+                    {
+                        <option value="@val">@val</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-1">
+                <span class="input-group-text">Id to exclude:</span>
+                <input class="form-control" @bind="txtSearchId" onfocus="this.select();" />
+                <button class="btn btn-primary active" @onclick="btnAdd_Click">Add</button>
+            </div>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <InputFile class="form-control" OnChange="@OnInputFileChange" accept=".csv" multiple="multiple" />
+            <p>File Format: Single column ID Number .csv file. Header: EXCLUSION. <br />All files will be added as selected Exclusion type.</p>
+        </div>
+    </div>
+</div>
+<br />
+<table class="table table-sm" style="font-size:small;">
+    <thead>
+        <tr>
+            <th scope="col">Id Number</th>
+            <th scope="col">Exclusion Type</th>
+            <th scope="col">Exclusion Date</th>
+            <th scope="col">User Name</th>
+            <th scope="col">Batch Id</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DcExclusion p in exclusions.result)
+        {
+            <tr>
+                <td>@p.IdNo</td>
+                <td>@p.ExclusionType</td>
+                <td>@p.ExclDate</td>
+                <td>@p.Username</td>
+                <td>@p.ExclusionBatchId</td>
+                <td>
+                    <button class="btn btn-primary btn-sm active" @onclick="@(() => btnRemoveExclusion_Click(p.Id))">Remove</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<Pager Paged="OnExclusionsPaged" TotalSize="@exclusions.count"></Pager>
+<br />
+<button class="btn btn-primary btn-sm active" @onclick="@(() => btnSubmitBatch_Click())">Submit @sessionservice.session.Office.RegionName batch for Final Approval</button>
+
+
+@code {
+
+    string exclusionType = "";
+    string destructionYear ="";
+    protected UserOffice office = new();
+    protected string txtSearchId = "";
+
+    protected PagedResult<DcExclusion> exclusions = new PagedResult<DcExclusion>();
+
+    int exclusionpage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        destructionYear = StaticDataService.DestructionYears.First();
+        await OnExclusionsPaged(exclusionpage);
+    }
+
+    private async Task btnAdd_Click()
+    {
+        try
+        {
+            await db.AddExclusion(txtSearchId, exclusionType);
+            await OnExclusionsPaged(exclusionpage);
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+
+    }
+    private async Task btnRemoveExclusion_Click(decimal id)
+    {
+        await db.RemoveExclusion(id);
+        await OnExclusionsPaged(exclusionpage);
+    }
+
+    private async Task btnSubmitBatch_Click()
+    {
+        try
+        {
+            await db.UpdateExclusionBatch(destructionYear);
+            await OnExclusionsPaged(exclusionpage);
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+
+    }
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+
+        //string content;
+        foreach (var file in e.GetMultipleFiles(10))
+        {
+            try
+            {
+                if (file.Size > 0)
+                {
+                    var contentBytes = new byte[file.Size];
+                    using (var reader = file.OpenReadStream())
+                    {
+                        await reader.ReadAsync(contentBytes, 0, (int)file.Size, CancellationToken.None);
+
+                        await db.AddExclusionFile(contentBytes, exclusionType);
+                    }
+                }
+                if (db.ErrorCount > 0) throw new Exception($"{db.ErrorCount} errors loading file: {file.Name}");
+            }
+            catch (Exception ex)
+            {
+                toast.Error(ex.Message);
+            }
+        }
+
+        await OnExclusionsPaged(exclusionpage);
+
+    }
+
+    protected async Task OnExclusionsPaged(int _page)
+    {
+        exclusionpage = _page;
+        exclusions = await db.getExclusions(exclusionpage);
+
+    }
+}

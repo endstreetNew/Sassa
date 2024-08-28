@@ -1,0 +1,71 @@
+﻿@page "/"
+@inject TimedService ts;
+@inject IConfiguration config;
+@inject JsonFileUtils fu;
+
+<PageTitle>Progress page</PageTitle>
+
+<h1>DC_SOCPEN data update progress</h1>
+<br />
+<hr/>
+
+<div class="col float-right">
+    <div class="input-group input-group-sm">
+        <div class="input-group-prepend"><span class="input-group-text">Next Update :</span></div>
+        <input @bind=ts.Globals.NextRefreshDate class="form-control" type="date" />
+        <input class="form-control" type="time" @bind=Scheduletime />
+        <button type="button" class="btn btn-primary btn-sm form-control" @onclick="@(() => Schedule_Click())">Schedule</button>
+        <button type="button" class="btn btn-primary btn-sm form-control" @onclick="@(() => Start_Click())">@(ts.Globals.Status ? "Stop(process Running)" : "Start(process Stopped)")</button>
+        <button type="button" class="btn btn-primary btn-sm form-control" @onclick="@(() => Run_Click())">Run Once</button>
+    </div>
+</div>
+
+
+
+Last update :<span>@ts.Globals.LastRunDate.ToString()</span>
+Current Task:<span>@ts.Globals.Progress</span>
+
+
+
+@code{
+
+    TimeOnly Scheduletime { get; set; }// = TimeOnly.FromDateTime(DateTime.Now);
+    protected override void OnInitialized()
+    {
+        Scheduletime = TimeOnly.FromDateTime(ts.Globals.NextRefreshDate);
+
+    }
+
+    //Run once out of schedule
+    protected void Run_Click()
+    {
+        ts.Globals.Status = true;
+        fu.WriteJson(ts.Globals, ts.fileName);
+        //Runs once
+        ts.Run();
+    }
+    //Set the schedule
+    protected void Schedule_Click()
+    {
+        ts.Globals.NextRefreshDate = DateTime.Parse(ts.Globals.NextRefreshDate.ToString("yyyy-MM-dd") + " " + Scheduletime.ToString());
+        Scheduletime = TimeOnly.FromDateTime(ts.Globals.NextRefreshDate);
+        fu.WriteJson(ts.Globals, ts.fileName);
+        ts.Schedule(ts.Globals.NextRefreshDate);
+    }
+    protected void Start_Click()
+    {
+        ts.Globals.Status = !ts.Globals.Status;
+        fu.WriteJson(ts.Globals, ts.fileName);
+        if (ts.Globals.Status)
+        {
+            ts.Globals.Progress = "Started";
+        }
+        else
+        {
+            ts.Globals.Progress = "Stopped";
+        }
+
+    }
+
+
+}

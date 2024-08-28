@@ -1,0 +1,117 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+.blazored-toast-container
+{
+    z-index:1100;
+}
+
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+a, .btn-link {
+    color: #0366d6;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.table-header {
+    color: #fff;
+    background-color: #0094ff;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+.fileTree {
+    margin: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 5px;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: gray;
+    border-width: 1px;
+    background-color: #fff;
+    display: inline-block;
+    width: 100%;
+}
+
+.whiteArea {
+    margin: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 5px;
+    border-radius: 5px;
+    border-color: #E5E5E5;
+    background-color: #fff;
+    display: inline-block;
+    width: 100%;
+}
+
+.tabArea {
+    padding:  5px 5px 5px 5px;
+    background-color: #fff;
+    display: block;
+    width: 100%;
+}
+.goldArea {
+    margin: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 5px;
+    border-radius: 10px;
+    border-color: #E5E5E5;
+    background-color: #fad7b6;
+    display: inline-block;
+}
+
+.greenArea {
+    margin: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 5px;
+    border-radius: 10px;
+    border-color: #E5E5E5;
+    background-color: #e2fec9;
+    display: inline-block;
+}
+
+.purpleArea {
+    margin: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 5px;
+    border-radius: 10px;
+    border-color: #E5E5E5;
+    background-color:#e2bef5;
+    display: inline-block;
+}
+
+.spinner {
+    margin: 10px auto;
+}
+
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+

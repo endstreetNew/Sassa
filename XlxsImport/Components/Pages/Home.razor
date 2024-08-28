@@ -1,0 +1,120 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Collections.Generic
+
+@inject XlxsImport.Services.FileService fileService;
+@inject IWebHostEnvironment environment;
+
+<div>
+@*     <br />
+    <h2>Upload</h2>
+    <hr />
+    <label>
+        Upload XLSX:
+        <InputFile OnChange="LoadFiles" />
+    </label> *@
+    <button class="btn btn-primary btn-sm active" @onclick="@(() => LoadFiles())">Import</button>
+    @if (isLoading)
+    {
+        <p>Uploading...</p>
+    }
+    else
+    {
+        if (loadedFiles.Any())
+        {
+            <p>Processing..</p>
+            var file = loadedFiles.FirstOrDefault();
+            <ul>
+                <li>Name: @file.Name</li>
+            <li>Last modified: @file.LastModified.ToString()</li>
+            <li>Size (bytes): @file.Size</li>
+            <li>Content type: @file.ContentType</li>
+        </ul>
+        }
+    }
+</div>
+
+
+@code
+{
+    private bool isLoading;
+    private string DbTableName = "AuditTemp";
+    private List<IBrowserFile> loadedFiles = new();
+    private long maxFileSize = 1024 * 31000;
+    private int maxAllowedFiles = 3;
+
+    // private async Task LoadFiles(InputFileChangeEventArgs e)
+    // {
+    //     isLoading = true;
+    //     loadedFiles.Clear();
+    //     try
+    //     {
+    //         foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+    //         {
+
+    //             var path = Path.Combine(environment.ContentRootPath, "XlxsFiles", file.Name);
+
+    //             await using FileStream fs = new(path, FileMode.Create);
+    //             await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+    //             loadedFiles.Add(file);
+    //             fs.Close();
+
+    //             //Process content
+    //             try
+    //             {
+    //                 await fileService.ImportXlsxFile(path,DbTableName);
+    //             }
+    //             catch (IOException fe)
+    //             {
+    //                 Console.WriteLine("The file could not be read:");
+    //                 Console.WriteLine(fe.Message);
+    //             }
+
+    //         }
+    //     }
+    //     catch
+    //     {
+    //         // toast.Error("File upload failed.");
+    //         isLoading = false;
+    //     }
+    //     isLoading = false;
+
+    // }
+
+    private async Task LoadFiles()
+    {
+        isLoading = true;
+        loadedFiles.Clear();
+        try
+        {
+                var path = Path.Combine(environment.ContentRootPath, "XlxsFiles", "AnnexureAFinal.Xlsx");
+
+                // await using FileStream fs = new(path, FileMode.Create);
+                // await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+                // loadedFiles.Add(file);
+                // fs.Close();
+
+                //Process content
+                try
+                {
+                    await fileService.ImportXlsxFile(path, DbTableName);
+                }
+                catch (Exception fe)
+                {
+                    Console.WriteLine("The file could not be read:");
+                    Console.WriteLine(fe.Message);
+                }
+
+        }
+        catch
+        {
+            // toast.Error("File upload failed.");
+            isLoading = false;
+        }
+        isLoading = false;
+
+    }
+}

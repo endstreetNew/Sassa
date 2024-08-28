@@ -1,0 +1,82 @@
+﻿@page "/approve/{Reference}/{DocumentId}/{DocumentTypeId}"
+
+@using Sassa.eDocs.Data.Models
+@inject NavigationManager navigationManager
+@inject DocumentStore dstore
+
+
+<div class="modal" tabindex="-1" style="display:block;" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">@DocumentType Verification </h5>
+                        <button type="button" class="close" @onclick="btnCancel_Click">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <p>Reject reason</p>
+                            @if (Reasons.Any())
+                            {
+                                <select class="form-control" @onchange="SelectReason">
+                                    @foreach (var reason in Reasons)
+                                    {
+                                        <option value="@reason.RejectReasonId">@reason.Reason</option>
+                                    }
+                                </select>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" @onclick="btnApprove_Click">Approve</button>
+                        <button class="btn btn-primary" @onclick="btnReject_Click">Reject</button>
+                        <button class="btn btn-primary" @onclick="btnCancel_Click">Cancel</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Reference { get; set; }
+    [Parameter]
+    public string DocumentId { get; set; }
+    [Parameter]
+    public string DocumentTypeId { get; set; }
+    [Parameter]
+    public string SupportingRef { get; set; }
+
+    public string DocumentType;
+
+    public IEnumerable<RejectReason> Reasons = new List<RejectReason>();
+
+    SupportDocument sp;
+
+    protected override async Task OnInitializedAsync()
+    {
+        sp = new SupportDocument();
+        sp.DocumentId = int.Parse(DocumentId);
+        sp.DocumentTypeId = int.Parse(DocumentTypeId);
+        sp.RejectReasonId = "0";
+        Reasons = await dstore.GetRejectReasons();
+        DocumentType = await dstore.GetDocumentTypes(sp.DocumentTypeId);
+    }
+    private void btnApprove_Click()
+    {
+        navigationManager.NavigateTo($"/{Reference}");
+    }
+    private void btnReject_Click()
+    {
+        navigationManager.NavigateTo($"/{Reference}");
+    }
+    private void btnCancel_Click()
+    {
+        navigationManager.NavigateTo($"/{Reference}");
+    }
+
+    private void SelectReason(ChangeEventArgs e)
+    {
+        sp.RejectReasonId = (string)e.Value;
+    }
+}

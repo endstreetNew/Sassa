@@ -1,0 +1,44 @@
+﻿@page "/"
+@page "/{ReportName}"
+
+@inject IWebHostEnvironment env
+
+<WebReportContainer WebReport="@MyWebReport" />
+
+@code {
+    [Parameter]
+    public string ReportName { get; set; }
+
+    public WebReport MyWebReport { get; set; }
+
+    const string DEFAULT_REPORT = "Simple List.frx";
+    string directory;
+
+    DataSet DataSet { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        directory = Path.Combine(env.WebRootPath, Path.Combine("Reports"));
+        DataSet = new DataSet();
+        DataSet.ReadXml(Path.Combine(directory, "nwind.xml"));
+    }
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        var report = Report.FromFile(
+        Path.Combine(
+        directory,
+        string.IsNullOrEmpty(ReportName) ? DEFAULT_REPORT : ReportName));
+
+        // Registers the user dataset
+        report.RegisterData(DataSet, "NorthWind");
+
+        // Create new WebReport object
+        MyWebReport = new WebReport
+        {
+            Report = report,
+        };
+    }
+}

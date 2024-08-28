@@ -1,0 +1,19 @@
+﻿@namespace Sassa.eForms.Pages.Components
+
+@if(Errors != null)
+{
+<ul class="error">
+    @foreach (var error in Errors)
+    {
+        <li>@error</li>
+    }
+
+</ul>
+}
+
+@code {
+
+    [Parameter]
+    public IList<string> Errors { get; set; }
+
+}

@@ -1,0 +1,82 @@
+﻿@inherits LayoutComponentBase
+
+
+@using Sotsera.Blazor.Toaster
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+
+
+
+
+<div style="margin:0 auto;min-width:1220px">
+    <div class="grid">
+        <div class="header">
+            <ToastContainer />
+        </div>
+        <div class="register  px-4 auth">
+            <div style="width: 100%;"></div>
+            @if (ModernBrowser())
+            {
+                <LoginDisplay />
+            }
+            </div>
+        <div class="topmenu">
+            <TopMenu />
+        </div>
+
+        @if (ModernBrowser())
+        {
+
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+        }
+
+
+
+
+    <div class="main">
+        @if (ModernBrowser())
+        {
+
+            @Body
+        }
+        else
+        {
+            <div style="text-align:center;">
+                <h3 class="text-danger text-center">Error - Your browser is not supported by this application</h3>
+                <hr />
+                <br />
+                <h4 class="text-danger text-center">This application does not support mobile devices.</h4>
+                <h4 class="text-danger text-center">The following browserrs are supported</h4>
+                <br />
+
+                <div class="row">
+                    <div class="col">Chrome</div>
+                    <div class="col">Firefox</div>
+                    <div class="col">Edge</div>
+                    <div class="col">Opera</div>
+                </div>
+                <hr />
+            </div>
+        }
+
+    </div>
+    </div>
+</div>
+
+@code
+{
+    private bool ModernBrowser()
+    {
+        var userAgent = httpContextAccessor.HttpContext.Request.Headers["User-Agent"];
+        var ie10andLower = userAgent.ToString().IndexOf("MSIE");
+        var ie11 = userAgent.ToString().IndexOf("Trident");
+        if(userAgent.Contains("Mobi"))
+        {
+            return false;
+        }
+        return ie10andLower == -1 && ie11 == -1;
+    }
+
+
+}

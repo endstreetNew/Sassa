@@ -1,0 +1,507 @@
+﻿@inject IAlertService toast
+@inject SessionService sessionservice
+@inject BRMDbService db
+@inject StaticService sservice
+@inject NavigationManager NavigationM
+@inject IJSRuntime Js
+
+@implements IDisposable
+
+@inject ReportDataService rd
+
+@using System.Text
+
+<h3>Batches for @sessionservice.session.Office.OfficeName</h3>
+<div id="BrmGrid">
+    @if (showConfirmation)
+    {
+        <Modal Heading="Confirmation" Cancel="OnConfirmationClose" Ok="OnConfirmationOk">
+            Are you Sure you want to close @selectedBatch.BatchNo ?
+        </Modal>
+    }
+    @if (DTBatch.count >0)
+    {
+        <br />
+        @if (editBatch)
+        {
+            <button class="btn btn-primary btn-sm active" @onclick="@(() => OnBack())">Back</button>
+            <div class="input-group mb-3">
+                <div class="input-group-text">
+                    <input class="form control" type="text" @bind="BrmBarCode" placeholder="<Scan Barcode>">
+                </div>
+                <button class="btn btn-primary" @onclick="@(() => btnAddFileToBatch(BrmBarCode))">Add File</button>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-sm" style="font-size:x-small;">
+                        <thead>
+                            <tr>
+                                <th scope="col">CLM Unique Code</th>
+                                <th scope="col">BRM File no</th>
+                                <th scope="col">ID no</th>
+                                <th scope="col">Name and Surname</th>
+                                <th scope="col">Grant Type</th>
+                                <th scope="col">Reg Type </th>
+                                <th scope="col">App Date </th>
+@*                                <th scope="col">Merge </th>*@
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var u in items.result)
+                            {
+                                <tr>
+                                    <td>@u.UnqFileNo</td>
+                                    <td>@u.BrmBarcode</td>
+                                    <td>@u.ApplicantNo</td>
+                                    <td>@u.FullName</td>
+                                    <td>@u.GrantType</td>
+                                    <td>@u.RegType</td>
+                                    <td>@(u.TransDate == null?"":((DateTime)u.TransDate).ToShortDateString())</td>
+@*                                    <td>@u.MergeStatus</td>*@
+                                    <td>
+                                        @if (selectedBatch.BatchStatus == "Open")
+                                        {
+                                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnRemoveItem(u.BrmBarcode))">Remove</button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                    <Pager Paged="OnEditPaged" TotalSize="@items.count"></Pager>
+                </div>
+            </div>
+        }
+        else
+        {
+@*             @if (!sessionservice.session.IsRmc())
+            {
+
+            } *@
+@*             <div class="row">
+                <div class="col">
+@*                    @if (filterStatus == "Open")
+                    {
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <input class="form-check-input mt-0" type="checkbox" @onchange="@(e => chkSelectAll(e))">
+                            </div>
+                            <label class="form-control" enabled="false">Select All Batches</label>
+                            <button class="btn btn-primary btn-sm active" disabled="@(DTBatch.result.Where(b => b.isSelected).Count() == 0)" @onclick="@(() => btnClose_Click())">Close Selected</button>
+                        </div>
+                    }
+                </div>
+                <div class="col">
+
+                </div>
+    </div>*@
+            <div class="row input-group">
+                <div class="col">
+                    <div class="input-group mb-1">
+
+                        <span class="input-group-text">Status Filter</span>
+                        <select class="form-select" value="@filterStatus" @onchange="FilterStatus">
+                            <option value="" selected>select...</option>
+                            @foreach (var item in sservice.GetBatchStatus("RMC"))
+                            {
+                                <option value=@item.Key>@item.Value</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                </div>
+            </div>
+            <table class="table table-sm" style="font-size:small;">
+                <thead>
+                    <tr>
+
+                       @* <th scope="col">Select</th>*@
+                        <th scope="col">Batch No</th>
+                        <th scope="col">Batch Type</th>
+                        <th scope="col">Updated by</th>
+                        <th scope="col">Updated Date</th>
+                        <th scope="col">Batch Status</th>
+                        <th scope="col">Batch Comment</th>
+@*                        <th scope="col">BRM Waybill</th>*@
+                        <th scope="col">No of Files</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var u in DTBatch.result)
+                    {
+                        <tr>
+@*                            <td>
+                                <input type="checkbox" checked="@u.isSelected" disabled="@(!"Open".Contains(u.BatchStatus))" @onchange="@((e) => chkSelect(e,u))" />
+                            </td>*@
+                            <td>@u.BatchNo</td>
+                            <td>@u.RegType</td>
+                            <td>@u.UpdatedByAd</td>
+                            <td>@u.UpdatedDate</td>
+                            <td>@u.BatchStatus</td>
+                            <td>@u.BatchComment</td>
+@*                            <td>@u.BrmWaybill</td>*@
+                            <td>@u.NoOfFiles.ToString()</td>
+                            <td>
+                                    <button class="btn btn-primary btn-sm active" @onclick="@(() => btnPrintBatch(u))">View/Print</button>
+                            </td>
+                            <td>
+                                @if (u.BatchStatus == "RMCBatch" || u.BatchStatus == "Received")
+                                {
+                                   @* <button class="btn btn-primary btn-sm active" @onclick="@(() => btnCloseBatch(u))">Verify & Close </button>*@
+                                    <button class="btn btn-primary btn-sm active" @onclick="@(() => btnEditBatch(u))">Edit Batch</button>
+                                }
+                            </td>
+
+                            <td>
+                                @if (u.BatchStatus == "RMCBatch" || u.BatchStatus == "Received")
+                                {
+                                    <div class="input-group input-group-sm">
+                                        <div class="input-group-prepend input-group-text">TDW Box Number</div>
+                                        <input type="text" class="form-control" @bind-value="@u.BoxNo">
+                                        <span class="input-group-text">Mini Box Number</span>
+                                        <input type="number" class="form-control"  @bind-value="@u.MiniBox" min="1" max="5">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnAddBatchToBox(u))">Add to Box</button>
+                                        </div>
+                                    </div>
+                                }
+                                @*<div class="input-group-sm">
+                                    <span class="input-group-text" >TDW Box Number</span>
+                                    <input type="text" class="form-control"  @bind-value="@u.BoxNo">
+                                    <span class="input-group-text">Mini Box Number</span>
+                                    <input type="number" class="form-control"  @bind-value="@u.MiniBox" min="1" max="4">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-sm active" @onclick="@(() => btnAddBatchToBox(u))">Add to Box</button>
+                                </div>
+                                </div>*@
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <Pager Paged="OnPaged" TotalSize="@DTBatch.count"></Pager>
+        }
+
+    }
+    else
+    { <p>No data. </p>}
+</div>
+
+@code {
+    protected PagedResult<DcBatch> DTBatch { get; set; } = new();
+    protected DcBatch selectedBatch { get; set; } = new();
+    protected Reboxing rebox = new Reboxing();
+    protected string filterStatus = "";
+
+    protected bool showConfirmation;
+
+    protected bool editBatch;
+    protected PagedResult<DcFile> items = new();
+
+    //PagedResult<ReboxListItem> boxfiles;
+
+    protected string BrmBarCode ="";
+
+    int page = 1;
+    int editPage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        filterStatus = "";
+        try
+        {
+            DTBatch = await db.GetBatches(filterStatus, page);
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+
+
+    }
+
+    protected async Task FilterStatus(ChangeEventArgs args)
+    {
+        filterStatus = args.Value?.ToString() ?? "";
+        page = 1;
+        try
+        {
+            DTBatch = await db.GetBatches(filterStatus, page);
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+
+    protected void btnCloseBatch(DcBatch batch)
+    {
+        selectedBatch = batch;
+        showConfirmation = true;
+    }
+
+    protected async Task btnEditBatch(DcBatch batch)
+    {
+        selectedBatch = batch;
+        items = await db.GetAllFilesByBatchNo(batch.BatchNo, editPage);
+        editBatch = true;
+    }
+    protected async Task btnAddBatchToBox(DcBatch batch)
+    {
+        try
+        {
+            if (batch.MiniBox < 1 || string.IsNullOrEmpty(batch.BoxNo) ) throw new Exception($"Invalid Box or MiniBox.");
+            switch (batch.RegType)
+            {
+                case("LC-MAIN"):
+                    rebox.RegType = "13";
+                    break;
+                case("LC-ARCHIVE"):
+                    rebox.RegType = "18";
+                    break;
+                case("MAIN"):
+                    rebox.RegType = "1";
+                    break;
+                case("ARCHIVE"):
+                    rebox.RegType = "14";
+                    break;
+                default:
+                    rebox.RegType = "1";
+                    break;
+
+            }
+            rebox.BoxNo = batch.BoxNo.ToUpper().Trim();
+            if(await db.IsBoxLocked(rebox.BoxNo))
+            {
+                throw new Exception("Can't add batch to locked box!");
+            }
+            rebox.BatchNo = batch.BatchNo;
+            rebox.MiniBox = batch.MiniBox;
+            List<string> barcodes = await db.GetBatchBarcodes((decimal)rebox.BatchNo);
+
+            rebox.ToRegionId = rebox.RegType;
+            rebox.MisFileNo = string.Empty;
+            rebox.NewBarcode = string.Empty;
+            foreach (string brmBarCode in barcodes)
+            {
+                rebox.BrmBarcode = brmBarCode;
+                await Rebox(rebox);
+            }
+            await db.SetBatchStatus(rebox.BatchNo, "Closed");
+            DTBatch = await db.GetBatches(filterStatus, page);
+            toast.Success("Batch No " + rebox.BatchNo + " added to TDW box " + rebox.BoxNo + ".");
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+
+    protected async Task Rebox(Reboxing rebox)
+    {
+        try
+        {
+            DcFile file = await db.GetReboxCandidate(rebox);
+            if (string.IsNullOrEmpty(file.TdwBoxno))
+            {
+                await LoadBox(rebox.BoxNo);
+
+                // if (boxfiles.count == 0)
+                // {
+                //     rebox.AltBoxNo = await db.GetNexRegionAltBoxSequence();
+                // }
+
+                // file.PrintOrder = boxfiles.count;
+                await db.Rebox(rebox, file);
+            }
+            //string scanState = file.ScanDatetime == null ? "Not Scanned" : "Scanned";
+            //toast.Success($"BRM# {rebox.BrmBarcode} added to TDW box {rebox.BoxNo}. ({scanState})");
+            rebox.BrmBarcode = string.Empty;
+            rebox.MisFileNo = string.Empty;
+            rebox.NewBarcode = string.Empty;
+
+        }
+        catch(Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+
+    protected async Task LoadBox(string boxNo)
+    {
+        try
+        {
+            boxNo = rebox.BoxNo.ToUpper().Trim();
+            await OnPaged(1);
+            // if( boxfiles.result.Where(r => r.BoxLocked).Any())
+            // {
+            //     throw new Exception("Locked box!");
+            // }
+            //rebox.RegType = "";
+            rebox.BoxNo = boxNo;
+
+            // if (boxfiles.count > 0)
+            // {
+            //     rebox.AltBoxNo = boxfiles.result.First().AltBoxNo;
+            // }
+            // else
+            // {
+            //     toast.Warn("Box not found");
+            // }
+            await Task.Delay(50);
+        }
+        catch //(Exception ex)
+        {
+            toast.Error("Invalid Box no");
+        }
+
+    }
+    protected async Task btnRemoveItem(string brmBarCode)
+    {
+        try
+        {
+            await db.RemoveFileFromBatch(brmBarCode);
+            items = await db.GetAllFilesByBatchNo(selectedBatch.BatchNo, editPage);
+            editBatch = items.count != 0;
+            DTBatch = await db.GetBatches(filterStatus, page);
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+    protected async Task btnAddFileToBatch(string BrmBarCode)
+    {
+        try
+        {
+            if (BrmBarCode.Trim().Length != 8)
+            { throw new Exception("Invalid BarCode."); }
+            BrmBarCode = BrmBarCode.Trim().ToUpper();
+            await db.AddFileToBatch(BrmBarCode, selectedBatch.BatchNo);
+            items = await db.GetAllFilesByBatchNo(selectedBatch.BatchNo, editPage);
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+
+    }
+    protected void OnConfirmationClose()
+    {
+
+        showConfirmation = false;
+
+    }
+    protected async Task OnConfirmationOk()
+    {
+        try
+        {
+            showConfirmation = false;
+            if (selectedBatch.BatchNo != 0) await db.SetBatchStatus(selectedBatch.BatchNo, "Closed");
+            DTBatch = await db.GetBatches(filterStatus, page);
+            toast.Success($"Batch #{selectedBatch.BatchNo} Closed.");
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+
+
+    protected async Task OnBack()
+    {
+        DTBatch = await db.GetBatches(filterStatus, page);
+
+        editBatch = false;
+    }
+    protected void chkSelectAll(ChangeEventArgs e)
+    {
+        var selected = (bool)e.Value!;
+        foreach (DcBatch batch in DTBatch.result.Where(r => r.BatchStatus == "Open"))
+        {
+            batch.isSelected = selected;
+        }
+    }
+
+    protected void chkSelect(ChangeEventArgs e, DcBatch batch)
+    {
+        var selected = (bool)e.Value!;
+        //foreach (DcBatch batch in DTBatch.result)
+        //{
+        batch.isSelected = selected;
+        //}
+    }
+
+    protected async Task btnClose_Click()
+    {
+        foreach (DcBatch batch in DTBatch.result.Where(b => b.isSelected))
+        {
+            if(batch.BatchNo != 0)await db.SetBatchStatus(batch.BatchNo, "Closed");
+        }
+        DTBatch = await db.GetBatches("Open", page);
+        toast.Success($"Selected batches Closed.");
+    }
+
+    protected async Task OnPaged(int _page)
+    {
+        page = _page;
+        DTBatch = await db.GetBatches(filterStatus, page);
+
+    }
+    protected async Task OnEditPaged(int _page)
+    {
+        editPage = _page;
+        items = await db.GetAllFilesByBatchNo(selectedBatch.BatchNo, editPage);
+    }
+
+    protected async Task btnPrintBatch(DcBatch batch)
+    {
+        try
+        {
+            sservice.GetGrantTypes();
+
+            List<DcFile> files = await db.GetAllFilesByBatchNo(batch.BatchNo);
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append(BulkPrint.Header());
+            sb.Append(BulkPrint.CreateBatchCover(files, sessionservice.session.Office.OfficeName, batch.BatchNo));
+            sb.Append(BulkPrint.Footer());
+
+            string FileName = sessionservice.session.Office.RegionCode + "-" + sessionservice.session.SamName.ToUpper() + "-" + "Batch_" + batch.BatchNo + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");//.Replace(":", "-");
+            toast.Success($"Batch cover :{batch.BatchNo} queued.");
+            await rd.SaveHtmlReport(sb.ToString(), FileName);
+            //files.Dispose();
+            //toast.Success($"Batch cover :{batch.BatchNo} queued.");
+            files.Clear();
+            sb = new();
+            await Js.InvokeVoidAsync("open", $"{NavigationM.BaseUri}batchcover/{batch.BatchNo}", "_blank");
+
+        }
+        catch //(Exception ex)
+        {
+            toast.Error($"Batch cover :{batch.BatchNo} error.");
+
+        }
+
+        
+    }
+
+    public void Dispose()
+    {
+    }
+}
+
+
+
+
+

@@ -1,0 +1,40 @@
+﻿@page "/poster/{Id:int}"
+@layout NoLayout
+@inject NavigationManager navigate
+
+<div class="btn-group" role="group" aria-label="Basic outlined example">
+    <button type="button" class="btn btn-outline-primary" @onclick="HomeClick"><span class="oi oi-home" title="Home" aria-hidden="true"></span></button>
+    <button type="button" class="btn btn-outline-primary" @onclick="LeftClick"><span class="oi oi-arrow-thick-left" title="Left" aria-hidden="true"></span></button>
+    <button type="button" class="btn btn-outline-primary" @onclick="RightClick"><span class="oi oi-arrow-thick-right" title="Right" aria-hidden="true"></span></button>
+</div>
+<hr />
+@if (DisplayPage == 1)
+{
+    <img src="/images/PosterFinal_V5_A.jpg" style="height: 90vh;" />
+}
+else
+{
+    <img src="/images/PosterFinal_V5_B.jpg" style="height: 90vh;" />
+}
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    int DisplayPage = 1;
+
+    protected void HomeClick()
+    {
+        navigate.NavigateTo("/Eformpage/" + Id);
+    }
+    protected void LeftClick()
+    {
+        DisplayPage = 1;
+    }
+    protected void RightClick()
+    {
+        DisplayPage = 2;
+    }
+
+}

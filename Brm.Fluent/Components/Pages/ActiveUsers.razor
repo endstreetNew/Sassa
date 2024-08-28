@@ -1,0 +1,12 @@
+﻿@page "/ActiveUsers"
+@using Microsoft.AspNetCore.Components.Web
+
+@inject ActiveUser _ConnectedUser
+@inject ActiveUserList _ConnectedUserList
+
+<PageTitle>Active Users</PageTitle>
+
+@foreach (var user in _ConnectedUserList.Users)
+{
+    <p>@user.Name</p>
+}

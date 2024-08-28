@@ -1,0 +1,412 @@
+﻿@page "/documents"
+@page "/documents/{Reference}"
+
+@*@attribute [Authorize]*@
+
+@using Sassa.eDocs.Data.Models
+@using Sassa.eForms.Models
+
+@inject DocumentStore dstore
+@*@inject Sotsera.Blazor.Toaster.IToaster Toaster*@
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider authentication
+@inject Sotsera.Blazor.Toaster.IToaster Toaster
+@inject IConfiguration config
+
+@if (showpreview)
+{
+    <button @onclick="@(() => { showpreview = false; })" class="btn btn-primary" type="button">Back</button>
+    <hr />
+    <embed src="@ViewSource" width="100%" height="800" type="application/pdf" />
+}
+else if (showSurvey)
+{
+    <button @onclick="@(() => { showSurvey = false; })" class="btn btn-primary" type="button">Back</button>
+    <hr />
+    @*<ClientSurvey Id="1"></ClientSurvey>*@
+}
+else
+{
+    @if (hasOutcome)
+    {
+        <h3>Your Application has been processed.</h3>
+        <hr />
+        <p>
+            Please view or download your outcome below.
+        </p>
+    }
+    else if (hasReturnedDocs)
+    {
+        <h3>Some of your documents have been rejected.</h3>
+        <div class="form-group row" style="padding-left:15px">
+            <div>
+                <p>Some of your documents have been rejected for the reasons specified. Please upload new documents where required.</p>
+            </div>
+            @if (showReturned)
+            {
+                <button @onclick="@FindDocuments" class="btn btn-primary" type="button">Back</button>
+            }
+            else
+            {
+                <button @onclick="@ShowReturnedDocument" class="btn btn-primary" type="button">View detail</button>
+            }
+
+        </div>
+    }
+    else
+    {
+        <h3>Upload Documents</h3>
+        <hr />
+        <p>
+            To determine the documents that are required for your Grant Application, please enter the application’s Reference Number below and click on the Find button.
+            A list of required documents will be displayed. Please ensure that you upload all the documents as indicated.
+            Once all documents are uploaded, click on the Submit Documents button to submit the documents to SASSA for verification and processing.
+        </p>
+    }
+    <hr />
+
+    <EditForm Model=@uploads>
+        @if (!loading)
+        {
+            @if (hasOutcome)
+            {
+                @if (showFile)
+                {
+                    <div class="form-group row" style="margin:10px">
+                        <div class="col"><strong>@ApplicationType Outcome Letter</strong></div>
+                        <div class="col" style="float:right;"></div>
+                    </div>
+                    <hr />
+
+                    <embed src="data:application/pdf;base64,@encodedData" width="100%" height="800" type="application/pdf" />
+                }
+                @if (FeatureSurvey)
+                {
+                    <button @onclick="@(() => { showSurvey = true; })" class="btn btn-primary" type="button">Complete customer Survey</button>
+                }
+            }
+            else if (showReturned)
+            {
+                <div class="form-group row" style="margin:10px">
+                    <strong>@ApplicationType Missing Documents Letter</strong>
+                </div>
+                <hr />
+
+                <embed src="data:application/pdf;base64,@encodedData" width="100%" height="800" type="application/pdf" />
+
+            }
+            else
+            {
+                <div class="form-group row">
+                    <label for="Reference" class="col-sm-2" style="white-space:nowrap">Reference</label>
+                    <InputText @bind-Value="Reference" class="form-control col-sm-3" />
+                    <button @onclick="@FindDocuments" class="btn btn-primary" type="button">Find</button>
+                </div>
+                <div class="form-group row" style="margin:10px">
+                    <strong>@ApplicationType </strong>
+                </div>
+                <hr />
+                @foreach (Document doc in uploads.DocList)
+                {
+                    <div class="form-group row" style="padding-left:15px;padding-right:10px;">
+                        @if (doc.LoDocumentTypeId == 123)
+                        {
+                            <InputText id="textLOOtherDocumentType" class="col-sm-4" @bind-Value="doc.OtherDocumentType" placeholder="<enter document name>" disabled="@(doc.Status == "Submitted" ||doc.Status == "Processed" || doc.Status=="QA Passed")"></InputText>
+                        }
+                        else
+                        {
+                            <InputSelect id="LoDocumentSelect" class="col-sm-4" disabled @bind-Value="doc.LoDocumentTypeId">
+                                @foreach (var dtype in LoDocumentTypes)
+                                                    {
+                                    <option value="@dtype.LoDocumentTypeId">@dtype.DisplayName</option>
+                                                    }
+                            </InputSelect>
+                        }
+                        <button @onclick="@(() => Preview(doc.DocumentId))" class="btn btn-primary" disabled="@(doc.Status != "Uploaded" )" type="button">Preview</button>
+                        <button @onclick="@(() => ShowUpload(doc))" class="btn btn-primary" disabled="@(doc.Status == "Submitted" ||doc.Status == "Processed" || doc.Status=="QA Passed")" type="button">Upload</button>
+                        @if (doc.LoDocumentTypeId == 123 && "New|Uploaded".Contains(doc.Status))
+                        {
+                            <button @onclick="@(() => RemoveAdditionalDoc(doc.DocumentId))" class="btn btn-primary" type="button">Remove</button>
+                        }
+                        @if (doc.Status != "New")
+                        {
+                            <label for="Status" class="col-sm-1 @(doc.Status == "Returned" ? "text-danger":"")" style="white-space:nowrap">@doc.Status</label>
+                            <label for="Reason" class="col-sm-1 text-danger" style="white-space:nowrap">@doc.RejectReason</label>
+                        }
+                    </div>
+
+                }
+                @if (@additionalError)
+                {
+                    <div class="form-group row text-center" style="margin:10px">
+                        <p class="text-danger">@ErrorText</p>
+                    </div>
+                }
+                @if (FeatureAdditionalDocs)
+                {
+                    @if (uploads.DocList.Any() && (uploads.DocList.Where(d => d.LoDocumentTypeId == 123).Count() < 5))
+                    {
+                        <button type="submit" @onclick="@(() => AddAdditionalDoc())" class="btn btn-primary">Add Additional document</button>
+                    }
+                }
+                @if (uploads.DocList.Any())
+                {
+                    <hr />
+                    <button class="btn btn-primary" type="button" disabled="@(Uploaded())" @onclick="@SubmitDocuments">Submit Documents</button>
+                }
+                @*else if (loadingError)
+                {
+                    <div class="text-center">
+                        <strong> <p class="text-danger">@ErrorText</p></strong>
+                    </div>
+                }*@
+
+            }
+        }
+        @if (loadingError)
+        {
+            <div class="text-center">
+                <strong> <p class="text-danger">@ErrorText</p></strong>
+            </div>
+        }
+        @if (loading)
+        {
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        }
+    </EditForm>
+}
+
+
+@code {
+    [Parameter]
+    public string Reference { get; set; }
+
+    protected string ApplicationType { get; set; }
+
+    protected IEnumerable<LoDocumentType> LoDocumentTypes { get; set; } = new List<LoDocumentType>();
+
+    protected DocumentUpload uploads = new DocumentUpload();
+    IEnumerable<Document> internalDocs;
+
+    Dictionary<int, string> FileStatus = new Dictionary<int, string>();
+
+    bool loading = true;
+    protected Document OutComeDocument { get; set; }
+    protected Document ReturnedDocument { get; set; }
+    bool hasOutcome;
+    bool hasReturnedDocs;
+    bool showFile;
+    bool showReturned;
+    bool showSurvey;
+    string encodedData;
+    bool loadingError;
+    bool additionalError;
+
+    //preview
+    protected bool showpreview = false;
+    protected string encodedFile;
+    protected string ViewSource;
+    protected string ErrorText;
+
+    //Features
+    protected bool FeatureSurvey = true;
+    protected bool FeatureAdditionalDocs = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var configFeatures = config.GetSection("Features");
+        FeatureSurvey = configFeatures.GetValue<bool>("Survey");
+        FeatureAdditionalDocs = configFeatures.GetValue<bool>("AdditionalDocument");
+        LoDocumentTypes = await dstore.GetLoDocumentTypes();
+
+        if (!string.IsNullOrEmpty(Reference))
+        {
+            await FindDocuments();
+        }
+        else
+        {
+            loading = false;
+        }
+    }
+
+    private async Task FindDocuments()
+    {
+        additionalError = false;
+        loadingError = false;
+        showReturned = false;
+
+        if (string.IsNullOrEmpty(Reference)) return;
+        loading = true;
+        await Task.Delay(1);
+        try
+        {
+
+            Reference = Reference.Trim();
+            uploads = new DocumentUpload();
+
+            uploads.DocList = await dstore.GetRequiredDocuments(Reference, await authentication.GetAuthenticationStateAsync());
+        }
+        catch //Catch errors where LO did not return documents timeously.
+        {
+            ErrorText = "Your request is in progress and you will receive an email notification of your outcome.";
+            loadingError = true;
+            loading = false;
+            return;
+        }
+
+        internalDocs = uploads.DocList.Where(d => d.InternalDocument == true);
+        if (uploads.DocList.Any())
+        {
+            ApplicationType = dstore.ApplicationType(uploads.DocList.First().ApplicationTypeId);
+            ReturnedDocument = uploads.DocList.Where(d => d.LoDocumentTypeId == 119).FirstOrDefault();
+            if (uploads.DocList.Where(d => d.LoDocumentTypeId == 120).Any())
+            {
+                OutComeDocument = uploads.DocList.Where(d => d.LoDocumentTypeId == 120).First();
+                hasOutcome = true;
+                showFile = false;
+                await LoadFile(OutComeDocument.DocumentId);
+            }
+            else
+            {
+                uploads.DocList = uploads.DocList.Where(d => d.InternalDocument == false).OrderBy(o => o.SupportDocument);
+            }
+
+            hasReturnedDocs = ReturnedDocument != null && uploads.DocList.Where(d => d.Status == "Returned").Any();
+
+        }
+        loading = false;
+    }
+
+
+    private async Task SubmitDocuments()
+    {
+        foreach (var doc in uploads.DocList)
+        {
+            if (doc.Status != "Uploaded") continue;
+
+            await dstore.PutDocumentStatus(doc.DocumentId, "Submitted");
+
+        }
+        await dstore.SetUploaded(Reference);
+        await dstore.DeleteInternalDocuments(internalDocs);
+        Toaster.Info($"Your documents have been submitted for verification.", "Submitted");
+        //Navigate home
+        navigationManager.NavigateTo($"/thankyou/{Reference}");
+    }
+
+    private async Task ShowUpload(Document doc)
+    {
+        additionalError = false;
+        if (doc.LoDocumentTypeId == 123)
+        {
+
+            if (string.IsNullOrEmpty(doc.OtherDocumentType))
+            {
+                ErrorText = "Please provide document type.";
+                additionalError = true;
+                return;
+            }
+            await dstore.UpdateDocument(doc);
+        }
+        navigationManager.NavigateTo($"fileupload/{doc.DocumentId}");
+    }
+
+    private bool Uploaded()
+    {
+        if (loadingError) return true;
+        if (uploads.DocList.Count() == 0) return true;
+        if (uploads.DocList.Where(x => "QA Passed|Processed|Submitted".Contains(x.Status)).Count() == uploads.DocList.Count()) return true;
+        if (uploads.DocList.Where(x => x.Status == "New" && x.LoDocumentTypeId != 123).Any()) return true;
+        if (uploads.DocList.Where(x => x.Status == "Returned").Any()) return true;
+        return false;
+    }
+
+    private bool Submitted()
+    {
+        return uploads.DocList.Where(x => "QA Passed|Processed|Submitted".Contains(x.Status)).Count() == uploads.DocList.Count();
+    }
+
+
+    protected async Task LoadFile(int docid)
+    {
+
+        DocImage image = await dstore.GetDocImage(docid);
+        encodedData = Convert.ToBase64String(image.Image);
+
+        showFile = true;
+    }
+
+    protected async Task RemoveAdditionalDoc(int docid)
+    {
+
+        await dstore.DeleteDocument(docid);
+        await FindDocuments();
+    }
+
+    protected async Task AddAdditionalDoc()
+    {
+        ///Get the next SDNo
+        int lastSDNo = 0;
+        foreach (Document doc in uploads.DocList)
+        {
+            if (int.Parse(doc.SupportDocument.Substring(2, 2)) > lastSDNo)
+            {
+                lastSDNo = int.Parse(doc.SupportDocument.Substring(2, 2));
+            }
+        }
+        lastSDNo++;
+        Document newDoc = uploads.DocList.Last();
+        newDoc.SupportDocument = "SD" + lastSDNo.ToString().PadLeft(2, '0');
+        await dstore.UpsertAdditionalDocument(newDoc);
+        await FindDocuments();
+    }
+
+    protected async Task ShowReturnedDocument()
+    {
+        DocImage image = await dstore.GetDocImage(ReturnedDocument.DocumentId);
+        encodedData = Convert.ToBase64String(image.Image);
+
+        showReturned = true;
+    }
+
+    protected async Task Preview(int docid)
+    {
+        showpreview = false;
+        await LoadPreview(docid);
+
+    }
+    protected async Task LoadPreview(int docid)
+    {
+
+        try
+        {
+
+            DocImage image = await dstore.GetDocImage(docid);
+            //if (image.Image.Length > 2000000)//convert large image to file first
+            //{
+            string filename = $"pdf/{Guid.NewGuid().ToString()}.pdf";
+            using (FileStream fs = new FileStream($"wwwroot/{filename}", FileMode.Create))
+            {
+                fs.Write(image.Image, 0, image.Image.Length);
+            }
+            ViewSource = filename;
+            //}
+            //else
+            //{
+            //    encodedFile = Convert.ToBase64String(image.Image);
+            //    ViewSource = $@"data:application/pdf; base64,{encodedFile}";
+            //}
+
+            showpreview = true;
+        }
+        catch
+        {
+            //what??
+        }
+    }
+
+}

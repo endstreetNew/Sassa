@@ -1,0 +1,38 @@
+﻿.centered {
+    text-align: center;
+    min-width: 200px;
+}
+
+.right {
+    text-align: right;
+}
+
+.printme {
+    width: 800px;
+}
+
+.logosmall {
+    background-image: url('images/sassa_logoSmall.jpg');
+    width: 200px;
+    height: 160px;
+}
+
+@media print {
+
+    .btn {
+        display: none;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+}
+
+qrcode {
+    width: 100px;
+    height: 100px;
+}

@@ -1,0 +1,87 @@
+﻿@inject IAlertService toast
+@inject ReportDataService rs
+@* @inject BRMDbService db *@
+@inject Helper helper
+@inject SessionService sessionService
+
+
+<table class="table table-sm" style="font-size:x-small;">
+    <thead>
+        <tr class="table-header">
+            <th scope="col"></th>
+            @*<th scope="col">SOCPEN</th>*@
+            <th scope="col">BRM</th>
+            <th scope="col">SCAN</th>
+            <th scope="col">ContentServer</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    @if(IsValid)
+    {
+            @foreach (var u in pagedDetail.result)
+            {
+                <tr>
+                    <td>@u.MonthDay</td>
+                    @*<td>@u.Total</td>*@
+                    <td>@u.Captured</td>
+                    <td>@u.Scanned</td>
+                    <td>@u.CsLoaded</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm active" @onclick="@(() => btnSaveReport(u))">Save Report</button>
+                    </td>
+                </tr>
+            }
+    }
+    </tbody>
+</table>
+<Pager Paged="OnPaged" TotalSize="@DayDetail.count" PageSize="16"></Pager>
+
+@code {
+    [Parameter]  
+    public PagedResult<DayDetail> DayDetail { get; set; }
+
+    //UserOffice office;
+    protected PagedResult<DayDetail> pagedDetail = new PagedResult<DayDetail>();
+    int page = 1;
+    //CaptureDay day;
+
+    bool IsValid = false;
+
+    protected override void OnInitialized()
+    {
+        if (DayDetail.count == 0) 
+        {
+            IsValid = false;
+            return;
+        }
+        //day = DayDetail.result.First();
+        pagedDetail.count = DayDetail.count;
+        pagedDetail.result = DayDetail.result.ToList();
+        OnPaged(1);
+    }
+
+    protected void OnPaged(int _page)
+    {
+        page = _page;
+        pagedDetail.result = DayDetail.result.Skip((page - 1) * 16).Take(16).ToList();
+        IsValid = pagedDetail.result.Any();
+    }   
+
+    protected async Task btnSaveReport(DayDetail cDay)
+    {
+        try
+        {
+            await Task.Delay(100);
+            toast.Info($"Daily Scanning Report queued.");
+            string FileName = helper.GetFileName("Daily Scanning Report".Replace(" ", "_"), sessionService.session);
+            //db.session.Office.RegionCode + "-" + db.session.SamName.ToUpper() + "-" + reportList["3"].Replace(" ", "_") + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");
+            await rs.SaveCsvReport(new DateTime(cDay.Year,cDay.Month,cDay.Day).ToString("dd/MM/yyyy"), new DateTime(cDay.Year,cDay.Month,cDay.Day).ToString("dd/MM/yyyy"), "9", cDay.OfficeId, "RMC", cDay.RegionId, cDay.OfficeId, FileName);
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+}

@@ -1,0 +1,128 @@
+﻿@page "/batchcover/{BatchId}"
+@layout PrintLayout
+
+@inject BRMDbService db
+@inject StaticService sservice
+@inject BarCodeService bcService
+@inject IJSRuntime Js
+@inject Navigation Navigation
+
+
+<div>
+    <button class="btn btn-primary active" @onclick="btnBack_Click">Back</button>
+    <button class="btn btn-primary" @onclick="btnPrint_Click">Print</button>
+</div>
+@if (items != null)
+{
+<div class="printme pdf" >
+    <div class="row">
+        <div class="col-4">
+            <div style="float: left; display: inline-block">
+                <img alt="" src="images/sassa_logoSmall.jpg" width="200" />
+            </div>
+        </div>
+        <div class="col-4">
+            <div style="display: inline-block;">
+                    <h5>Batch Inventory<br />@officename<br/>@fspname</h5>
+            </div>
+        </div>
+        <div class="col-4">
+            <div style="float:right;">
+                <div style="float:right;">@DateTime.Now.ToShortDateString()</div>
+                <br />
+                <div style="float:right;min-width:200px;">
+                    <div>@((MarkupString)BatchBarCode)</div>
+                    <div>@BatchId</div>
+                </div>
+
+                <br />
+                <br />
+                <br />
+                <p>
+                    No of Files:
+                    <span>@items.Count()</span>
+                    <br />
+                    Batch No:
+                    <span>@BatchId</span>
+                    <br />
+                </p>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+                <table class="table table-sm" style="font-size:x-small;">
+                    <thead>
+                        <tr>
+                            <th scope="col">CLM Unique Code</th>
+                            <th scope="col">BRM File no</th>
+                            <th scope="col">ID no</th>
+                            <th scope="col">Name and Surname</th>
+                            <th scope="col">Grant Type</th>
+                            <th scope="col">Reg Type </th>
+                            <th scope="col">App Date </th>
+                            <th scope="col">Brm Barcode</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var u in items)
+                        {
+                                <tr>
+                                    <td>@u.UnqFileNo</td>
+                                    <td>@u.BrmBarcode</td>
+                                    <td>@u.ApplicantNo</td>
+                                    <td>@u.FullName</td>
+                                    <td>@u.GrantType</td>
+                                    <td>@u.RegType</td>
+                                    <td>@(u.TransDate == null ? "" : ((DateTime)u.TransDate).ToShortDateString())</td>
+                                    <td colspan="2">@((MarkupString)bcService.GetQrSvg(u.BrmBarcode, u.UnqFileNo, u.GrantType == "S" ? u.SrdNo : u.ApplicantNo, u.FullName, sservice.GetGrantType(u.GrantType)))</td>
+                                </tr>
+                        }
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>
+}
+else
+{
+<p>Loading...</p>
+}
+
+@code {
+
+    [Parameter]
+    public string? BatchId { get; set; }
+
+    protected string officename = "unknown";
+    protected string fspname = "unknown";
+    protected string BarCode = "unknown";
+    protected string BatchBarCode = "unknown";
+    protected List<DcFile>? items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (BatchId != null)
+        {
+            items = await db.GetAllFilesByBatchNo(decimal.Parse(BatchId));
+            if (items.Any())
+            {
+                officename = sservice.GetOfficeName(items.First().OfficeId);
+                fspname = sservice.GetFspName(items.First().FspId);
+            }
+            BatchBarCode = bcService.GetBarCode(BatchId);
+        }
+    }
+
+    private async Task btnPrint_Click()
+    {
+        await Js.InvokeVoidAsync("printPage");
+    }
+    private void btnBack_Click()
+    {
+        Js.InvokeVoidAsync("window.close");
+
+    }
+}

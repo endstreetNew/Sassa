@@ -1,0 +1,43 @@
+﻿@page "/officeadmin"
+
+@using Sassa.BRM.Components.Admin
+<div class="pageTitle">
+<h3>Maintenance</h3>
+</div>
+<TabControl ActivePageId="1">
+    <TabPage Text="Socpen Office Links" Id="1" Enabled="true">
+        <OfficeAdmin></OfficeAdmin>
+    </TabPage>
+    <TabPage Text="Brm Offices" Id="2" Enabled="true">
+        <BrmOfficeAdmin></BrmOfficeAdmin>
+    </TabPage>
+    <TabPage Text="Fixed Service Points" Id="3" Enabled="true">
+        <ServicePointAdmin></ServicePointAdmin>
+    </TabPage>
+</TabControl>
+
+@code {
+
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     //await OnTabActivate(1);
+    // }
+    // private async Task OnTabActivate(int e)
+    // {
+    //     switch (e)
+    //     {
+    //         case 1:
+
+    //             break;
+    //         case 2:
+
+    //             break;
+    //         case 3:
+                
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
+
+}

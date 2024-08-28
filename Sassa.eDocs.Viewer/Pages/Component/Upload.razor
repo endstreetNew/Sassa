@@ -1,0 +1,143 @@
+﻿@page "/fileupload/{DocumentId}"
+
+@using Sassa.eDocs.Data.Models
+@inject NavigationManager navigationManager
+@inject DocumentStore dstore
+@inject StoreDbService storeDb
+
+
+<div class="modal" tabindex="-1" style="display:block;" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                @if (sp != null)
+                {
+                    <div class="modal-header">
+                        @if (!string.IsNullOrEmpty(sp.ChildIdNo))
+                        {
+                            <h5 class="modal-title">ID Doc @sp.ChildIdNo Upload </h5>
+                        }
+                        else
+                        {
+                            <h5 class="modal-title">@LoDocumentType Upload </h5>
+                        }
+                        <button type="button" class="close" @onclick="btnCancel_Click">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <EditForm Model="@sp">
+
+                                @if (status == "")
+                                {
+                                    @*<InputFile id="@sp.DocumentId" FileId="@sp.DocumentId" OnChange="HandleSelection" class="form-control" />*@
+                                    <InputFile class="form-control" OnChange="@OnInputFileChange" accept="application/pdf" />
+
+                                }
+                                else
+                                {
+                                    <p>@status</p>
+                                }
+                                <div class="form-group row" style="padding-left:15px">
+                                    <label class="text-danger">@Error</label>
+                                </div>
+                            </EditForm>
+                        </div>
+                    </div>
+                }
+                <div class="modal-footer">
+                    <button class="btn btn-primary" disabled="@(status == "")" @onclick="btnSave_Click">Save</button>
+                    <button class="btn btn-primary" @onclick="btnCancel_Click">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string DocumentId { get; set; }
+
+    protected List<LoDocumentType> LoDocumentTypes { get; set; }
+
+    DocImage image { get; set; }
+    //FileListEntryImpl file { get; set; }
+    string status = "";
+    string Error = "";
+
+    public string LoDocumentType;
+
+    Document sp { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        sp = await dstore.GetDocument(int.Parse(DocumentId));
+
+        LoDocumentType = await dstore.GetLoDocumentType(sp.LoDocumentTypeId);
+    }
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+
+        const int MaxFileSize = 4 * 1024 * 1024; // 5MB
+        var file = e.File;
+        status = "";
+        Error = "";
+        if (file.Size > MaxFileSize)
+        {
+            Error = "Document file is too big. Must be smaller than 4mb.";
+            return;
+        }
+        if (!file.Name.ToLower().EndsWith(".pdf"))
+        {
+            Error = "Only .pdf files are accepted.";
+            return;
+        }
+
+        image = new DocImage();
+        image.DocumentId = sp.DocumentId;
+        image.Image = await dstore.ToByteArray(file.OpenReadStream(MaxFileSize));
+        status = $"Finished loading {file.Name}"; //{file.Size} bytes from
+
+    }
+    //async Task HandleSelection(IFileListEntry[] files)
+    //{
+
+    //    FileListEntryImpl file = (FileListEntryImpl)files.FirstOrDefault();
+    //    status = "";
+    //    Error = "";
+
+    //    if (file != null)
+    //    {
+    //        if(file.Name.ToLower().EndsWith(".pdf"))
+    //        {
+    //            image = new DocImage();
+    //            image.DocumentId = sp.DocumentId;
+    //            image.Image = await dstore.ToByteArray(file.Data);
+    //            status = $"Loaded {file.Name}"; //{file.Size} bytes from
+    //        }
+    //        else
+    //        {
+    //            Error = $"Only .pdf files allowed.";
+    //            //file = null;
+    //        }
+    //    }
+
+    //}
+
+
+    private async void btnSave_Click()
+    {
+        //await dstore.PutImage(image);
+        await storeDb.SaveDocumentImage(image);
+        //update the document status
+        await dstore.PutDocumentStatus(sp.DocumentId, sp.LoDocumentTypeId == 119?"New":"QA Passed");
+
+        navigationManager.NavigateTo($"/{sp.Reference}");
+    }
+
+    private void btnCancel_Click()
+    {
+        navigationManager.NavigateTo($"/{sp.Reference}");
+    }
+}

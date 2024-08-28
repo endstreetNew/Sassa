@@ -1,0 +1,30 @@
+﻿@inject NavigationManager navigationManager
+@*@inject SassaUserStore store;*@
+
+@using System.DirectoryServices.AccountManagement;
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+<span class="oi oi-person" aria-hidden="true"></span> @GetUser()
+
+<hr />
+@code{
+
+    protected string GetUser()
+    {
+        try
+        {
+
+
+            PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "SASSA");
+            UserPrincipal user = UserPrincipal.FindByIdentity(ctx, httpContextAccessor.HttpContext.User.Identity.Name);
+
+            return user.Name;
+        }
+        catch 
+        {
+            navigationManager.NavigateTo("error", forceLoad: true);
+            return "SassaUser";
+        }
+    }
+}

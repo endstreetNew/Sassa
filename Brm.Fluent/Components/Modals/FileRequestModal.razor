@@ -1,0 +1,100 @@
+﻿
+@inject BRMDbService db
+@inject StaticService sservice
+@inject IAlertService toast
+
+<Modal Heading="File Request" Cancel="OnModalCancel" Ok="OnModalOk">
+    @if (fr != null)
+    {
+        <EditForm Model="@fr">
+            <div class="input-group mb-1">
+                <span class="input-group-text">Request Category</span>
+                <select class="form-select" @bind="@fr.Category">
+                    @*<option value="" selected>select...</option>*@
+                    @foreach (var grant in sservice.GetRequestCategories())
+                    {
+                        <option value=@grant.Key>@grant.Value</option>
+                    }
+                </select>
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text">Stakeholder</span>
+                <text class="form-control">@sservice.GetStakeHolders()[fr.Category]</text>
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text">Request Reason</span>
+                <select class="form-select" @bind="@fr.CategoryType">
+                    <option value="" selected>select...</option>
+                    @foreach (var item in sservice.GetRequestCategoryTypes(fr.Category))
+                    {
+                        <option value=@item.Key>@item.Value</option>
+                    }
+                </select>
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text">Grant type</span>
+                <select class="form-select" @bind="@fr.GrantType">
+                    @*<option value="" selected>All</option>*@
+                    @foreach (var grant in grantTypes)
+                    {
+
+                        <option value=@grant.Key>@grant.Value</option>
+                    }
+                </select>
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text">Detail</span>
+                <textarea class="form-control" @bind="@fr.Description"></textarea>
+            </div>
+
+        </EditForm>
+    }
+</Modal>
+
+
+@code {
+
+    [Parameter]
+    public EventCallback CloseModal { get; set; }
+    [Parameter]
+    public string IdNo { get; set; } = "";
+    [Parameter]
+    public Dictionary<string, string> grantTypes { get; set; } = new();
+
+    protected RequestModel? fr;
+
+    protected override void OnInitialized()
+    {
+        fr = new RequestModel();
+        fr.IdNo = IdNo;
+    }
+    protected async Task OnModalOk()
+    {
+        try
+        {
+            Validate();
+            fr!.StakeHolder = sservice.GetStakeHolders()[fr.Category];
+            await db.AddFileRequest(fr);
+            toast.Success("Request processed");
+            OnModalCancel();
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+
+    protected void OnModalCancel()
+    {
+        CloseModal.InvokeAsync();
+    }
+
+    private void Validate()
+    {
+        if (string.IsNullOrEmpty(fr!.Category) || string.IsNullOrEmpty(fr!.CategoryType) )//|| string.IsNullOrEmpty(fr.Description))
+        {
+            throw new Exception("Please complete required fields.");
+        }
+    }
+
+}

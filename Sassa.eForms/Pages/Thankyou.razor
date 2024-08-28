@@ -1,0 +1,29 @@
+﻿@page "/thankyou/{Reference}"
+@inject IConfiguration config;
+
+@if (showSurvey)
+{
+<button @onclick="@(() => { showSurvey = false; })" class="btn btn-primary" type="button">Back</button>
+<hr />
+<ClientSurvey Id="1"></ClientSurvey>
+}
+else
+{
+<button @onclick="@(() => { showSurvey = true; })" class="btn btn-primary" type="button">Complete customer Survey</button>
+<iframe src="@thankyouUrl" style="border:none; height:110vh; width:100%; background: #FFFFFF;">
+    <base target="_parent">
+</iframe>
+}
+
+
+@code {
+    [Parameter]
+    public string Reference { get; set; }
+
+    string thankyouUrl;
+    protected bool showSurvey;
+    protected override void OnInitialized()
+    {
+        thankyouUrl = $"{config["FormsURL"]}/presentation/lfserver/Response_Page?reference={Reference}";
+    }
+}

@@ -1,0 +1,135 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Pages\Account\**" />
+    <Content Remove="Pages\Account\**" />
+    <EmbeddedResource Remove="Pages\Account\**" />
+    <None Remove="Pages\Account\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.4.0" />
+    <PackageReference Include="Select.HtmlToPdf.NetCore" Version="24.1.0" />
+    <PackageReference Include="Sotsera.Blazor.Toaster" Version="3.0.0" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="8.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.7" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="8.0.0" />
+    <PackageReference Include="System.ServiceModel.Duplex" Version="6.0.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="8.0.0" />
+    <PackageReference Include="System.ServiceModel.Security" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\razor.Components\razor.Components.csproj" />
+    <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Shared\MainLayout.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Shared\NavMenu.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Shared\NoLayout.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="Shared\TopMenu.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="wwwroot\css\bootstrap\bootstrap.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\bootstrap\bootstrap.min.css.map">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\FONT-LICENSE">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\font\css\open-iconic-bootstrap.min.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.eot">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.otf">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.svg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.ttf">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\font\fonts\open-iconic.woff">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\ICON-LICENSE">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\open-iconic\README.md">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\css\app.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="wwwroot\favicon.ico">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Shared\LoginDisplay.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Shared\LoginDisplay.razor" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\banner.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\banner.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\bannerlogo.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\eServices.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\granttable.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\logo.PNG" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\PosterFinal_V5_A.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\PosterFinal_V5_B.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\sassaOffices.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\survey.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\underconstruction.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\1b9c5937-b3d2-4d6f-8465-a59d785cdc4f.pdf" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\5d844bf6-2e56-49d5-bfdc-c1dd6e6145cb.pdf" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\6eceac88-12a0-4da8-a747-9a6a615074f7.pdf" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\8845efae-f66d-4c61-a98f-a26a5b46fb96.pdf" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\98c02736-ef7d-4f9e-8cce-edb249f24c0f.pdf" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\ab98cf5f-db88-4c4d-8145-d70ed5e52f82.pdf" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\b8cecfbe-cbf9-434c-a2fb-80603fe241d7.pdf" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\b8d12bae-d422-4552-9be8-71ea033eba9b.pdf" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\cd46d16d-c58a-4de3-8a34-1d9c8732db21.pdf" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\e5977e81-c347-4d05-83fd-88f5212a0432.pdf" />
+    <_ContentIncludedByDefault Remove="wwwroot\pdf\poster.pdf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+</Project>

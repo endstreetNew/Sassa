@@ -1,0 +1,61 @@
+﻿@page "/coversheets/{BoxNo}"
+@layout PrintLayout
+
+@using Sassa.BRM.Components.Components
+
+@inject BRMDbService db
+@inject BarCodeService bcService
+@inject IJSRuntime Js
+
+
+
+
+<div>
+    <button class="btn btn-primary active" @onclick="btnBack_Click">Back</button>
+    <button class="btn btn-primary active" @onclick="btnPrint_Click">Print</button>
+</div>
+@if(sheets == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    @foreach (var file in sheets)
+    {
+        <FileCoverSheet BrmBarCode="@file.BrmNo"></FileCoverSheet>
+    }
+}
+
+
+
+
+@code {
+
+
+    [Parameter]
+    public string? BoxNo { get; set; }
+    public List<ReboxListItem>? sheets;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(BoxNo != null)sheets = await db.GetAllFilesByBoxNo(BoxNo);
+    }
+
+    private async Task btnPrint_Click()
+    {
+
+        await Js.InvokeVoidAsync("printPage");
+    }
+
+    private void btnBack_Click()
+    {
+        Js.InvokeVoidAsync("window.close");
+    }
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        Task.Delay(20);
+        StateHasChanged();
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+}

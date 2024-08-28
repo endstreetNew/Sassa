@@ -1,0 +1,14 @@
+﻿.printme {
+    width: 800px;
+}
+
+@media print {
+    .btn {
+        display: none;
+    }
+
+    thead {
+        page-break-before: always;
+        display: table-header-group;
+    }
+}

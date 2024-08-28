@@ -1,0 +1,81 @@
+﻿@inject BRMDbService db
+@inject StaticService sservice
+
+
+@foreach (var section in "General Particulars|Particulars of Income|Particulars of Assets".Split('|'))
+{
+    <h5>@(section)</h5>
+        OddCol = 0;
+        EvenCol = 0;
+        <div class="row">
+            <div class="col">
+                @foreach (var doc in docs.Where(d => d.DOC_SECTION == section))
+                {
+                    if (OddCol % 2 == 0)
+                    {
+                        <div><input type="checkbox" checked="@(_docspresent.Contains(doc.DOC_ID.ToString()))" @onchange="(e) => OnDocsChanged(doc, e)" /><label class="chkboxLabel">@doc.DOC_NAME</label></div>
+                    }
+                    OddCol = OddCol + 1;
+                }
+            </div>
+            <div class="col">
+                @foreach (var doc in docs.Where(d => d.DOC_SECTION == section))
+                {
+                    if (EvenCol % 2 != 0)
+                    {
+                        <div><input type="checkbox" checked="@(_docspresent.Contains(doc.DOC_ID.ToString()))" @onchange="(e) => OnDocsChanged(doc, e)" /><label class="chkboxLabel">@doc.DOC_NAME</label></div>
+                    }
+                    EvenCol = EvenCol + 1;
+                }
+            </div>
+        </div>
+    <br />
+}
+
+@code {
+    [Parameter]
+    public string GrantType { get; set; } = "";
+    [Parameter]
+    public string DocsPresent { get; set; } = "";
+    [Parameter]
+    public EventCallback<string> DocsChanged { get; set; }
+
+    int OddCol = 0;
+    int EvenCol = 0;
+
+    private List<RequiredDocsView> docs { get; set; } = new();
+    private List<string> _docspresent = new();
+
+    protected override void OnInitialized()
+    {
+        _docspresent = DocsPresent.Split(';').ToList();
+        _docspresent = _docspresent.Distinct().Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+        docs = sservice.GetGrantDocuments(GrantType);
+    }
+
+    protected override void OnParametersSet()
+    {
+        StateHasChanged();
+    }
+
+    private Task OnDocsChanged(RequiredDocsView doc, ChangeEventArgs e)
+    {
+        if ((bool)e.Value!)
+        {
+            if (!_docspresent.Contains(doc.DOC_ID.ToString().Trim()))
+            {
+                _docspresent.Add(doc.DOC_ID.ToString().Trim());
+            }
+        }
+        else
+        {
+            if (_docspresent.Contains(doc.DOC_ID.ToString().Trim()))
+            {
+                _docspresent.Remove(doc.DOC_ID.ToString().Trim());
+            }
+        }
+        DocsPresent = String.Join(";", _docspresent.ToArray());
+        return DocsChanged.InvokeAsync(DocsPresent);
+    }
+
+}

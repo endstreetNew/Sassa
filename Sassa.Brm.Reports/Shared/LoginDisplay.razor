@@ -1,0 +1,62 @@
+﻿@inject SessionService sessionservice
+@* @inject BRMDbService db *@
+@inject StaticService sservice
+@* @inject NavigationManager navigation *@
+<AuthorizeView>
+    @if (gsession != null)
+    {
+        <div style="width: 100%;">
+            <div style="float:right; width: 100%; margin-top:4px;">
+                <label class="divUserDetail" style="margin-left: 10px">@gsession.Name</label>
+                <label class="divUserDetail" style="margin-left: 10px">@(gsession.Office.OfficeName + $" :{ServicePoint} :"+ gsession.Office.RegionName)</label>
+            </div>
+        </div>
+    }
+</AuthorizeView>
+
+@code
+{
+
+    UserSession gsession;
+    string ServicePoint;
+
+    protected override async Task OnInitializedAsync()
+    {
+        sessionservice.SessionInitialized += new EventHandler(OnSessionChanged);
+        if (sessionservice.session == null)
+        {
+            // try
+            // {
+            //     sessionservice.session.Office = await sservice.GetUserLocalOffice(sessionservice.session.SamName, sessionservice.session.IsInRole("GRP_BRM_Supervisors") ? "Y" : "N");
+            //     GetServicePoint();
+            // }
+            // catch
+            // {
+            //     //Initializing error
+            // }
+
+        }
+        else
+        {
+            gsession = sessionservice.session;
+            GetServicePoint();
+        }
+    }
+
+    private void OnSessionChanged(object sender, EventArgs args)
+    {
+        gsession = sessionservice.session;
+        GetServicePoint();
+        StateHasChanged();
+    }
+
+    private void GetServicePoint()
+    {
+        try
+        {
+            ServicePoint = sservice.GetServicePointName(sessionservice.session.Office.FspId);
+        }
+        catch { }
+    }
+}
+

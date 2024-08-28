@@ -1,0 +1,34 @@
+﻿@inherits LayoutComponentBase
+
+<div class="grid">
+    <div class="user">
+        <p class="site-title" style="text-align:center">
+            <img ID="Logo" src="images/sassa_logoSmall.jpg" style="height: 100px;" />
+        </p>
+    </div>
+    <div class="header">
+        <div class="float-right">
+            <p class="site-title">
+                BRM Portal
+            </p>
+@*             <LoginDisplay /><span style="font-size: 0.875em;">Users (@_ConnectedUserList.Users.Count())</span> *@
+        </div>
+    </div>
+@*     <div class="crumbs">
+        <BrmNav></BrmNav>
+    </div> *@
+    <div class="main">
+        <div class="content px-4">
+@*             <ToastAlert /> *@
+
+                @Body
+
+        </div>
+    </div>
+    <!--<div class="footer">-->
+    @*<div style="text-align:left">
+            <p>&copy; @DateTime.Now.Year - SASSA Beneficiary Records Management</p>
+        </div>*@
+    <!--</div>-->
+</div>
+

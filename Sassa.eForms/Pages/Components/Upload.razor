@@ -1,0 +1,164 @@
+﻿@page "/fileupload/{DocumentId}"
+
+@using Sassa.eDocs.Data.Models
+@inject NavigationManager navigationManager
+@inject DocumentStore dstore
+@inject StoreDbService storeDb 
+
+
+<div class="modal" tabindex="-1" style="display:block;" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                @if(sp != null)
+                { 
+                <div class="modal-header btn-primary">
+                    @if (!string.IsNullOrEmpty(sp.ChildIdNo))
+                    {
+                        <h5 class="modal-title">ID Doc @sp.ChildIdNo Upload </h5>
+                    }
+                    else
+                    {
+                        <h5 class="modal-title">@LoDocumentType Upload </h5>
+                    }
+                    <button type="button" class="close" @onclick="btnCancel_Click">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <EditForm Model="@sp">
+                            @if (status == "")
+                            {
+                                @*<InputFile id="@sp.DocumentId" OnChange="HandleSelection" />*@
+                                <InputFile class="form-control" OnChange="@OnInputFileChange" accept="application/pdf" />
+                            }
+                            else
+                            {
+                                <p>@status</p>
+                                <div class="form-horizontal">
+                                    <input type="checkbox" id="chkCertified" name="Certified" @bind="@CertifiedChecked" />&nbsp;I verify that the document is certified and the certification is not older than 6 months old.
+                                </div>
+                            }
+                            <div class="form-group row" style="padding-left:15px">
+                                <label class="text-danger">@Error</label>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+                }
+            <div class="modal-footer">
+                @if (loading)
+                {
+                    <div class="row text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                }
+                <div class="row">
+                    <button class="btn btn-primary" disabled="@(status == "" || !CertifiedChecked)" @onclick="btnSave_Click">Save</button>
+                    <button class="btn btn-primary" @onclick="btnCancel_Click">Cancel</button>
+                </div>
+            </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string DocumentId { get; set; }
+
+    Document sp { get; set; }
+
+    DocImage image { get; set; }
+    //FileListEntryImpl file { get; set; }
+    string status = "";
+    string Error = "";
+    bool CertifiedChecked;
+    bool loading;
+    public string LoDocumentType;
+
+    protected override async Task OnInitializedAsync()
+    {
+        sp = await dstore.GetDocument(int.Parse(DocumentId));
+
+        LoDocumentType = await dstore.GetLoDocumentType(sp.LoDocumentTypeId);
+    }
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+
+        const int MaxFileSize = 10 * 1024 * 1024; // 5MB
+        var file = e.File;
+        status = "";
+        Error = "";
+        if(file.Size > MaxFileSize)
+        {
+            Error = "Document file is too big. Must be smaller than 10mb.";
+            return;
+        }
+        if (!file.Name.ToLower().EndsWith(".pdf"))
+        {
+            Error = "Only .pdf files are accepted.";
+            return;
+        }
+        loading = true;
+        this.StateHasChanged();
+        image = new DocImage();
+        image.DocumentId = sp.DocumentId;
+        image.Image = await dstore.ToByteArray(file.OpenReadStream(MaxFileSize));
+        if(!image.Image.IsValidPdf())
+        {
+            image = null;
+            Error = "Document is not a valid .pdf file.";
+            loading = false;
+            return;
+        }
+
+        status = $"Finished loading {file.Name}"; //{file.Size} bytes from
+        loading = false;
+    }
+    //async Task HandleSelection(IFileListEntry[] files)
+    //{
+
+    //    FileListEntryImpl file = (FileListEntryImpl)files.FirstOrDefault();
+    //    status = "";
+    //    Error = "";
+    //    if (file != null)
+    //    {
+    //        if (file.Name.ToLower().EndsWith(".pdf"))
+    //        {
+    //            image = new DocImage();
+    //            image.DocumentId = sp.DocumentId;
+    //            image.Image = await dstore.ToByteArray(file.Data);
+    //            status = $"Finished loading {file.Name}"; //{file.Size} bytes from
+    //        }
+    //        else
+    //        {
+    //            Error = "Only .pdf files are accepted.";
+    //            //file = null;
+    //        }
+    //    }
+
+    //}
+
+    private async void btnSave_Click()
+    {
+        loading = true;
+        this.StateHasChanged();
+        // await dstore.PutImage(image);
+        await storeDb.SaveDocumentImage(image);
+
+        //update the document status
+        await dstore.PutDocumentStatus(sp.DocumentId, "Uploaded");
+        //await dstore.PutDocumentRejectReason(sp.DocumentId, "");
+        navigationManager.NavigateTo($"documents/{sp.Reference}");
+    }
+
+    private void btnCancel_Click()
+    {
+        navigationManager.NavigateTo($"documents/{sp.Reference}");
+    }
+}

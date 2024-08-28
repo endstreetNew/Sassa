@@ -1,0 +1,113 @@
+﻿@layout PrintLayout
+@inject BRMDbService db
+@inject StaticService sservice
+@inject BarCodeService bcService
+
+@if (!string.IsNullOrEmpty(file.BrmBarcode))
+{
+<p>
+    <div class="printme row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-4">
+                    <img alt="" src="images/sassa_logoSmall.jpg" width="200" />
+                </div>
+                <div class="col-4 centered">
+                    <label class="h2">File Coversheet</label>
+                    <div>BRM File Number:</div>
+                    <div><strong>@file.BrmBarcode</strong></div>
+                    <div>CLM Number:</div>
+                    <div><strong>@file.UnqFileNo</strong></div>
+                    @((MarkupString)QrCode)
+                </div>
+                <div class="col-4 right">
+                    <div>@DateTime.Now.ToShortDateString()</div>
+                    <div>
+                        <label class="chkboxLabel" style="padding-right: 10px; font-size: 16px">Approved - Main</label><input type="checkbox" checked="@file.ApplicationStatus.Contains("MAIN")" disabled="disabled" /><br />
+                        <label class="chkboxLabel" style="padding-right: 10px; font-size: 16px">Rejected - Archive</label><input type="checkbox" checked="@file.ApplicationStatus.Contains("ARCHIVE")" disabled="disabled" /><br />
+                        <label class="chkboxLabel" style="padding-right: 10px; font-size: 16px">Loose Correspondence</label><input type="checkbox" checked="@file.ApplicationStatus.Contains("LC")" disabled="disabled" /><br />
+                        <label class="chkboxLabel" style="padding-right: 10px; font-size: 16px">Review</label><input type="checkbox" checked="@(file.TransType == 2)" disabled="disabled" /><br />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-5">
+                    <div>@file.FullName</div>
+                    <div>@(sservice.GetRegion(file.RegionId))</div>
+                    <div>@(sservice.GetOfficeName(file.OfficeId))</div>
+                    <div>Transaction Date: </div>
+                    <div>Date Last Reviewed: @(file.Lastreviewdate == null? ""  : ((DateTime)file.Lastreviewdate).ToString("yyyy/MM/dd"))</div>
+                    @if (file.Lctype != null)
+                        {
+                    <div>LC Type: @(sservice.GetLcType((decimal)file.Lctype))</div>
+                        }
+                </div>
+                <div class="col-5">
+                    <div>@(file.GrantType == "S" ? file.SrdNo : file.ApplicantNo)</div>
+                    <div>@(sservice.GetGrantType(file.GrantType))</div>
+                    <div>@(file.TransDate == null ? "" : ((DateTime)file.TransDate).ToString("yyyy/MM/dd"))</div>
+                    <div>Archive Year: @file.ArchiveYear</div>
+                </div>
+                <div class="col-2" style="position: relative;">
+                    @*RIGHT-SIDE DIV FOR BARCODES*@
+                    <div class="centered rotate" style="top:0;">
+                        <div> @((MarkupString)IdBarCode)</div>
+                        <div>@(file.GrantType == "S" ? file.SrdNo + "(Srd)" : file.ApplicantNo + "(Id)")</div>
+                    </div>
+                    <div class="centered rotate" style="top: 220px;">
+                        <div>@((MarkupString)ClmBarCode)</div>
+                        <div>@file.UnqFileNo</div>
+                    </div>
+                    <div class="centered rotate" style="top: 520px;">
+                        <div>@((MarkupString)BarCode)</div>
+                        <div>@file.BrmBarcode</div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                @*MAIN DIV FOR CONTENT*@
+                <div class="col-10">
+                    <CriticalDocuments GrantType="@(file.GrantType)" DocsPresent="@(file.DocsPresent)" DocsChanged="OnDocsChanged" />
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+    <div class="break-after"></div>
+</p>
+}
+
+@code {
+    [Parameter]
+    public string BrmBarCode { get; set; } = "";
+
+    protected DcFile file = new();
+
+    protected string QrCode = "";
+    protected string IdBarCode = "";
+    protected string ClmBarCode = "";
+    protected string BarCode = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        file = await db.GetBRMRecord(BrmBarCode);
+
+        try
+        {
+            QrCode = bcService.GetQrSvg(BrmBarCode, file.UnqFileNo, file.GrantType == "S" ? file.SrdNo : file.ApplicantNo, file.FullName, sservice.GetGrantType(file.GrantType));
+
+            IdBarCode = bcService.GetBarCode(file.GrantType == "S" ? file.SrdNo : file.ApplicantNo);
+            ClmBarCode = bcService.GetBarCode(file.UnqFileNo);
+            BarCode = bcService.GetBarCode(file.BrmBarcode);
+        }
+        catch
+        { }
+
+    }
+    private void OnDocsChanged(string docspresent)
+    {
+        file.DocsPresent = docspresent;
+    }
+}

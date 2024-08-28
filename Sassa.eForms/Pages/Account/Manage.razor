@@ -1,0 +1,224 @@
+﻿@page "/Account/Manage/{UserName}"
+
+@inject UserManager<SassaUser> userManager
+@inject NavigationManager navigationManager
+@inject SMSSender sender
+@inject Sotsera.Blazor.Toaster.IToaster Toaster
+
+<div class="modal" tabindex="-1" style="display:block;" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">User Registration</h5>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model=@user OnValidSubmit="@HandleValidSubmit">
+                        <DataAnnotationsValidator />
+                        <div class="form-horizontal">
+                            <div class="form-group row">
+                                <label for="CitizenShip" class="col-sm-4" style="white-space:nowrap">Citizenship</label>
+                                <select @bind="user.CitizenShip" class="form-control col-sm-5">
+                                    <option value=1>South African Citizen</option>
+                                    <option value=2>Permanent Resident</option>
+                                    <option value=3>Refugee</option>
+                                </select>
+                            </div>
+                            <div class="form-group row">
+                                <label for="IdType" class="col-sm-4" style="white-space:nowrap">Id Type</label>
+                                <select @bind="user.IdType" class="form-control col-sm-5">
+                                    @if (user.CitizenShip == 1 || user.CitizenShip == 2)
+                                    {
+                                        user.IdType = 1;
+                                        <option value="1">Id Book</option>
+                                        <option value="2">Temporary Id</option>
+                                        <option value="3">No Id</option>
+                                    }
+                                    else
+                                    {
+                                        <option selected value="4">Refugee Id</option>
+                                    }
+                                </select>
+                            </div>
+
+                            @if (user.CitizenShip == 1 || user.CitizenShip == 2)
+                            {
+
+                                <div class="form-group row">
+                                    <label for="IdNo" class="col-sm-4" style="white-space:nowrap">Id No</label>
+                                    <InputText @bind-Value="user.IdNo" disabled class="form-control col-sm-5" />
+                                </div>
+
+                            }
+                            @if (user.IdType == 2)
+                            {
+                                <div class="form-group row">
+                                    <label for="user.TemporaryIdExpiry" class="col-sm-4" style="white-space:nowrap">Temporary Id Expiry</label>
+                                    <InputDate @bind-Value="user.TemporaryIdExpiry" class="form-control col-sm-5" />
+                                </div>
+                            }
+                            @if (user.CitizenShip == 3)
+                            {
+                                <div class="form-group row">
+                                    <label for="user.RefugeePermitNo" class="col-sm-4" style="white-space:nowrap">Refugee Id</label>
+                                    <InputText @bind-Value="user.RefugeePermitNo" disabled class="form-control col-sm-5" />
+                                </div>
+                                <div class="form-group row">
+                                    <label for="user.PermitExpiry" class="col-sm-4" style="white-space:nowrap">Permit Expiry</label>
+                                    <InputDate @bind-Value="user.PermitExpiry" class="form-control col-sm-4" />
+                                </div>
+                            }
+                            <div class="form-group row">
+                                <label for="user.Title" class="col-sm-4" style="white-space:nowrap">Title</label>
+                                <select @bind="user.Title" class="form-control col-sm-2">
+                                    <option value=1>Mr</option>
+                                    <option value=2>Mrs</option>
+                                    <option value=3>Miss</option>
+                                </select>
+                            </div>
+                            <div class="form-group row">
+                                <label for="user.Surname" class="col-sm-4" style="white-space:nowrap">Surname</label>
+                                <InputText @bind-Value="user.Surname" class="form-control col-sm-6" />
+                            </div>
+                            <div class="form-group row">
+                                <label for="user.FullName" class="col-sm-4" style="white-space:nowrap">Full Name</label>
+                                <InputText @bind-Value="user.FullName" class="form-control col-sm-6" />
+                            </div>
+                            <hr />
+                            <div class="form-group row">
+                                <label for="user.UserName" class="col-sm-4" style="white-space:nowrap">Email</label>
+                                <InputText @bind-Value="user.UserName" type="email" autocomplete="username" class="form-control col-sm-4" />
+                            </div>
+                            <div class="form-group row">
+                                <label for="user.Email" class="col-sm-4" style="white-space:nowrap">Repeat Email</label>
+                                <InputText @bind-Value="user.Email" type="email" class="form-control col-sm-4" />
+                            </div>
+                            <div class="form-group row">
+                                <label for="user.CellNumber" class="col-sm-4" style="white-space:nowrap">Cell Number</label>
+                                <InputText @bind-Value="user.CellNumber" class="form-control col-sm-4" />
+                            </div>
+                            @*<div class="form-group row">
+                                    <label for="Password" class="col-sm-4" style="white-space:nowrap">Password</label>
+                                    <InputText type="password" @bind-Value="Password" autocomplete="new-password" class="form-control col-sm-4" />
+                                </div>
+                                <div class="form-group row">
+                                    <label for="RepeatPassword" class="col-sm-4" style="white-space:nowrap">Repeat Password</label>
+                                    <InputText type="password" @bind-Value="RepeatPassword" autocomplete="new-password" class="form-control col-sm-4" />
+                                </div>*@
+                            @*@if (verifySent)
+                                {
+                                    <div class="form-group row">
+                                        <label for="VerifyCode" class="col-sm-4" style="white-space:nowrap">Password</label>
+                                        <InputText id="verify" class="form-control col-sm-4" @bind-Value="@signInModel.Password"></InputText>
+                                    </div>
+                                }*@
+                            <ValidationSummary />
+                            <SassaValidationComponent Errors="@ServerErrors" />
+
+                            <button class="btn btn-primary" type="submit">Save</button>
+
+                        </div>
+                    </EditForm>
+                    <hr />
+                    <button class="btn btn-primary" @onclick="btnCancel_Click">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string UserName { get; set; }
+
+    private SassaUser user = new SassaUser();
+    //private string _displaySummary = "display:none";
+    private List<string> ServerErrors;
+
+    string Password { get; set; }
+    string RepeatPassword { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(UserName) || UserName == "0")
+        {
+            navigationManager.NavigateTo("");
+        }
+        user = await userManager.FindByEmailAsync(UserName);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        //Id type workaround fix!
+        if (user.CitizenShip == 1 && user.IdType == 0) user.IdType = 1;
+
+        Validate();
+        if (ServerErrors.Count > 0) return;
+        Toaster.Info("Updating User");
+        //Create a pin
+        Random _rdm = new Random();
+        user.PasswordSalt = _rdm.Next(1000, 9999).ToString().Trim();
+        user.CellNumberConfirmed = 0;
+        try
+        {
+            var result = await userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                Toaster.Info("Pin valid for today only.", $"SMS Verification sent to {user.CellNumber}");
+                //await esender.SendEmailAsync(user.Email, $"Sassa Verification PIN: {user.PasswordSalt}","");
+                //Task.Run(() => sender.SendSMSAsync(user.CellNumber, $"Sassa Verification PIN: {user.PasswordSalt}"));
+                var response = await sender.SendSMSAsync(user.CellNumber, $"Sassa Verification PIN: {user.PasswordSalt}");
+                navigationManager.NavigateTo($"account/signin/{user.UserName}");
+                //return;
+            }
+            else
+            {
+                ServerErrors.Add("Error adding user.");
+                //HandleInvalidSubmit();
+                return;
+            }
+        }
+        catch
+        {
+            ServerErrors.Add("Error adding user.");
+            //HandleInvalidSubmit();
+            return;
+        }
+
+    }
+
+    private void Validate()
+    {
+        ServerErrors = new List<string>();
+        if (user.Email != user.UserName) ServerErrors.Add("Email mismatch.");
+        //Validate CellNo
+        if (!user.CellNumber.IsValidCellnumber()) ServerErrors.Add("Invalid CellNumber Please enter Cell e.g: 0713332222");
+
+        //ValidateId
+        switch ((IdType)user.IdType)
+        {
+            case IdType.Refugee_ID:
+                if (string.IsNullOrEmpty(user.RefugeePermitNo))
+                {
+                    ServerErrors.Add("Refugee Permit No must be supplied.");
+                }
+                break;
+            //case IdType.No_ID:
+            //    break;
+            case IdType.ID_Book:
+            case IdType.Temporary_ID:
+                if (!user.IdNo.IsValidId())
+                {
+                    ServerErrors.Add("Invalid Id Number.");
+                }
+                break;
+        }
+    }
+
+    private void btnCancel_Click()
+    {
+        navigationManager.NavigateTo("");
+    }
+}

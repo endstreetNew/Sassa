@@ -1,0 +1,98 @@
+﻿@inject SurveyService surveyService
+
+<h3 class="mb-4">@survey.Title</h3>
+@if (survey is null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (surveyComplete)
+{
+    <p><em>Thankyou for taking time to complete our survey..</em></p>
+}
+else
+{
+    <EditForm EditContext="@editContext" OnSubmit="@OnSubmit">
+        
+
+        <p>Please rate your experience with Sassa.</p>
+
+        <div style="padding:0 0 0 20px;width:900px;">
+            @foreach (var option in survey.Options)
+            {
+            <div class="row">
+
+                @if (option.optionType == OptionType.Rating)
+                {
+
+                    <div class="col">
+                        @option.OptionName
+                    </div>
+                    <div class="col">
+                        <div>
+                            <img src="/images/survey.png" class="w-50" />
+                        </div>
+                        <div>
+                            <input type="range" class="form-range w-50" min="0" max="5" step="1" id="customRange3" @bind-value="@option.OptionValue">
+                        </div>
+                    </div>
+                    }
+                    else
+                    {
+                        <label class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">@option.OptionName</label>
+                        <br />
+                        <div>
+                            <InputTextArea @bind-Value="@option.Comment" class="form-control" style ="width:880px;"rows="3">Comment</InputTextArea>
+                        </div>
+                        <hr />
+                    }
+
+                </div>
+            }
+        </div>
+        <p>
+            <button type="submit" class="btn btn-primary float-right">Submit</button>
+        </p>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; } = 1;
+    private Survey survey;
+    private EditContext editContext;
+    public bool surveyComplete = false;
+
+    protected override void  OnInitialized()
+    {
+        survey = surveyService.GetSurvey(1);
+        editContext = new EditContext(survey);
+    }
+
+    private async Task OnSubmit()
+    {
+        // even though the server will validate the AddSurveyModel, check client side that the model is valid
+        if (!editContext.Validate()) return;
+
+        try
+        {
+            foreach (SurveyOption answer in survey.Options)
+            {
+                var result = new SurveyResult { SurveyId = Id, OptionId = answer.Id, optionType = (int)answer.optionType, OptionValue = answer.OptionValue, OComment = answer.Comment };
+                //todo: save survey
+                await surveyService.SaveSurvey(result);
+                //if (!response.IsSuccessStatusCode)
+                //{
+                //    throw new Exception("Error saving survey");
+                //}
+            }
+
+            surveyComplete = true;
+        }
+        catch (Exception ex)
+        {
+            // Logger.LogError("Error: {Message}", ex.Message);
+        }
+        surveyComplete = true;
+    }
+}
+

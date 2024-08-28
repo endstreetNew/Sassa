@@ -1,0 +1,63 @@
+﻿<div role="toolbar" class="input-group mb-6">
+    <button  class="btn btn-secondary btn-sm" @onclick="FirstPage"><span class="oi oi-media-step-backward"></span></button>
+    <button class="btn btn-secondary btn-sm" @onclick="PreviousPage"><span class="oi oi-caret-left"></span></button>
+    <span class="input-group-text">Page @Page of @pages Pages </span>
+    <button class="btn btn-secondary btn-sm" @onclick="NextPage"><span class="oi oi-caret-right"></span></button>
+    <button class="btn btn-secondary btn-sm" @onclick="LastPage"><span class="oi oi-media-step-forward"></span></button>
+</div>
+
+    @code {
+
+        [Parameter]
+        public int TotalSize { get; set; }
+
+        [Parameter]
+        public EventCallback<int> Paged { get; set; }
+
+        [Parameter]
+        public int PageSize { get; set; } = 12;
+
+        int Page { get; set; } = 1;
+
+        int pages => (int)Math.Ceiling((double)TotalSize / PageSize);
+
+        //protected override void OnParametersSet()
+        //{
+        //    if (TotalSize % PageSize > 0) //there is a remainder
+        //    {
+        //        pages = (TotalSize / PageSize) + 1;
+        //    }
+        //    else
+        //    {
+        //        pages = (TotalSize / PageSize);
+        //    }
+        //}
+
+        void FirstPage()
+        {
+            Page = 1;
+            Paged.InvokeAsync(Page);
+        }
+
+        void LastPage()
+        {
+            Page = pages;
+            Paged.InvokeAsync(Page);
+        }
+        void NextPage()
+        {
+            if (pages <= Page) return;
+            Page++;
+            Paged.InvokeAsync(Page);
+        }
+
+        void PreviousPage()
+        {
+            if (Page < 2) return;
+            Page--;
+            Paged.InvokeAsync(Page);
+        }
+
+
+    }
+

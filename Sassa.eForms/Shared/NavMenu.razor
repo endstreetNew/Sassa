@@ -1,0 +1,88 @@
+﻿
+@inject EFormService ef
+@inject IConfiguration config
+
+
+<div class="menu">
+    <ul class="nav flex-column">
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="">
+                @*<span class="oi oi-home" aria-hidden="true"></span>*@
+                Home
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Support">
+                @*<span class="oi oi-chat" aria-hidden="true"></span>*@
+                Grant Customer Support
+            </NavLink>
+        </li>
+@*        <li class="nav-item px-3" disabled>
+            <NavLink class="nav-link" @onclick="ExpandForms">
+                Apply for a Grant
+            </NavLink>
+        </li>*@
+        @if (expandSubNav)
+        {
+            @foreach (var eform in ef.eforms)
+            {
+                if (eform.Id > 3) continue;
+                var link = $"Eformpage/{eform.Id}";
+
+                <li class="nav-item px-3 subnav">
+                    <NavLink class="nav-link" href="@link">
+                        - @eform.Title
+                    </NavLink>
+                </li>
+
+
+            }
+        }
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" @onclick="ExpandPersonal">
+                Update Personal Details
+            </NavLink>
+        </li>
+        @if (expandPersonal)
+        {
+            <li class="nav-item px-3 subnav">
+                <NavLink class="nav-link" href="BankDetail">
+                   - Update Bank Details
+                </NavLink>
+            </li>
+        }
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Track">
+                Track My Application
+            </NavLink>
+        </li>
+        @if (config.GetValue<bool>("DocumentService:Enabled"))
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="documents/">
+                    Upload Documents
+                </NavLink>
+            </li>
+        }
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ContactUs">
+                Contact Us
+            </NavLink>
+        </li>
+    </ul>
+</div>
+@code {
+
+    private bool expandSubNav;
+    private void ExpandForms()
+    {
+        expandSubNav = !expandSubNav;
+    }
+    private bool expandPersonal;
+    private void ExpandPersonal()
+    {
+        expandPersonal = !expandPersonal;
+    }
+
+}
+

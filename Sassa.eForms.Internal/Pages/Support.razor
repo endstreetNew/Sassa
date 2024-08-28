@@ -1,0 +1,18 @@
+﻿@page "/Support"
+@attribute [Authorize]
+@inject IConfiguration Config
+
+<h3>Grant Customer Support</h3>
+<hr />
+<p>@((MarkupString)Blurps.GrantText)</p>
+<hr />
+@*<a href="https://10.124.154.200:8443/presentation/lfserver/Grant_Customer_Support_Request" target="_blank">Open in new Window...</a>*@
+
+@if (Config["FormsURL"].Contains("Resolving"))
+{
+    <ResolvingComponent />
+}
+else
+{
+    <iframe src="@(Config["FormsURL"])/presentation/lfserver/Grant_Customer_Support_Request" style="border:none; height:100%; width:100%;"></iframe>
+}

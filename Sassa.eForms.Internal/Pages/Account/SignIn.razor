@@ -1,0 +1,235 @@
+﻿@page "/account/signin/{UserName}"
+
+@inject UserManager<SassaUser> userManager
+@inject NavigationManager navigationManager
+@inject IDataProtectionProvider dataProtectionProvider
+@inject SMSSender sender
+@*@inject VodacomSender sender*@
+@inject Sotsera.Blazor.Toaster.IToaster Toaster
+@inject AppState appState
+
+<div class="modal" tabindex="-1" style="display:block;" role="dialog">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@appState.LoginTitle</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        <EditForm Model="@signInModel" OnValidSubmit="@SignInUser">
+                            <DataAnnotationsValidator />
+                            <div class="form-group row">
+                                <label class="col-sm-4">E-mail</label>
+                                <InputText id="email" autocomplete="username" class="form-control col-sm-4" type="email" @bind-Value="@signInModel.Email"></InputText>
+                            </div>
+                            <div class="form-group row">
+                                <label for="Password" class="col-sm-4" style="white-space:nowrap">Password</label>
+                                <InputText id="password" autocomplete="current-password" class="form-control col-sm-4" type="password" @bind-Value="@signInModel.Password"></InputText>
+                            </div>
+                            <hr />
+                            <ValidationSummary />
+                            @if (showPinPrompt)
+                            {
+                                <div class="form-group row">
+                                    <label class="col-sm-4">Confirmation Pin</label>
+                                    <InputText id="pin" class="form-control col-sm-4" @bind-Value="@signInModel.VerifyCode"></InputText>
+                                    <button @onclick="@Resend" class="btn btn-primary">Resend</button>
+
+                                </div>
+                                @*<button class="btn btn-primary" @onclick="Verify">Verify</button>*@
+                            }
+                            else
+                            {
+
+                            }
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                        </EditForm>
+                        @if (showSignInError)
+                        {
+                            <div class="notification is-danger">
+                                Sorry, invalid username, password or pin.
+                            </div>
+                        }
+                        <hr />
+                        <button @onclick="@Cancel" class="btn btn-primary">Cancel</button>
+                        @*@if (@user != null)
+                            {
+                                @if (@user.IsCellConfirmed)
+                                {*@
+                        <button @onclick="@Reset" class="btn btn-primary">Reset Password</button>
+                        @*}
+                            }*@
+                    </div>
+                </div>
+                <div class="container">
+                    <p>If you do not have an account register one <a href="account/register">here</a>!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string UserName { get; set; }
+    private SassaLogin signInModel = new SassaLogin();
+    private bool showSignInError = false;
+    private bool showPinPrompt = false;
+    SassaUser user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrEmpty(UserName) || UserName == "0") return;
+        user = await userManager.FindByEmailAsync(UserName);
+        signInModel.Email = UserName;
+        if (user == null)
+        {
+            showSignInError = true;
+            return;
+        }
+        if (user.IsResetting)
+        {
+            navigationManager.NavigateTo($"account/reset/{user.Email}");
+        }
+        if (!user.IsCellConfirmed)
+        {
+            showPinPrompt = true;
+        }
+
+    }
+    private async Task SignInUser()
+    {
+        user = await userManager.FindByEmailAsync(signInModel.Email);
+
+        showSignInError = false;
+        if (user == null)
+        {
+            showSignInError = true;
+            return;
+        }
+        if (user.IsResetting)
+        {
+            navigationManager.NavigateTo($"account/reset/{user.Email}");
+            return;
+        }
+        if (!await userManager.CheckPasswordAsync(user, signInModel.Password))
+        {
+            showSignInError = true;
+            return;
+        }
+
+        if (!user.IsCellConfirmed && !showPinPrompt)
+        {
+            showPinPrompt = true;
+            return;
+        }
+        if (showPinPrompt)
+        {
+            if (!string.IsNullOrEmpty(signInModel.VerifyCode))
+            {
+                await Verify();
+            }
+            else
+            {
+                return;
+            }
+            if (showSignInError)
+            {
+                return;
+            }
+        }
+
+
+        var token = await userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultProvider, "SignIn");
+
+        var data = $"{user.Id}|{token}";
+
+        var parsedQuery = System.Web.HttpUtility.ParseQueryString(new Uri(navigationManager.Uri).Query);
+
+        var returnUrl = parsedQuery["returnUrl"];
+
+        if (!string.IsNullOrWhiteSpace(returnUrl))
+        {
+            data += $"|{returnUrl}";
+        }
+
+        var protector = dataProtectionProvider.CreateProtector("SignIn");
+
+        var pdata = protector.Protect(data);
+
+        navigationManager.NavigateTo("sassaaccount/signinactual?t=" + pdata, forceLoad: true);
+    }
+
+    private async Task Verify()
+    {
+        if (user.PasswordSalt == signInModel.VerifyCode)
+        {
+            //showPinPrompt = false;
+            user.IsCellConfirmed = true;
+            user.PasswordSalt = null;
+            await userManager.UpdateAsync(user);
+            //await SignInUser();
+        }
+        else
+        {
+            showSignInError = true;
+        }
+    }
+    private async Task Resend()
+    {
+        //Create a pin
+        user = await userManager.FindByEmailAsync(signInModel.Email);
+        if (user == null)
+        {
+            showSignInError = true;
+            return;
+        }
+
+        Random _rdm = new Random();
+        user.PasswordSalt = _rdm.Next(1000, 9999).ToString().Trim();
+        await userManager.UpdateAsync(user);
+        await sender.SendSMSAsync(user.CellNumber, $"Sassa Verification PIN: {user.PasswordSalt}");
+    }
+
+    private Task Cancel()
+    {
+        navigationManager.NavigateTo("sassaaccount/logout", forceLoad: true);
+        return Task.CompletedTask;
+    }
+
+    private async Task Reset()
+    {
+        if (string.IsNullOrEmpty(signInModel.Email))
+        {
+            showSignInError = true;
+            return;
+        }
+        //Create a pin
+        user = await userManager.FindByEmailAsync(signInModel.Email);
+        if (user == null)
+        {
+            showSignInError = true;
+            return;
+        }
+        else if (!user.IsCellConfirmed)
+        {
+            Toaster.Info("Account not verified.", $"SMS Verification sent to {user.CellNumber}");
+            return;
+        }
+        Random rnd = new Random();
+        int length = 6;
+        var str = "";
+        for (var i = 0; i < length; i++)
+        {
+            str += ((char)(rnd.Next(1, 26) + 64)).ToString();
+        }
+
+        user.PasswordSalt = str;
+        user.IsResetting = true;
+        await userManager.UpdateAsync(user);
+        navigationManager.NavigateTo($"account/reset/{user.Email}");
+
+    }
+
+}

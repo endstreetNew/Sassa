@@ -1,0 +1,137 @@
+﻿@inject IAlertService toast
+@inject SessionService sessionservice
+@inject BRMDbService db
+@inject Navigation Navigate
+
+<h3>Batch Waybills</h3>
+@if (showDispatch)
+{
+    <TdwDispatch waybill="@selectedWaybill" Cancel="OnCancelClick" Ok="OnOkClick"></TdwDispatch>
+}
+@if (showReceipt)
+{
+    <Confirmation Title="Confirmation" Message="@Message" Cancel="OnCancelClick" Ok="OnReceiptOkClick"></Confirmation>
+}
+@if (waybills.Any())
+{
+    <table class="table table-sm" style="font-size:small;">
+        <thead>
+            <tr>
+
+                <th scope="col">BRM Waybill</th>
+                <th scope="col">TDW Waybill</th>
+                <th scope="col">Updated by</th>
+                <th scope="col">Updated Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">No of Batches</th>
+                <th scope="col">No of Files</th>
+                <th scope="col">Action</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var u in waybills)
+            {
+                <tr>
+                    <td>@u.BrmWaybill</td>
+                    <td>@u.WaybillNo</td>
+                    <td>@u.UpdatedByAd</td>
+                    <td>@u.UpdatedDate</td>
+                    <td>@u.Status</td>
+                    <td>@u.NoOfBatches</td>
+                    <td>@u.NoOfFiles</td>
+                    <td colspan="2">
+
+                        @if (sessionservice.session.Office.OfficeType == "LO")
+                        {
+                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnDispatch_Click(u))">@(u.Status == "Closed" ? "Dispatch" : "Reprint")</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnReceive_Click(u))">Receive</button>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+
+
+@code {
+
+    protected List<Waybill> waybills = new();
+    protected Waybill? selectedWaybill;
+
+    //string filterStatus;
+    string Message = "";
+    bool showDispatch;
+    bool showReceipt;
+
+    protected override async Task OnInitializedAsync()
+    {
+        waybills = await db.GetBatchWaybills();
+        sessionservice.session.BookMark.BoxingTab = 2;
+    }
+
+
+    protected void btnDispatch_Click(Waybill w)
+    {
+        selectedWaybill = w;
+        if (w.Status == "Closed")
+        {
+            showDispatch = true;
+        }
+        else
+        {
+            Navigate.NavigateTo($"transportcover/{selectedWaybill.BrmWaybill}");
+        }
+
+    }
+
+    protected void btnReceive_Click(Waybill w)
+    {
+        selectedWaybill = w;
+        Message = $"Confirm receipt of Waybill {w.WaybillNo}";
+        showReceipt = true;
+    }
+
+    protected void OnCancelClick()
+    {
+        showDispatch = false;
+        showReceipt = false;
+    }
+    protected void OnOkClick()
+    {
+        try
+        {
+            showDispatch = false;
+
+            toast.Success($"Transport Waybill Created.");
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+
+    protected async void OnReceiptOkClick()
+    {
+        try
+        {
+            showReceipt = false;
+            if (selectedWaybill == null) throw new Exception("No waybill selected.");
+            await db.ReceiveWaybill(selectedWaybill.BrmWaybill, "Received");
+            waybills = await db.GetBatchWaybills();
+            toast.Success($"Transport Waybill Received.");
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+}

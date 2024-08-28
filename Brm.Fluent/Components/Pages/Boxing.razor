@@ -1,0 +1,77 @@
+﻿@page "/boxing"
+@page "/boxing/{tabNo:int}"
+@page "/boxing/{tabNo:int}/{boxNo}"
+
+@implements IDisposable
+
+@inject SessionService sessionservice
+@inject BRMDbService db
+<div class="pageTitle">
+@if (sessionservice.session.IsRmc())
+{
+    <h3>Re-Boxing</h3>
+}
+else
+{
+    <h3>Batching</h3>
+}
+</div>
+
+<TabControl PageActivate="OnPageActivate" ActivePageId="@tabNo">
+    <TabPage Text="Batching" Id="1" Enabled="true">
+        @if (sessionservice.session.IsRmc())
+        {
+            <RMCBatch></RMCBatch>
+        }
+        else
+        {
+            <LOBatch></LOBatch>
+        }
+    </TabPage>
+    <TabPage Text="Waybills" Id="2" Enabled="true">
+        <BatchWaybill></BatchWaybill>
+    </TabPage>
+    <TabPage Text="Re-Boxing" Id="3" Enabled="@(sessionservice.session.Office.OfficeType != "LO")">
+        <ReboxTab boxNo="@boxNo"></ReboxTab>
+    </TabPage>
+    <TabPage Text="TDW Dispatch" Id="4" Enabled="@(sessionservice.session.Office.OfficeType != "LO")">
+        <TdwBatch></TdwBatch>
+    </TabPage>
+</TabControl>
+
+
+@code 
+{
+    [Parameter]
+    public string boxNo { get; set; } = "";
+    [Parameter]
+    public int tabNo { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (tabNo == 0)
+        {
+            if (sessionservice.session.IsRmc())
+            {
+                tabNo = 3;
+            }
+            else
+            {
+                tabNo = 1;
+            }
+        }
+
+    }
+
+    private void OnPageActivate(int e)
+    {
+        tabNo = e;
+    }
+
+    public void Dispose()
+    {
+        // GC.Collect();
+        // GC.WaitForPendingFinalizers();
+        // GC.Collect();
+    }
+}

@@ -1,0 +1,384 @@
+﻿@page "/"
+@page "/{Reference}"
+
+
+@using Sassa.eDocs.Data.Models
+@using Sassa.eDocs.Models
+@using System.Linq
+
+@inject DocumentStore dstore
+@inject NavigationManager navigationManager
+
+<div class="doclist">
+    <h3>Supporting Documents</h3>
+
+    <EditForm Model=@uploads>
+        @*<div class="form-group row">
+                <label for="Reference" class="col-sm-2" style="white-space:nowrap">Reference</label>
+                <div class="col-sm-6">
+                    <InputText @bind-Value="Reference" class="form-control" />
+                </div>
+                <button @onclick="@FindDocuments" class="btn btn-primary col-sm-2" type="button">Find</button>
+            </div>
+
+            <div class="form-group row" style="margin:10px">
+                <strong>@ApplicationType</strong>
+            </div>
+            <hr />*@
+        <hr class="col-sm-16" />
+        <div class="form-group row col-sm-14">
+            <label for="Document" class="col-sm-6" style="white-space:nowrap">Document</label>
+            <label for="Action" class="col-sm-4" style="white-space:nowrap">Action</label>
+            <label for="Status" class="col-sm-1" style="white-space:nowrap">Status</label>
+        </div>
+        @if (corrupt)
+        {
+            <div class="modal" tabindex="-1" style="display:block;" role="dialog">
+                <div class="vertical-alignment-helper">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="form-group row" style="padding-left:15px">
+                                    <label class="text-danger">Attachment is corrupt. Returning...</label>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" @onclick="btnCancelCorrupt_Click">Ok</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <hr class="col-sm-14" />
+        @if (!loading)
+        {
+            @foreach (Document doc in uploads.DocList)
+            {
+                <div class="form-group row">
+
+                    <InputSelect id="DocumentSelect" class="col-sm-6" style="margin-left:15px;margin-right:2px;" disabled @bind-Value="doc.LoDocumentTypeId">
+                        @foreach (var dtype in LoDocumentTypes)
+                                {
+                            <option value="@dtype.LoDocumentTypeId">@dtype.DisplayName</option>
+                                }
+                    </InputSelect>
+                    <Tooltip Text="@HistoryTip(doc.LoDocumentTypeId)">
+                        <button @onclick="@(() => ShowFile(doc.DocumentId))" class="btn btn-primary" style="padding:5px; margin-right:2px;" type="button">View</button>
+                    </Tooltip>
+                    @if (doc.InternalDocument)
+                    {
+                        <button @onclick="@(() => Remove(doc.DocumentId))" class="btn btn-primary" type="button">Remove</button>
+                    }
+                    else
+                    {
+                        <button @onclick="@(() => Approve(doc.DocumentId))" class="btn btn-primary" disabled="@((doc.Status != "Submitted" && doc.Status != "Uploaded" && doc.Status !="Returned" && doc.Status != "QA Passed") || ViewId != doc.DocumentId )" type="button">Quality Assurance</button>
+                        <label for="Status" class="col-sm-1" style="white-space:nowrap">@doc.Status</label>
+                    }
+                </div>
+            }
+
+            @*@if (uploads.DocList.Count() > 0 && !uploads.DocList.Where(x => x.Status != "Uploaded").Any())
+                {
+                    <hr />
+                    <button class="btn btn-primary" type="button" @onclick="@HandleValidSubmit">Save</button>
+                }*@
+        }
+        else
+        {
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        }
+        @*@if (uploads.DocList.Count() > 0)
+            {*@
+        <hr />
+        <div class="form-group row">
+            <InputSelect id="DocumentTypeId" class="form-control col-sm-6" style="margin-left:15px;margin-right:2px;" @bind-Value="@IDocumentTypeId">
+                @foreach (var dtype in IDocumentTypes)
+                {
+                    <option value="@dtype.LoDocumentTypeId">@dtype.DisplayName</option>
+                }
+            </InputSelect>
+            <button @onclick="@(() => ShowUpload())" disabled="@(IDocumentTypeId == "0")" class="btn btn-primary" type="button">Upload Internal Document</button>
+        </div>
+        @*}*@
+
+    </EditForm>
+</div>
+<div class="viewer">
+    @if (showfile)
+    {
+        <embed src="@ViewSource" width="100%" height="800" type="application/pdf" />
+    }
+    @if (ShowApprove)
+    {
+        <div class="modal" tabindex="-1" style="display:block;" role="dialog">
+            <div class="vertical-alignment-helper">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            @if (!string.IsNullOrEmpty(sp.ChildIdNo))
+                            {
+                                <h5 class="modal-title">ID Doc @sp.ChildIdNo Verification </h5>
+                            }
+                            else
+                            {
+                                <h5 class="modal-title">@LoDocumentType Verification </h5>
+                            }
+                            <button type="button" class="close" @onclick="btnCancel_Click">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-horizontal">
+                                <Tooltip Text="Scanned document is of good quality and relevant information readable.">Quality :<input type="checkbox" id="chkQuality" name="Quality" @bind="@QualityChecked" /></Tooltip>
+                                <Tooltip Text="Document has been certified and certification not older than 6 months.">Certified :<input type="checkbox" id="chkCertified" name="Certified" @bind="@CertifiedChecked" /></Tooltip>
+                            </div>
+
+                            <div class="form-horizontal">
+                                @if (!(QualityChecked && CertifiedChecked))
+                                {
+                                    <hr />
+                                    <p>Reject reason</p>
+                                    @if (Reasons.Any())
+                                    {
+                                        <select class="form-control" @onchange="SelectReason">
+                                            <option value="0">-- select --</option>
+                                            @foreach (var reason in Reasons)
+                                            {
+                                                <option value="@reason.RejectReasonId">@reason.Reason</option>
+                                            }
+                                        </select>
+                                    }
+                                    @if (RejectReasonId == "26")
+                                    {
+                                        <p>Other reason</p>
+                                        <input type="text" @bind-value="@OtherRejectReason" @bind-value:event="oninput" class="form-control" />
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" @onclick="btnApprove_Click" disabled="@(RejectReasonId != "0" || !QualityChecked || !CertifiedChecked)">QA Passed</button>
+                            <button class="btn btn-primary" @onclick="btnReject_Click" disabled="@(RejectReasonId == "0" ||(RejectReasonId == "26" && OtherRejectReason == ""))">Return</button>
+                            <button class="btn btn-primary" @onclick="btnCancel_Click">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+@code {
+[Parameter]
+public string Reference { get; set; }
+
+public string LoDocumentType;
+public string IDocumentTypeId;
+public IEnumerable<RejectReason> Reasons = new List<RejectReason>();
+public IEnumerable<RejectHistory> History = new List<RejectHistory>();
+Document sp;
+protected string RejectReasonId;
+protected string ApplicationType { get; set; }
+
+protected IEnumerable<LoDocumentType> LoDocumentTypes { get; set; } = new List<LoDocumentType>();
+protected List<LoDocumentType> IDocumentTypes { get; set; } = new List<LoDocumentType>();
+
+protected DocumentUpload uploads = new DocumentUpload();
+
+Dictionary<int, string> FileStatus = new Dictionary<int, string>();
+
+bool loading = true;
+bool corrupt = false;
+//private string encodedFile;
+private string rejectReason;
+private bool showfile;
+private bool ShowApprove;
+private int ViewId;
+private string OtherRejectReason = "";
+
+private bool QualityChecked { get; set; }
+private bool CertifiedChecked { get; set; }
+
+
+private string ViewSource;
+
+
+protected override async Task OnInitializedAsync()
+{
+    if (string.IsNullOrEmpty(Reference))
+    {
+        loading = false;
+        return;
+    }
+    LoDocumentTypes = await dstore.GetLoDocumentTypes();
+    IDocumentTypes = new List<LoDocumentType>();
+    IDocumentTypes.Add(new LoDocumentType { LoDocumentTypeId = 0, DocumentTypeId = 44, DisplayName = "-- Select document --" });//118
+    IDocumentTypes.Add(new LoDocumentType { LoDocumentTypeId = 118, DocumentTypeId = 44, DisplayName = "Socpen Application" });//118
+    IDocumentTypes.Add(new LoDocumentType { LoDocumentTypeId = 119, DocumentTypeId = 48, DisplayName = "Missing Documents Letter" });//119
+    IDocumentTypes.Add(new LoDocumentType { LoDocumentTypeId = 120, DocumentTypeId = 48, DisplayName = "Socpen Outcome Letter" });//120
+    IDocumentTypes.Add(new LoDocumentType { LoDocumentTypeId = 122, DocumentTypeId = 48, DisplayName = "Large Amount Submission Document" });//122
+    IDocumentTypeId = "0";
+
+    History = await dstore.GetRejectHistory(Reference);
+    if (!string.IsNullOrEmpty(Reference))
+    {
+        await dstore.PurgeDocuments(Reference);
+        await FindDocuments();
+    }
+
+    var files = new DirectoryInfo(@"wwwroot\pdf").GetFiles("*.pdf");
+    foreach (var file in files)
+    {
+        if (DateTime.UtcNow - file.CreationTimeUtc > TimeSpan.FromDays(1))
+        {
+            File.Delete(file.FullName);
+        }
+    }
+    loading = false;
+}
+
+private async Task FindDocuments()
+{
+    uploads = new DocumentUpload();
+    uploads.DocList = await dstore.GetRequiredDocuments(Reference);
+
+    if (uploads.DocList.Any())
+    {
+
+        ApplicationType = dstore.ApplicationType(uploads.DocList.First().ApplicationTypeId);
+        uploads.DocList = uploads.DocList.OrderBy(o => o.SupportDocument);
+    }
+    loading = false;
+}
+
+
+
+
+private async Task Approve(int docid)
+{
+    sp = await dstore.GetDocument(docid);
+    RejectReasonId = "0";
+    if (!Reasons.Any())
+    {
+        Reasons = await dstore.GetRejectReasons();
+    }
+    LoDocumentType = LoDocumentTypes.Where(d => d.LoDocumentTypeId == sp.LoDocumentTypeId).FirstOrDefault().DisplayName;
+    ShowApprove = true;
+}
+
+protected async Task ShowFile(int docid)
+{
+    QualityChecked = false;
+    CertifiedChecked = false;
+    ViewId = docid;
+    showfile = false;
+    await LoadFile(docid);
+
+}
+protected async Task LoadFile(int docid)
+{
+
+    try
+    {
+
+    DocImage image = await dstore.GetDocImage(docid);
+    //if (image.Image.Length > 2000000)//convert large image to file first
+    //{
+    string filename = $"pdf/{Guid.NewGuid().ToString()}.pdf";
+    using (FileStream fs = new FileStream($"wwwroot/{filename}", FileMode.Create))
+    {
+        fs.Write(image.Image, 0, image.Image.Length);
+    }
+    ViewSource = filename;
+    //}
+    //else
+    //{
+    //    encodedFile = Convert.ToBase64String(image.Image);
+    //    ViewSource = $@"data:application/pdf; base64,{encodedFile}";
+    //}
+
+    showfile = true;
+}
+catch
+{
+    await dstore.PutDocumentStatus(docid, "Returned");
+    await dstore.PutDocumentRejectReason(docid, "Document Corrupt.");
+    sp = await dstore.GetDocument(docid);
+    await dstore.PostRejectHistory(new RejectHistory { Reference = Reference, LoDocumentTypeId = sp.LoDocumentTypeId, RejectReason = "Document Corrupt." });
+    corrupt = true;
+    await FindDocuments();
+        }
+    }
+
+    private async Task btnApprove_Click()
+    {
+        await dstore.PutDocumentStatus(sp.DocumentId, "QA Passed");
+        await FindDocuments();
+        ShowApprove = false;
+    }
+    private async Task btnReject_Click()
+    {
+        await dstore.PutDocumentStatus(sp.DocumentId, "Returned");
+        if (RejectReasonId == "26") rejectReason = OtherRejectReason;
+        await dstore.PutDocumentRejectReason(sp.DocumentId, rejectReason);
+        await dstore.PostRejectHistory(new RejectHistory { Reference = Reference, LoDocumentTypeId = sp.LoDocumentTypeId, RejectReason = rejectReason });
+        await FindDocuments();
+        OtherRejectReason = "";
+        ShowApprove = false;
+    }
+    private void btnCancel_Click()
+    {
+        ShowApprove = false;
+    }
+
+    private void SelectReason(ChangeEventArgs e)
+    {
+        RejectReasonId = (string)e.Value;
+        rejectReason = Reasons.Where(r => r.RejectReasonId == int.Parse(RejectReasonId)).First().Reason;
+    }
+
+    private async Task ShowUpload()
+    {
+        int LoDocTypeId = int.Parse(IDocumentTypeId);
+        Document doc = new Document();
+        doc.Reference = Reference;
+        doc.ApplicationTypeId = uploads.DocList.Where(d => d.ApplicationTypeId > 0).First().ApplicationTypeId;
+        doc.DocumentTypeId = IDocumentTypes.Where(i => i.LoDocumentTypeId == LoDocTypeId).First().DocumentTypeId;
+        doc.LoDocumentTypeId = LoDocTypeId;
+        doc.CSNode = uploads.DocList.First().CSNode;
+        doc.RegionCode = uploads.DocList.First().RegionCode;
+        doc.IdNo = uploads.DocList.First().IdNo;
+        doc.InternalDocument = true;
+        doc.User = "LOUser";
+        doc = await dstore.PostSocpenDocument(doc);
+        navigationManager.NavigateTo($"fileupload/{doc.DocumentId}");
+    }
+
+    protected async Task Remove(int docid)
+    {
+        await dstore.RemoveDocument(docid);
+        await FindDocuments();
+    }
+
+    private void btnCancelCorrupt_Click()
+    {
+        corrupt = false;
+    }
+
+    protected string HistoryTip(int Lotype)
+    {
+        string tip = "History:" + "<br/>";
+        foreach (var item in History.Where(r => r.LoDocumentTypeId == Lotype))
+        {
+            tip += item.RejectReason + "<br/>";
+        }
+        return tip;
+    }
+}
+

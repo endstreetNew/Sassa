@@ -1,0 +1,95 @@
+﻿@inject NavigationManager navigationManager
+    <div class="row">
+        <div class="col">
+            <div class="header text-center">
+                <img src="images/logo.PNG">
+            </div>
+            <div style="float:right;">
+                <span class="oi oi-menu navbar-toggler" @onclick="ToggleNavMenu"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <LoginDisplay />
+        </div>
+    </div>
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+
+    <ul class="nav flex-column">
+        <li class="nav-item">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/survey">
+                <span class="oi oi-pie-chart" aria-hidden="true"></span>Surveys
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/maintenance">
+                <span class="oi oi-wrench" aria-hidden="true"></span>Application Maintenance
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/useradmin">
+                <span class="oi oi-person" aria-hidden="true"></span>User Admin
+            </NavLink>
+        </li>
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/monitor">
+                <span class="oi oi-cog" aria-hidden="true"></span>Systems Status
+            </NavLink>
+        </li>
+    </ul>
+</div>
+
+@code {
+
+    //string Name = "";
+    public bool LoggedIn;
+
+
+    protected override void OnInitialized()
+    {
+        //parent component
+        //AccountService.RefreshRequested += RefreshMe;
+        //RefreshMe();
+    }
+
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private bool expandProducts;
+    private void ExpandProducts()
+    {
+        expandProducts = !expandProducts;
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    private void Search()
+    {
+
+    }
+
+
+    //private void RefreshMe()
+    //{
+    //    if (AccountService.User != null)
+    //    {
+    //        Name = AccountService.User.FirstName;
+    //    }
+
+    //    LoggedIn = AccountService.User != null;
+    //    //return AccountService.User != null;
+    //    StateHasChanged();
+    //}
+
+}

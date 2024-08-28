@@ -1,0 +1,302 @@
+﻿@inject Navigation Navigate
+@inject NavigationManager Navigation
+@inject IAlertService toast
+@inject SessionService sessionservice
+@inject BRMDbService db
+
+@using Microsoft.AspNetCore.Components.Routing
+
+@implements IDisposable
+
+@inject IJSRuntime JSRuntime
+
+<div id="BrmGrid">
+    @if (showConfirmation)
+    {
+        <Modal Heading="Confirmation" Cancel="OnConfirmationClose" Ok="OnConfirmationOk">
+
+            <br />
+            Are you Sure you want to delete this record ?
+            <br />
+            <div class="input-group mb-1">
+                <span class="input-group-text">Reason</span>
+                <input type="text" class="form-control" @bind="@deleteReason">
+            </div>
+            <br />
+        </Modal>
+    }
+    @if (showEditBarcodeConfirmation)
+    {
+        <Modal Heading="Update BarCode" Cancel="OnConfirmationClose" Ok="OnConfirmBarcodeOk">
+            <h5><strong class="text-danger">Ensure to destroy this coversheet and reprint the new one.</strong></h5>
+            <br />
+            <div class="input-group mb-1">
+                <span class="input-group-text">Current Barcode</span>
+                <text class="form-control">@selectedApp.Brm_BarCode</text>
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text">New BRM Barcode</span>
+                <input type="text" class="form-control" @bind="@NewBarCode" />
+            </div>
+        </Modal>
+    }
+    @if (DTBrm != null)
+    {
+        <table class="table table-sm" style="font-size:small;">
+            <thead>
+                <tr>
+                    <th scope="col">ID No</th>
+                    <th scope="col">Action</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">Select</th>
+                    <th scope="col">Brm Barcode</th>
+                    <th scope="col">Child ID No</th>
+                    <th scope="col">Grant Type</th>
+                    <th scope="col">Srd No</th>
+                    <th scope="col">Registry Type</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Application Date</th>
+                    <th scope="col">Batch No</th>
+                    <th scope="col">Box No</th>
+                    <th scope="col">Minibox No</th>
+                    <th scope="col">Archive Year</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var u in DTBrm)
+                {
+                    <tr style="background-color:@(u.AppStatus == "DESTROY" ? "orange":"white");">
+                        <td>@u.Id</td>
+                        <td>
+                        @if ( u.BatchNo == 0 )
+                        {
+                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnBatch_Click(u))">Batch</button>
+                        }
+                        </td>
+                        <td><button class="btn btn-primary btn-sm active" @onclick="@(() => btnView_Click(u))">View Cover</button></td>
+                        <td><button class="btn btn-danger btn-sm active" @onclick="@(() => btnDelete_Click(u))" disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Delete</button></td>
+                        <td><button class="btn btn-danger btn-sm active" @onclick="@(() => btnEditBarcode_Click(u))" disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Edit Barcode</button></td>
+                        <td>@u.IsSelected</td>
+                        <td>@u.Brm_BarCode</td>
+                        <td>@u.ChildId</td>
+                        <td>@u.GrantName</td>
+                        <td>@u.Srd_No</td>
+                        <td>@u.AppStatus</td>
+                        <td>@u.Name</td>
+                        <td>@u.SurName</td>
+                        <td>@u.AppDate</td>
+                        <td>@u.BatchNo</td>
+                        <td>@u.TDW_BOXNO</td>
+                        <td>@u.MiniBox</td>
+                        <td>@u.ARCHIVE_YEAR</td>
+                    </tr>
+                    @if (DTMerges.Where(b => b.Brm_Parent == u.Brm_BarCode).Count() > 0)
+                    {
+                        <tr>
+                            <td colspan="14">
+@*                                 <div class="accordion" id="accordionPanelsStayOpenExample">
+                                    <div class="accordion-item">
+                                        <h4 class="accordion-header" id="panelsStayOpen-headingOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                                Merged Records
+                                            </button>
+                                        </h4>
+                                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+                                            <div class="accordion-body"> *@
+                                                <table class="table table-sm table-secondary" style="font-size:small;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">ID No</th>
+                                                            <th scope="col">Action</th>
+                                                            <th scope="col"></th>
+                                                            <th scope="col"></th>
+                                                            <th scope="col">Brm Barcode</th>
+                                                            <th scope="col">Child ID No</th>
+                                                            <th scope="col">Grant Type</th>
+                                                            <th scope="col">Srd No</th>
+                                                            <th scope="col">Registry Type</th>
+                                                            <th scope="col">Name</th>
+                                                            <th scope="col">Surname</th>
+                                                            <th scope="col">Application Date</th>
+                                                            <th scope="col">Batch No</th>
+                                                            <th scope="col">Box No</th>
+                                                            <th scope="col">Archive Year</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                        @foreach (var um in DTMerges.Where(b => b.Brm_Parent == u.Brm_BarCode))
+                                                        {
+                                                            <tr>
+                                                                <td>@um.Id</td>
+                                                                <td><NavLink class="btn btn-primary btn-sm active" target="_blank" href="@($"{Navigation.BaseUri}/coversheet/{um.Brm_BarCode}")">View Cover</NavLink></td>
+                                                                @*<td><button class="btn btn-primary btn-sm active" @onclick="@(() => btnView_Click(um))">View Cover</button></td>*@
+                                                                <td><button class="btn btn-danger btn-sm active" @onclick="@(() => btnDelete_Click(um))" disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Delete</button></td>
+                                                                <td><button class="btn btn-danger btn-sm active" @onclick="@(() => btnEditBarcode_Click(u))" disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Edit Barcode</button></td>
+                                                                <td>@um.Brm_BarCode</td>
+                                                                <td>@um.ChildId</td>
+                                                                <td>@um.GrantName</td>
+                                                                <td>@um.Srd_No</td>
+                                                                <td>@um.AppStatus</td>
+                                                                <td>@um.Name</td>
+                                                                <td>@um.SurName</td>
+                                                                <td>@um.AppDate</td>
+                                                                <td>@um.BatchNo</td>
+                                                                <td>@um.TDW_BOXNO</td>
+                                                                <td>@um.ARCHIVE_YEAR</td>
+                                                            </tr>
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+@*                                             </div>
+                                        </div>
+                                    </div>
+                                </div> *@
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+
+    }
+    else
+    {
+        <div style="padding: 10px 0 5px 0;">
+            <p>No data. Please search and applicant.</p>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public List<Application> DTBrm { get; set; } = new();
+    [Parameter]
+    public List<Application> DTMerges { get; set; } = new();
+    [Parameter]
+    public EventCallback<int> Changed { get; set; }
+
+    protected string deleteReason = "";
+    protected bool showConfirmation;
+    protected bool showEditBarcodeConfirmation;
+    protected Application selectedApp = new();
+
+    protected string? NewBarCode;
+
+
+    protected async Task btnBatch_Click(Application app)
+    {
+        //Navigate.NavigateTo($"coversheet/{app.Brm_BarCode}");
+        try
+        {
+            if (app.BatchNo > 0)
+            {
+                throw new Exception($"File {app.Brm_BarCode} already in batch {app.BatchNo}");
+            };
+            string batchType = app.Id.StartsWith("S") ? "SrdNoId" : app.AppStatus;
+            decimal batchNo = await db.CreateBatchForUser(batchType);
+            await db.AddFileToBatch(app.Brm_BarCode, batchNo);
+            await Changed.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+    protected async Task btnView_Click(Application app)
+    {
+        //Navigate.NavigateTo($"coversheet/{app.Brm_BarCode}");
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("open", $"{Navigation.BaseUri}coversheet/{app.Brm_BarCode}", "_blank");
+        }
+        catch//(Exception ex)
+        {
+
+        }
+    }
+
+
+    protected void btnDelete_Click(Application app)
+    {
+        if (DTMerges != null && DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
+        {
+            toast.Warn("Please remove merged records first.");
+        }
+        else
+        {
+            selectedApp = app;
+            showConfirmation = true;
+        }
+    }
+
+    protected void btnEditBarcode_Click(Application app)
+    {
+        if (DTMerges != null && DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
+        {
+            //maybe not
+            toast.Warn("Please remove merged records first.");
+        }
+        else
+        {
+            selectedApp = app;
+            showEditBarcodeConfirmation = true;
+        }
+    }
+
+    protected void OnConfirmationClose()
+    {
+
+        showConfirmation = false;
+        showEditBarcodeConfirmation = false;
+
+    }
+    protected async Task OnConfirmationOk()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(deleteReason))
+            {
+                throw new Exception("Please provide a reason for this deletion.");
+            }
+            if (selectedApp == null) throw new Exception("No record selected.");
+            await db.RemoveBRM(selectedApp.Brm_BarCode, deleteReason);
+            await Changed.InvokeAsync();
+            showConfirmation = false;
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+    protected async Task OnConfirmBarcodeOk()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(NewBarCode) || NewBarCode.Trim().Length != 8) throw new Exception("Invalid Brm Barcode.");
+            NewBarCode = NewBarCode.ToUpper().Trim();
+            if (await db.checkBRMExists(NewBarCode))
+            {
+                throw new Exception("BarCode Exist!");
+            }
+            await db.EditBarCode(selectedApp, NewBarCode);
+            await Changed.InvokeAsync();
+            showEditBarcodeConfirmation = false;
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+
+    public void Dispose()
+    {
+    }
+
+}

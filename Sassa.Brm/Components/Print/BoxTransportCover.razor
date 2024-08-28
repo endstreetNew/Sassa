@@ -1,0 +1,189 @@
+﻿@page  "/boxtransportcover/{BrmWaybill}"
+@layout PrintLayout
+
+@inject BRMDbService db
+@inject BarCodeService bcService
+@inject IJSRuntime Js
+
+@inject Navigation Navigation
+
+<div>
+    <button class="btn btn-primary" @onclick="btnCancel_Click">Back</button>
+    <button @onclick="btnPrintReceipt_Click" class="btn btn-primary active">Print</button>
+</div>
+
+<div class="printme">
+    @*style="background-color: #0973B6">*@
+    <div>
+        <div class="row">
+            @*style="height: 100%; display: block;">*@
+            <div class="col">
+                @*style="width: 30%; float: left; display: inline-block">*@
+                <img src="images/sassa_logoSmall.jpg" width="100" />
+            </div>
+            <div class="col">
+                @*style="width: 40%; display: inline-block; height: 100px; text-align: center; padding-top: 10px;">*@
+                <h5>Transport Cover :</h5>
+            </div>
+            <div class="col">
+                <div>@waybillDate</div>
+                <div><strong>Waybill : @TDWWaybill</strong></div>
+            </div>
+        </div>
+    </div>
+
+
+    @if (batches != null)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col"><strong>Total no of batches @batches.Count</strong></div>
+                <div class="col"><strong>Total no Of Files: @TotalFiles </strong></div>
+            </div>
+
+        </div>
+
+        <table class="table table-sm" style="font-size:small;">
+            <thead>
+                <tr>
+                    <th scope="col">Batch No</th>
+                    <th scope="col">Batch Type</th>
+                    <th scope="col">Brm Waybill</th>
+                    @*<th scope="col">TDW Batch Order No</th>
+                        <th scope="col">Courier name</th>*@
+                    <th scope="col">No of Files</th>
+                    <th scope="col">Updated By</th>
+                    <th scope="col">Updated Date</th>
+                    <th scope="col">Batch# BarCode</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var u in batches)
+                {
+                    <tr>
+                        <td>@u.BatchNo</td>
+                        <td>@u.RegType</td>
+                        <td>@u.BrmWaybill</td>
+                        @*<td>@u.WaybillNo</td>
+                            <td>@u.CourierName</td>*@
+                        <td>@u.NoOfFiles</td>
+                        <td>@u.UpdatedByAd</td>
+                        <td>@u.UpdatedDate</td>
+                        <td colspan="2">@((MarkupString)bcService.GetBarCode(u.BatchNo.ToString()))</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Loading..</p>
+    }
+    <br />
+    <div style="display: inline-block; position: relative; width: 50%; text-align: left">
+        <table>
+            <tr>
+                <td>
+                    <br />
+                    <br />
+                    <br />
+                    <label class="col-sm-12 control-label text-left">____________________________________</label><br />
+                    <label class="col-sm-12 control-label text-left">LocalOffice Signature</label>
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>
+                    <br />
+                    <br />
+                    <br />
+                    <label class="col-sm-12 control-label text-left">____________________________________</label><br />
+                    <label class="col-sm-12 control-label text-left">Name and Surname</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br />
+                    <br />
+                    <br />
+                    <label class="col-sm-12 control-label text-left">____________________________________</label><br />
+                    <label class="col-sm-12 control-label text-left" >Courier Signature</label>
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>
+                    <br />
+                    <br />
+                    <br />
+                    <label class="col-sm-12 control-label text-left" >____________________________________</label><br />
+                    <label class="col-sm-12 control-label text-left" >Name and Surname</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br />
+                    <br />
+                    <br />
+                    <label class="col-sm-12 control-label text-left">____________________________________</label><br />
+                    <label class="col-sm-12 control-label text-left">RMC Signature</label>
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>
+                    <br />
+                    <br />
+                    <br />
+                    <label class="col-sm-12 control-label text-left">____________________________________</label><br />
+                    <label class="col-sm-12 control-label text-left">Name and Surname</label>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
+@code {
+
+    [Parameter]
+    public string? BrmWaybill { get; set; }
+    [Parameter]
+    public EventCallback Cancel { get; set; }
+    [Parameter]
+    public EventCallback Ok { get; set; }
+
+    protected List<DcBatch>? batches;
+
+    int TotalFiles;
+
+    string TDWWaybill = "";
+    string waybillDate = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (BrmWaybill != null) await LoadWaybill(BrmWaybill);
+    }
+
+    protected async Task LoadWaybill(string brmWaybill)
+    {
+        BrmWaybill = brmWaybill;
+        batches = await db.GetWaybillBatches(BrmWaybill);
+        TotalFiles = 0;
+
+        foreach (var batch in batches)
+        {
+            TotalFiles = TotalFiles + (int)(batch.NoOfFiles??0);
+            TDWWaybill = batch.WaybillNo;
+            waybillDate = ((DateTime)(batch.WaybillDate??DateTime.Now)).ToShortDateString();
+        }
+    }
+    private void btnCancel_Click()
+    {
+        Navigation.NavigateTo($"boxing");
+    }
+
+    private async Task btnPrintReceipt_Click()
+    {
+        await Js.InvokeVoidAsync("printPage");
+    }
+
+}

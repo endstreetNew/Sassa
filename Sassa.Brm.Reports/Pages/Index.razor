@@ -1,0 +1,99 @@
+﻿@page "/"
+@inject SessionService sessionservice
+@inject StaticService sservice
+
+<AuthorizeView>
+    @if (gsession != null)
+    {
+        if (showOfficeModal)
+        {
+            <ChangeOffice Cancel="OnCloseModal"></ChangeOffice>
+        }
+<div class="row" >
+    <div class="whiteArea col">
+        <span><strong>User Details</strong></span>
+        <div class="input-group mb-1">
+            <span class="input-group-text">Name</span>
+                    <label type="text" class="form-control">@sessionservice.session.Name</label>
+        </div>
+        <div class="input-group mb-1">
+            <span class="input-group-text">Surname</span>
+                    <label type="text" class="form-control">@sessionservice.session.Surname</label>
+        </div>
+        <div class="input-group mb-1">
+            <span class="input-group-text">Email</span>
+                    <label type="text" class="form-control">@sessionservice.session.Email</label>
+        </div>
+        <div class="input-group mb-1">
+            <span class="input-group-text">Region</span>
+                    <label type="text" class="form-control">@sessionservice.session.Office.RegionName</label>
+        </div>
+        <div class="input-group mb-1">
+            <span class="input-group-text">Office</span>
+                    <label type="text" class="form-control">@sessionservice.session.Office.OfficeName</label>
+            <button class="btn btn-primary active" @onclick="ShowOfficeModal">Change Office</button>
+        </div>
+        <div class="input-group mb-1">
+            <span class="input-group-text">Service Point</span>
+                    <label type="text" class="form-control">@sservice.GetServicePointName(sessionservice.session.Office.FspId)</label>
+        </div>
+        <div class="input-group mb-1">
+            <span class="input-group-text">Office Type</span>
+                    <label type="text" class="form-control">@sessionservice.session.Office.OfficeType</label>
+        </div>
+        <div class="input-group mb-1">
+            <span class="input-group-text">Supervisor</span>
+                    <label type="text" class="form-control">@(sessionservice.session.IsInRole("GRP_BRM_Supervisors") ? "Yes" : "No")</label>
+        </div>
+    </div>
+    <div class="whiteArea col">
+        <span><strong>Roles</strong></span>
+                @foreach (var role in sessionservice.session.Roles)
+        {
+            <label type="text" class="form-control">@role</label>
+        }
+    </div>
+</div>
+            }
+            else
+            {
+            <div class="whiteArea">
+                <div class="spinner spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            }
+            
+</AuthorizeView>
+    @code
+{
+        bool showOfficeModal;
+        UserSession gsession;
+
+        protected override void OnInitialized()
+        {
+            sessionservice.SessionInitialized += new EventHandler(OnSessionChanged);
+            OnSessionChanged(this, EventArgs.Empty);
+
+        }
+
+        private void OnSessionChanged(object sender, EventArgs args)
+        {
+            gsession = sessionservice.session;
+            //StateHasChanged();
+        }
+
+        protected void OnCloseModal()
+        {
+            //StateHasChanged();
+            showOfficeModal = false;
+            gsession = sessionservice.session;
+        }
+
+        protected void ShowOfficeModal()
+        {
+            //System.Threading.Tasks.Task.Run(() => db.GetLocalOffice());
+            showOfficeModal = true;
+        }
+    }
+

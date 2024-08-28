@@ -1,0 +1,48 @@
+﻿@page "/filerequest"
+@inject SessionService sessionservice
+@inject BRMDbService db
+@inject CSService cs
+@inject IAlertService toast
+@inject IWebHostEnvironment _env
+
+
+
+@if (sessionservice.session != null)
+{
+<TabControl PageActivate="@OnPageActivate" ActivePageId="1">
+    <TabPage Text="Request Files" Id="1" Enabled="true">
+        <SearchFiles></SearchFiles>
+    </TabPage>
+    <TabPage Text="View Requests" Id="2" Enabled="true">
+        <ViewRequests></ViewRequests>
+    </TabPage>
+        <TabPage Text="Picklist Progress" Id="3" Enabled="@(sessionservice.session.Office.OfficeType != "LO")">
+        <Picklist></Picklist>
+    </TabPage>
+</TabControl>
+}
+
+
+@code {
+
+    
+    //protected override async Task OnInitializedAsync()
+    //{
+
+
+    //}
+    private void OnPageActivate(int e)
+    {
+        switch (e)
+        {
+            case 1://Search
+                break;
+            case 2://Requests
+                break;
+            case 3://PickLists
+                break;
+            default:
+                break;
+        }
+    }
+}

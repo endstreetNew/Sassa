@@ -1,0 +1,19 @@
+﻿@inherits LayoutComponentBase
+    <div style="margin:0 auto;min-width:1220px">
+        <div class="grid">
+            <div class="header"></div>
+            <div class="register  px-4 auth">
+                @*<div style="width: 100%;"></div>*@
+
+            </div>
+            <div class="topmenu">
+                <TopMenu />
+            </div>
+            <div class="sidebar">
+                <NavMenu />
+            </div>
+            <div class="main">
+                @Body
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,256 @@
+﻿
+@inject BRMDbService db
+@inject IAlertService toast
+
+<br />
+<div class="row input-group">
+    <div class="col">
+        <div class="input-group mb-3">
+            <div class="input-group-text">
+                <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" checked="@filterRequestUser" @onchange="@(e => RequestUserFilterChange(e))">
+            </div>
+            <label class="form-control" aria-label="Show requested by me.">Show requested by me.</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-group mb-3">
+            <div class="input-group-text">
+                <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" checked="@filterInProgress" @onchange="@(e => InProgressFilterChange(e))">
+            </div>
+            <label class="form-control" aria-label="Show only in progress items.">Show only in progress items.</label>
+        </div>
+    </div>
+</div>
+<br />
+<div class="input-group mb-3">
+    @*<Tooltip Text="All items will be received">*@
+    <div class="input-group-text">
+        <input class="form control" type="text" @bind="SearchTxt" placeholder="<Search text>">
+    </div>
+    <button class="btn btn-primary" @onclick="SearchPickList" >Search picklist</button>
+</div>
+
+    <br />
+    <div class="row justify-content-start">
+        <div class="col-sm-5">
+            <div style="max-width:600px">
+            @if (pickLists.count >0)
+            {
+                <table class="table table-sm" style="font-size:small;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Picklist No</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Requested by</th>
+                            @*<th scope="col">PLStatus</th>*@
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                            @*<th></th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DcPicklist p in pickLists.result)
+                        {
+                        <tr>
+                            <td>@p.UnqPicklist</td>
+                            <td>@p.PicklistDate</td>
+                            <td>@p.RequestedByAd</td>
+                            @*<td>@p.PicklistStatus</td>*@
+                            <td>@p.Status</td>
+                            <td>@if(p.Status != "Returned"){ <button class="btn btn-primary btn-sm active" @onclick="@(() => btnNextStatus_Click(p))" disabled>@p.nextStatus</button>}</td>
+                            <td> <button class="btn btn-primary btn-sm active" @onclick="@(() => ItemClicked(p))">Items</button></td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <Pager Paged="OnPaged" TotalSize="@pickLists.count"></Pager>
+            }
+            </div>
+        </div>
+        <div class="col">
+            <h5>Picklist items</h5>
+            @if (items.count > 0)
+            {
+                <div class="input-group mb-3">
+                    <div class="input-group-text">
+                        <input class="form control" type="text" @bind="BrmBarCode" placeholder="<Scan barcode>">
+                    </div>
+                    <button class="btn btn-primary" @onclick="@(() => ItemReceived_Click(BrmBarCode))">Receive item</button>
+                </div>
+                <table class="table table-sm" style="font-size:small;">
+                    <thead>
+                        <tr>
+                            <th scope="col">Picklist no</th>
+                            <th scope="col">Brm no</th>
+                            <th scope="col">Id number</th>
+                            <th scope="col">First name</th>
+                            <th scope="col">Grant type</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (DcPicklistItem p in items.result)
+                        {
+                        <tr>
+                            <td>@p.UnqPicklist</td>
+                            <td>@p.BrmNo</td>
+                            <td>@p.IdNumber</td>
+                            <td>@p.Firstname</td>
+                            <td>@p.GrantType</td>
+                            <td>@p.Status</td>
+                            <td>
+                                @if (p.Status != "Returned")
+                                    {<button class="btn btn-primary btn-sm active" @onclick="@(() => btnItemStatus_Click(p.PicklistItemId))">@p.nextStatus</button>}
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                <Pager Paged="OnItemsPaged" TotalSize="@items.count"></Pager>
+
+            }
+        </div>
+    </div>
+
+    @code{
+        PagedResult<DcPicklist> pickLists= new();
+        private PagedResult<DcPicklistItem> items = new();
+
+        protected string SearchTxt = "";
+
+        bool filterRequestUser = false;
+        bool filterInProgress = false;
+
+        string UnqPickList = "";
+        string BrmBarCode = "";
+
+        int itempage = 1;
+        int page = 1;
+
+        protected override async Task OnInitializedAsync()
+        {
+            await LoadPickList();
+        }
+
+        protected async Task RequestUserFilterChange(ChangeEventArgs e)
+        {
+            filterRequestUser = (bool)e.Value!;
+            await LoadPickList();
+        }
+        protected async Task InProgressFilterChange(ChangeEventArgs e)
+        {
+            filterInProgress = (bool)e.Value!;
+            await LoadPickList();
+        }
+
+
+        protected async Task btnNextStatus_Click(DcPicklist p)
+        {
+            await db.ChangePickListStatus(p);
+            await LoadPickList();
+            toast.Info("PickList " + p.nextStatus);
+        }
+
+        protected async Task ReceivePickList()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(UnqPickList))
+                {
+                    throw new Exception("Invalid Picklist #.");
+                }
+                UnqPickList = UnqPickList.Trim();
+                await db.ReceivePickList(UnqPickList);
+                await LoadPickList();
+                toast.Info("PickList received.");
+            }
+            catch(Exception ex)
+            {
+                toast.Error(ex.Message);
+            }
+        }
+        protected async Task SearchPickList()
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(SearchTxt))
+                {
+                    throw new Exception("Invalid search text.");
+                }
+                pickLists = await db.SearchPickLists(SearchTxt, page);
+
+            }
+            catch(Exception ex)
+            {
+                toast.Error(ex.Message);
+            }
+        }
+        protected async Task LoadPickList()
+        {
+            pickLists = await db.GetPickLists(filterRequestUser, filterInProgress, page);
+
+        }
+        protected async Task OnPaged(int _page)
+        {
+            page = _page;
+            await LoadPickList();
+
+        }
+
+        protected async Task ItemClicked(DcPicklist item)
+        {
+            UnqPickList = item.UnqPicklist;
+            if (string.IsNullOrEmpty(UnqPickList)) return;
+            items = await db.GetPicklistItems(UnqPickList, itempage);
+        }
+
+        //protected override async Task OnParametersSetAsync()
+        //{
+        //    if (string.IsNullOrEmpty(UnqPickList)) return;
+        //    items = await db.GetPicklistItems(UnqPickList, itempage);
+        //}
+        protected async Task OnItemsPaged(int _page)
+        {
+            itempage = _page;
+            items = await db.GetPicklistItems(UnqPickList, itempage);
+
+        }
+        protected async Task btnItemStatus_Click(decimal itemId)
+        {
+            await db.SetStatusPickListItem(itemId);
+            items = await db.GetPicklistItems(UnqPickList, itempage);
+            await LoadPickList();
+            toast.Info("Item status changed.");
+            ////if (db.IsAllItemsStatus(UnqPickList,"Received"))
+            ////{
+            ////    toast.Info("All Items received for this Picklist!");
+            ////}
+            ////else
+            ////{
+
+            ////}
+
+        }
+        protected async Task ItemReceived_Click(string BrmBarcode)
+        {
+            if (string.IsNullOrEmpty(BrmBarcode)) return;
+            BrmBarcode = BrmBarcode.Trim();
+            if (!await db.SetPickListItemStatus(BrmBarcode,"Received"))
+            {
+                toast.Info("Item not found.");
+                return;
+            }
+            items = await db.GetPicklistItems(UnqPickList, itempage);
+            await LoadPickList();
+            toast.Info("Item status changed.");
+            //if (db.IsAllItemsStatus(UnqPickList,"Received"))
+            //{
+            //    toast.Info("All Items received for this Picklist!");
+            //}
+            //else
+            //{
+
+            //}
+        }
+    }

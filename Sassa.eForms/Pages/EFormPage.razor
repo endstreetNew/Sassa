@@ -1,0 +1,144 @@
+﻿@page "/Eformpage/{Id:int}"
+@attribute [Authorize]
+@using Sassa.eForms.Data
+@inject EFormService ef
+@inject NavigationManager navigate
+
+@if (eform != null)
+{
+    @*<strong>@eform.Title</strong>
+        <p>@((MarkupString)eform.Blurp)</p>
+        <a class="btn-primary" href="@eform.Url" target="_blank">Apply</a>
+        <iframe src="@eform.Url" style="border:none; height:100%; width:100%;"></iframe>*@
+    @if (ShowPopup)
+    {
+        <div class="modal" tabindex="-1" style="display:block;" role="dialog">
+            <div class="vertical-alignment-helper">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content addresstext">
+                        <div class="modal-header">
+                            <h5 class="modal-title">DECLARATION AND CONSENT BY APPLICANT</h5>
+                        </div>
+                        <div class="modal-body scrollbar">
+                            @((MarkupString)Blurps.Declaration);
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-primary" @onclick="Accept">Accept</button>
+                            <button class="btn-primary" @onclick="Decline">Decline</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @*@if (ShowPoster)
+    {
+<div class="modal" tabindex="-1" style="position:absolute; top:0px;left:0px; display:block;  min-height: 800px;min-width: 1050px;" role="dialog">
+    <div class="vertical-alignment-helper" style="display:block;  min-height: 800px;min-width: 1050px;" role="dialog">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Applying for a grant</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="@(() => ShowPoster = false)">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <embed src="/pdf/poster.pdf" type="application/pdf" style="min-height: 800px;min-width: 1000px;" />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" @onclick="@(() => ShowPoster = false)">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    }*@
+    <div class="accordion" id="accordionExample">
+
+        <div class="card">
+            <div class="card-header " id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link black @(Collapsed? "collapsed": "" )" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <strong>Instructions</strong>
+                    </button>
+                    @*<button class="btn btn-primary" style="float:right;" @onclick="@(() => ShowPoster = true)">How to Apply for a grant</button>*@
+                    <a href="/poster/@Id" class="btn btn-primary" style="float:right;" >How to Apply for a grant</a>
+                </h5>
+            </div>
+            <div id="collapseOne" class="collapse @(Collapsed? "": "show" )" aria-labelledby="headingOne" data-parent="#accordionExample">
+                <div class="card-body">
+                    <p>@((MarkupString)eform.Blurp)</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link black @(Collapsed? "": "collapsed" )" type="button" @onclick="ShowDisclaimer" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <strong>Click here to apply for @eform.Title</strong>
+                    </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse @(Collapsed? "show": "" )" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+                    <br />
+
+                    @if (eform.Url.Contains("Resolving") && Id < 4)
+                    {
+                        <ResolvingComponent />
+                    }
+                    else
+                    {
+                        <iframe src="@eform.Url" class="scrollbar" style="border:none; height:115vh; width:105%;background: #FFFFFF;"></iframe>
+                    }
+
+                    @*<a href="@eform.Url" target="_blank">Open in new Window...</a>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    }
+
+
+
+
+
+
+    @code {
+        [Parameter]
+        public int Id { get; set; }
+        eForm eform;
+        bool ShowPopup = false;
+        //bool ShowPoster = false;
+
+public bool Collapsed { get; set; }
+
+private void ShowDisclaimer()
+{
+
+    ShowPopup = true;
+    Collapsed = true;
+}
+
+protected override Task OnParametersSetAsync()
+{
+
+    eform = ef.GeteForm(Id);
+    Collapsed = false;
+    return Task.CompletedTask;
+}
+
+void Accept()
+{
+    ShowPopup = false;
+
+}
+void Decline()
+{
+
+    navigate.NavigateTo("");
+
+}
+
+    }

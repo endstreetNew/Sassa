@@ -1,0 +1,229 @@
+Starting. 09:14
+Starting. 09:24
+Sceduling.  delay - 23:59:57.0133166 09:32
+Starting. 09:32
+Insert new SRDs. 09:32
+Insert new Main Grants. 09:49
+Insert new Child Grants. 11:20
+Stopped 09:27
+Sceduling.  delay - 23:59:54.8611356 09:27
+Starting. 09:27
+Starting. 09:32
+Starting. 09:33
+Starting. 09:34
+Insert new SRDs. 09:36
+Insert new SRDs. 09:36
+Insert new SRDs. 09:36
+Insert new SRDs. 09:36
+Stopped 09:37
+Sceduling.  delay - 23:59:57.3467148 09:37
+Starting. 09:37
+Insert new SRDs. 09:38
+Waiting schedule 2023/05/20 11:13:38 11:13
+Sceduling.  delay - 23:59:51.3652673 11:13
+Waiting schedule 2023/05/20 11:13:38 11:13
+Waiting schedule 2023/05/20 11:13:38 11:13
+Waiting schedule 2023/05/20 11:13:38 11:14
+Waiting schedule 2023/05/20 11:13:38 11:14
+Waiting schedule 2023/05/20 11:13:38 11:14
+Waiting schedule 2023/05/20 11:13:38 11:14
+Starting. 11:14
+Insert new SRDs. 11:14
+Insert new Main Grants. 11:14
+Insert new Child Grants. 11:15
+Waiting schedule 2023/05/20 11:19:49 11:19
+Sceduling.  delay - 23:59:55.6869321 11:19
+Waiting schedule 2023/05/20 11:19:49 11:19
+Waiting schedule 2023/05/20 11:19:49 11:19
+Starting. 11:20
+Insert new SRDs. 11:20
+Insert new Main Grants. 11:20
+Insert new Child Grants. 11:23
+Retire Srds. 11:26
+Done. 11:27
+Waiting schedule 2023/05/21 11:27:54 11:28
+Waiting schedule 2023/05/21 11:27:54 11:28
+Waiting schedule 2023/05/23 08:56:24 08:56
+Waiting schedule 2023/05/23 08:56:24 09:02
+Starting. 09:03
+Insert new SRDs. 09:03
+Insert new Main Grants. 09:03
+Insert new Child Grants. 09:05
+Retire Srds. 09:08
+Done. 09:08
+Waiting schedule 2023/05/24 09:08:35 12:49
+Waiting schedule 2023/05/24 09:08:35 12:54
+Starting. 12:54
+Insert new SRDs. 12:54
+Insert new Main Grants. 12:55
+Waiting schedule 2023/05/24 09:08:35 12:57
+Starting. 12:57
+Insert new SRDs. 12:57
+Insert new Main Grants. 12:57
+Insert new Main Grants. : ORA-00001: unique constraint (CONTENTSERVER.DC_SOCPEN_ID_GRANT) violated 12:58
+Waiting schedule 2023/05/30 12:58:51 13:01
+Waiting schedule 2023/05/30 12:58:51 13:01
+Waiting schedule 2023/05/30 13:01:00 06:50
+Starting. 06:51
+Waiting schedule 2023/05/30 13:01:00 06:54
+Starting. 06:54
+Insert new SRDs. 06:55
+Insert new Main Grants. 06:56
+Insert new Child Grants. 07:03
+Retire Srds. 07:23
+Done. 07:32
+Waiting schedule 2023/06/21 07:32:19 11:17
+Starting. 11:17
+Insert new SRDs. 11:18
+Insert new Main Grants. 11:19
+Waiting schedule 2023/06/21 07:32:19 11:28
+Waiting schedule 2023/06/21 07:32:19 11:30
+Waiting schedule 2023/06/21 07:32:19 11:31
+Waiting schedule 2023/06/21 07:32:19 11:55
+Starting. 11:56
+Starting. 11:56
+Starting. 11:56
+Done. 11:58
+Done. 11:58
+Done. 11:59
+Done. 11:59
+Waiting schedule 2024/03/03 12:00:00 12:11
+Starting. 12:11
+Waiting schedule 2024/03/03 12:00:00 12:12
+Starting. 12:13
+Waiting schedule 2024/03/03 12:00:00 12:14
+Waiting schedule 2024/03/03 12:00:00 12:15
+Waiting schedule 2024/03/03 12:00:00 12:15
+Waiting schedule 2024/03/03 12:00:00 12:17
+Waiting schedule 2024/03/03 12:00:00 12:17
+Waiting schedule 2024/03/03 12:00:00 12:17
+Waiting schedule 2024/03/03 12:00:00 12:17
+Waiting schedule 2024/03/03 12:00:00 12:18
+Waiting schedule 2024/03/03 12:00:00 12:18
+Waiting schedule 2024/03/03 12:00:00 12:18
+Waiting schedule 2024/03/03 12:00:00 12:18
+Waiting schedule 2024/03/03 12:00:00 12:18
+Waiting schedule 2024/03/03 12:00:00 12:18
+Waiting schedule 2024/03/03 12:00:00 12:21
+Waiting schedule 2024/03/03 12:20:00 12:21
+Waiting schedule 2024/03/03 12:20:00 12:21
+Waiting schedule 2024/03/03 12:20:00 12:21
+Waiting schedule 2024/03/03 12:20:00 12:21
+Waiting schedule 2024/03/03 12:20:00 12:21
+Starting. 12:21
+Starting. 12:21
+Starting. 12:21
+Starting. 12:22
+Starting. 12:22
+Starting. 12:23
+Waiting schedule 2024/03/03 12:20:00 12:23
+Waiting schedule 2024/03/03 12:20:00 12:23
+Waiting schedule 2024/03/03 12:20:00 12:23
+Waiting schedule 2024/03/03 12:20:00 12:24
+Waiting schedule 2024/03/03 12:20:00 12:24
+Waiting schedule 2024/03/03 12:20:00 12:24
+Waiting schedule 2024/03/03 12:20:00 12:24
+Waiting schedule 2024/03/03 12:20:00 12:30
+Waiting schedule 2024/03/03 12:20:00 12:30
+Waiting schedule 2024/03/03 12:20:00 12:30
+Waiting schedule 2024/03/03 12:20:00 12:30
+Waiting schedule 2024/03/03 12:20:00 12:30
+Waiting schedule 2024/03/03 12:20:00 12:30
+Waiting schedule 2024/03/03 12:20:00 12:31
+Waiting schedule 2024/03/03 12:20:00 12:31
+Waiting schedule 2024/03/03 12:20:00 12:31
+Waiting schedule 2024/03/03 12:20:00 12:31
+Stopped 12:32
+Stopped 12:32
+Stopped 12:33
+Waiting schedule 2024/03/03 12:20:00 12:33
+Waiting schedule 2024/03/03 12:20:00 12:34
+Waiting schedule 2024/03/03 12:20:00 12:34
+Waiting schedule 2024/03/03 12:20:00 12:34
+Waiting schedule 2024/03/03 12:20:00 12:35
+Waiting schedule 2024/03/03 12:20:00 12:35
+Waiting schedule 2024/03/03 12:20:00 12:36
+Waiting schedule 2024/03/03 12:20:00 12:36
+Waiting schedule 2024/03/03 12:20:00 12:36
+Started 12:36
+Started 12:36
+Started 12:40
+Started 12:40
+Started 12:40
+Started 12:40
+Started 12:40
+Waiting schedule 2024/03/03 12:20:00 12:40
+Waiting schedule 2024/03/03 12:20:00 12:41
+Waiting schedule 2024/03/03 12:20:00 12:41
+Waiting schedule 2024/03/03 12:20:00 12:41
+Waiting schedule 2024/03/03 12:20:00 12:42
+Waiting schedule 2024/03/03 12:20:00 12:42
+Waiting schedule 2024/03/03 12:20:00 12:42
+Waiting schedule 2024/03/03 12:20:00 12:42
+Waiting schedule 2024/03/03 12:20:00 12:42
+Waiting schedule 2024/03/03 12:20:00 12:47
+Waiting schedule 2024/03/03 12:20:00 12:47
+Waiting schedule 2024/03/03 12:20:00 12:47
+Waiting schedule 2024/03/03 12:20:00 12:47
+Waiting schedule 2024/03/03 12:20:00 12:47
+Starting. 12:47
+Starting. 10:24
+Starting. 10:26
+Starting. 10:28
+Starting. 10:30
+Starting. 10:43
+Starting. 10:45
+Waiting schedule 2024/06/01 19:45:33 10:46
+Waiting schedule 2024/06/01 19:45:33 10:46
+Waiting schedule 2024/06/01 19:45:33 10:46
+Waiting schedule 2024/06/01 19:45:33 10:46
+Started 10:47
+Stopped 10:47
+Stopped 10:48
+Waiting schedule 2024/06/01 19:48:21 10:48
+Waiting schedule 2024/06/01 19:48:21 10:48
+Waiting schedule 2024/06/01 19:48:21 10:48
+Waiting schedule 2024/06/01 19:48:21 10:48
+Waiting schedule 2024/06/01 19:48:21 10:50
+Waiting schedule 2024/06/01 19:50:13 10:50
+Waiting schedule 2024/06/01 19:50:13 10:50
+Waiting schedule 2024/06/01 19:50:13 10:50
+Waiting schedule 2024/06/01 19:50:13 10:50
+Waiting schedule 2024/06/01 19:50:13 10:51
+Waiting schedule 2024/06/01 19:51:28 10:51
+Waiting schedule 2024/06/01 19:51:28 10:51
+Waiting schedule 2024/06/01 19:51:28 10:51
+Waiting schedule 2024/06/01 19:51:28 10:52
+Waiting schedule 2024/06/01 19:52:42 10:52
+Waiting schedule 2024/06/01 19:52:42 10:52
+Waiting schedule 2024/06/01 19:52:42 10:52
+Waiting schedule 2024/06/01 19:52:42 10:52
+Started 10:52
+Stopped 10:52
+Started 10:52
+Stopped 10:52
+Stopped 10:53
+Waiting schedule 2024/06/01 19:53:49 10:53
+Waiting schedule 2024/06/01 19:53:49 11:04
+Waiting schedule 2024/06/01 19:04:47 11:04
+Waiting schedule 2024/06/01 19:04:47 11:04
+Stopped 11:04
+Started 11:04
+Stopped 11:05
+Started 11:05
+Stopped 11:05
+Started 11:05
+Stopped 11:05
+Started 11:05
+Stopped 11:05
+Started 11:05
+Stopped 11:05
+Started 11:05
+Waiting schedule 2024/06/01 17:04:00 11:05
+Waiting schedule 2024/06/01 17:04:00 11:05
+Waiting schedule 2024/06/01 17:04:00 11:12
+Waiting schedule 2024/06/01 17:04:00 11:12
+Waiting schedule 2024/06/01 17:04:00 11:15
+Waiting schedule 2024/06/01 17:04:00 11:15
+Waiting schedule 2024/06/01 17:04:00 09:48
+Waiting schedule 2024/06/01 17:04:00 09:48

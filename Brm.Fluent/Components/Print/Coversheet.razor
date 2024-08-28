@@ -1,0 +1,132 @@
+﻿@page "/coversheet/{BrmBarCode}"
+@layout PrintLayout
+
+@inject BRMDbService db
+@inject StaticService sservice
+@inject BarCodeService bcService
+@inject IJSRuntime Js
+@inject IAlertService toast
+@inject Navigation Navigation
+
+
+@if (!string.IsNullOrEmpty(file.UnqFileNo))
+{
+    <div>
+        <button class="btn btn-primary active" @onclick="btnBack_Click">Back</button>
+        <button class="btn btn-primary active" @onclick="btnPrint_Click">Print</button>
+    </div>
+    <div id="pdf">
+        <div class="printme row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-4">
+                        <img alt="" src="images/sassa_logoSmall.jpg" width="200" />
+                    </div>
+                    <div class="col-4 centered">
+                        <label class="h2">File Coversheet</label>
+                        <div>BRM File Number:</div>
+                        <div><strong>@file.BrmBarcode</strong></div>
+                        <div>CLM Number:</div>
+                        <div><strong>@file.UnqFileNo</strong></div>
+                        @((MarkupString)QrCode)
+                    </div>
+                    <div class="col-4 right">
+                        <div>@DateTime.Now.ToShortDateString()</div>
+                        <div>
+                            <label class="chkboxLabel" style="padding-right: 10px; font-size: 16px">Approved - Main</label><input type="checkbox" checked="@file.ApplicationStatus.Contains("MAIN")" disabled="disabled" /><br />
+                            <label class="chkboxLabel" style="padding-right: 10px; font-size: 16px">Rejected - Archive</label><input type="checkbox" checked="@file.ApplicationStatus.Contains("ARCHIVE")" disabled="disabled" /><br />
+                            <label class="chkboxLabel" style="padding-right: 10px; font-size: 16px">Loose Correspondence</label><input type="checkbox" checked="@file.ApplicationStatus.Contains("LC")" disabled="disabled" /><br />
+                            <label class="chkboxLabel" style="padding-right: 10px; font-size: 16px">Review</label><input type="checkbox" checked="@(file.TransType == 2)" disabled="disabled" /><br />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-5">
+                        <div>@file.FullName</div>
+                        <div>@(sservice.GetRegion(file.RegionId))</div>
+                        <div>@(sservice.GetOfficeName(file.OfficeId))</div>
+                        <div>Transaction Date: </div>
+                        <div>Date Last Reviewed: @(file.Lastreviewdate == null? ""  : ((DateTime)file.Lastreviewdate).ToString("yyyy/MM/dd"))</div>
+                        @if (file.Lctype != null)
+                        {
+                            <div>LC Type: @(sservice.GetLcType((decimal)file.Lctype))</div>
+                        }
+                    </div>
+                    <div class="col-5">
+                        <div>@(file.GrantType == "S" ? file.SrdNo : file.ApplicantNo)</div>
+                        <div>@(sservice.GetGrantType(file.GrantType))</div>
+                        <div>@(file.TransDate == null ? "" : ((DateTime)file.TransDate).ToString("yyyy/MM/dd"))</div>
+                        <div>Archive Year: @file.ArchiveYear</div>
+                    </div>
+                    <div class="col-2" style="position: relative;">
+                        @*RIGHT-SIDE DIV FOR BARCODES*@
+                        <div class="centered rotate" style="top:0;">
+                            <div> @((MarkupString)IdBarCode)</div>
+                            <div>@(file.GrantType == "S" ? file.SrdNo + "(Srd)" : file.ApplicantNo + "(Id)")</div>
+                        </div>
+                        <div class="centered rotate" style="top: 220px;">
+                            <div>@((MarkupString)ClmBarCode)</div>
+                            <div>@file.UnqFileNo</div>
+                        </div>
+                        <div class="centered rotate" style="top: 520px;">
+                            <div>@((MarkupString)BarCode)</div>
+                            <div>@file.BrmBarcode</div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    @*MAIN DIV FOR CONTENT*@
+                    <div class="col-10">
+                        <CriticalDocuments GrantType="@(file.GrantType)" DocsPresent="@(file.DocsPresent ?? "")" DocsChanged="OnDocsChanged" />
+                    </div>
+                </div>
+                <br />
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string BrmBarCode { get; set; } = default!;
+
+    protected DcFile file = new();
+
+    protected string QrCode = "unknown";
+    protected string IdBarCode = "unknown";
+    protected string ClmBarCode = "unknown";
+    protected string BarCode = "unknown";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (BrmBarCode != null)
+        {
+            file = await db.GetBRMRecord(BrmBarCode);
+            QrCode = bcService.GetQrSvg(BrmBarCode, file.UnqFileNo, file.GrantType == "S" ? file.SrdNo : file.ApplicantNo, file.FullName, sservice.GetGrantType(file.GrantType));
+            IdBarCode = bcService.GetBarCode(file.GrantType == "S" ? (file.SrdNo ?? "unknown") : file.ApplicantNo);
+            ClmBarCode = bcService.GetBarCode(file.UnqFileNo);
+            BarCode = bcService.GetBarCode(file.BrmBarcode);
+        }
+
+    }
+
+    private async Task OnDocsChanged(string docspresent)
+    {
+        await db.SaveDocuments(file!.UnqFileNo,docspresent);
+    }
+
+    private async Task btnPrint_Click()
+    {
+        //Todo: try window.print
+        await Js.InvokeVoidAsync("printPage");
+    }
+    private void btnBack_Click()
+    {
+        //Navigation.NavigateTo($"searchapplicant/{file.ApplicantNo}");
+        //Navigation.NavigateBack();
+        Js.InvokeVoidAsync("window.close");
+    }
+
+}

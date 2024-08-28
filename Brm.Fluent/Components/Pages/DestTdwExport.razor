@@ -1,0 +1,274 @@
+﻿@using System.IO
+@inject SessionService sessionservice
+@inject BRMDbService db
+@inject StaticService sservice
+@inject IAlertService toast
+@inject IWebHostEnvironment environment
+@inject DestructionService dProcess
+
+<br />
+<h5>Create TDW Destruction list</h5>
+<hr />
+
+<div class="row">
+    <div class="col">
+        <div class="input-group mb-1">
+            <span class="input-group-text">Destruction Year</span>
+            <select class="form-select" @bind="@destructionYear">
+                <option selected>@destructionYear</option>
+                @foreach (var val in StaticDataService.DestructionYears)
+                {
+                    <option value="@val">@val</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col">
+        <button class="btn btn-primary btn-sm active" @onclick="@(() => Reload_Click())">Reload</button>
+    </div>
+</div>
+<div>
+    <hr />
+    <br />
+    <h5>Approved Batches</h5>
+    <table class="table table-sm" style="font-size:small;">
+        <thead>
+            <tr>
+                <th scope="col">Batch Id</th>
+                <th scope="col">Region</th>
+                <th scope="col">Created by</th>
+                <th scope="col">Approved by</th>
+                <th scope="col">Approved date</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (DcExclusionBatch p in batches.result)
+        {
+            <tr>
+                <td>@p.BatchId</td>
+                <td>@sservice.GetRegion((p.RegionId??0).ToString())</td>
+                <td>@p.CreatedBy</td>
+                <td>@p.ApprovedBy</td>
+                <td>@p.ApprovedDate</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(p.ApprovedBy))
+                    {
+                        <button class="btn btn-primary btn-sm active" @onclick="@(() => btnExport_Region_Click())">Export</button>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <Pager Paged="OnApprovedBatchPaged" TotalSize="@batches.count"></Pager>
+    <br />
+    <button class="btn btn-primary btn-sm active" @onclick="@(() => btnExport_Batch_Click())">Export</button>
+    <div id="divError"></div>
+</div>
+<div>
+    <br />
+    <h2>Upload results</h2>
+    <hr />
+    <label>
+        Upload Destroyed list:
+        <InputFile OnChange="LoadFiles" />
+    </label>
+
+    @if (isLoading)
+    {
+        <p>Uploading...</p>
+    }
+    else
+    {
+        if (loadedFiles.Any())
+        {
+            <p>Processing..</p>
+            <ul>
+            @foreach(var file in loadedFiles)
+            {
+                <li>Name: @file.Name</li>
+                <li>Last modified: @file.LastModified.ToString()</li>
+                <li>Size (bytes): @file.Size</li>
+                <li>Content type: @file.ContentType</li>
+            }
+        </ul>
+        }
+    }
+</div> 
+
+@code {
+
+    protected int RegionId;
+    protected string destructionYear = "";
+    protected PagedResult<DcExclusionBatch> batches = new PagedResult<DcExclusionBatch>();
+    int batchpage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        destructionYear = StaticDataService.DestructionYears.First();
+        RegionId = int.Parse(sessionservice.session.Office.RegionId);
+        await OnApprovedBatchPaged(batchpage);
+    }
+
+    protected async Task Reload_Click()
+    {
+        await OnApprovedBatchPaged(batchpage);
+    }
+
+    private List<IBrowserFile> loadedFiles = new();
+    private long maxFileSize = 1000 * 100000;
+    private int maxAllowedFiles = 3;
+    private bool isLoading;
+
+    private async Task LoadFiles(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+        loadedFiles.Clear();
+        try
+        {
+            foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+            {
+
+                var path = Path.Combine(environment.ContentRootPath, "BrmFiles", file.Name);
+
+                await using FileStream fs = new(path, FileMode.Create);
+                await file.OpenReadStream(maxFileSize).CopyToAsync(fs);
+
+                loadedFiles.Add(file);
+                fs.Close();
+
+                //Process content
+                try
+                {
+                      await dProcess.DestroyXlsxFile(path,"ID");
+                }
+                catch (IOException fe)
+                {
+                    Console.WriteLine("The file could not be read:");
+                    Console.WriteLine(fe.Message);
+                }
+
+            }
+        }
+        catch(Exception ex)
+        {
+            toast.Error($"File upload failed. {ex.Message}");
+            isLoading = false;
+        }
+        isLoading = false;
+
+    }
+
+    // protected void CommandBtn_Click(object sender, GridViewCommandEventArgs e)
+    // {
+    //    int batchId = (int)GridApproved.DataKeys[int.Parse(e.CommandArgument.ToString())].Value;
+    //    switch (e.CommandName)
+    //    {
+
+    //        case "Download":
+
+    //            divError.Visible = true;
+    //            string Filename = string.Format("{0} - Destruction.csv", batchId);
+    //            lblError.Text = "Downloading file :" + Filename;
+    //            string csv = dProcess.dData.getTDWcsv(batchId);
+
+
+    //            //Download the CSV file.
+    //            Response.Clear();
+    //            Response.Buffer = true;
+    //            Response.AddHeader("content-disposition", "attachment;filename=" + Filename);
+    //            Response.Charset = "";
+    //            Response.ContentType = "application/text";
+    //            Response.Output.Write(csv);
+    //            Response.Flush();
+    //            Response.End();
+    //            divError.Visible = false;
+    //            break;
+
+    //        case "FTP":
+    //            dProcess.dData.getTDWcsvToFTP(batchId);
+    //            divError.Visible = false;
+    //            break;
+    //        default:
+    //            divError.Visible = false;
+    //            break;
+
+    //    }
+
+    //    GridApproved.DataSource = dProcess.dData.GetApprovedBatches();
+    //    GridApproved.DataBind();
+    // }
+
+    // protected void UploadBtn_Click(object sender, EventArgs e)
+    // {
+    //    //divError.Visible = false;
+    //    if (CompletedFile.FileContent.Length > 0)
+    //    {
+
+    //        string content;
+
+    //        using (var reader = new StreamReader(CompletedFile.FileContent))
+    //        {
+    //            content = reader.ReadToEnd();
+    //        }
+    //        var rows = content.Replace("\r\n", "|").Split('|');
+    //        string newstatus = rows.First();
+    //        switch (newstatus.ToLower())
+    //        {
+    //            case "destroyed":
+    //                newstatus = "Destroyed";
+    //                break;
+    //            case "tdwnotfound":
+    //                newstatus = "TDWNotFound";
+    //                break;
+    //        }
+    //        try
+    //        {
+    //            dProcess.dData.BatchResult = "";
+    //            foreach (string pension in rows.Skip(1))
+    //            {
+    //                dProcess.dData.UpdateDestructionStatus(pension.Trim(), newstatus);
+    //            }
+    //            if (dProcess.dData.BatchResult != "")
+    //            {
+    //                lblError.Text = dProcess.dData.BatchResult;
+    //                divError.Visible = true;
+    //            }
+    //        }
+    //        catch
+    //        {
+    //            lblError.Text = dProcess.dData.BatchResult;
+    //            divError.Visible = true;
+    //        }
+
+    //    }
+    // }
+
+    protected async Task btnExport_Batch_Click()
+    {
+        toast.Info($"Destruction List queued.");
+        await db.SaveDestructionList();
+    }
+
+    protected async Task btnExport_Region_Click()
+    {
+        try
+        {
+            toast.Info($"Destruction List queued.");
+            await db.SaveDestructionList(sessionservice.session.Office.RegionId);
+        }
+        catch( Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+
+    protected async Task OnApprovedBatchPaged(int _page)
+    {
+        batchpage = _page;
+        batches = await db.GetApprovedBatches(destructionYear, batchpage);
+
+    }
+
+}

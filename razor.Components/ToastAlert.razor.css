@@ -1,0 +1,25 @@
+﻿.close-button {
+    border: none;
+    display: inline-block;
+    padding: 4px 8px;
+    vertical-align: middle;
+    overflow: hidden;
+    text-decoration:none;
+    color: inherit;
+    background-color: inherit;
+    text-align: center;
+    cursor: pointer;
+    white-space: nowrap;
+    position: absolute;
+    right: 0;
+    top: 0
+}
+
+.top-alert {
+    position: fixed;
+    top: 5%;
+    left: 30%;
+    min-width: 400px;
+    max-width: 600px;
+    z-index: 1600;
+}

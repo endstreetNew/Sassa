@@ -1,0 +1,124 @@
+﻿@inject SessionService  sessionservice
+@inject BRMDbService db
+@inject StaticService sservice
+@inject IAlertService toast
+
+<h3>FINAL Approval for regions Destruction exclusions</h3>
+
+<div class="whitearea" style="width:50%;">
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-1">
+                <span class="input-group-text">Destruction Year</span>
+                <select class="form-select" @bind="@destructionYear">
+                    <option selected>@destructionYear</option>
+                    @foreach (var val in StaticDataService.DestructionYears)
+                    {
+                        <option value="@val">@val</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary btn-sm active" @onclick="@(() => Reload_Click())">Reload</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+
+            <h5>Batches ready for Approval</h5>
+
+            <asp:GridView ID="GridApproval" CssClass="gridView" runat="server" AutoGenerateColumns="False" DataKeyNames="BATCH_ID">
+                <asp:BoundField DataField="BATCH_ID" HeaderText="Batch Id" ReadOnly="True" SortExpression="BATCH_ID" />
+                <asp:BoundField DataField="EXCLUSION_YEAR" HeaderText="Year" SortExpression="DESTRUCTION_YEAR" />
+                <asp:BoundField DataField="REGION_NAME" HeaderText="Region" SortExpression="REGION" />
+                <asp:BoundField DataField="CREATED_BY" HeaderText="Created By" SortExpression="CREATED_BY" />
+                <asp:BoundField DataField="CREATED_DATE" HeaderText="Create Date" SortExpression="CREATED_DATE" />
+            </asp:GridView>
+
+            <table>
+                <tr>
+
+                    <td>
+                        <asp:Button ID="ApproveBatch" runat="server" Text="Approve" OnClick="btnApprove_Batch_Click" CssClass="btn btn-primary active" Width="120px" />
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
+<br />
+<table class="table table-sm" style="font-size:small;">
+    <thead>
+        <tr>
+            <th scope="col">Batch Id</th>
+            <th scope="col">Region</th>
+            <th scope="col">Created by</th>
+            <th scope="col">Approved by</th>
+            <th scope="col">Approved date</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (DcExclusionBatch p in batches.result)
+        {
+            <tr>
+                <td>@p.BatchId</td>
+                <td>@sservice.GetRegion(p.RegionId.ToString()!)</td>
+                <td>@p.CreatedBy</td>
+                <td>@p.ApprovedBy</td>
+                <td>@p.ApprovedDate</td>
+                <td>
+                    @if (string.IsNullOrEmpty(p.ApprovedBy))
+                    {
+                    <button class="btn btn-primary btn-sm active" @onclick="@(() => btnApprove_Batch_Click(p.BatchId))">Approve</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<Pager Paged="OnExclusionBatchPaged" TotalSize="@batches.count"></Pager>
+<br />
+
+@code {
+
+    protected int RegionId;
+    protected string destructionYear = "";
+    protected PagedResult<DcExclusionBatch> batches = new PagedResult<DcExclusionBatch>();
+    int batchpage = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        destructionYear = StaticDataService.DestructionYears.First();
+        RegionId = int.Parse(sessionservice.session.Office.RegionId);
+        await OnExclusionBatchPaged(1);
+
+    }
+
+    protected async Task Reload_Click()
+    {
+        await OnExclusionBatchPaged(batchpage);
+    }
+
+    protected async Task btnApprove_Batch_Click(decimal batchId)
+    {
+        try
+        {
+            await db.ApproveBatch(batchId);
+            await OnExclusionBatchPaged(batchpage);
+
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+    protected async Task OnExclusionBatchPaged(int _page)
+    {
+        batchpage = _page;
+        batches = await db.GetExclusionBatches(destructionYear,batchpage);
+
+    }
+}

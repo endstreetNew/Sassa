@@ -1,0 +1,15 @@
+﻿@page "/"
+@page "/brmprod"
+
+@inject MenuItems endPoints
+<div class="container rounded">
+<div class="wrapper">
+    @foreach(var item in endPoints)
+    {
+        <div>
+            <a class="btn btn-lg btn-outline-secondary" href="@item.Url" target="_blank" style="width:400px;"><span ><img src="@item.Icon" style="width:50px;" /></span>@item.Name</a>
+        </div>
+    }
+</div>
+</div>
+

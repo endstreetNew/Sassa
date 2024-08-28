@@ -1,0 +1,252 @@
+﻿@inject SessionService sessionservice
+@inject BRMDbService db
+@inject StaticService sservice
+@inject IAlertService toast
+
+<br />
+<div class="row align-items-center">
+    <div class="col">
+        <div class="input-group mb-1">
+            <div class="input-group-text">
+                <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" checked="@filterUser" @onchange="@(e => UserFilterChange(e))">
+            </div>
+            <label class="form-control" aria-label="Show requested by me.">Show my requests.</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-group mb-1">
+            <div class="input-group-text">
+                <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" checked="@filterOffice" @onchange="@(e => OfficeFilterChange(e))">
+            </div>
+            <label class="form-control" aria-label="Show requested by me.">Show my office requests.</label>
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-group mb-1">
+            <span class="input-group-text">Status filter</span>
+            <select class="form-select" @onchange="@(e => StatusFilterChange(e))">
+                <option value="" selected>select...</option>
+                @foreach (var item in StaticDataService.RequestStatus)
+                {
+                    <option value=@item.Key>@item.Value</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-group mb-1">
+            <span class="input-group-text">Request reason filter</span>
+            <select class="form-select" @onchange="@(e => ReasonFilterChange(e))">
+                <option value="" selected>select...</option>
+                @foreach (var item in sservice.GetRequestCategoryTypes())
+                {
+                    <option value=@item.Key>@item.Value</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    @if (sessionservice.session.Office.OfficeType == "RMC" && sessionservice.session.IsInRole("GRP_BRM_Supervisors"))
+        {
+            <div class="col goldArea">
+            <div class="input-group mb-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"># of Files's</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Records in request" @bind="requestCount">
+                <div class="input-group-append">
+                    <button class="btn btn-primary active" @onclick="btnTDWRequest_Click" type="button">Request</button>
+                </div>
+            </div>
+            </div>
+        }
+    
+</div>
+@*@if (db.session.Office.OfficeType == "RMC")
+{
+    <div><input type="checkbox" @onchange="@(e => chkSelectAll(e))" /><label class="chkboxLabel">Select All Picklist Candidates</label></div>
+}*@
+@if (fileRequests != null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <PieChart PieData="@piedata"></PieChart>
+            </div>
+            <div class="col">
+                <PieChart PieData="@regiondata"></PieChart>
+            </div>
+        </div>
+    </div>
+    <table class="table table-sm" style="font-size:small;">
+        <thead>
+            <tr>
+                @*<th scope="col">Select</th>*@
+                <th scope="col">Id</th>
+                <th scope="col">Office</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Date requested</th>
+                <th scope="col">Grant type</th>
+                <th scope="col">Name</th>
+                <th scope="col">Surname</th>
+                <th scope="col">Requested by</th>
+                <th scope="col">Status</th>
+                @*<th scope="col">Action</th>*@
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var u in fileRequests.result)
+            {
+                <tr>
+                    @*<td>
+                        @if (u.Status == "TDWPicklist" && db.session.Office.OfficeType == "RMC")
+                        {<input type="checkbox" @bind="@u.isSelected" />}
+                    </td>*@
+                    <td>@u.IdNo</td>
+                    <td>@u.RequestedOfficeId</td>
+                    <td>@u.Reason</td>
+                    <td>@u.RequestedDate</td>
+                    <td>@u.GrantType</td>
+                    <td>@u.Name</td>
+                    <td>@u.Surname</td>
+                    <td>@u.RequestedByAd</td>
+                    <td>@u.Status</td>
+                    @*<td> 
+                        @if (u.Status != "Closed")
+                        {
+                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnCancelRequest_Click(u))">Cancel/Close</button>
+                        }
+                    </td>*@
+                </tr>
+            }
+
+        </tbody>
+    </table>
+    <Pager Paged="OnPaged" TotalSize="@fileRequests.count"></Pager>
+}
+else
+{
+    <div class="spinner spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+}
+
+@code {
+
+    PagedResult<DcFileRequest> fileRequests = new();
+    bool filterUser = false;
+    bool filterOffice = true;
+    string filterStatus = "";
+    string filterReason = "";
+
+    PieData piedata = new();
+    PieData regiondata = new();
+
+    int page;
+    int requestCount = 500;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        page = 1;
+        await LoadRequests();
+    }
+    #region Requests
+
+    protected async Task UserFilterChange(ChangeEventArgs e)
+    {
+        filterUser = (bool)e.Value!;
+        await LoadRequests();
+    }
+
+    protected async Task OfficeFilterChange(ChangeEventArgs e)
+    {
+        filterOffice = (bool)e.Value!;
+        await LoadRequests();
+    }
+
+    protected async Task StatusFilterChange(ChangeEventArgs e)
+    {
+        filterStatus = (string)e.Value!;
+        await LoadRequests();
+    }
+    protected async Task ReasonFilterChange(ChangeEventArgs e)
+    {
+        filterReason = (string)e.Value!;
+        await LoadRequests();
+    }
+    protected Task LoadRequests()
+    {
+        fileRequests = db.GetFileRequests(filterUser, filterOffice, page, filterStatus, filterReason);
+        piedata = db.GetRequestPieData();
+        regiondata = db.GetRequestPieData(sessionservice.session.Office.RegionId);
+        return Task.CompletedTask;
+    }
+
+    protected void chkSelectAll(ChangeEventArgs e)
+    {
+        var selected = (bool)e.Value!;
+        foreach (DcFileRequest req in fileRequests.result.Where(r => r.Status == "TDWPicklist"))
+        {
+            req.isSelected = selected;
+        }
+    }
+    protected async Task btnTDWRequest_Click()
+    {
+        try
+        {
+            //List<SelectedRequest> selectedIds = GetSelectedRequests();
+            if (requestCount ==0) throw new Exception("No items selected for TDW request.");
+            //Set SENT_TDW
+            await db.SendTDWRequestsPerRegion(requestCount);
+            toast.Success("Selected Request(s) sent to TDW.");
+            await LoadRequests();
+        }
+        catch (Exception ex)
+        {
+            if (ex.Message.Contains("in progress"))
+            {
+                toast.Warn(ex.Message);
+            }
+            else
+            {
+                toast.Error(ex.Message);
+            }
+
+        }
+    }
+    //private List<SelectedRequest> GetSelectedRequests()
+    //{
+    //    List<SelectedRequest> selectedIds = new List<SelectedRequest>();
+    //    foreach (var row in fileRequests.result.Where(f => f.isSelected).ToList())
+    //    {
+    //        SelectedRequest sr = new SelectedRequest { GrantTypeName = row.GrantType, IDNo = row.IdNo, Requested_By_AD = row.RequestedByAd, GrantTypeId = row.GrantType };
+    //        selectedIds.Add(sr);
+    //    }
+    //    return selectedIds;
+    //}
+
+    //protected async Task btnCancelRequest_Click(DcFileRequest fr)
+    //{
+    //    try
+    //    {
+    //        throw new Exception("Function in development");
+    //        await db.ChangeFileRequestStatus(fr, "Closed");
+    //        await LoadRequests();
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        toast.Error(ex.Message);
+    //    }
+
+    //}
+
+    protected void OnPaged(int _page)
+    {
+        page = _page;
+        fileRequests = db.GetFileRequests(filterUser, filterOffice, page, filterStatus, filterReason);
+
+    }
+    #endregion
+}

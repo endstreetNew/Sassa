@@ -1,0 +1,40 @@
+﻿@namespace Sassa.eForms.Internal.Pages.Components
+
+@inject AuthenticationStateProvider authenticationStateProvider
+@inject NavigationManager navigationManager
+@inject AppState appState
+
+@if (showNotAuthorizedMessage)
+{
+<section class="section" id="not-authorized-message">
+    <div class="container">
+        <div class="notification is-danger">
+            <p>You are not authorized to view this page.</p>
+        </div>
+    </div>
+</section>
+}
+
+@code {
+
+    private bool showNotAuthorizedMessage = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+
+
+        if (!state.User.Identity.IsAuthenticated)
+        {
+            appState.LoginTitle = "Please Login to Access this Page";
+            // If the user is not authenticated redirect them to the sign in page
+            navigationManager.NavigateTo("account/signin/0/?returnUrl=" + System.Net.WebUtility.UrlEncode(new Uri(navigationManager.Uri).PathAndQuery));
+        }
+        else
+        {
+            appState.LoginTitle = "Login";
+            // If the user is signed in, but authorization failed, display a message
+            showNotAuthorizedMessage = true;
+        }
+    }
+}

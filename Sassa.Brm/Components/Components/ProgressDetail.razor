@@ -1,0 +1,191 @@
+@inject Navigation Navigate
+@inject SessionService sessionservice
+@inject BRMDbService db
+@inject StaticService sservice
+@inject ProgressService og
+@inject ReportDataService rs
+@inject IAlertService toast
+
+<br/>
+<div>
+@if(!IsDashboardLoaded)
+{
+        <div class="row">
+            <span><strong>Filter Options</strong></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-1">
+                    <span class="input-group-text">From Month</span>
+                    <select class="form-select" @bind="fromMonth">
+                        <option selected>select...</option>
+                        @foreach (var val in StaticDataService.MonthList())
+                        {
+                            <option value="@val.Key">@val.Value</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-1">
+                    <span class="input-group-text">To Month</span>
+                    <select class="form-select" @bind="toMonth">
+                        <option selected>select...</option>
+                        @foreach (var val in StaticDataService.MonthList())
+                        {
+                            <option value="@val.Key">@val.Value</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group mb-1">
+                    <span class="input-group-text">Region</span>
+                    <select class="form-select" @bind="office.RegionId">
+                        <option value="" selected>All...</option>
+                        @foreach (var region in sservice.GetRegions())
+                        {
+                            <option value="@region.Key">@region.Value</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                 <div class="input-group mb-1">
+                        <span class="input-group-text">Office</span>
+                        <select class="form-select" @bind="office.OfficeId">
+                            <option value="" selected>All...</option>
+                            @foreach (var val in sservice.GetOffices(office.RegionId))
+                            {
+                                <option value="@val.OfficeId">@val.OfficeName</option>
+                            }
+                        </select>
+                    </div>
+             </div>
+        </div>
+        <div class="row">
+            <div class="col">
+            <button class="btn btn-primary active" @onclick="btnLoadProgress_Click">Load Detail</button>
+            </div>
+        </div>
+    }
+    else
+    {
+                 <div class="row">
+                    <span><strong>Progress for Office : @office.OfficeName</strong></span>
+                </div>
+                 <div class="row">
+                    <span><strong>Period : @StaticDataService.MonthList()[fromMonth] to @StaticDataService.MonthList()[toMonth]</strong></span>
+                </div>
+                <div class="row">
+                <div class="col-12">
+                    <table class="table table-sm" style="font-size:x-small;">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">MONTH</th>
+                                <th scope="col">SOCPEN</th>
+                                <th scope="col">BRM</th>
+                                <th scope="col">SCAN</th>
+                                <th scope="col">ContentServer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var u in dashboardData)
+                            {
+                                <tr>
+                                    <td style="cursor: pointer;font-size:12px;font-weight:bold;"><span class="@expandedClass" aria-hidden="true" @onclick="@(() => Expand(u))">@(u.IsExpanded ? "-" : "+")</span></td>
+                                    <td>@(new DateTime(2010, u.Month, 1).ToString("MMM", CultureInfo.InvariantCulture))</td>
+                                    <td>@u.Total</td>
+                                    <td>@u.Captured</td>
+                                    <td>@u.Scanned</td>
+                                    <td>@u.CsLoaded</td>
+                                </tr>
+                                if(u.IsExpanded)
+                                {
+                                   <tr>
+                                        <td colspan="6">
+                                            <DailyProgressDetail DayDetail="@u.DayDetail"></DailyProgressDetail>
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+            </div>
+            <div class="row">
+                <div class="col">
+                <button class="btn btn-primary active" @onclick="btnResetProgress_Click">Close Dashboard</button>
+                </div>
+            </div>
+
+}
+</div>
+
+@code {
+    protected UserOffice office = new();
+    string fromMonth = "";
+    string toMonth ="";
+    bool IsDashboardLoaded;
+
+    string expandedClass = "";//"oi caret-bottom";
+    string expandedText = "+";
+
+    List<MonthDetail> dashboardData = new();
+
+    protected override void OnInitialized()
+    {
+        office = sessionservice.session.Office;
+        IsDashboardLoaded = false;
+    }
+
+    protected async Task btnLoadProgress_Click()
+    {
+        try
+        {
+            DateTime from = new DateTime(int.Parse(fromMonth.Split('|')[1]), int.Parse(fromMonth.Split('|')[0]), 1);
+            DateTime to = new DateTime(int.Parse(toMonth.Split('|')[1]), int.Parse(toMonth.Split('|')[0]), DateTime.DaysInMonth(int.Parse(toMonth.Split('|')[1]), int.Parse(toMonth.Split('|')[0])));
+            //var monthYear = fromMonth.Split('|');
+            //int month = int.Parse(monthYear[0]);
+            //int year = int.Parse(monthYear[1]);
+            //await Task.Delay(100);
+            if (string.IsNullOrEmpty(office.OfficeId))
+            {
+                office = sessionservice.session.Office;
+            }
+            else
+            {
+                office.OfficeName = sservice.GetOfficeName(office.OfficeId);
+            }
+            if (string.IsNullOrEmpty(fromMonth) || string.IsNullOrEmpty(toMonth))
+            {
+                toast.Info($"Please check your Filter. it is invalid");
+                return;
+            }
+            await Task.Delay(100);
+            toast.Info($"Progress Dashboard loading...");
+            dashboardData = await og.GetMonthDetail(from, to, office);
+            IsDashboardLoaded = true;
+        }
+        catch
+        {
+            toast.Info($"Please check your Filter, it is invalid");
+        }
+    }
+
+    protected void btnResetProgress_Click()
+    {
+        IsDashboardLoaded = false;
+    }
+
+    protected void Expand(MonthDetail u)
+    {
+        u.IsExpanded = !u.IsExpanded;
+       // expandedClass = u.IsExpanded ? "oi oi-caret-bottom" : "oi oi-caret-right";
+        expandedText = u.IsExpanded ? "-" : "+";
+    }
+}

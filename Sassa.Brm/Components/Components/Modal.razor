@@ -1,0 +1,53 @@
+﻿<CascadingValue Value="this">
+    <div class="modal" tabindex="-1" style="display: block;" role="dialog">
+        <div class="modal-dialog @Size" >
+            <div class="modal-content">
+                <div class="modal-header"> @*style="background-color: #0973B6">*@
+                    <div class="container">
+                        <div class="row"> @*style="height: 100%; display: block;">*@
+                            <div class="col"> @*style="width: 30%; float: left; display: inline-block">*@
+                                <img src="images/sassa_logoSmall.jpg" width="100"/>
+                            </div>
+                            <div class="col"> @*style="width: 40%; display: inline-block; height: 100px; text-align: center; padding-top: 10px;">*@
+                                <h5>@Heading</h5>
+                            </div>
+                            <div class="col"> @*style="margin-right: 15px; width: 25%">*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    @ChildContent
+                </div>
+                <div class="modal-footer">
+                    <button  class="btn btn-secondary" @onclick="btnCancel_Click">Cancel</button>
+                    <button  @onclick="btnOk_Click" class="btn btn-primary active">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</CascadingValue>
+@code {
+    // Next line is needed so we are able to add <TabPage> components inside
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public string Heading { get; set; } = "";
+    [Parameter]
+    public EventCallback Cancel { get; set; }
+    [Parameter]
+    public EventCallback Ok { get; set; }
+    [Parameter]
+    public string Size { get; set; } = "";
+
+
+    private void btnCancel_Click()
+    {
+        Cancel.InvokeAsync();
+    }
+    private void btnOk_Click()
+    {
+        Ok.InvokeAsync();
+    }
+
+}

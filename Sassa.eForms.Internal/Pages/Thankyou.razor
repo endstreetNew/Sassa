@@ -1,0 +1,19 @@
+﻿@page "/thankyou/{Reference}"
+@inject IConfiguration config;
+
+<iframe src="@thankyouUrl" style="border:none; height:110vh; width:100%; background: #FFFFFF;">
+    <base target="_parent">
+</iframe>
+
+
+@code {
+    [Parameter]
+    public string Reference { get; set; }
+
+    string thankyouUrl;
+
+    protected override void OnInitialized()
+    {
+        thankyouUrl = $"{config["FormsURL"]}/presentation/lfserver/Response_Page?reference={Reference}";
+    }
+}

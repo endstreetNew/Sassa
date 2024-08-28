@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <UserSecretsId>1422750e-3a4f-47d8-901e-12ce97f3f7ed</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Features\**" />
+    <Compile Remove="Migrations\**" />
+    <Content Remove="Features\**" />
+    <Content Remove="Migrations\**" />
+    <EmbeddedResource Remove="Features\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <None Remove="Features\**" />
+    <None Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\SassaAuthenticationService.cs" />
+    <Compile Remove="Services\SassaAuthenticationStateProvider.cs" />
+    <Compile Remove="Services\SassaLoginService.cs" />
+    <Compile Remove="Services\Security.cs" />
+    <Compile Remove="Services\UserService.cs" />
+    <Compile Remove="Services\UserSession.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Account\Register.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.13" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
+    <PackageReference Include="Sotsera.Blazor.Toaster" Version="3.0.0" />
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sassa.eDocs.Data\Sassa.eDocs.Data.csproj" />
+    <ProjectReference Include="..\Sassa.Surveys.Data\Sassa.Surveys.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Connected Services\" />
+    <Folder Include="wwwroot\pdf\" />
+  </ItemGroup>
+
+</Project>

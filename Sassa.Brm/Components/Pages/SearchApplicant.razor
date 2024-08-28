@@ -1,0 +1,402 @@
+﻿@page "/searchapplicant"
+@page "/searchapplicant/{Id}"
+
+@inject SessionService sessionservice
+@inject BRMDbService db
+@inject StaticService sservice
+@inject IAlertService toast
+
+<div class="pageTitle">
+<h3>File Capture</h3>
+</div>
+
+@if (showBrmModal)
+{
+
+    <Newbrm br="@SelectedApplication" ModalClosed="OnModalClosed" BrmSave="OnBrmSaved" TargetBoxType="@rebox.RegType"></Newbrm>
+
+}
+@if(showManualCapture)
+{
+    <ManualCapture br="@SelectedApplication" ModalClosed="OnModalClosed" ManualBrmSave="OnBrmSaved" TargetBoxType="@rebox.RegType"></ManualCapture>
+}
+@if(showConfirmRegion)
+{
+    <Confirmation Title="Confirm Region Change" Message="@regionChangeMessage" Cancel="CancelRegion" Ok="ConfirmedRegion"></Confirmation>
+}
+
+<div class="row">
+    <div class="col">
+    <div id="divSearchID" style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
+        <input class="form-control" placeholder="Enter ApplicantId here..." @bind="txtSearchId" />
+    </div>
+    <div id="divSearchSRD" style="vertical-align: bottom; display: table-cell; padding: 0 5px 0 5px;">
+        <input class="form-control" placeholder="Enter SRD here..." @bind="txtSearchSRD" />
+    </div>
+    <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
+        <button type="button" class="btn btn-primary btn-sm form-control" @onclick="@(async () => await Search())"><span class="oi oi-magnifying-glass" aria-hidden="true"></span></button>
+    </div>
+    </div>
+    <div class="col">
+        <div class="input-group mb-1" >
+            <span class="input-group-text" style="width:120px;">Grant Type</span>
+            <select class="form-select" @bind="@manualGrantType" style="max-width:220px;">
+                <option value="" selected>All...</option>
+                @foreach (var val in sservice.GetGrantTypes())
+                {
+
+                    <option value="@val.Key">@val.Value</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col">
+        @if (!DTSocPen.Any() && !string.IsNullOrEmpty(manualGrantType))//a search has been done and a grantype selected
+        {
+            @if (!DTSocPen.Where(a => a.GrantType == manualGrantType).Any())
+            {
+                <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
+                <button class="btn btn-primary btn-sm active" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnManualCapture_Click())">Manual Capture</button>
+                </div>
+            }
+        }
+    </div>
+    @if (sessionservice.session!.IsRmc())
+    {
+        <div class="col-4 float-right">
+        <BoxStatus rebox="@rebox"></BoxStatus>
+        </div>
+    }
+</div>
+<div style="display: table-row;">
+    <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
+        <input type="checkbox" @bind="@chkSearchFull" /><label class="chkboxLabel"> Search Id History.</label>
+    </div>
+@*    <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
+        <input type="checkbox" @bind="@chkSearchMv" /><label class="chkboxLabel">Search using new dataset.</label>
+    </div>*@
+</div>
+<br />
+<!-- Tabs navs -->
+<TabControl>
+    <TabPage Text="Socpen Results" Id="1" Enabled="true">
+        <div id="SocpenGrid">
+            @if (DTSocPen.Any())
+            {
+                <table style="font-size:small;width:100%;">
+                    <thead>
+                        <tr>
+                            <th scope="col">ID No</th>
+                            <th scope="col">ID History</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Child ID No</th>
+                            <th scope="col">Grant Type</th>
+                            <th scope="col">Srd No</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Surname</th>
+                            <th scope="col">Application Date</th>
+                            <th scope="col">Archive Year</th>
+                            <th scope="col">Transaction Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var u in DTSocPen)
+                        {
+                        <tr style="@(!string.IsNullOrEmpty(u.Brm_Parent)? "background-color:limegreen;": u.IsMergeCandidate  ? "background-color:gold;":"")">
+                            <td>@u.Id</td>
+                            <td>@u.IdHistory</td>
+                            <td><button class="btn btn-primary btn-sm active" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnNewCover_Click(u))">New Cover</button></td>
+                            <td>@u.ChildId</td>
+                            <td>@u.GrantName</td>
+                            <td>@u.Srd_No</td>
+                            <td>@u.Status</td>
+                            <td>@u.Name</td>
+                            <td>@u.SurName</td>
+                            <td>@u.AppDate</td>
+                            <td>@u.ARCHIVE_YEAR</td>
+                            <td>@u.StatusDate</td>
+                        </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+            }
+            else
+            {
+                <div style="padding: 10px 0 5px 0;">
+                    <p>No data. Please search and applicant.</p>
+                </div>
+            }
+        </div>
+    </TabPage>
+    <TabPage Text="BRM Results" Id="2" Enabled="true">
+        <BRMGrid Changed="OnChanged" DTBrm="@DTBrmParents" DTMerges="@DTMerged"></BRMGrid>
+    </TabPage>
+    <TabPage Text="Record History" Id="3" Enabled="true">
+        <BRMHistory IdNumber="@txtSearchId"></BRMHistory>
+    </TabPage>
+</TabControl>
+
+
+
+@code {
+
+    [Parameter]
+    public string Id { get; set; } = default!;
+
+    string txtSearchId ="";
+    string txtSearchSRD="";
+    bool chkSearchFull;
+    //bool chkSearchMv = false;
+
+    string regionChangeMessage = "";
+    string manualGrantType = "";
+
+    protected List<Application> DTSocPen = new();
+    protected List<Application> DTBrm = new();
+    protected List<Application> DTBrmParents = new();
+    protected List<Application> DTMerged = new();
+    protected Dictionary<string, int> Unmerged = new();
+
+    protected Application SelectedApplication = new();
+
+    bool showConfirmRegion = false;
+    bool showBrmModal = false;
+    bool showManualCapture = false;
+
+    protected Reboxing rebox = new Reboxing();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(Id))
+        {
+            txtSearchId = Id;
+            await Search();
+        }
+    }
+
+    private async Task Search()
+    {
+        long srdNo = 0;
+        bool srdWithNoId = false;
+        try
+        {
+            if (string.IsNullOrEmpty(txtSearchSRD) && string.IsNullOrEmpty(txtSearchId))
+            {
+                throw new Exception("No search criteria provided.");
+            }
+            //Clear previous results
+            DTSocPen.Clear();
+            DTBrm.Clear();
+            DTBrmParents.Clear();
+            DTMerged.Clear();
+            //Searching on SRD
+            if (!string.IsNullOrEmpty(txtSearchSRD))
+            {
+                srdNo = long.Parse(txtSearchSRD);
+                try
+                {
+                    txtSearchId = await db.GetSocpenSearchId(txtSearchSRD);
+                }
+                catch
+                {
+                    toast.Info("No Socpen results");
+                }
+                if (string.IsNullOrEmpty(txtSearchId))
+                {
+                    txtSearchId = $"S{txtSearchSRD.PadLeft(12, '0')}";
+                    srdWithNoId = true;
+                }
+            }
+            //Searching on ID
+            if (!string.IsNullOrEmpty(txtSearchId))
+            {
+                txtSearchId = txtSearchId.Trim();
+                if (srdWithNoId || txtSearchId.StartsWith("S"))
+                {
+                    DTSocPen = await db.SearchSocpenSrd(srdNo);
+                }
+                else
+                {
+                    if (!txtSearchId.IsNumeric() || txtSearchId.Length != 13) throw new Exception("Id is Invalid.");
+                    DTSocPen = await db.SearchSocpenId(txtSearchId, chkSearchFull);
+                }
+                if (!DTSocPen.Any()) toast.Info("No Socpen results");
+                DTBrm = await db.SearchBRMID(txtSearchId);
+                if (!DTBrm.Any()) toast.Info("No Brm results");
+            }
+            Merge();
+            StateHasChanged();
+
+        }
+        catch (Exception ex)
+        {
+            DTSocPen.Clear();
+            DTBrm.Clear();
+            DTBrmParents.Clear();
+            DTMerged.Clear();
+            toast.Error(ex.Message);
+
+        }
+    }
+
+    protected async Task OnChanged()
+    {
+        DTBrmParents.Clear();
+        DTMerged.Clear();
+        if(!string.IsNullOrEmpty(txtSearchId))
+        {
+            DTBrm = await db.SearchBRMID(txtSearchId);
+            if (DTBrm.Any()) Merge();
+        }
+    }
+
+    protected void Merge()
+    {
+
+        if (DTSocPen.Any())
+        {
+            //Combination Grants
+            foreach (var row in DTSocPen.Where(r => r.GrantType == "6"))
+            {
+                row.RowType = "C";
+            }
+            //MergeGrants
+            foreach (var group in DTSocPen.GroupBy(d => d.AppDate).Where(g => g.Count() > 1))
+            {
+                foreach (var row in group.ToArray())
+                {
+                    row.RowType = "M";
+                }
+            }
+        }
+
+        if (DTBrm.Any())
+        {
+            DTBrmParents = DTBrm.Where(r => string.IsNullOrEmpty(r.Brm_Parent) || (!string.IsNullOrEmpty(r.Brm_Parent) && r.Brm_BarCode == r.Brm_Parent)).ToList();//&& r.TDW_BOXNO == null
+            DTMerged = DTBrm.Where(r => !string.IsNullOrEmpty(r.Brm_Parent) && r.Brm_BarCode != r.Brm_Parent).ToList();
+        }
+    }
+
+    private async Task btnNewCover_Click(Application a)
+    {
+        rebox.BoxNo = rebox.BoxNo.ToUpper();
+        if (string.IsNullOrEmpty(rebox.BoxNo))
+        {
+            if (sessionservice.session.IsRmc())
+            {
+                toast.Error("a TDW BoxNo is required to capture at the RMC.");
+                return;
+            }
+        }
+        else
+        {
+            rebox = await db.GetBoxCounts(rebox);
+        }
+
+        a.TDW_BOXNO = rebox.BoxNo;
+        a.MiniBox = rebox.MiniBox;
+        if (rebox.MiniBox > 5)
+        {
+            toast.Error("Only 5 Miniboxes allowed.");
+            return;
+        }
+        SelectedApplication = a;
+        if (a.RegionId == sessionservice.session!.Office.RegionId)
+        {
+            ConfirmedRegion();//Save normal capture
+        }
+        else
+        {
+            regionChangeMessage = $"Are you sure you want to change the region of this application from {sservice.GetRegion(a.RegionId)} to {sservice.GetRegion(sessionservice.session.Office.RegionId!)} ?";
+            showConfirmRegion = true;
+            //toast.Error($"Please set your region to {db.GetRegion(a.RegionId)} to capture this record");
+        }
+    }
+
+    private async Task btnManualCapture_Click()
+    {
+
+        rebox.BoxNo = rebox.BoxNo.ToUpper();
+        if (string.IsNullOrEmpty(rebox.BoxNo))
+        {
+            if (sessionservice.session!.IsRmc())
+            {
+                toast.Error("a TDW BoxNo is required to capture at the RMC.");
+                return;
+            }
+        }
+        else
+        {
+            rebox = await db.GetBoxCounts(rebox);
+            if (rebox.MiniBox > 5)
+            {
+                toast.Error("Only 5 Miniboxes allowed.");
+                return;
+            }
+        }
+        if (manualGrantType == "S" && string.IsNullOrEmpty(txtSearchSRD))
+        {
+            toast.Error("a Srd record requires an SRD no.");
+            return;
+        }
+        SelectedApplication = new Application
+        {
+            TRANS_TYPE = 0,
+            TDW_BOXNO = rebox.BoxNo,
+            MiniBox = rebox.MiniBox,
+            GrantType = manualGrantType,
+            RegionId = sessionservice.session!.Office.RegionId,
+            Id = txtSearchId,
+            Srd_No = txtSearchSRD,
+            LcType = "0",
+            AppDate = DateTime.Now.ToStandardDateString(),
+            AppStatus = "MAIN"
+        };
+
+        showManualCapture = true;
+    }
+
+    private void ConfirmedRegion()
+    {
+        showConfirmRegion = false;
+        showBrmModal = true;
+        StateHasChanged();
+    }
+
+    private void CancelRegion()
+    {
+        showConfirmRegion = false;
+        showBrmModal = false;
+        StateHasChanged();
+    }
+
+    private async Task OnBrmSaved(bool merge)
+    {
+        showBrmModal = false;
+        showManualCapture = false;
+        await OnChanged();
+        if (!DTBrm.Any() || string.IsNullOrEmpty(SelectedApplication.Id)) return;
+        if (merge)
+        {
+            var parents = DTBrm.Where(s => !string.IsNullOrEmpty(s.Brm_Parent) && s.Brm_Parent == s.Brm_BarCode && (s.BatchNo == SelectedApplication.BatchNo || s.BatchNo == 0)).ToList();
+            await db.AutoMerge(SelectedApplication, parents);
+            await db.SetParentBatchCount(SelectedApplication.BatchNo);
+            await OnChanged();
+        }
+        rebox = await db.GetBoxCounts(rebox);
+    }
+
+    private void OnModalClosed()
+    {
+
+        SelectedApplication = new();
+        showBrmModal = false;
+        showManualCapture = false;
+        StateHasChanged();
+    }
+
+}

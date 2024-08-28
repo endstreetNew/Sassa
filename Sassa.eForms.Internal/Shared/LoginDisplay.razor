@@ -1,0 +1,95 @@
+﻿@inject DocumentStore store
+
+@using Microsoft.AspNetCore.Http
+
+
+<span class="oi oi-person" aria-hidden="true"></span>@Displayname
+<hr />
+@code{
+
+    [Parameter]
+    public EventCallback<bool> UserAccess { get; set; }
+
+    protected string Displayname { get; set; } = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        //await GetUser();
+        store.SessionInitialized += new EventHandler(OnSessionChanged);
+        //store.GetUserSession(true);
+        //Displayname = store.session.Name;
+        //await UserAccess.InvokeAsync(store.session.IsAuththorized());
+    }
+
+    private void OnSessionChanged(object sender, EventArgs args)
+    {
+        Displayname = store.session.Name;
+        UserAccess.InvokeAsync(store.session.IsAuththorized());
+    }
+    //protected async Task GetUser()
+    //{
+    //    try
+    //    {
+    //        //await UserAccess.InvokeAsync(store.session.IsAuththorized());
+    //        Displayname = store.session.Name;
+    //    }
+    //    catch
+    //    {
+    //        Displayname = "Get User(Error)";
+    //    }
+
+    //}
+
+
+    void UserAcceeChanged(bool isAuthorized)
+    {
+        UserAccess.InvokeAsync(isAuthorized);
+        StateHasChanged();
+    }
+}
+@*@using System.Security.Claims
+    @using Microsoft.AspNetCore.Components.Authorization
+
+    @inject NavigationManager navigationManager
+    @inject SassaUserStore store;
+
+
+    <AuthorizeView>
+        <Authorized>
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="Account/Manage/@context.User.Identity.Name">Hello, @GetUser(context.User.Identity.Name)</a>
+                </li>
+                <li class="nav-item">
+                    <a href="sassaaccount/logout" class="nav-link">Log out</a>
+                </li>
+            </ul>
+        </Authorized>
+        <NotAuthorized>
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="Account/Register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Account/Signin/0">Log in</a>
+                </li>
+            </ul>
+
+        </NotAuthorized>
+    </AuthorizeView>
+    @code{
+
+        protected string GetUser(string email)
+        {
+            try
+            {
+                var user = store.GetSassaUser(email).GetAwaiter().GetResult();
+                return user.FullName;
+            }
+            catch
+            {
+                navigationManager.NavigateTo("sassaaccount/logout", forceLoad: true);
+                return null;
+            }
+        }
+    }*@

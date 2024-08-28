@@ -1,0 +1,50 @@
+﻿@inject SessionService sessionservice
+@inject StaticService staticservice
+
+@if (sessionservice.session != null)
+{
+        <div style="float:right; margin-top:10px;">
+            <label  style="margin-left: 10px">@sessionservice.session.Name</label>
+            <label  style="margin-left: 10px">@(sessionservice.session.Office.OfficeName + ": " + sessionservice.session.Office.RegionName + $" :{ServicePoint}")</label>
+            <label  style="margin-left: 10px">@("(Users " + UserCount + ")")</label>
+        </div>
+}
+else
+{
+    <div style="width: 100%;">
+        <div style="float:right; width: 100%; margin-top:4px;">
+            <label class="divUserDetail" style="margin-left: 10px">Initializing user session</label>
+        </div>
+    </div>
+    
+}
+
+@code
+{
+    [Parameter]
+    public int UserCount { get; set; }
+
+    string ServicePoint = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        sessionservice.UserOfficeChanged += new EventHandler(OnOfficeChanged);
+        await Task.CompletedTask;
+    }
+
+    private void OnOfficeChanged(object? sender, EventArgs args)
+    {
+        ServicePoint = staticservice.GetServicePointName(sessionservice.session.Office.FspId);
+        StateHasChanged();
+    }
+
+    // private void GetServicePoint()
+    // {
+    //     try
+    //     {
+            
+    //     }
+    //     catch { }
+    // }
+}
+

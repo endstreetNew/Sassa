@@ -1,0 +1,34 @@
+﻿@page "/pdfview/{docid}"
+
+@using Sassa.eDocs.Data.Models
+
+
+@inject DocumentStore dstore
+@if (showfile)
+{
+    @*<embed src="@tmpFileName" width="100%" height="800" type="application/pdf" />*@
+    <iframe src="@tmpFileName" style="width: 100%;height: 930px;border: none;" frameborder="0" allowfullscreen></iframe>
+}
+
+
+
+@code {
+
+    [Parameter]
+    public string docid { get; set; }
+
+    private string tmpFileName;
+    private bool showfile = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        tmpFileName = $"pdf/{Guid.NewGuid().ToString()}.pdf";
+        DocImage image = await dstore.GetDocImage(int.Parse(docid));
+        UInt32 FileSize = (UInt32)image.Image.Length;
+        byte[] rawData = image.Image;
+        FileStream fls = new FileStream("wwwroot/" + tmpFileName, FileMode.OpenOrCreate, FileAccess.Write);
+        fls.Write(rawData, 0, (int)FileSize);
+        fls.Close();
+        showfile = true;
+    }
+}

@@ -1,0 +1,198 @@
+﻿@inject BRMDbService db
+@inject CSService cs
+@inject IAlertService toast
+@inject IWebHostEnvironment _env
+
+@if (showRequestModal)
+{
+    <FileRequestModal IdNo="@sm.IdNo" CloseModal="OnCloseModal" grantTypes="@Tdwgrants"></FileRequestModal>
+}
+
+<div style="padding: 10px 0 5px 0;">
+    <div style="display: table-row;">
+        <div id="divSearchID" style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
+            <input class="form-control" placeholder="Enter ApplicantId here..." @bind="sm.IdNo" />
+        </div>
+        <div id="divSearchBRM" style="vertical-align: bottom; display: table-cell; padding: 0 5px 0 5px;">
+            <input class="form-control" placeholder="Enter BRM Barcode here..." @bind="sm.BrmNo" />
+        </div>
+        <div id="divSearchSRD" style="vertical-align: bottom; display: table-cell; padding: 0 5px 0 5px;">
+            <input class="form-control" placeholder="Enter SRD here..." @bind="sm.SrdNo" />
+        </div>
+        <div id="divSearchCLM" style="vertical-align: bottom; display: table-cell; padding: 0 5px 0 5px;">
+            <input class="form-control" placeholder="Enter CLM No here..." @bind="sm.ClmNo" />
+        </div>
+        <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
+            <button type="button" class="btn btn-primary btn-sm form-control" @onclick="@(async () => await btnSearch_Click())"><span class="oi oi-magnifying-glass" aria-hidden="true"></span></button>
+        </div>
+    </div>
+</div>
+
+@if (showpreview)
+{
+    <div class="fileTree">
+        <div role="toolbar" class="input-group mb-6">
+            <button @onclick="@(() => { showpreview = false; })" class="btn btn-primary btn-sm" type="button">Back</button>
+            <span class="input-group-text">  </span>
+            <button class="btn btn-secondary btn-sm" @onclick="FirstPage"><span class="oi oi-media-skip-backward"></span></button>
+            <button class="btn btn-secondary btn-sm" @onclick="PreviousPage"><span class="oi oi-media-step-backward"></span></button>
+            <span class="input-group-text">  </span>
+            <button class="btn btn-secondary btn-sm" @onclick="NextPage"><span class="oi oi-media-step-forward"></span></button>
+            <button class="btn btn-secondary btn-sm" @onclick="LastPage"><span class="oi oi-media-skip-forward"></span></button>
+        </div>
+        <hr />
+        <embed src="CSImages/@viewSource" style="width:100%" height="800" type="application/pdf" />
+    </div>
+}
+else
+{
+    <div class="fileTree">
+        <h5>Documents</h5>
+        <hr />
+        @if (node != null)
+        {
+
+            <PdfBrowser Node="node" Preview="OnPreview"></PdfBrowser>
+
+        }
+    </div>
+    <button type="button" class="btn btn-primary btn-sm" @onclick="btnRequest_Click">Request Physical file(s)</button>
+    <button type="button" class="btn btn-primary btn-sm" @onclick="@(async () => await btnSearch_Click())">Refresh</button>
+}
+
+@code {
+
+
+    SearchModel sm = new SearchModel();
+    Dictionary<string, string> Tdwgrants = new();
+    Dictionary<string, string> folderItems = new();
+    bool showRequestModal = false;
+    bool showpreview = false;
+    string viewSource ="";
+    int viewIndex;
+    TreeNode? node;
+    List<TreeNode> files = new();
+
+    protected async Task btnRequest_Click()
+    {
+        try
+        {
+            await Validate();
+            Tdwgrants = await db.GetTDWGrants(sm.IdNo);
+            if (Tdwgrants.Count < 1)
+            {
+                toast.Warn("TDW has no records for this applicant.");
+            }
+            else
+            {
+                showRequestModal = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+
+    protected async Task btnSearch_Click()
+    {
+        try
+        {
+            await Validate();
+            toast.Info("Searching document Images..");
+            await cs.GetCSDocuments(sm.IdNo);
+            folderItems = cs.GetFolderList(sm.IdNo);
+            node = await db.GetCSFiles(sm.IdNo);
+            files = node.GetFiles();
+            if (files.Count == 0)
+            {
+                toast.Warn("No document Images found.");
+            }
+
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
+    }
+
+    private void OnCloseModal()
+    {
+        showRequestModal = false;
+    }
+
+    private async Task Validate()
+    {
+        if (string.IsNullOrEmpty(sm.IdNo) && string.IsNullOrEmpty(sm.BrmNo) && string.IsNullOrEmpty(sm.ClmNo) && string.IsNullOrEmpty(sm.SrdNo))
+        {
+            throw new Exception("Please enter a search value in at least one of the fields.");
+        }
+        if (!string.IsNullOrEmpty(sm.BrmNo))
+        {
+            sm.BrmNo = sm.BrmNo.ToUpper();
+        }
+        if(string.IsNullOrEmpty(sm.IdNo))
+        {
+            sm.IdNo = await db.GetSearchId(sm);
+            if(string.IsNullOrEmpty(sm.IdNo))
+            {
+                throw new Exception("No Id To Search On.");
+            }
+        }
+        if(sm.IdNo.Contains("S"))
+        {
+            throw new Exception("Cant Search CS with temp Id");
+        }
+    }
+
+    protected void OnPreview(string fileName)
+    {
+
+        try
+        {
+            viewSource = fileName;
+
+            showpreview = true;
+        }
+        catch
+        {
+            //what??
+        }
+    }
+    //DocumentPager
+    void FirstPage()
+    {
+        viewIndex = 1;
+        GotoNewPage();
+    }
+
+    void LastPage()
+    {
+        viewIndex = files.Count();
+        GotoNewPage();
+
+    }
+    void NextPage()
+    {
+        viewIndex++;
+        if (viewIndex > files.Count()) viewIndex = 1;
+
+        GotoNewPage();
+    }
+
+    void PreviousPage()
+    {
+        viewIndex--;
+        if (viewIndex < 1) viewIndex = files.Count();
+        GotoNewPage();
+    }
+
+    void GotoNewPage()
+    {
+        if (files.Any())
+        {
+            viewSource = files.Skip(viewIndex - 1).First().NodeName!;
+        }
+    }
+
+}

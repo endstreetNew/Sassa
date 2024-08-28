@@ -1,0 +1,84 @@
+﻿@if (PieData != null)
+{
+<div class="container" style="max-width:500px;">
+    <div class="row">
+        <div class="col">
+            <h5 class="card-title">@PieData.ChartName (@PieData.TotalItems) items.</h5>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col card border-0">
+            <div class="card-body">
+                <svg style="display:block; margin:auto; vertical-align:central;" height="@height" width="@width" viewBox="0, 0, 2000, 2000">
+                    @foreach (var p in PieData.Segments)
+                    {
+                        //todo:changed 100 to totalitems
+                        @(RotAngle = RotAngle + (((p.Percent / 100) * 360.0) - 90))
+                        <path d="@GenerateArc(1000, 1000, 800, p.Percent)" fill="@p.Color" transform="rotate(@RotAngle.ToString().Replace(",","."),1000,1000)"></path>
+                        @(RotAngle += 90)
+                    }
+                </svg>
+            </div>
+        </div>
+        <div class=" col card border-0" style="display:block; margin:auto; vertical-align:central;" height="@height" width="@width">
+            <div class="card-body">
+                <h6 class="card-title">Legend:</h6>
+                <ul style="list-style-type: none;">
+                    @foreach (var p in PieData.Segments)
+                    {
+                        <li><span class="badge badge-pill" style="background-color: @p.Color;height:15px; width:15px;">&nbsp;</span><small>&nbsp;@p.Name&nbsp;(@((int)p.Percent)%)</small></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+@code {
+
+    [Parameter]
+    public PieData PieData { get; set; } = new PieData();
+
+    [Parameter]
+    public int Size { get; set; } = 200;
+
+    int height { get; set; } = 200;
+    int width { get; set; } = 200;
+    double RotAngle { get; set; } = 0;
+
+
+    protected override void OnInitialized()
+    {
+        height = Size;
+        width = Size;
+    }
+
+    #region Svg Pie
+    private double DegToRad(double AngDeg)
+    {
+        return (AngDeg * Math.PI) / 180.0;
+    }
+    struct CartesianPosition
+    {
+        public double x;
+        public double y;
+    }
+    private string GenerateArc(double cx, double cy, double r, double percent)
+    {
+        CartesianPosition Cartesian;
+
+        double angledeg = (percent / 100) * 360.0;
+        double anglerad = DegToRad(angledeg);
+        Cartesian.x = cx + (r * Math.Cos(anglerad));
+        Cartesian.y = cy - (r * Math.Sin(anglerad));
+        if (Convert.ToInt32(Cartesian.y) == cy)
+        {
+            Cartesian.y += 1.0;
+        }
+        string ad = angledeg > 180 ? "1" : "0";
+        string M = $"M {cx.ToD()} {cy.ToD()} {(cx + r).ToD()},{cy.ToD()} A{r.ToD()} {r.ToD()}, 0, {ad}, 0, {Cartesian.x.ToD()},{Cartesian.y.ToD()} ";
+        return $"M {cx.ToD()} {cy.ToD()} {(cx + r).ToD()},{cy.ToD()} A{r.ToD()} {r.ToD()}, 0, {ad}, 0, {Cartesian.x.ToD()},{Cartesian.y.ToD()} ";
+    }
+    #endregion
+}

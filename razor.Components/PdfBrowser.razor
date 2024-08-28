@@ -1,0 +1,52 @@
+﻿
+
+@if (Node != null)
+{
+    @foreach (TreeNode node in Node.Values)
+    {
+        if (!node.NodeType)
+        {
+            <div class="input-group mb-0">
+                <span class="oi oi-folder"></span>
+                @node.NodeName
+            </div>
+            @foreach (var child in node.Values.Where(e => e.ParentId == node.Id))
+            {
+                <PdfBrowser Node="child" />
+            }
+        }
+        else
+        {
+            <div class="input-group alert-info mb-0" style="text-indent: 1em; cursor: pointer;" @onclick="@(() => OnPreview(node.NodeName))">
+                <span class="oi oi-file " @onclick="@(() => OnPreview(node.NodeName))" ></span>  @node.NodeName
+            </div>
+        }
+
+    }
+}
+else
+{
+    <p>No Files.</p>
+}
+
+@code {
+
+
+
+    [Parameter]
+    public TreeNode? Node { get; set; }
+    [Parameter]
+    public EventCallback<string> Preview { get; set; }
+
+
+    protected override void OnParametersSet()
+    {
+
+    }
+
+    protected void OnPreview(string? fileName)
+    {
+        Preview.InvokeAsync(fileName);
+    }
+
+}

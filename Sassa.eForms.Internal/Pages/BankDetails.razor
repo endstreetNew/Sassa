@@ -1,0 +1,24 @@
+﻿@page "/BankDetail"
+@attribute [Authorize]
+@inject IConfiguration Config
+<h3>Update Personal Details</h3>
+<hr />
+<strong>Request for Bank Payment</strong>
+<p>
+    You have the right to choose how you wish to receive your social grant, You can either have the grant paid directly into your own personal bank account, or you can have the grant paid into the new SASSA card account.
+    If you wish to use your own account, you will be liable for all costs related to that account.
+    If you use the SASSA card, then there are no costs to you, unless you use the card for services in excess of those SASSA pays for.
+    Should you choose to have the grant paid into your own account, you will be required to complete and submit the Request for Bank Payment form, confirming your bank account details.
+</p>
+<hr />
+@*<a href="https://10.117.122.200:8443/presentation/lfserver/Mandate_For_Funeral_Policy_Scheme_Deduction" target="_blank">Open in new Window...</a>*@
+
+
+@if(Config["FormsURL"].Contains("Resolving"))
+{
+<ResolvingComponent />
+}
+else
+{
+    <iframe src="@(Config["FormsURL"])/presentation/lfserver/RFBP" style="border:none; height:100%; width:100%;"></iframe>
+}

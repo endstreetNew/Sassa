@@ -1,0 +1,44 @@
+﻿@page "/"
+@inject MaintenanceService service
+
+@if (ShowMaintenance)
+{
+    <div class="modal" tabindex="-1" style="display:block;top:200px;" role="dialog">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header btn-primary">
+                    <h5 class="modal-title">Upcoming Maintenance</h5>
+                </div>
+                <div class="modal-body">
+                    @((MarkupString)service.Message)
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-primary" @onclick="Ok">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<p><h5>Upload of documents on behalf of clients.</h5></p>
+<hr />
+<p>
+    Additional documents required by grants administrators (SASSA officials) after an application has been submitted that were requested via email from the applicant, can be uploaded here.
+</p>
+<p>
+    These pages are only available and intended for LO users.
+</p>
+
+
+@code
+{
+    bool ShowMaintenance;
+    protected override void OnInitialized()
+    {
+        ShowMaintenance = service.Active;
+    }
+
+    void Ok()
+    {
+        ShowMaintenance = false;
+    }
+}

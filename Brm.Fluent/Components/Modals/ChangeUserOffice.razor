@@ -1,0 +1,92 @@
+﻿@inject BRMDbService db
+@inject StaticService staticservice
+@inject SessionService sessionservice
+
+@implements IDialogContentComponent<UserOffice>
+
+@* Header *@
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+@*         <FluentIcon Value="@(new Icons.Regular.Size24.WindowApps())" /> *@
+        <FluentLabel Typo="Typography.PaneHeader">
+            @Dialog.Instance.Parameters.Title
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+
+@* Footer *@
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent" OnClick="@SaveAsync">Save</FluentButton>
+    <FluentButton Appearance="Appearance.Neutral" OnClick="@CancelAsync">Cancel</FluentButton>
+</FluentDialogFooter>
+
+@* Body *@
+<FluentDialogBody>
+    <FluentSelect TOption="DcRegion"
+                  Label="Select a region"
+                  Items="@StaticDataService.Regions"
+                  Id="region-listbox"
+                  Width="200px"
+                  Height="250px"
+                  Placeholder="Make a selection..."
+                  OptionValue="@(p => p.RegionId.ToString())"
+                  OptionText="@(p => p.RegionName)"
+                  @bind-Value="@SelectedRegionValue"
+                  @bind-SelectedOption="@SelectedRegion" />
+
+    <FluentSelect TOption="DcLocalOffice"
+                  Label="Select an Office"
+                  Items="@staticservice.GetOffices(SelectedRegionValue)"
+                  Id="office-listbox"
+                  Width="200px"
+                  Height="250px"
+                  Placeholder="Make a selection..."
+                  OptionValue="@(p => p.OfficeId.ToString())"
+                  OptionText="@(p => p.OfficeName)"
+                  @bind-Value="@SelectedOfficeValue"
+                  @bind-SelectedOption="@SelectedOffice" />
+
+    <FluentSelect TOption="DcFixedServicePoint"
+                  Label="Select a ServicePoint"
+                  Items="@staticservice.GetOfficeServicePoints(SelectedOfficeValue)"
+                  Id="fsp-listbox"
+                  Width="200px"
+                  Height="250px"
+                  Placeholder="Make a selection..."
+                  OptionValue="@(p => p.Id.ToString())"
+                  OptionText="@(p => p.ServicePointName)"
+                  @bind-Value="@SelectedFspValue"
+                  @bind-SelectedOption="@SelectedFsp" />
+@*     <FluentTextField @bind-Value="@Content.OfficeId">Name:</FluentTextField> *@
+@*     <FluentNumberField @bind-Value="@Content.Age">Age:</FluentNumberField> *@
+</FluentDialogBody>
+
+@code {
+    [Parameter]
+    public UserOffice Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    protected DcRegion SelectedRegion { get; set; } = default!;
+    protected DcLocalOffice SelectedOffice { get; set; } = default!;
+    protected DcFixedServicePoint SelectedFsp { get; set; } = default!;
+    protected string SelectedRegionValue { get; set; } = default!;
+    protected string SelectedOfficeValue { get; set; } = default!;
+    protected string SelectedFspValue { get; set; } = default!;
+
+    private async Task SaveAsync()
+    {
+        //Update the office linq
+        await staticservice.UpdateUserLocalOffice(SelectedOfficeValue, Decimal.Parse(SelectedFspValue), sessionservice.session);
+        //Update the User
+        sessionservice.UpdateUserOffice();
+
+        await Dialog.CloseAsync(Content);
+    }
+
+    private async Task CancelAsync()
+    {
+        await Dialog.CancelAsync();
+    }
+}

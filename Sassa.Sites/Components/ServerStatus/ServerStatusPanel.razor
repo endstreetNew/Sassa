@@ -1,0 +1,102 @@
+﻿@using Sassa.Sites.Models
+@rendermode InteractiveServer
+@inject ServerList servers
+@inject ServerService serverService
+
+<hr>
+@if (showDetail)
+{
+    <Modal @ref="modal" Heading="Server Status" Cancel="OnModalCancel" Ok="OnModalOk">
+            <div class="input-group mb-1">
+                <span class="input-group-text">Memory</span>
+                <text class="form-control">Total:@StatusRecord!.TotalMemory.ToString()</text>
+                <text class="form-control">Used:@StatusRecord!.UsedMemory.ToString()</text>
+                <text class="form-control">Free:@StatusRecord!.FreeMemory.ToString()</text>
+                <text class="form-control">Usage:@StatusRecord!.MemoryUsage.ToString()</text>
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text">Cpu</span>
+                <text class="form-control">Usage:@StatusRecord!.CpuUsage.ToString()</text>
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text">Disk</span>
+                <text class="form-control">Total:@StatusRecord!.TotalDrive.ToString()</text>
+                <text class="form-control">Free:@StatusRecord.FreeDrive.ToString()</text>
+                <text class="form-control">Usage:@StatusRecord.DriveUsage.ToString()</text>
+            </div>
+            <div class="input-group mb-1">
+                <span class="input-group-text">Detail</span>
+                <textarea class="form-control" @bind="@StatusRecord!.Exception"></textarea>
+            </div>
+    </Modal>
+    }
+    @if (servers != null)
+    {
+        <div class="container rounded">
+        <h3 style="text-align:center">Application Environment Status</h3>
+        <button class="btn btn-primary" @onclick="() => serverService.GetServerStatus()">Refresh</button>
+        <table class="table table-hover table-bordered table-striped">
+        <thead>
+                <tr>
+                    <th>ApplicationName</th>
+                    <th>IP</th>
+                    <th>Server Name</th>
+                    <th>Status</th>
+                    <th>Message</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var server in servers)
+                {
+                    <tr>
+                        <td>@server.ApplicationName</td>
+                        <td>@server.Ip</td>
+                        <td>@server.ServerName</td>
+                        <td>@server.ServerStatus</td>
+                        <td>@server.Exception</td>
+                        <td>
+                        <button class="btn btn-primary btn-sm" @onclick="() => OnShowModalClick(server)">Detail</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+    }
+    else
+    {
+        <div style="padding: 10px 0 5px 0;">
+            <p>No data. </p>
+        </div>
+    } 
+
+@code {
+
+    private ApplicationStatus? StatusRecord { get; set; }
+    private Modal modal = default!;
+    bool showDetail = false;
+
+    protected override void OnInitialized()
+    {
+        serverService.GetServerStatus();
+    }
+
+    private async Task OnShowModalClick(ApplicationStatus applicationStatus)
+    {
+        StatusRecord = applicationStatus;
+        showDetail = true;
+        await Task.CompletedTask;
+    }
+    private async Task OnModalOk()
+    {
+        await OnModalCancel();
+    }
+    private async Task OnModalCancel()
+    {
+        showDetail = false;
+        await Task.CompletedTask;
+    }
+
+}

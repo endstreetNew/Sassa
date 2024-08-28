@@ -1,0 +1,22 @@
+﻿@page "/Track"
+@attribute [Authorize]
+@inject IConfiguration Config
+<h3>Track Application Status</h3>
+<hr />
+<p>
+    To track the progress of your application, please enter the relevant Application Reference number below and then click on the Search button.
+    The result will be displayed in the table below.
+</p>
+<hr />
+@*<a href="https://10.117.122.200:8443/presentation/lfserver/Track_My_Application_Form" target="_blank">Open in new Window...</a>*@
+@if(Config["FormsURL"].Contains("Resolving"))
+{
+    <ResolvingComponent/>
+}
+else
+{
+    // /presentation
+    <iframe src="@(Config["FormsURL"])/presentation/lfserver/Track_My_Application" style="border:none; height:120%; width:100%;"></iframe>
+}
+
+

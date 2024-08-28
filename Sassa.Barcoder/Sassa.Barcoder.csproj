@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+	  <OutputType>Library</OutputType>
+	  <TargetFramework>net8.0</TargetFramework>
+    <Title>Barcoder</Title>
+    <Description>Lightweight Barcode Encoding Library for .NET Framework, .NET Standard and .NET Core.</Description>
+	<PackageReadmeFile>readme.md</PackageReadmeFile>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  
+    <Company>Faranani</Company>
+    <Version>1.0.0.0</Version>
+    <Authors>Johan Smit</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+	<ItemGroup>
+		<None Include="readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+</Project>

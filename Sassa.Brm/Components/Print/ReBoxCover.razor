@@ -1,0 +1,112 @@
+﻿@page "/reboxcover/{BoxNo}/{AltBoxNo}"
+
+@layout PrintLayout
+
+@inject BRMDbService db
+@inject BarCodeService bcService
+@inject IJSRuntime Js
+@inject Navigation Navigation
+
+
+<div>
+    <button class="btn btn-primary active" @onclick="btnBack_Click">Back</button>
+    <button class="btn btn-primary" @onclick="btnPrint_Click">Print</button>
+    <span class="btn btn-outline">Alt box no: @AltBoxNo</span>
+</div>
+@if (items != null)
+{
+    <div class="printme">
+        <div class="row">
+            <div class="col-4">
+                <div style="float: left; display: inline-block">
+                    <img alt="" src="images/sassa_logoSmall.jpg" width="200" />
+                </div>
+            </div>
+            <div class="col-4">
+                <div style="display: inline-block;">
+                    <h2>Box Inventory</h2>
+                </div>
+            </div>
+            <div class="col-4">
+                <div style="float: right;">
+                    <div class="centered">
+                        <div>@((MarkupString)BarCode)</div>
+                        <div>@BoxNo</div>
+                    </div>
+
+                    <br />
+                    <br />
+                    <br />
+                    <p>
+                        No of Files:
+                        <span>@items.Count()</span>
+                        <br />
+                        Box No:
+                        <span>@BoxNo</span>
+                        <br />
+                    </p>
+                    <div>@DateTime.Now.ToShortDateString()</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-sm" style="font-size:small;">
+                    <thead>
+                        <tr>
+                            <th scope="col">CLM Unique Code</th>
+                            <th scope="col">BRM File no</th>
+                            <th scope="col">ID no</th>
+                            <th scope="col">Name and Surname</th>
+                            <th scope="col">Grant Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var u in items)
+                        {
+                            <tr>
+                                <td>@u.ClmNo</td>
+                                <td>@u.BrmNo</td>
+                                <td>@u.IdNo</td>
+                                <td>@u.FullName</td>
+                                <td>@u.GrantType</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public string? BoxNo { get; set; }
+    [Parameter]
+    public string? AltBoxNo { get; set; }
+
+    protected string BarCode = "unknown";
+    protected List<ReboxListItem>? items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (BoxNo != null)
+        {
+            items = await db.GetAllFilesByBoxNo(BoxNo);
+            BarCode = bcService.GetBarCode(BoxNo);
+        }
+
+    }
+
+    private async Task btnPrint_Click()
+    {
+        await Js.InvokeVoidAsync("printPage");
+    }
+    private void btnBack_Click()
+    {
+        Navigation.NavigateTo($"boxing/3/{BoxNo}");
+    }
+}

@@ -1,0 +1,42 @@
+﻿@page "/destruction"
+@inject SessionService sessionservice
+@inject BRMDbService db
+<h3>File Destruction</h3>
+
+@if (sessionservice.session != null)
+{
+    <TabControl PageActivate="@OnPageActivate" ActivePageId="@ActivePage">
+        <TabPage Text="Exclusions" Id="1" Enabled="true">
+            <DestExclusions></DestExclusions>
+        </TabPage>
+        <TabPage Text="Approval" Id="2" Enabled="true">
+            <DestApproval></DestApproval>
+        </TabPage>
+        <TabPage Text="List Export" Id="3" Enabled="true">
+            <DestTdwExport></DestTdwExport>
+        </TabPage>
+    </TabControl>
+}
+
+@code {
+    int ActivePage = 1;
+    //protected override async Task OnInitializedAsync()
+    //{
+
+
+    //}
+    private void OnPageActivate(int e)
+    {
+        switch (e)
+        {
+            case 1://Search
+                break;
+            case 2://Requests
+                break;
+            case 3://PickLists
+                break;
+            default:
+                break;
+        }
+    }
+}

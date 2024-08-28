@@ -1,0 +1,6 @@
+@Sassa.ActivityApi_HostAddress = http://localhost:5078
+
+GET {{Sassa.ActivityApi_HostAddress}}/Activity/
+Accept: application/json
+
+###
