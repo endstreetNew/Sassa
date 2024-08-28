@@ -259,3 +259,9 @@ code {
     display: inline-block;
     width: 100%;
 }
+
+.componentBG {
+    background-color: #f8f7f7;
+    border-radius: 5px;
+    border-color: #1b6ec2;
+}

@@ -1,9 +1,7 @@
 ﻿@inject BRMDbService db
 
-@implements IDisposable
-
 <div id="HistoryGrid">
-    @if (items != null)
+    @if (items.Any())
     {
         <div class="row">
             <div class="col-12">
@@ -50,20 +48,19 @@
 </div>
 
 @code {
-
     [Parameter]
-    public string? IdNumber { get; set; }
+    public string IdNumber { get; set; } = "";
 
-    public List<DcFileDeleted>? items { get; set; }
+    public List<DcFileDeleted> items { get; set; } = new();
 
 
     protected override async Task OnInitializedAsync()
     {
-        if(IdNumber != null)items = await db.GetDeleteHistory(IdNumber);
+        if(!string.IsNullOrEmpty(IdNumber))items = await db.GetDeleteHistory(IdNumber);
     }
 
-    public void Dispose()
+    protected override async Task OnParametersSetAsync()
     {
-        items = null;
+        if (!string.IsNullOrEmpty(IdNumber)) items = await db.GetDeleteHistory(IdNumber);
     }
 }
