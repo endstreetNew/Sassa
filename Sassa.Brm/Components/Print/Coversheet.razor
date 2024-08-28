@@ -8,7 +8,6 @@
 @inject IAlertService toast
 @inject Navigation Navigation
 
-@implements IDisposable
 
 @if (!string.IsNullOrEmpty(file.UnqFileNo))
 {
@@ -130,8 +129,4 @@
         Js.InvokeVoidAsync("window.close");
     }
 
-    public void Dispose()
-    {
-        file = null;
-    }
 }
