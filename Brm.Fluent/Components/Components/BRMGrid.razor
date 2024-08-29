@@ -4,24 +4,13 @@
 @inject SessionService sessionservice
 @inject BRMDbService db
 
+@inject IDialogService dialogService
+
 @using Microsoft.AspNetCore.Components.Routing
 
 
 @inject IJSRuntime JSRuntime
 
-    @if (showConfirmation)
-    {
-        <Modal Heading="Confirmation" Cancel="OnConfirmationClose" Ok="OnConfirmationOk">
-            <br />
-            Are you Sure you want to delete this record ?
-            <br />
-            <div class="input-group mb-1">
-                <span class="input-group-text">Reason</span>
-                <input type="text" class="form-control" @bind="@deleteReason">
-            </div>
-            <br />
-        </Modal>
-    }
     @if (showEditBarcodeConfirmation)
     {
         <Modal Heading="Update BarCode" Cancel="OnConfirmationClose" Ok="OnConfirmBarcodeOk">
@@ -43,7 +32,7 @@
     <TemplateColumn Width="340px" Title="Actions" Align="@Align.End">
         <FluentButton Appearance="Appearance.Accent" Title="Batch" OnClick="@(() => btnBatch_Click(context))" Disabled="@(context.BatchNo > 0)">Batch</FluentButton>
         <FluentButton Appearance="Appearance.Accent"  Title="View" OnClick="@(() => btnView_Click(context))">View Cover</FluentButton>
-        <FluentButton Appearance="Appearance.Accent" Title="Delete" OnClick="@(() => btnView_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Delete</FluentButton>
+        <FluentButton Appearance="Appearance.Accent" Title="Delete" OnClick="@(() => btnDelete_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Delete</FluentButton>
         <FluentButton Appearance="Appearance.Accent" Title="Edit Barcode" OnClick="@(() => btnEditBarcode_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Edit Barcode</FluentButton>
     </TemplateColumn>
     <PropertyColumn Width="100px" Property="@(p => p.Brm_BarCode)" Sortable="true" />
@@ -69,7 +58,7 @@
         <PropertyColumn Width="130px" Property="@(p => p.Id)" />
         <TemplateColumn Width="300px" Title="Actions" Align="@Align.End">
             <FluentButton Appearance="Appearance.Accent" Title="View" OnClick="@(() => btnView_Click(context))">View Cover</FluentButton>
-            <FluentButton Appearance="Appearance.Accent" Title="Delete" OnClick="@(() => btnView_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Delete</FluentButton>
+            <FluentButton Appearance="Appearance.Accent" Title="Delete" OnClick="@(() => btnDelete_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Delete</FluentButton>
             <FluentButton Appearance="Appearance.Accent" Title="Edit Barcode" OnClick="@(() => btnEditBarcode_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Edit Barcode</FluentButton>
         </TemplateColumn>
         <PropertyColumn Width="100px" Property="@(p => p.Brm_BarCode)" Sortable="true" />
@@ -98,7 +87,6 @@
     [Parameter]
     public EventCallback<int> Changed { get; set; }
 
-    protected string deleteReason = "";
     protected bool showConfirmation;
     protected bool showEditBarcodeConfirmation;
     protected Application selectedApp = new();
@@ -107,6 +95,8 @@
     protected string? NewBarCode;
 
     PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+
+
 
     protected async Task btnBatch_Click(Application app)
     {
@@ -139,13 +129,7 @@
 
         }
     }
-
-    protected void ShowChildren(string parent)
-    {
-        parentBrm = parent;
-    }
-
-    protected void btnDelete_Click(Application app)
+    protected async Task btnDelete_Click(Application app)
     {
         if (DTMerges != null && DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
         {
@@ -154,10 +138,25 @@
         else
         {
             selectedApp = app;
-            showConfirmation = true;
+            var dialog = await dialogService.ShowDialogAsync<ConfirmDelete>("", new DialogParameters()
+                {
+                    Height = "340px",
+                    Width = "550px",
+                    Title = $"Cofirm Delete BRM: {app.Brm_BarCode}",
+                    PreventDismissOnOverlayClick = true,
+                    PreventScroll = true,
+                });
+
+            var result = await dialog.Result;
+            if (!result.Cancelled && result.Data != null)
+            {
+                if (selectedApp == null) throw new Exception("No record selected.");
+                await db.RemoveBRM(selectedApp.Brm_BarCode, (string)result.Data);
+                await Changed.InvokeAsync();
+                StateHasChanged();
+            }
         }
     }
-
     protected void btnEditBarcode_Click(Application app)
     {
         if (DTMerges != null && DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
@@ -179,24 +178,6 @@
         showEditBarcodeConfirmation = false;
 
     }
-    protected async Task OnConfirmationOk()
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(deleteReason))
-            {
-                throw new Exception("Please provide a reason for this deletion.");
-            }
-            if (selectedApp == null) throw new Exception("No record selected.");
-            await db.RemoveBRM(selectedApp.Brm_BarCode, deleteReason);
-            await Changed.InvokeAsync();
-            showConfirmation = false;
-        }
-        catch (Exception ex)
-        {
-            toast.ShowError(ex.Message);
-        }
-    }
     protected async Task OnConfirmBarcodeOk()
     {
         try
@@ -215,6 +196,11 @@
         {
             toast.ShowError(ex.Message);
         }
+    }
+
+    protected void ShowChildren(string parent)
+    {
+        parentBrm = parent;
     }
 
 
