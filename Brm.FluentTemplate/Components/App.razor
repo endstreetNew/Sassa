@@ -6,15 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
     <link rel="stylesheet" href="app.css" />
-    <link rel="stylesheet" href="Brm.Fluent.styles.css" />
+    <link rel="stylesheet" href="Brm.FluentTemplate.styles.css" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender:false)" />
+    <HeadOutlet />
 </head>
 
 <body>
-    <Routes @rendermode="new InteractiveServerRenderMode(prerender:false)" />
+    <Routes />
     <script src="_framework/blazor.web.js"></script>
-    <script src="js/Site.js"></script>
 </body>
 
 </html>

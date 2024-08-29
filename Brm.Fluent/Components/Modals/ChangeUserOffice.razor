@@ -1,6 +1,7 @@
 ﻿@inject BRMDbService db
 @inject StaticService staticservice
 @inject SessionService sessionservice
+@inject IToastService toast
 
 @implements IDialogContentComponent<UserOffice>
 
@@ -77,12 +78,20 @@
 
     private async Task SaveAsync()
     {
-        //Update the office linq
-        await staticservice.UpdateUserLocalOffice(SelectedOfficeValue, Decimal.Parse(SelectedFspValue), sessionservice.session);
-        //Update the User
-        sessionservice.UpdateUserOffice();
+        try
+        {
+            if (string.IsNullOrEmpty(SelectedOfficeValue)) throw new Exception("Invalid office selection");
+            //Update the office linq
+            await staticservice.UpdateUserLocalOffice(SelectedOfficeValue, Decimal.Parse(SelectedFspValue ?? "0"), sessionservice.session);
+            //Update the User
+            sessionservice.UpdateUserOffice();
 
-        await Dialog.CloseAsync(Content);
+            await Dialog.CloseAsync(Content);
+        }
+        catch(Exception ex)
+        {
+            toast.ShowError(ex.Message);
+        }
     }
 
     private async Task CancelAsync()

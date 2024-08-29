@@ -1,5 +1,8 @@
 ﻿@page "/"
 @page "/brmprod"
+@using Microsoft.FluentUI.AspNetCore.Components
+@using Microsoft.FluentUI.AspNetCore.Components.Extensions
+
 
 @inject SessionService sessionservice
 @inject StaticService staticservice
@@ -59,6 +62,53 @@
                     <label type="text" class="form-control">@role</label>
                 }
             </FluentTab>
+            <FluentTab Label="Appearance" Id="tab-3">
+                <span><strong>Appearance</strong></span>
+                <hr/>
+@*                 <FluentDesignTheme Mode="@Mode" @bind-Mode="@Mode"
+                                   @bind-OfficeColor="@officeColor"
+                                   OnLoaded="@OnThemeLoaded"
+                                   OnLuminanceChanged="@OnLuminanceChanged"
+                                   StorageName="theme" /> *@
+                <FluentDesignTheme Mode="@DesignThemeModes.System" OfficeColor="@officeColor" StorageName="theme" />
+
+                <div style="min-height: 250px;">
+                    <FluentGrid>
+@*                         <FluentGridItem>
+                            <FluentSelect Label="Theme"
+                                          Width="250px"
+                                          Items="@(Enum.GetValues<DesignThemeModes>())"
+                                          @bind-SelectedOption="@Mode" />
+                        </FluentGridItem> *@
+
+                        <FluentGridItem>
+                            <FluentSelect Label="Color"
+                                          Items="@(Enum.GetValues<OfficeColor>().Select(i => (OfficeColor)i))"
+                                          Height="200px"
+                                          Width="250px"
+                                          @bind-SelectedOption="@officeColor">
+                                <OptionTemplate>
+                                    <FluentStack>
+                                        <FluentIcon Value="@(new Icons.Filled.Size20.RectangleLandscape())"
+                                                    Color="Color.Custom"
+                                                    CustomColor="@(@context.ToAttributeValue() != "default" ? context.ToAttributeValue() : "#036ac4" )" />
+                                        <FluentLabel>@context</FluentLabel>
+                                    </FluentStack>
+                                </OptionTemplate>
+                            </FluentSelect>
+                            <FluentButton Appearance="Appearance.Accent" OnClick="PickRandomColor">Feeling lucky?</FluentButton>
+                        </FluentGridItem>
+                    </FluentGrid>
+
+                    <FluentStack Style="margin: 30px 0px; padding: 30px; border: 1px solid var(--accent-fill-rest);">
+                        <FluentIcon Value="@(new Icons.Regular.Size24.Airplane())" />
+                        <FluentLabel>Example of content</FluentLabel>
+                        <FluentButton Appearance="Appearance.Outline">Outline button</FluentButton>
+                        <FluentButton Appearance="Appearance.Accent">Accent button</FluentButton>
+                    </FluentStack>
+                </div>
+
+             </FluentTab>
      </FluentTabs>
         </div>
     }
@@ -73,25 +123,29 @@
 
 @code
 {
-    // bool showOfficeModal;
-
+    public DesignThemeModes Mode { get; set; }
+    public OfficeColor officeColor { get; set; }
 
     protected override void OnInitialized()
     {
-
+        Mode = DesignThemeModes.System;
+        officeColor = OfficeColor.Sway;
     }
 
-    // protected void OnCloseModal()
+    // void OnThemeLoaded(LoadedEventArgs e)
     // {
-    //     showOfficeModal = false;
-    //     StateHasChanged();
+    //    //DemoLogger.WriteLine($"Loaded: {(e.Mode == DesignThemeModes.System ? "System" : "")} {(e.IsDark ? "Dark" : "Light")}");
     // }
 
-    // protected void ShowOfficeModal()
+    // void OnLuminanceChanged(LuminanceChangedEventArgs e)
     // {
-    //     showOfficeModal = true;
+    //     //DemoLogger.WriteLine($"Changed: {(e.Mode == DesignThemeModes.System ? "System" : "")} {(e.IsDark ? "Dark" : "Light")}");
     // }
 
+    void PickRandomColor()
+    {
+        officeColor = OfficeColorUtilities.GetRandom();
+    }
     private async Task OpenChangeUserOffice()
     {
         // Create a new instance of DialogData
@@ -110,12 +164,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled && result.Data != null)
         {
-            // sessionservice.session.Office = (UserOffice)result.Data;
-            // //Update the office linq
-            // await staticservice.UpdateUserLocalOffice(sessionservice.session.Office.OfficeId, sessionservice.session);
-            // //Update the User
-            // sessionservice.UpdateUserOffice();
-            StateHasChanged();
+           StateHasChanged();
         }
     }
 }

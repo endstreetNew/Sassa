@@ -5,6 +5,8 @@
 @inject ActiveUser _ConnectedUser
 @inject ActiveUserList _ConnectedUserList
 
+<FluentDesignTheme Mode="DesignThemeModes.Dark" OfficeColor="@officeColor" StorageName="theme" />
+@* <FluentDesignTheme Mode="@DesignThemeModes.System" OfficeColor="@officeColor" StorageName="theme" /> *@
 <FluentLayout>
     <FluentHeader >
         <p class="site-title">
@@ -16,11 +18,10 @@
     <FluentStack Class="main" Orientation="Orientation.Horizontal" Width="100">
         <NavMenu />
         <FluentBodyContent Class="body-content">
-            <ToastAlert />
-@*             <FluentToastProvider /> *@
+            <FluentToastProvider Position="ToastPosition.TopCenter"/>
             <FluentDialogProvider />
-            <FluentTooltipProvider />
-            <FluentMessageBarProvider />
+@*             <FluentTooltipProvider /> *@
+@*             <FluentMessageBarProvider /> *@
             <div class="content">
                 @Body
             </div>
@@ -41,15 +42,12 @@
 @code
 {
     protected string Status = "Initializing session..";
-    //Todo: implement a way to change the color of the header
-    string menucolor = "#0973B6"; //Blue
+    public OfficeColor officeColor { get; set; }
     protected override async Task OnInitializedAsync()
     {
-
-        if (navigation.BaseUri.ToLower().Contains("ssvsbrmdrshc02") || navigation.BaseUri.ToLower().Contains("ssvsqabrshc02")) menucolor = "#125707";
-
+        officeColor = (navigation.BaseUri.ToLower().Contains("ssvsbrmdrshc02") || navigation.BaseUri.ToLower().Contains("ssvsqabrshc02")) ? OfficeColor.Office : OfficeColor.Sway;
+        StateHasChanged();
         while (!staticservice.IsInitialized) { }
-
         try
         {
             if (sessionservice.session.IsBrmUser())

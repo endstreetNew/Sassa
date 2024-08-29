@@ -1,7 +1,4 @@
 @import '/_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css';
-@import 'css/bootstrap.min.css';
-@import 'css/open-iconic/font/css/open-iconic-bootstrap.min.css';
-
 
 body {
     --body-font: "Segoe UI Variable", "Segoe UI", sans-serif;
@@ -16,15 +13,14 @@ body {
 }
 
 .main {
-    min-height: calc(100dvh - 106px);
+    min-height: calc(100dvh - 86px);
     color: var(--neutral-foreground-rest);
     align-items: stretch !important;
-
 }
 
 .body-content {
     align-self: stretch;
-    height: calc(100dvh - 106px) !important;
+    height: calc(100dvh - 86px) !important;
     display: flex;
 }
 
@@ -192,77 +188,4 @@ code {
         left: 20px;
         right: unset;
     }
-}
-
-/*---------Custom css starts here--------*/
-.fileTree {
-    margin: 5px 5px 5px 5px;
-    padding: 5px 5px 5px 5px;
-    border-style: solid;
-    border-radius: 5px;
-    border-color: gray;
-    border-width: 1px;
-    background-color: #fff;
-    display: inline-block;
-    width: 100%;
-}
-
-.whiteArea {
-    margin: 5px 5px 5px 5px;
-    padding: 5px 5px 5px 5px;
-    border-radius: 5px;
-    border-color: #E5E5E5;
-    background-color: #fff;
-    display: inline-block;
-    width: 100%;
-}
-
-.tabArea {
-    padding: 5px 5px 5px 5px;
-    background-color: #fff;
-    display: block;
-    width: 100%;
-}
-
-.goldArea {
-    margin: 5px 5px 5px 5px;
-    padding: 5px 5px 5px 5px;
-    border-radius: 10px;
-    border-color: #E5E5E5;
-    background-color: #fad7b6;
-    display: inline-block;
-}
-
-.greenArea {
-    margin: 5px 5px 5px 5px;
-    padding: 5px 5px 5px 5px;
-    border-radius: 10px;
-    border-color: #E5E5E5;
-    background-color: #e2fec9;
-    display: inline-block;
-}
-
-.purpleArea {
-    margin: 5px 5px 5px 5px;
-    padding: 5px 5px 5px 5px;
-    border-radius: 10px;
-    border-color: #E5E5E5;
-    background-color: #e2bef5;
-    display: inline-block;
-}
-
-.pageTitle {
-    margin: auto;
-    padding: 5px 5px 5px 5px;
-    text-align: center;
-    border-radius: 10px;
-    background-color: #E5E5E5;
-    display: inline-block;
-    width: 100%;
-}
-
-.componentBG {
-    background-color: #f8f7f7;
-    border-radius: 5px;
-    border-color: #1b6ec2;
 }
