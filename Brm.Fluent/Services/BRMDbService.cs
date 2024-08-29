@@ -4,7 +4,9 @@ using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
 using Sassa.BRM.Models;
+using Sassa.BRM.Services;
 using Sassa.BRM.ViewModels;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
@@ -1227,7 +1229,8 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            List<Application> srdsquery = await _context.DcSocpens.Where(d => d.SrdNo == srd).Select(d => new Application
+            var result = await _context.DcSocpens.Where(d => d.SrdNo == srd).AsNoTracking().ToListAsync();
+            List<Application> srdsquery =  result.Select(d => new Application
             {
                 SocpenIsn = (long)d.Id,
                 Id = d.BeneficiaryId,
@@ -1249,7 +1252,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 DocsPresent = d.Documents,
                 IdHistory = d.IdHistory,
                 Source = "Socpen"
-            }).AsNoTracking().ToListAsync();
+            }).ToList();
 
             return srdsquery;
         }

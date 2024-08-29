@@ -2,7 +2,7 @@
 @inject SessionService sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
-@inject IAlertService toast
+@inject IToastService toast
 
 @if (showBrmModal)
 {
@@ -103,7 +103,7 @@
         {
             if (sessionservice.session!.IsRmc())
             {
-                toast.Error("a TDW BoxNo is required to capture at the RMC.");
+                toast.ShowError("a TDW BoxNo is required to capture at the RMC.");
                 return;
             }
         }
@@ -116,7 +116,7 @@
         a.MiniBox = rebox.MiniBox;
         if (rebox.MiniBox > 5)
         {
-            toast.Error("Only 5 Miniboxes allowed.");
+            toast.ShowError("Only 5 Miniboxes allowed.");
             return;
         }
         SelectedApplication = a;
@@ -125,7 +125,7 @@
             regionChangeMessage = $"Are you sure you want to change the region of this application from {sservice.GetRegion(a.RegionId)} to {sservice.GetRegion(sessionservice.session.Office.RegionId)} ?";
             showConfirmRegion = true;
         }
-        //toast.Error($"Please set your region to {db.GetRegion(a.RegionId)} to capture this record");
+        //toast.ShowError($"Please set your region to {db.GetRegion(a.RegionId)} to capture this record");
         ConfirmedRegion();//Save normal capture
     }
 

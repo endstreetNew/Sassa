@@ -4,7 +4,7 @@
 @inject StaticService sservice
 @inject ProgressService og
 @inject ReportDataService rs
-@inject IAlertService toast
+@inject IToastService toast
 
 <br/>
 <div>
@@ -163,17 +163,17 @@
             }
             if (string.IsNullOrEmpty(fromMonth) || string.IsNullOrEmpty(toMonth))
             {
-                toast.Info($"Please check your Filter. it is invalid");
+                toast.ShowInfo($"Please check your Filter. it is invalid");
                 return;
             }
             await Task.Delay(100);
-            toast.Info($"Progress Dashboard loading...");
+            toast.ShowInfo($"Progress Dashboard loading...");
             dashboardData = await og.GetMonthDetail(from, to, office);
             IsDashboardLoaded = true;
         }
         catch
         {
-            toast.Info($"Please check your Filter, it is invalid");
+            toast.ShowInfo($"Please check your Filter, it is invalid");
         }
     }
 

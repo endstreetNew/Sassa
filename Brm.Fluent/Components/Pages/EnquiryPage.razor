@@ -4,7 +4,7 @@
 
 @inject NavigationManager NavigationM
 @inject Navigation Navigate
-@inject IAlertService toast
+@inject IToastService toast
 @inject BRMDbService db
 @inject StaticService sservice
 
@@ -253,7 +253,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
         finally
         {

@@ -1,7 +1,7 @@
 ﻿@inject SessionService  sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
-@inject IAlertService toast
+@inject IToastService toast
 
 <h3>FINAL Approval for regions Destruction exclusions</h3>
 
@@ -112,7 +112,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected async Task OnExclusionBatchPaged(int _page)

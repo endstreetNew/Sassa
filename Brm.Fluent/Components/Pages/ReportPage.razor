@@ -7,7 +7,7 @@
 @inject StaticService sservice
 @inject ProgressService og
 @inject ReportDataService rs
-@inject IAlertService toast
+@inject IToastService toast
 <div class="pageTitle">
 <h3>Reports</h3>
 </div>
@@ -325,7 +325,7 @@
                 period.ToDate = quarterList[toQuarter].ToDate;
             }
 
-            toast.Info($"{reportList[rIndex]} queued.");
+            toast.ShowInfo($"{reportList[rIndex]} queued.");
             string FileName = helper.GetFileName(reportList[rIndex].Replace(" ", "_"),sessionservice.session);
             //db.session.Office.RegionCode + "-" + db.session.SamName.ToUpper() + "-" + reportList[rIndex].Replace(" ", "_") + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");
 
@@ -362,7 +362,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
 
     }
@@ -398,10 +398,10 @@
     //    await Task.Delay(100);
     //    if(string.IsNullOrEmpty(fromQuarter) || string.IsNullOrEmpty(toQuarter) || string.IsNullOrEmpty(office.RegionId))
     //    {
-    //        toast.Info($"Please select report Filter.");
+    //        toast.ShowInfo($"Please select report Filter.");
     //        return;
     //    }
-    //    toast.Info($"Progress Dashboard loading...");
+    //    toast.ShowInfo($"Progress Dashboard loading...");
     //    dashboardData = await og.GetMissingProgress(quarterList[fromQuarter], quarterList[toQuarter],office.RegionId);
     //    IsDashboardLoaded = true;
     //}
@@ -414,14 +414,14 @@
 
             period.FromDate = quarterList[quarterName].FromDate;
             period.ToDate = quarterList[quarterName].ToDate;
-            toast.Info($"{reportList["3"]} queued.");
+            toast.ShowInfo($"{reportList["3"]} queued.");
             string FileName = helper.GetFileName(reportList["3"].Replace(" ", "_"),sessionservice.session);
             //db.session.Office.RegionCode + "-" + db.session.SamName.ToUpper() + "-" + reportList["3"].Replace(" ", "_") + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");
             await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), "3", office.OfficeId, "RMC", office.RegionId, GrantType, FileName);
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 }

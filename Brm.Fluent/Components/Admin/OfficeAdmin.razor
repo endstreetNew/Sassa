@@ -5,7 +5,7 @@
 
 @layout NoLayout
 
-@inject IAlertService toast
+@inject IToastService toast
 
 <h5>Socpen Office Links</h5>
 
@@ -164,7 +164,7 @@
         {
             if(u.LinkOfficeId == 0)
             {
-                toast.Warn("No Office selected to link");
+                toast.ShowWarning("No Office selected to link");
                 return;
             }
             await ss.LinkBrmOffice(u.ResCode,u.LinkOfficeId);
@@ -174,7 +174,7 @@
         }
         catch(Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
 
     }
@@ -184,7 +184,7 @@
         {
             if(u.LinkResCode == 0)
             {
-                toast.Warn("No Office selected to link");
+                toast.ShowWarning("No Office selected to link");
                 return;
             }
             //u.ResCode = linkResCode;
@@ -195,7 +195,7 @@
         }
         catch(Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected async void btnUnLinkOffice_Click(RegionOffice u)
@@ -209,7 +209,7 @@
         }
         catch(Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected async void btnCreateBrmOffice_Click(RegionOffice u)
@@ -225,7 +225,7 @@
         }
         catch(Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected string LineStyle(RegionOffice u)

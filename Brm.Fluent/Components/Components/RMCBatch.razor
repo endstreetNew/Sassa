@@ -1,4 +1,4 @@
-﻿@inject IAlertService toast
+﻿@inject IToastService toast
 @inject SessionService sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
@@ -223,7 +223,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
 
 
@@ -240,7 +240,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -299,11 +299,11 @@
             }
             await db.SetBatchStatus(rebox.BatchNo, "Closed");
             DTBatch = await db.GetBatches(filterStatus, page);
-            toast.Success("Batch No " + rebox.BatchNo + " added to TDW box " + rebox.BoxNo + ".");
+            toast.ShowSuccess("Batch No " + rebox.BatchNo + " added to TDW box " + rebox.BoxNo + ".");
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -325,7 +325,7 @@
                 await db.Rebox(rebox, file);
             }
             //string scanState = file.ScanDatetime == null ? "Not Scanned" : "Scanned";
-            //toast.Success($"BRM# {rebox.BrmBarcode} added to TDW box {rebox.BoxNo}. ({scanState})");
+            //toast.ShowSuccess($"BRM# {rebox.BrmBarcode} added to TDW box {rebox.BoxNo}. ({scanState})");
             rebox.BrmBarcode = string.Empty;
             rebox.MisFileNo = string.Empty;
             rebox.NewBarcode = string.Empty;
@@ -333,7 +333,7 @@
         }
         catch(Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -356,13 +356,13 @@
             // }
             // else
             // {
-            //     toast.Warn("Box not found");
+            //     toast.ShowWarning("Box not found");
             // }
             await Task.Delay(50);
         }
         catch //(Exception ex)
         {
-            toast.Error("Invalid Box no");
+            toast.ShowError("Invalid Box no");
         }
 
     }
@@ -377,7 +377,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected async Task btnAddFileToBatch(string BrmBarCode)
@@ -392,7 +392,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
 
     }
@@ -409,11 +409,11 @@
             showConfirmation = false;
             if (selectedBatch.BatchNo != 0) await db.SetBatchStatus(selectedBatch.BatchNo, "Closed");
             DTBatch = await db.GetBatches(filterStatus, page);
-            toast.Success($"Batch #{selectedBatch.BatchNo} Closed.");
+            toast.ShowSuccess($"Batch #{selectedBatch.BatchNo} Closed.");
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -449,7 +449,7 @@
             if(batch.BatchNo != 0)await db.SetBatchStatus(batch.BatchNo, "Closed");
         }
         DTBatch = await db.GetBatches("Open", page);
-        toast.Success($"Selected batches Closed.");
+        toast.ShowSuccess($"Selected batches Closed.");
     }
 
     protected async Task OnPaged(int _page)
@@ -478,10 +478,10 @@
             sb.Append(BulkPrint.Footer());
 
             string FileName = sessionservice.session.Office.RegionCode + "-" + sessionservice.session.SamName.ToUpper() + "-" + "Batch_" + batch.BatchNo + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");//.Replace(":", "-");
-            toast.Success($"Batch cover :{batch.BatchNo} queued.");
+            toast.ShowSuccess($"Batch cover :{batch.BatchNo} queued.");
             await rd.SaveHtmlReport(sb.ToString(), FileName);
             //files.Dispose();
-            //toast.Success($"Batch cover :{batch.BatchNo} queued.");
+            //toast.ShowSuccess($"Batch cover :{batch.BatchNo} queued.");
             files.Clear();
             sb = new();
             await Js.InvokeVoidAsync("open", $"{NavigationM.BaseUri}batchcover/{batch.BatchNo}", "_blank");
@@ -489,7 +489,7 @@
         }
         catch //(Exception ex)
         {
-            toast.Error($"Batch cover :{batch.BatchNo} error.");
+            toast.ShowError($"Batch cover :{batch.BatchNo} error.");
 
         }
 

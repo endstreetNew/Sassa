@@ -1,7 +1,7 @@
 ﻿
 @inject BRMDbService db
 @inject StaticService sservice
-@inject IAlertService toast
+@inject IToastService toast
 
 <Modal Heading="File Request" Cancel="OnModalCancel" Ok="OnModalOk">
     @if (fr != null)
@@ -75,12 +75,12 @@
             Validate();
             fr!.StakeHolder = sservice.GetStakeHolders()[fr.Category];
             await db.AddFileRequest(fr);
-            toast.Success("Request processed");
+            toast.ShowSuccess("Request processed");
             OnModalCancel();
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 

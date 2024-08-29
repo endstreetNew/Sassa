@@ -4,7 +4,7 @@
 @inject SessionService sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
-@inject IAlertService toast
+@inject IToastService toast
 @inject IJSRuntime Js
 @inject IWebHostEnvironment env
 
@@ -266,7 +266,7 @@
 
                 if(BoxLocked)
                 {
-                    toast.Warn("This box has been dispatched and is locked.");
+                    toast.ShowWarning("This box has been dispatched and is locked.");
                 }
                 if (boxfiles.count > 0)
                 {
@@ -299,7 +299,7 @@
                 }
                 else
                 {
-                    toast.Warn("Box not found (Creating new box).");
+                    toast.ShowWarning("Box not found (Creating new box).");
                 }
                 loaded = !BoxLocked;
                 await Task.Delay(100);
@@ -310,7 +310,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
 
     }
@@ -327,7 +327,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
 
     }
@@ -363,7 +363,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -379,7 +379,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -398,7 +398,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
             //db.CreateActivity("Rebox" + db.GetFileArea(null, 0), $"Error from MIS {rebox.MisFileNo.Trim()} :" + ex.Message.Substring(0,200), "");
         }
     }
@@ -416,7 +416,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -431,7 +431,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
             throw;
         }
 
@@ -451,11 +451,11 @@
                 rebox.BrmBarcode = brmBarCode;
                 await Rebox(rebox);
             }
-            toast.Success("Batch No " + rebox.BatchNo + " added to TDW box " + rebox.BoxNo + ".");
+            toast.ShowSuccess("Batch No " + rebox.BatchNo + " added to TDW box " + rebox.BoxNo + ".");
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -469,7 +469,7 @@
         archiveHidden = !(sservice.GetBoxTypes()[rebox.SelectedType]).Contains("Archive");
         if (!string.IsNullOrEmpty(rebox.RegType))
         {
-            toast.Warn($"Box only accepts {(rebox.RegType.Contains("LC") ? "LC" : rebox.RegType)}");
+            toast.ShowWarning($"Box only accepts {(rebox.RegType.Contains("LC") ? "LC" : rebox.RegType)}");
         }
     }
 
@@ -506,7 +506,7 @@
             }
 
             sb.Append(BulkPrint.Footer());
-            toast.Success($"Box :{rebox.BoxNo} Coversheets queued.");
+            toast.ShowSuccess($"Box :{rebox.BoxNo} Coversheets queued.");
 
             await rd.SaveHtmlReport(sb.ToString(), helper.GetFileName($"Box_{rebox.BoxNo}",sessionservice.session));
             sheets = new();
@@ -514,7 +514,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error($"Box :{rebox.BoxNo} Coversheets error. {ex.Message}");
+            toast.ShowError($"Box :{rebox.BoxNo} Coversheets error. {ex.Message}");
             
 
         }
@@ -549,7 +549,7 @@
         if ( rebox.BatchNo == 0)
         {
             string scanState = file.ScanDatetime == null ? "Not Scanned" : "Scanned";
-            toast.Success($"BRM# {rebox.BrmBarcode} added to TDW box {rebox.BoxNo}. ({scanState})");
+            toast.ShowSuccess($"BRM# {rebox.BrmBarcode} added to TDW box {rebox.BoxNo}. ({scanState})");
             //rebox.RegType = file.ApplicationStatus.Trim("LC-".ToCharArray());
         }
         rebox.BrmBarcode = string.Empty;

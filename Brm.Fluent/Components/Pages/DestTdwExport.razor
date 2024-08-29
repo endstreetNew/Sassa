@@ -2,7 +2,7 @@
 @inject SessionService sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
-@inject IAlertService toast
+@inject IToastService toast
 @inject IWebHostEnvironment environment
 @inject DestructionService dProcess
 
@@ -153,7 +153,7 @@
         }
         catch(Exception ex)
         {
-            toast.Error($"File upload failed. {ex.Message}");
+            toast.ShowError($"File upload failed. {ex.Message}");
             isLoading = false;
         }
         isLoading = false;
@@ -247,7 +247,7 @@
 
     protected async Task btnExport_Batch_Click()
     {
-        toast.Info($"Destruction List queued.");
+        toast.ShowInfo($"Destruction List queued.");
         await db.SaveDestructionList();
     }
 
@@ -255,12 +255,12 @@
     {
         try
         {
-            toast.Info($"Destruction List queued.");
+            toast.ShowInfo($"Destruction List queued.");
             await db.SaveDestructionList(sessionservice.session.Office.RegionId);
         }
         catch( Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 

@@ -317,7 +317,7 @@
         }
     }
 
-    private async Task btnManualCapture_Click()
+    private void btnManualCapture_Click()
     {
 
         rebox.BoxNo = rebox.BoxNo.ToUpper();
@@ -331,7 +331,7 @@
         }
         else
         {
-            rebox = await db.GetBoxCounts(rebox);
+            //rebox = await db.GetBoxCounts(rebox);
             if (rebox.MiniBox > 5)
             {
                 toast.Error("Only 5 Miniboxes allowed.");
@@ -354,7 +354,8 @@
             Srd_No = txtSearchSRD,
             LcType = "0",
             AppDate = DateTime.Now.ToStandardDateString(),
-            AppStatus = "MAIN"
+            AppStatus = "MAIN",
+            DocsPresent = ""
         };
 
         showManualCapture = true;

@@ -1,7 +1,7 @@
 ﻿@page "/misfiles"
 
 @inject MisFileService db
-@inject IAlertService toast
+@inject IToastService toast
 <div class="pageTitle">
 <h3>MIS Data search</h3>
 </div>
@@ -72,7 +72,7 @@
     {
         if(string.IsNullOrEmpty(searchId) || searchId.Length < 13)
         {
-            toast.Error("Please enter a valid applicant id.");
+            toast.ShowError("Please enter a valid applicant id.");
             return;
         }
         misFiles = await db.GetMisFiles(searchId);

@@ -4,7 +4,7 @@
 @inject SessionService sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
-@inject IAlertService toast
+@inject IToastService toast
 
 <div class="pageTitle">
 <h3>File Capture</h3>
@@ -218,7 +218,7 @@
                 }
                 catch
                 {
-                    toast.Info("No Socpen results");
+                    toast.ShowInfo("No Socpen results");
                 }
                 if (string.IsNullOrEmpty(txtSearchId))
                 {
@@ -239,7 +239,7 @@
                     if (!txtSearchId.IsNumeric() || txtSearchId.Length != 13) throw new Exception("Id is Invalid.");
                     DTSocPen = await db.SearchSocpenId(txtSearchId, chkSearchFull);
                 }
-                if (!DTSocPen.Any()) toast.Info("No Socpen results");
+                if (!DTSocPen.Any()) toast.ShowInfo("No Socpen results");
                 MergeSocpen();
                 await RefreshDTBrm();
             }
@@ -250,7 +250,7 @@
             DTBrm.Clear();
             DTBrmParents.Clear();
             DTMerged.Clear();
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
 
         }
     }
@@ -263,7 +263,7 @@
             DTBrm = await db.SearchBRMID(txtSearchId);
             if (!DTBrm.Any())
             {
-                toast.Info("No Brm results");
+                toast.ShowInfo("No Brm results");
             }
             else
             {
@@ -312,7 +312,7 @@
         {
             if (sessionservice.session.IsRmc())
             {
-                toast.Error("a TDW BoxNo is required to capture at the RMC.");
+                toast.ShowError("a TDW BoxNo is required to capture at the RMC.");
                 return;
             }
         }
@@ -325,7 +325,7 @@
         a.MiniBox = rebox.MiniBox;
         if (rebox.MiniBox > 5)
         {
-            toast.Error("Only 5 Miniboxes allowed.");
+            toast.ShowError("Only 5 Miniboxes allowed.");
             return;
         }
         SelectedApplication = a;
@@ -337,7 +337,7 @@
         {
             regionChangeMessage = $"Are you sure you want to change the region of this application from {sservice.GetRegion(a.RegionId)} to {sservice.GetRegion(sessionservice.session.Office.RegionId!)} ?";
             showConfirmRegion = true;
-            //toast.Error($"Please set your region to {db.GetRegion(a.RegionId)} to capture this record");
+            //toast.ShowError($"Please set your region to {db.GetRegion(a.RegionId)} to capture this record");
         }
     }
 
@@ -349,7 +349,7 @@
         {
             if (sessionservice.session!.IsRmc())
             {
-                toast.Error("a TDW BoxNo is required to capture at the RMC.");
+                toast.ShowError("a TDW BoxNo is required to capture at the RMC.");
                 return;
             }
         }
@@ -358,13 +358,13 @@
             rebox = await db.GetBoxCounts(rebox);
             if (rebox.MiniBox > 5)
             {
-                toast.Error("Only 5 Miniboxes allowed.");
+                toast.ShowError("Only 5 Miniboxes allowed.");
                 return;
             }
         }
         if (manualGrantType == "S" && string.IsNullOrEmpty(txtSearchSRD))
         {
-            toast.Error("a Srd record requires an SRD no.");
+            toast.ShowError("a Srd record requires an SRD no.");
             return;
         }
         SelectedApplication = new Application

@@ -2,7 +2,7 @@
 @inject BRMDbService db
 @inject StaticService sservice
 @inject Navigation Navigate
-@inject IAlertService toast
+@inject IToastService toast
 @inject IJSRuntime JSRuntime
 
 @implements IDisposable
@@ -235,13 +235,13 @@
         }
         catch (TaskCanceledException ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
             // Check ex.CancellationToken.IsCancellationRequested here.
             // If false, it's pretty safe to assume it was a timeout.
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
             btnCancel_Click();
         }
 
@@ -286,7 +286,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
             return false;
         }
     }

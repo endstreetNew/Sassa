@@ -1,7 +1,7 @@
 ﻿@inject Navigation Navigate
 @inject SessionService sessionservice
 @inject TdwBatchService db
-@inject IAlertService toast
+@inject IToastService toast
 @inject IJSRuntime Js
 @inject IWebHostEnvironment env
 
@@ -298,7 +298,7 @@
         }
         catch
         {
-            toast.Error("Error loading Batch History");
+            toast.ShowError("Error loading Batch History");
         }
 
     }

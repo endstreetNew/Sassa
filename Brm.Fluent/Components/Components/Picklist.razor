@@ -1,6 +1,6 @@
 ﻿
 @inject BRMDbService db
-@inject IAlertService toast
+@inject IToastService toast
 
 <br />
 <div class="row input-group">
@@ -149,7 +149,7 @@
         {
             await db.ChangePickListStatus(p);
             await LoadPickList();
-            toast.Info("PickList " + p.nextStatus);
+            toast.ShowInfo("PickList " + p.nextStatus);
         }
 
         protected async Task ReceivePickList()
@@ -163,11 +163,11 @@
                 UnqPickList = UnqPickList.Trim();
                 await db.ReceivePickList(UnqPickList);
                 await LoadPickList();
-                toast.Info("PickList received.");
+                toast.ShowInfo("PickList received.");
             }
             catch(Exception ex)
             {
-                toast.Error(ex.Message);
+                toast.ShowError(ex.Message);
             }
         }
         protected async Task SearchPickList()
@@ -183,7 +183,7 @@
             }
             catch(Exception ex)
             {
-                toast.Error(ex.Message);
+                toast.ShowError(ex.Message);
             }
         }
         protected async Task LoadPickList()
@@ -221,10 +221,10 @@
             await db.SetStatusPickListItem(itemId);
             items = await db.GetPicklistItems(UnqPickList, itempage);
             await LoadPickList();
-            toast.Info("Item status changed.");
+            toast.ShowInfo("Item status changed.");
             ////if (db.IsAllItemsStatus(UnqPickList,"Received"))
             ////{
-            ////    toast.Info("All Items received for this Picklist!");
+            ////    toast.ShowInfo("All Items received for this Picklist!");
             ////}
             ////else
             ////{
@@ -238,15 +238,15 @@
             BrmBarcode = BrmBarcode.Trim();
             if (!await db.SetPickListItemStatus(BrmBarcode,"Received"))
             {
-                toast.Info("Item not found.");
+                toast.ShowInfo("Item not found.");
                 return;
             }
             items = await db.GetPicklistItems(UnqPickList, itempage);
             await LoadPickList();
-            toast.Info("Item status changed.");
+            toast.ShowInfo("Item status changed.");
             //if (db.IsAllItemsStatus(UnqPickList,"Received"))
             //{
-            //    toast.Info("All Items received for this Picklist!");
+            //    toast.ShowInfo("All Items received for this Picklist!");
             //}
             //else
             //{

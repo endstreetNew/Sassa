@@ -1,4 +1,4 @@
-﻿@inject IAlertService toast
+﻿@inject IToastService toast
 @inject SessionService sessionservice
 @inject BRMDbService db
 @inject Navigation Navigate
@@ -111,11 +111,11 @@
         {
             showDispatch = false;
 
-            toast.Success($"Transport Waybill Created.");
+            toast.ShowSuccess($"Transport Waybill Created.");
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -127,11 +127,11 @@
             if (selectedWaybill == null) throw new Exception("No waybill selected.");
             await db.ReceiveWaybill(selectedWaybill.BrmWaybill, "Received");
             waybills = await db.GetBatchWaybills();
-            toast.Success($"Transport Waybill Received.");
+            toast.ShowSuccess($"Transport Waybill Received.");
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 }

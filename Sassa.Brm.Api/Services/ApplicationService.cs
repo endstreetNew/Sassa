@@ -197,24 +197,21 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
     {
         using (var _context = dbContextFactory.CreateDbContext())
         {
+
             var files = await _context.DcFiles.Where(k => k.BrmBarcode == brmNo).ToListAsync();
             //int fileCount = files.Count();
             if (files.Any())
             {
-                foreach (var dcfile in files)
-                {
-                    //if (!deleteAll && fileCount-- == 1) continue;//leave one record
-                    dcfile.FileComment = reason;
-                    await BackupDcFileEntry(dcfile);
-                    _context.DcFiles.Remove(dcfile);
-                    SaveActivity("Delete", dcfile.SrdNo, dcfile.Lctype, "Delete BRM Record", dcfile.RegionId, decimal.Parse(dcfile.OfficeId), dcfile.UpdatedByAd, dcfile.UnqFileNo);
-
-                }
+                var dcfile = files.First();
+                dcfile.FileComment = reason;
+                await BackupDcFileEntry(dcfile);
+                _context.DcFiles.RemoveRange(files);
+                SaveActivity("Delete", dcfile.SrdNo, dcfile.Lctype, "Delete BRM Record", dcfile.RegionId, decimal.Parse(dcfile.OfficeId), dcfile.UpdatedByAd, dcfile.UnqFileNo);
             }
             var merges = await _context.DcMerges.Where(m => m.BrmBarcode == brmNo || m.ParentBrmBarcode == brmNo).ToListAsync();
-            foreach (var merge in merges.ToList())
+            if(merges.Any())
             {
-                _context.DcMerges.Remove(merge);
+                _context.DcMerges.RemoveRange(merges);
             }
             if (files.Any() || merges.Any())
             {

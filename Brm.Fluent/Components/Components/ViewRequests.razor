@@ -1,7 +1,7 @@
 ﻿@inject SessionService sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
-@inject IAlertService toast
+@inject IToastService toast
 
 <br />
 <div class="row align-items-center">
@@ -200,18 +200,18 @@ else
             if (requestCount ==0) throw new Exception("No items selected for TDW request.");
             //Set SENT_TDW
             await db.SendTDWRequestsPerRegion(requestCount);
-            toast.Success("Selected Request(s) sent to TDW.");
+            toast.ShowSuccess("Selected Request(s) sent to TDW.");
             await LoadRequests();
         }
         catch (Exception ex)
         {
             if (ex.Message.Contains("in progress"))
             {
-                toast.Warn(ex.Message);
+                toast.ShowWarning(ex.Message);
             }
             else
             {
-                toast.Error(ex.Message);
+                toast.ShowError(ex.Message);
             }
 
         }
@@ -237,7 +237,7 @@ else
     //    }
     //    catch (Exception ex)
     //    {
-    //        toast.Error(ex.Message);
+    //        toast.ShowError(ex.Message);
     //    }
 
     //}

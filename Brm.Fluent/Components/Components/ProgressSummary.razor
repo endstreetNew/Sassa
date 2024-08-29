@@ -4,7 +4,7 @@
 @inject ReportDataService rs
 @inject Helper helper
 @inject SessionService sessionService
-@inject IAlertService toast
+@inject IToastService toast
 
 
 
@@ -134,10 +134,10 @@ else
         await Task.Delay(100);
         if(string.IsNullOrEmpty(fromQuarter) || string.IsNullOrEmpty(toQuarter) || string.IsNullOrEmpty(office.RegionId))
         {
-            toast.Info($"Please select report Filter.");
+            toast.ShowInfo($"Please select report Filter.");
             return;
         }
-        toast.Info($"Progress Dashboard loading...");
+        toast.ShowInfo($"Progress Dashboard loading...");
         dashboardData = await og.MissingProgress(StaticDataService.QuarterList()[fromQuarter], StaticDataService.QuarterList()[toQuarter],office.RegionId);
         IsDashboardLoaded = true;
     }
@@ -150,14 +150,14 @@ else
 
             period.FromDate = StaticDataService.QuarterList()[quarterName].FromDate;
             period.ToDate = StaticDataService.QuarterList()[quarterName].ToDate;
-            toast.Info($"{rs.reportList["3"]} queued.");
+            toast.ShowInfo($"{rs.reportList["3"]} queued.");
             string FileName = helper.GetFileName(rs.reportList["3"].Replace(" ", "_"),sessionService.session);
             //db.session.Office.RegionCode + "-" + db.session.SamName.ToUpper() + "-" + reportList["3"].Replace(" ", "_") + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");
             await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), "3", office.OfficeId, "RMC", office.RegionId, "", FileName);
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     

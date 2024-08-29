@@ -1,6 +1,6 @@
 ﻿@inject SessionService sessionservice
 @inject BRMDbService db
-@inject IAlertService toast
+@inject IToastService toast
 
 <br />
 <h5>Add Exclusion(s)</h5>
@@ -109,7 +109,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
 
     }
@@ -128,7 +128,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
 
     }
@@ -155,7 +155,7 @@
             }
             catch (Exception ex)
             {
-                toast.Error(ex.Message);
+                toast.ShowError(ex.Message);
             }
         }
 

@@ -4,7 +4,7 @@
 @inject StaticService sservice
 @inject ProgressService og
 @inject ReportDataService rs
-@inject IAlertService toast
+@inject IToastService toast
 
 <br/>
 <div>
@@ -200,7 +200,7 @@
             //await Task.Delay(100);
             if (string.IsNullOrEmpty(office.OfficeId))
             {
-                toast.Info($"Please select an office for this dashboard.");
+                toast.ShowInfo($"Please select an office for this dashboard.");
                 return;
             }
             else
@@ -209,17 +209,17 @@
             }
             if (string.IsNullOrEmpty(fromQuarter) || string.IsNullOrEmpty(toQuarter))
             {
-                toast.Info($"Please check your period filter, it is invalid");
+                toast.ShowInfo($"Please check your period filter, it is invalid");
                 return;
             }
             await Task.Delay(100);
-            toast.Info($"Progress Dashboard loading...");
+            toast.ShowInfo($"Progress Dashboard loading...");
             quarters = await og.GetCaptureProgress(StaticDataService.QuarterList()[fromQuarter],StaticDataService.QuarterList()[toQuarter], office);
             IsDashboardLoaded = true;
         }
         catch
         {
-            toast.Info($"Please check your Filter, it is invalid");
+            toast.ShowInfo($"Please check your Filter, it is invalid");
         }
     }
 

@@ -1,5 +1,5 @@
 ﻿@inject StaticService sservice
-@inject IAlertService toast
+@inject IToastService toast
 <!-- Bootstrap Modal Dialog -->
 <div class="modal" tabindex="-1" style="display:block;" role="dialog">
     <div class="modal-dialog">
@@ -59,7 +59,7 @@
     {
         if (string.IsNullOrEmpty(servicePoint.ServicePointName) || string.IsNullOrEmpty(servicePoint.OfficeId))
         {
-            toast.Error("Servicepoint name  and Office is required.");
+            toast.ShowError("Servicepoint name  and Office is required.");
         }
         else
         {

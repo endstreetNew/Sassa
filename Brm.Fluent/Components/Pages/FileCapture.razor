@@ -5,7 +5,7 @@
 @inject SessionService sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
-@inject IAlertService toast
+@inject IToastService toast
 
 
 @if(showManualCapture && SelectedApplication != null)
@@ -137,7 +137,7 @@
                 }
                 catch
                 {
-                    toast.Info("No Socpen results");
+                    toast.ShowInfo("No Socpen results");
                 }
                 //Provide temp Id if there is none
                 if (string.IsNullOrEmpty(txtSearchId))
@@ -166,7 +166,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
 
         }
         await Task.CompletedTask;
@@ -187,13 +187,13 @@
             {
                 DTSocPen = await db.SearchSocpenId(txtSearchId, chkSearchFull);
             }
-            if (!DTSocPen.Any()) toast.Info("No Socpen results");
+            if (!DTSocPen.Any()) toast.ShowInfo("No Socpen results");
             await SocpenChanged.InvokeAsync(DTSocPen.Where(s => s.GrantType == txtManualGrantType).Any());
         }
         catch (Exception ex)
         {
             DTSocPen.Clear();
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected async Task OnSocpenChanged(bool hasRecords)
@@ -210,7 +210,7 @@
         {
             if (sessionservice.session.IsRmc())
             {
-                toast.Error("a TDW BoxNo is required to capture at the RMC.");
+                toast.ShowError("a TDW BoxNo is required to capture at the RMC.");
                 return;
             }
         }
@@ -219,13 +219,13 @@
             rebox = await db.GetBoxCounts(rebox);
             if (rebox.MiniBox > 5)
             {
-                toast.Error("Only 5 Miniboxes allowed.");
+                toast.ShowError("Only 5 Miniboxes allowed.");
                 return;
             }
         }
         if (txtManualGrantType == "S" && string.IsNullOrEmpty(txtSearchSRD))
         {
-            toast.Error("a Srd record requires an SRD no.");
+            toast.ShowError("a Srd record requires an SRD no.");
             return;
         }
         SelectedApplication = new Application

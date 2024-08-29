@@ -1,6 +1,6 @@
 ﻿@inject BRMDbService db
 @inject CSService cs
-@inject IAlertService toast
+@inject IToastService toast
 @inject IWebHostEnvironment _env
 
 @if (showRequestModal)
@@ -81,7 +81,7 @@ else
             Tdwgrants = await db.GetTDWGrants(sm.IdNo);
             if (Tdwgrants.Count < 1)
             {
-                toast.Warn("TDW has no records for this applicant.");
+                toast.ShowWarning("TDW has no records for this applicant.");
             }
             else
             {
@@ -90,7 +90,7 @@ else
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -99,20 +99,20 @@ else
         try
         {
             await Validate();
-            toast.Info("Searching document Images..");
+            toast.ShowInfo("Searching document Images..");
             await cs.GetCSDocuments(sm.IdNo);
             folderItems = cs.GetFolderList(sm.IdNo);
             node = await db.GetCSFiles(sm.IdNo);
             files = node.GetFiles();
             if (files.Count == 0)
             {
-                toast.Warn("No document Images found.");
+                toast.ShowWarning("No document Images found.");
             }
 
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 

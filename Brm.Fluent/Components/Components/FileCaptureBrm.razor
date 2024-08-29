@@ -1,6 +1,6 @@
 ﻿@inject Navigation Navigate
 @inject NavigationManager Navigation
-@inject IAlertService toast
+@inject IToastService toast
 @inject SessionService sessionservice
 @inject BRMDbService db
 
@@ -213,7 +213,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected async Task btnView_Click(Application app)
@@ -234,7 +234,7 @@
     {
         if (DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
         {
-            toast.Warn("Please remove merged records first.");
+            toast.ShowWarning("Please remove merged records first.");
         }
         else
         {
@@ -248,7 +248,7 @@
         if (DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
         {
             //maybe not
-            toast.Warn("Please remove merged records first.");
+            toast.ShowWarning("Please remove merged records first.");
         }
         else
         {
@@ -279,7 +279,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected async Task OnConfirmBarcodeOk()
@@ -299,7 +299,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 

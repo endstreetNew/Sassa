@@ -1,4 +1,4 @@
-﻿@inject IAlertService toast
+﻿@inject IToastService toast
 @inject SessionService sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
@@ -218,7 +218,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
 
 
@@ -236,7 +236,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -258,7 +258,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
 
     }
@@ -274,7 +274,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -289,7 +289,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected void btnCloseBatch(DcBatch batch)
@@ -310,7 +310,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected async Task btnRemoveItem(string brmBarCode)
@@ -325,7 +325,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     //Always use newbatch to do validation
@@ -338,7 +338,7 @@
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
     protected void OnConfirmationClose()
@@ -354,11 +354,11 @@
             showConfirmation = false;
             if (selectedBatch.BatchNo != 0) await db.SetBatchStatus(selectedBatch.BatchNo, "Closed");
             DTBatch = await db.GetBatches(filterStatus, page);
-            toast.Success($"Batch #{selectedBatch.BatchNo} Closed.");
+            toast.ShowSuccess($"Batch #{selectedBatch.BatchNo} Closed.");
         }
         catch (Exception ex)
         {
-            toast.Error(ex.Message);
+            toast.ShowError(ex.Message);
         }
     }
 
@@ -391,7 +391,7 @@
             if(batch.BatchNo != 0)await db.SetBatchStatus(batch.BatchNo, "Closed");
         }
         DTBatch = await db.GetBatches("Open", page);
-        toast.Success($"Selected batches Closed.");
+        toast.ShowSuccess($"Selected batches Closed.");
     }
 
     protected async Task OnPaged(int _page)
@@ -421,11 +421,11 @@
 
             await rd.SaveHtmlReport(sb.ToString(), FileName);
 
-            toast.Success($"Batch cover :{batch.BatchNo} queued.");
+            toast.ShowSuccess($"Batch cover :{batch.BatchNo} queued.");
         }
         catch //(Exception ex)
         {
-            toast.Error($"Batch cover :{batch.BatchNo} error.");
+            toast.ShowError($"Batch cover :{batch.BatchNo} error.");
 
         }
         await Js.InvokeVoidAsync("open", $"{NavigationM.BaseUri}batchcover/{batch.BatchNo.ToString()}", "_blank");
