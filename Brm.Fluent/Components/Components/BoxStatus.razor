@@ -1,16 +1,15 @@
-﻿<div class="input-group input-group-sm">
-    <div class="input-group-prepend"><span class="input-group-text">TDW Box </span></div>
-    <input type="text" class="form-control" @bind-value="@rebox.BoxNo">
-    <span type="number" class="input-group-text text-end" disabled>@rebox.BoxCount</span>
-    <div class="input-group-prepend"><span class="input-group-text">Mini Box Number</span></div>
-    <input type="number" class="form-control text-sm-start"  @bind-value="@rebox.MiniBox" min="1" max="5">
-    <span type="number" class="input-group-text text-end" disabled>@rebox.MiniBoxCount</span>
-    <span type="text" class="input-group-text " disabled>@rebox.RegType</span>
+﻿<FluentStack HorizontalAlignment="@Alignment">
+    <FluentTextField @bind-Value="@rebox.BoxNo" Placeholder="Enter TDW Box..." />
+    <FluentNumberField @bind-Value="@rebox.BoxCount" Disabled Size="5"></FluentNumberField>
+    <FluentLabel>Mini Box</FluentLabel>
+    <FluentNumberField @bind-Value="@rebox.MiniBox"></FluentNumberField>
+    <FluentNumberField @bind-Value="@rebox.MiniBox" Disabled Size="5"></FluentNumberField>
+    <FluentTextField @bind-Value="@rebox.RegType" Placeholder="Regtype" Disabled/>
     @if (ShowLoad)
     {
-        <button class="btn btn-primary active float-right" Text="Load" @onclick="btnLoadBox_Click">Load </button>
+        <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.List())" Title="Manual Capture" OnClick="btnLoadBox_Click">Load</FluentButton>
     }
-</div>
+</FluentStack>
 
 @code {
     [Parameter]
@@ -18,6 +17,9 @@
 
     [Parameter]
     public bool ShowLoad { get; set; }
+
+    [Parameter]
+    public HorizontalAlignment Alignment { get; set; } = HorizontalAlignment.Left;
 
     [Parameter]
     public EventCallback OnloadBox { get; set; }

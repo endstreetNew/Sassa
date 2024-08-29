@@ -34,7 +34,7 @@ public static class StaticDataService
     public static Dictionary<string, string> GrantTypes { get; set; } = new();
     public static string GrantName(string GrantId)
     {
-        return GrantTypes![GrantId];
+        return GrantTypes[GrantId];
     }
     public static Dictionary<decimal, string> LcTypes { get; set; } = new();
     public static List<RequiredDocsView> RequiredDocs { get; set; } = new();

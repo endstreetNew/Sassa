@@ -15,72 +15,59 @@
     {
 
      <div class="componentBG">
-    <FluentTabs Class="tab">
-            <FluentTab Label="User"  Id="tab-1">
+         <div class="whiteArea">
                 <span><strong>User Details</strong></span>
                     <hr />
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Name</span>
-                    <label type="text" class="form-control">@sessionservice.session!.Name</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Surname</span>
-                    <label type="text" class="form-control">@sessionservice.session!.Surname</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Email</span>
-                    <label type="text" class="form-control">@sessionservice.session!.Email</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Region</span>
-                    <label type="text" class="form-control">@sessionservice.session!.Office.RegionName</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Office</span>
-                    <label type="text" class="form-control">@sessionservice.session!.Office.OfficeName</label>
-@*                     <button class="btn btn-primary active" @onclick="ShowOfficeModal">Change Office</button> *@
-                    <FluentButton Appearance="Appearance.Accent" OnClick="@OpenChangeUserOffice">Change Office</FluentButton>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Service Point</span>
-                    <label type="text" class="form-control">@staticservice.GetServicePointName(sessionservice.session.Office.FspId)</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Office Type</span>
-                    <label type="text" class="form-control">@sessionservice.session.Office.OfficeType</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Supervisor</span>
-                    <label type="text" class="form-control">@(sessionservice.session.IsInRole("GRP_BRM_Supervisors") ? "Yes" : "No")</label>
-                </div>
-        </FluentTab>
-            <FluentTab Label="Roles" Id="tab-2">
+                <FluentButton Appearance="Appearance.Accent" OnClick="@OpenChangeUserOffice">Change Office</FluentButton>
+                <FluentStack>
+                    <span>Name</span>
+                    <FluentLabel>@sessionservice.session!.Name</FluentLabel>
+                </FluentStack>
+                <FluentStack>
+                    <span >Surname</span>
+                    <label>@sessionservice.session!.Surname</label>
+                </FluentStack>
+                <FluentStack>
+                    <span >Email</span>
+                    <label>@sessionservice.session!.Email</label>
+                </FluentStack>
+               <FluentStack>
+                    <span >Region</span>
+                    <label >@sessionservice.session!.Office.RegionName</label>
+                </FluentStack>
+                <FluentStack>
+                    <span >Office</span>
+                    <label >@sessionservice.session!.Office.OfficeName</label>
+                    
+                </FluentStack>
+                <FluentStack>
+                    <span >Service Point</span>
+                    <label >@staticservice.GetServicePointName(sessionservice.session.Office.FspId)</label>
+                </FluentStack>
+                <FluentStack>
+                    <span >Office Type</span>
+                    <label >@sessionservice.session.Office.OfficeType</label>
+                </FluentStack>
+                <FluentStack>
+                    <span >Supervisor</span>
+                    <label >@(sessionservice.session.IsInRole("GRP_BRM_Supervisors") ? "Yes" : "No")</label>
+                </FluentStack>
+        </div>
+        <div class="whiteArea">
                 <span><strong>Roles</strong></span>
                 <hr/>
                 @foreach (var role in sessionservice.session.Roles)
                 {
-                    <label type="text" class="form-control">@role</label>
+                    <FluentLabel>@role</FluentLabel>
                 }
-            </FluentTab>
-            <FluentTab Label="Appearance" Id="tab-3">
+                </div>
+        <div class="whiteArea">
                 <span><strong>Appearance</strong></span>
                 <hr/>
-@*                 <FluentDesignTheme Mode="@Mode" @bind-Mode="@Mode"
-                                   @bind-OfficeColor="@officeColor"
-                                   OnLoaded="@OnThemeLoaded"
-                                   OnLuminanceChanged="@OnLuminanceChanged"
-                                   StorageName="theme" /> *@
                 <FluentDesignTheme Mode="@DesignThemeModes.System" OfficeColor="@officeColor" StorageName="theme" />
 
                 <div style="min-height: 250px;">
                     <FluentGrid>
-@*                         <FluentGridItem>
-                            <FluentSelect Label="Theme"
-                                          Width="250px"
-                                          Items="@(Enum.GetValues<DesignThemeModes>())"
-                                          @bind-SelectedOption="@Mode" />
-                        </FluentGridItem> *@
-
                         <FluentGridItem>
                             <FluentSelect Label="Color"
                                           Items="@(Enum.GetValues<OfficeColor>().Select(i => (OfficeColor)i))"
@@ -107,9 +94,7 @@
                         <FluentButton Appearance="Appearance.Accent">Accent button</FluentButton>
                     </FluentStack>
                 </div>
-
-             </FluentTab>
-     </FluentTabs>
+                </div>
         </div>
     }
     else

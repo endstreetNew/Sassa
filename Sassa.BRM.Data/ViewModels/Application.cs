@@ -75,6 +75,18 @@ namespace Sassa.BRM.Models
             }
         }
         [JsonIgnore]
+        public bool IsMergeParent
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(Brm_Parent);
+            }
+            set
+            {
+
+            }
+        }
+        [JsonIgnore]
         public string Status
         {
             get

@@ -23,54 +23,31 @@
     <Confirmation Title="Confirm Region Change" Message="@regionChangeMessage" Cancel="CancelRegion" Ok="ConfirmedRegion"></Confirmation>
 }
 
-<div class="row">
-    <div class="col">
-    <div id="divSearchID" style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-        <input class="form-control" placeholder="Enter ApplicantId here..." @bind="txtSearchId" />
-    </div>
-    <div id="divSearchSRD" style="vertical-align: bottom; display: table-cell; padding: 0 5px 0 5px;">
-        <input class="form-control" placeholder="Enter SRD here..." @bind="txtSearchSRD" />
-    </div>
-    <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-        <button type="button" class="btn btn-primary btn-sm form-control" @onclick="@(async () => await Search())"><span class="oi oi-magnifying-glass" aria-hidden="true"></span></button>
-    </div>
-    </div>
-    <div class="col">
-        <div class="input-group mb-1" >
-            <span class="input-group-text" style="width:120px;">Grant Type</span>
-            <select class="form-select" @bind="@manualGrantType" style="max-width:220px;">
-                <option value="" selected>All...</option>
-                @foreach (var val in sservice.GetGrantTypes())
-                {
+    <FluentStack>
+    <FluentTextField @bind-Value="@txtSearchId" Placeholder="Enter Id here..." />
+    <FluentTextField @bind-Value="@txtSearchSRD" Placeholder="Enter SRD here..."/>
+    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())" ></FluentButton>
+    <FluentSelect TOption="KeyValue"
+                  Items="@GrantTypes"
+                  Id="grant-type-listbox"
+                  Width="200px"
+                  Height="250px"
+                  Placeholder="Select Grant type..."
+                  OptionValue="@(p => p.Id)"
+                  OptionText="@(p => p.Name)"
+                  @bind-Value="@manualGrantType"/>
 
-                    <option value="@val.Key">@val.Value</option>
-                }
-            </select>
-        </div>
-    </div>
-    <div class="col">
-        @if (DTSocPen.Any() && !string.IsNullOrEmpty(manualGrantType))//a search has been done and a grantype selected
-        {
-            @if (!DTSocPen.Where(a => a.GrantType == manualGrantType).Any())
-            {
-                <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-                <button class="btn btn-primary btn-sm active" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnManualCapture_Click())">Manual Capture</button>
-                </div>
-            }
-        }
-    </div>
+    @if (!string.IsNullOrEmpty(manualGrantType) && !DTSocPen.Where(a => a.GrantType == manualGrantType).Any())//a grantype is selected AND NO MATCHING sOCPEN rECORD
+    {
+        <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.Edit())" Title="Manual Capture" OnClick="@(() => btnManualCapture_Click())">Manual Capture</FluentButton>
+    }
     @if (sessionservice.session.IsRmc())
     {
-        <div class="col-4 float-right">
-        <BoxStatus rebox="@rebox"></BoxStatus>
-        </div>
+        <BoxStatus Alignment="HorizontalAlignment.Right" rebox="@rebox"></BoxStatus>
     }
-</div>
-<div style="display: table-row;">
-    <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-        <input type="checkbox" @bind="@chkSearchFull" /><label class="chkboxLabel"> Search Id History.</label>
-    </div>
-</div>
+    </FluentStack>
+<br />
+<FluentCheckbox @bind-Value="@chkSearchFull" Label="Search Id History" />
 <br />
 
 <FluentTabs Class="tab">
@@ -79,58 +56,28 @@
                 Socpen Results
             </Header>
             <Content>
-
-        <div id="SocpenGrid">
-
-                <table style="font-size:small;width:100%;">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID No</th>
-                            <th scope="col">ID History</th>
-                            <th scope="col">Action</th>
-                            <th scope="col">Child ID No</th>
-                            <th scope="col">Grant Type</th>
-                            <th scope="col">Srd No</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Surname</th>
-                            <th scope="col">Application Date</th>
-                            <th scope="col">Archive Year</th>
-                            <th scope="col">Transaction Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (DTSocPen.Any())
-                        {
-                        @foreach (var u in DTSocPen)
-                        {
-                        <tr style="@(!string.IsNullOrEmpty(u.Brm_Parent)? "background-color:limegreen;": u.IsMergeCandidate  ? "background-color:gold;":"")">
-                            <td>@u.Id</td>
-                            <td>@u.IdHistory</td>
-                            <td><button class="btn btn-primary btn-sm active" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnNewCover_Click(u))">New Cover</button></td>
-                            <td>@u.ChildId</td>
-                            <td>@u.GrantName</td>
-                            <td>@u.Srd_No</td>
-                            <td>@u.Status</td>
-                            <td>@u.Name</td>
-                            <td>@u.SurName</td>
-                            <td>@u.AppDate</td>
-                            <td>@u.ARCHIVE_YEAR</td>
-                            <td>@u.StatusDate</td>
-                        </tr>
-                        }
-
-                        }
-                        else
-                        {
-
-                                <tr>No data. Please search and applicant.</tr>
-        
-                        }
-                    </tbody>
-                </table>
-
-        </div>
+            <FluentDataGrid Items="@DTSocPen.AsQueryable()" TGridItem="Application">
+                <PropertyColumn Property="@(p => p.Id)" />
+                <TemplateColumn Title="Actions" Align="@Align.End">
+                    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Add())" Title="New" OnClick="@((p) => btnNewCover_Click(context))"></FluentButton>
+                </TemplateColumn>
+                <TemplateColumn Title="Merge Parent" Align="@Align.End">
+                    <FluentCheckbox @bind-Value="@context.IsMergeParent" Disabled/>
+                </TemplateColumn>
+                <TemplateColumn Title="Can Merge" Align="@Align.End">
+                    <FluentCheckbox @bind-Value="@context.IsMergeCandidate" Disabled />
+                </TemplateColumn>
+                <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />
+                <PropertyColumn Property="@(p => p.GrantType)"  Sortable="true" />
+                <PropertyColumn Property="@(p => p.ChildId)"  Sortable="true" />
+                <PropertyColumn Property="@(p => p.Srd_No)"  Sortable="true" />
+                <PropertyColumn Property="@(p => p.Status)"  Sortable="true" />
+                <PropertyColumn Property="@(p => p.Name)"  />
+                <PropertyColumn Property="@(p => p.SurName)" />
+                <PropertyColumn Property="@(p => p.AppDate)"  Sortable="true" />
+                <PropertyColumn Property="@(p => p.ARCHIVE_YEAR)" Sortable="true" />
+                <PropertyColumn Property="@(p => p.StatusDate)"  Sortable="true" />
+            </FluentDataGrid>
             </Content>
     </FluentTab>
     <FluentTab Id="tab-2">
@@ -146,11 +93,8 @@
                 Record History
             </Header>
             <Content>
-            <div class="componentBG">
-        <BRMHistory IdNumber="@txtSearchId"></BRMHistory>
-            </div>
+               <BRMHistory IdNumber="@txtSearchId"></BRMHistory>
         </Content>
-
     </FluentTab>
 </FluentTabs>
 
@@ -170,6 +114,8 @@
     string regionChangeMessage = "";
     string manualGrantType = "";
 
+    protected List<KeyValue> GrantTypes = new();
+
     protected List<Application> DTSocPen = new();
     protected List<Application> DTBrm = new();
     protected List<Application> DTBrmParents = new();
@@ -186,6 +132,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        GrantTypes = StaticDataService.GrantTypes.ToKeyValueList();
         if (!string.IsNullOrEmpty(Id))
         {
             txtSearchId = Id;
