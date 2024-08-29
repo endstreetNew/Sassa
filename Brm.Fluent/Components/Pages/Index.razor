@@ -1,8 +1,5 @@
 ﻿@page "/"
 @page "/brmprod"
-@using Microsoft.FluentUI.AspNetCore.Components
-@using Microsoft.FluentUI.AspNetCore.Components.Extensions
-
 
 @inject SessionService sessionservice
 @inject StaticService staticservice
@@ -11,10 +8,8 @@
 <div class="pageTitle">
 <h3>Home</h3>
 </div>
-    @if(sessionservice.session.IsBrmUser())
+@if(sessionservice.session.IsBrmUser())
     {
-
-     <div class="componentBG">
          <div class="whiteArea">
                 <span><strong>User Details</strong></span>
                     <hr />
@@ -83,19 +78,10 @@
                                     </FluentStack>
                                 </OptionTemplate>
                             </FluentSelect>
-                            <FluentButton Appearance="Appearance.Accent" OnClick="PickRandomColor">Feeling lucky?</FluentButton>
                         </FluentGridItem>
                     </FluentGrid>
-
-                    <FluentStack Style="margin: 30px 0px; padding: 30px; border: 1px solid var(--accent-fill-rest);">
-                        <FluentIcon Value="@(new Icons.Regular.Size24.Airplane())" />
-                        <FluentLabel>Example of content</FluentLabel>
-                        <FluentButton Appearance="Appearance.Outline">Outline button</FluentButton>
-                        <FluentButton Appearance="Appearance.Accent">Accent button</FluentButton>
-                    </FluentStack>
                 </div>
-                </div>
-        </div>
+          </div>
     }
     else
     {

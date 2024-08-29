@@ -87,6 +87,8 @@ namespace Sassa.BRM.Models
             }
         }
         [JsonIgnore]
+        public bool ShowChildren { get; set; }
+        [JsonIgnore]
         public string Status
         {
             get
