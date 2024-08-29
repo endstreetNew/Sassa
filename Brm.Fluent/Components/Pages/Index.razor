@@ -103,20 +103,6 @@
         officeColor = OfficeColor.Sway;
     }
 
-    // void OnThemeLoaded(LoadedEventArgs e)
-    // {
-    //    //DemoLogger.WriteLine($"Loaded: {(e.Mode == DesignThemeModes.System ? "System" : "")} {(e.IsDark ? "Dark" : "Light")}");
-    // }
-
-    // void OnLuminanceChanged(LuminanceChangedEventArgs e)
-    // {
-    //     //DemoLogger.WriteLine($"Changed: {(e.Mode == DesignThemeModes.System ? "System" : "")} {(e.IsDark ? "Dark" : "Light")}");
-    // }
-
-    void PickRandomColor()
-    {
-        officeColor = OfficeColorUtilities.GetRandom();
-    }
     private async Task OpenChangeUserOffice()
     {
         // Create a new instance of DialogData

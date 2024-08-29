@@ -6,62 +6,23 @@
 <h3>MIS Data search</h3>
 </div>
 
-<div class="row">
-    <div class="col" style="width:200px">
-        <div id="divSearchID" style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-            <input class="form-control" placeholder="Enter ApplicantId here..." @bind="searchId" />
-        </div>
-        <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-            <button type="button" class="btn btn-primary btn-sm form-control" @onclick="@(async () => await SearchMis())"><span class="oi oi-magnifying-glass" aria-hidden="true"></span></button>
-        </div>
-    </div>
-</div>
+<FluentStack>
+<FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
+<FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await SearchMis())"></FluentButton>
+</FluentStack>
 
-<div id="MisGrid">
-    @if (misFiles.Any())
-    {
-        <table class="table table-sm" style="font-size:small;">
-            <thead>
-                <tr>
-                    <th scope="col">ID No</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Surname</th>
-                    <th scope="col">Grant Type</th>
-                    <th scope="col">App Date</th>
-                    <th scope="col">Date Change</th>
-                    <th scope="col">File Number</th>
-                    <th scope="col">Region Id</th>
-                    <th scope="col">Registry Type</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @foreach (var u in misFiles)
-                {
-                    <tr>
-                        <td>@u.IdNumber</td>
-                        <td>@u.Name</td>
-                        <td>@u.Surname</td>
-                        <td>@u.GrantType</td>
-                        <td>@u.AppDate</td>
-                        <td>@u.DateChange</td>
-                        <td>@u.FileNumber</td>
-                        <td>@u.RegionId</td>
-                        <td>@u.RegistryType</td>
-                    </tr>
-                }
-
-            </tbody>
-        </table>
-
-    }
-    else
-    {
-        <div style="padding: 10px 0 5px 0;">
-            <p>No data. Please search and applicant.</p>
-        </div>
-    }
-</div>
+<FluentDataGrid Items="@misFiles.AsQueryable()" TGridItem="MisLivelinkTbl">
+    <PropertyColumn Width="130px" Property="@(p => p.IdNumber)" />
+    <PropertyColumn Width="100px" Property="@(p => p.Name)" Sortable="true" />
+    <PropertyColumn Width="130px" Property="@(p => p.Surname)" Sortable="true" />
+    <PropertyColumn Width="200px" Property="@(p => p.GrantType)" Sortable="true" />
+    <PropertyColumn Width="130px" Property="@(p => p.AppDate)" Sortable="true" />
+    <PropertyColumn Width="100px" Property="@(p => p.DateChange)" Sortable="true" />
+    <PropertyColumn Width="200px" Property="@(p => p.FileNumber)" />
+    <PropertyColumn Width="100px" Property="@(p => p.AppDate)" Sortable="true" />
+    <PropertyColumn Width="100px" Property="@(p => p.RegionId)" Sortable="true" />
+    <PropertyColumn Width="100px" Property="@(p => p.RegistryType)" Sortable="true" />
+</FluentDataGrid>
 
 @code {
 
