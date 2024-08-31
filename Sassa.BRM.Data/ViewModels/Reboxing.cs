@@ -40,5 +40,12 @@
                 return SelectedType == "18" || SelectedType == "13";
             }
         }
+        public bool IsLC
+        {
+            get
+            {
+                return RegType.Contains("LC");
+            }
+        }
     }
 }

@@ -19,7 +19,7 @@ body {
     min-height: calc(100dvh - 106px);
     color: var(--neutral-foreground-rest);
     align-items: stretch !important;
-
+    border-radius: 6px;
 }
 
 .body-content {
@@ -249,12 +249,4 @@ code {
     display: inline-block;
 }
 
-.pageTitle {
-    margin: auto;
-    padding: 5px 5px 5px 5px;
-    text-align: center;
-    border-radius: 10px;
-    background: var(--neutral-layer-4);
-    display: inline-block;
-    width: 100%;
-}
+

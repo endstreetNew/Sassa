@@ -1,0 +1,13 @@
+﻿<FluentStack Orientation="Orientation.Horizontal">
+    <FluentLabel Style="width:250px;" Color="Color.FillInverse">@Label</FluentLabel>
+    <FluentLabel>@Value</FluentLabel>
+</FluentStack>
+
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = "";
+    [Parameter]
+    public object Value { get; set; } = "";
+}
+

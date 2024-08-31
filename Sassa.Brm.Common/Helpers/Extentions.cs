@@ -34,6 +34,21 @@ namespace Sassa.Brm.Common.Helpers
 
             return grantTypes;
         }
+        public static List<KeyValue> ToKeyValueList(this Dictionary<decimal, string> dictionary)
+        {
+            var grantTypes = new List<KeyValue>();
+
+            foreach (var grantType in dictionary)
+            {
+                grantTypes.Add(new KeyValue
+                {
+                    Id = grantType.Key.ToString(),
+                    Name = grantType.Value
+                });
+            }
+
+            return grantTypes;
+        }
         public static DcFile FromDcFile(this DcFile toFile,DcFile fromFile)
         {
             toFile.AltBoxNo = fromFile.AltBoxNo;

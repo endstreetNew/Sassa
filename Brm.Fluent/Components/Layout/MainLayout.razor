@@ -5,8 +5,10 @@
 @inject ActiveUser _ConnectedUser
 @inject ActiveUserList _ConnectedUserList
 
+@implements IDisposable
+
 <FluentDesignTheme Mode="DesignThemeModes.Dark" OfficeColor="@officeColor" StorageName="theme" />
-@* <FluentDesignTheme Mode="@DesignThemeModes.System" OfficeColor="@officeColor" StorageName="theme" /> *@
+
 <FluentLayout>
     <FluentHeader >
         <p class="site-title">
@@ -20,8 +22,6 @@
         <FluentBodyContent Class="body-content">
             <FluentToastProvider Position="ToastPosition.TopCenter" />
             <FluentDialogProvider />
-@*             <FluentTooltipProvider /> *@
-@*             <FluentMessageBarProvider /> *@
             <div class="content">
                 @Body
             </div>

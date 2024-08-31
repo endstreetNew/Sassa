@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace Sassa.BRM.Models
 {
@@ -11,8 +12,12 @@ namespace Sassa.BRM.Models
         private string child_id;
         public string ChildId 
         {
-            get { return child_id; }
-            set { child_id = value == null ? null : value.Trim().PadLeft(13, ' ');}
+            get 
+            {
+                if (!"6C59".Contains(GrantType)) return null;
+                return child_id; 
+            }
+            set { child_id = value == null ? null : value.Trim().PadLeft(13, '0');}
         }
         //-----------------------------------------------
         public string Name { get; set; }
@@ -61,6 +66,7 @@ namespace Sassa.BRM.Models
         public string Source { get; set; }
         [JsonIgnore]
         public bool IsMergeCandidate { get; set; }
+        [JsonIgnore]
         public bool IsCombinationCandidate { get; set; }
         public string BrmUserName { get; set; }
         public decimal? FspId { get; set; }
@@ -96,6 +102,7 @@ namespace Sassa.BRM.Models
                 return AppStatus.Contains("MAIN") ? "Active" : "Inactive";
             }
         }
+        [JsonIgnore]
         public bool IsPreservedType
         {
             get
@@ -104,33 +111,44 @@ namespace Sassa.BRM.Models
             }
         }
 
-        public bool IsValid()
+        public string IsValid()
         {
             if (string.IsNullOrEmpty(Name))
             {
-                return false;
+                return "Name is reguired";
             }
             if (string.IsNullOrEmpty(SurName))
             {
-                return false;
+                return "Surname is required";
             }
             if (string.IsNullOrEmpty(Id))
             {
-                return false;
+                return "Id is required";
             }
             if (string.IsNullOrEmpty(GrantType))
             {
-                return false;
+                return "GrantType is required";
             }
             if (!"MAIN|ARCHIVE|LC-MAIN|LC-ARCHIVE".Contains(AppStatus))
             {
-                return false;
+                return "Regtype is required";
             }
             if (string.IsNullOrEmpty(DocsPresent))
             {
-                return false;
+                return "Critical Documents are required";
             }
-            return true;
+            if (GrantType == "S" && string.IsNullOrEmpty(Srd_No.Trim()))
+            {
+                return "Srd is Required for SRD Grants";
+            }
+            if (!string.IsNullOrEmpty(LcType.Trim('0')))
+            {
+                if (!AppStatus.StartsWith("LC-"))
+                {
+                   AppStatus = "LC-" + AppStatus;
+                }
+            }
+            return "Valid";
         }
     }
 }

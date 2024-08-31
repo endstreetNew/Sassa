@@ -3,49 +3,37 @@
 
 @inject SessionService sessionservice
 @inject BRMDbService db
-@inject StaticService sservice
+@inject StaticService staticservice
+@inject IDialogService dialogService
 @inject IToastService toast
+@inject NavigationManager nav
+@inject IJSRuntime js
 
-<div class="pageTitle">
-<h3>File Capture</h3>
-</div>
-<hr />
-@if (showBrmModal)
-{
-    <Newbrm br="@SelectedApplication" ModalClosed="OnModalClosed" BrmSave="OnBrmSaved" TargetBoxType="@rebox.RegType"></Newbrm>
-}
-@if(showManualCapture)
-{
-    <ManualCapture br="@SelectedApplication" ModalClosed="OnModalClosed" ManualBrmSave="OnManualBrmSaved" TargetBoxType="@rebox.RegType"></ManualCapture>
-}
-@if(showConfirmRegion)
-{
-    <Confirmation Title="Confirm Region Change" Message="@regionChangeMessage" Cancel="CancelRegion" Ok="ConfirmedRegion"></Confirmation>
-}
+<BrmPageTitle Title="Capture"/>
 
-    <FluentStack>
-    <FluentTextField @bind-Value="@txtSearchId" Placeholder="Enter Id here..." />
-    <FluentTextField @bind-Value="@txtSearchSRD" Placeholder="Enter SRD here..."/>
-    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())" ></FluentButton>
-    <FluentSelect TOption="KeyValue"
-                  Items="@GrantTypes"
-                  Id="grant-type-listbox"
-                  Width="200px"
-                  Height="250px"
-                  Placeholder="Select Grant type..."
-                  OptionValue="@(p => p.Id)"
-                  OptionText="@(p => p.Name)"
-                  @bind-Value="@manualGrantType"/>
+<FluentStack>
+<FluentTextField @bind-Value="@txtSearchId" Placeholder="Enter Id here..." />
+<FluentTextField @bind-Value="@txtSearchSRD" Placeholder="Enter SRD here..."/>
+<FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())" ></FluentButton>
+<FluentSelect TOption="KeyValue"
+                Items="@GrantTypes"
+                Id="grant-type-listbox"
+                Width="200px"
+                Height="250px"
+                Placeholder="Select Grant type..."
+                OptionValue="@(p => p.Id)"
+                OptionText="@(p => p.Name)"
+                @bind-Value="@manualGrantType"/>
 
-    @if (!string.IsNullOrEmpty(manualGrantType) && !DTSocPen.Where(a => a.GrantType == manualGrantType).Any())//a grantype is selected AND NO MATCHING sOCPEN rECORD
-    {
-        <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.Edit())" Title="Manual Capture" OnClick="@(() => btnManualCapture_Click())">Manual Capture</FluentButton>
-    }
-    @if (sessionservice.session.IsRmc())
-    {
-        <BoxStatus Alignment="HorizontalAlignment.Right" rebox="@rebox"></BoxStatus>
-    }
-    </FluentStack>
+@if (!string.IsNullOrEmpty(manualGrantType) && !DTSocPen.Where(a => a.GrantType == manualGrantType).Any())//a grantype is selected AND NO MATCHING sOCPEN rECORD
+{
+    <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.Edit())" Title="Manual Capture" OnClick="@(() => btnManualCapture_Click())">Manual Capture</FluentButton>
+}
+@if (sessionservice.session.IsRmc())
+{
+    <BoxStatus Alignment="HorizontalAlignment.Right" rebox="@rebox" OnloadBox="GotoBox"></BoxStatus>
+}
+</FluentStack>
 <br />
 <FluentCheckbox @bind-Value="@chkSearchFull" Label="Search Id History" />
 <br />
@@ -56,19 +44,21 @@
                 Socpen Results
             </Header>
             <Content>
-            <FluentDataGrid Items="@DTSocPen.AsQueryable()" TGridItem="Application" Pagination="@pagination">
+<div style="display: table; table-layout: fixed; width: 100%;">
+    <div style="overflow-x: auto;">
+        <FluentDataGrid Style="min-width: max-content;" Items="@DTSocPen.AsQueryable()" TGridItem="Application" Pagination="@pagination">
                 <PropertyColumn Property="@(p => p.Id)" />
                 <TemplateColumn Title="Actions" Align="@Align.End">
                     <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Add())" Title="New" OnClick="@((p) => btnNewCover_Click(context))"></FluentButton>
                 </TemplateColumn>
-                <TemplateColumn Title="Merge Parent" Align="@Align.End">
+@*                 <TemplateColumn Width="100px" Title="Merged" Align="@Align.End">
                     <FluentCheckbox @bind-Value="@context.IsMergeParent" Disabled/>
-                </TemplateColumn>
-                <TemplateColumn Title="Can Merge" Align="@Align.End">
+                </TemplateColumn> *@
+@*              <TemplateColumn Width="100px" Title="CanMerge" Align="@Align.End">
                     <FluentCheckbox @bind-Value="@context.IsMergeCandidate" Disabled />
-                </TemplateColumn>
+                </TemplateColumn> *@
                 <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />
-                <PropertyColumn Property="@(p => p.GrantType)"  Sortable="true" />
+                <PropertyColumn Property="@(p => p.GrantName)"  Sortable="true" />
                 <PropertyColumn Property="@(p => p.ChildId)"  Sortable="true" />
                 <PropertyColumn Property="@(p => p.Srd_No)"  Sortable="true" />
                 <PropertyColumn Property="@(p => p.Status)"  Sortable="true" />
@@ -78,6 +68,8 @@
                 <PropertyColumn Property="@(p => p.ARCHIVE_YEAR)" Sortable="true" />
                 <PropertyColumn Property="@(p => p.StatusDate)"  Sortable="true" />
             </FluentDataGrid>
+            </div>
+         </div>
             <FluentPaginator State="@pagination" />
             </Content>
     </FluentTab>
@@ -99,9 +91,6 @@
     </FluentTab>
 </FluentTabs>
 
-
-
-
 @code {
 
     [Parameter]
@@ -110,24 +99,16 @@
     string txtSearchId ="";
     string txtSearchSRD="";
     bool chkSearchFull;
-    //bool chkSearchMv = false;
 
-    string regionChangeMessage = "";
     string manualGrantType = "";
 
     protected List<KeyValue> GrantTypes = new();
-
     protected List<Application> DTSocPen = new();
     protected List<Application> DTBrm = new();
     protected List<Application> DTBrmParents = new();
     protected List<Application> DTMerged = new();
     protected Dictionary<string, int> Unmerged = new();
-
     protected Application SelectedApplication = new();
-
-    bool showConfirmRegion = false;
-    bool showBrmModal = false;
-    bool showManualCapture = false;
 
     protected Reboxing rebox = new Reboxing();
 
@@ -205,7 +186,6 @@
         }
     }
 
-
     protected async Task RefreshDTBrm()
     {
         if (!string.IsNullOrEmpty(txtSearchId))
@@ -257,120 +237,175 @@
 
     private async Task btnNewCover_Click(Application a)
     {
-        rebox.BoxNo = rebox.BoxNo.ToUpper();
-        if (string.IsNullOrEmpty(rebox.BoxNo))
+        try
         {
-            if (sessionservice.session.IsRmc())
-            {
-                toast.ShowError("a TDW BoxNo is required to capture at the RMC.");
-                return;
-            }
+            SelectedApplication = a;
+            if (!await IsValid()) return;
+            ///Modal Model
+            BrmCaptureModel br = new BrmCaptureModel
+                {
+                    ApplicantId = SelectedApplication.Id,
+                    SrdNo = SelectedApplication.Srd_No,
+                    GrantType = SelectedApplication.GrantType,
+                    LcType = SelectedApplication.LcType,
+                    AppDate = SelectedApplication.AppDate ?? DateTime.Now.ToString("dd/MMM/yy"),
+                    AppStatus = SelectedApplication.AppStatus,
+                    Documents = SelectedApplication.DocsPresent,
+                    TdwBoxno = SelectedApplication.TDW_BOXNO,
+                    Reboxing = rebox
+                };
+            await ModalCapture(br);
         }
-        else
+        catch (Exception ex)
         {
-            rebox = await db.GetBoxCounts(rebox);
-        }
-
-        a.TDW_BOXNO = rebox.BoxNo;
-        a.MiniBox = rebox.MiniBox;
-        if (rebox.MiniBox > 5)
-        {
-            toast.ShowError("Only 5 Miniboxes allowed.");
-            return;
-        }
-        SelectedApplication = a;
-        if (a.RegionId == sessionservice.session!.Office.RegionId)
-        {
-            ConfirmedRegion();//Save normal capture
-        }
-        else
-        {
-            regionChangeMessage = $"Are you sure you want to change the region of this application from {sservice.GetRegion(a.RegionId)} to {sservice.GetRegion(sessionservice.session.Office.RegionId!)} ?";
-            showConfirmRegion = true;
-            //toast.ShowError($"Please set your region to {db.GetRegion(a.RegionId)} to capture this record");
+            toast.ShowError(ex.Message);
         }
     }
 
     private async Task btnManualCapture_Click()
     {
-
-        rebox.BoxNo = rebox.BoxNo.ToUpper();
-        if (string.IsNullOrEmpty(rebox.BoxNo))
+        try
         {
-            if (sessionservice.session!.IsRmc())
+            SelectedApplication = new Application
+            {
+                Id = txtSearchId,
+                Srd_No = txtSearchSRD,
+                TRANS_TYPE = 0,
+                TDW_BOXNO = rebox.BoxNo,
+                MiniBox = rebox.MiniBox,
+                GrantType = manualGrantType,
+                RegionId = sessionservice.session.Office.RegionId,
+                LcType = "0",
+                AppDate = DateTime.Now.ToStandardDateString(),
+                AppStatus = "MAIN",
+                DocsPresent = ""
+            };
+            if (!await IsValid()) return;
+            BrmCaptureModel br = new BrmCaptureModel
+                {
+                    ApplicantId = SelectedApplication.Id,
+                    SrdNo = SelectedApplication.Srd_No,
+                    GrantType = SelectedApplication.GrantType,
+                    LcType = SelectedApplication.LcType,
+                    AppDate = SelectedApplication.AppDate ?? DateTime.Now.ToString("dd/MMM/yy"),
+                    AppStatus = SelectedApplication.AppStatus,
+                    Documents = SelectedApplication.DocsPresent,
+                    TdwBoxno = SelectedApplication.TDW_BOXNO,
+                    Reboxing = rebox,
+                    IsManualCapture = true
+                };
+
+            await ModalCapture(br);
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.Message);
+        }
+    }
+
+    private async Task ModalCapture(BrmCaptureModel br)
+    {
+        DialogParameters parameters = new()
+            {
+                Title = $"Capture New Brm Record",
+                PrimaryAction = "Ok",
+                PrimaryActionEnabled = false,
+                // SecondaryAction = "No",
+                // Height = "55%",
+                 Width = br.IsManualCapture ? "90%": "30%",
+                TrapFocus = true,
+                Modal = true,
+                PreventScroll = true
+            };
+        IDialogReference dialog = await dialogService.ShowDialogAsync<NewBRMContent>(br, parameters);
+        var result = await dialog.Result;
+        if (result.Cancelled || result.Data is null) return;
+        BrmCaptureModel? capturedBrm = result.Data as BrmCaptureModel;
+        if (capturedBrm == null) return; //huh?
+
+        SelectedApplication.Brm_BarCode = capturedBrm.BrmBarcode;
+        SelectedApplication.TRANS_TYPE = (int)capturedBrm.ApplicationType;
+        SelectedApplication.ChildId = capturedBrm.ChildId;
+        SelectedApplication.GrantType = capturedBrm.GrantType;
+        SelectedApplication.LcType = capturedBrm.LcType;
+        SelectedApplication.AppStatus = capturedBrm.AppStatus;
+        SelectedApplication.OfficeId = sessionservice.session.Office.OfficeId;
+        SelectedApplication.RegionId = sessionservice.session.Office.RegionId;
+        SelectedApplication.FspId = sessionservice.session.Office.FspId;
+        SelectedApplication.BrmUserName = sessionservice.session.SamName;
+        SelectedApplication.Source = "Capture";
+        if(capturedBrm.IsManualCapture)
+        {
+            SelectedApplication.Name= capturedBrm.Name;
+            SelectedApplication.SurName = capturedBrm.Surname;
+            SelectedApplication.DocsPresent = capturedBrm.Documents;
+            SelectedApplication.Source = "ManualCapture";
+        }
+        var validationResult = SelectedApplication.IsValid();
+        if (validationResult != "Valid")
+        {
+            toast.ShowError(validationResult);
+            return;
+        }
+        DcFile file = await db.CreateBRM(SelectedApplication, "Brm.Fluent file Capture");
+        await js.InvokeVoidAsync("open", System.Threading.CancellationToken.None, $"coversheet/{SelectedApplication.Brm_BarCode}", "_blank");
+        await Search();
+    }
+
+    private async Task<bool> IsValid()
+    {
+        if (sessionservice.session.IsRmc())
+        {
+            if(string.IsNullOrEmpty(rebox.BoxNo))
             {
                 toast.ShowError("a TDW BoxNo is required to capture at the RMC.");
-                return;
+                return false;
             }
-        }
-        else
-        {
-            rebox = await db.GetBoxCounts(rebox);
+            rebox.BoxNo = rebox.BoxNo.ToUpper();
+            if (sessionservice.session.IsRmc() && string.IsNullOrEmpty(rebox.RegType))
+            {
+                rebox = await db.GetBoxCounts(rebox);
+            }
             if (rebox.MiniBox > 5)
             {
                 toast.ShowError("Only 5 Miniboxes allowed.");
-                return;
+                return false;
+            }
+
+            SelectedApplication.TDW_BOXNO = rebox.BoxNo;
+            SelectedApplication.MiniBox = rebox.MiniBox;
+        }
+        //Check valid office
+        if (SelectedApplication.RegionId != sessionservice.session.Office.RegionId)
+        {
+            string regionChangeMessage = $"Are you sure you want to change the region of this application from {staticservice.GetRegion(SelectedApplication.RegionId)} to {staticservice.GetRegion(sessionservice.session.Office.RegionId!)} ?";
+            DialogParameters parameters = new()
+                {
+                    PrimaryAction = "Ok",
+                    Height = "230px",
+                    Width = "450px",
+                    Title = $"Confirm Region change.",
+                    PreventDismissOnOverlayClick = true,
+                    PreventScroll = true,
+                };
+            IDialogReference dialog = await dialogService.ShowDialogAsync<ConfirmContent>(regionChangeMessage, parameters);
+            var result = await dialog.Result;
+            if (result.Cancelled)
+            {
+                toast.ShowError("You can change your office on the home page.");
+                return false;
             }
         }
-        if (manualGrantType == "S" && string.IsNullOrEmpty(txtSearchSRD))
+        return true;
+    }
+    private void GotoBox()
+    {
+        if(string.IsNullOrEmpty(rebox.BoxNo))
         {
-            toast.ShowError("a Srd record requires an SRD no.");
+            toast.ShowError("Please enter a TDW BoxNo.");
             return;
-        }
-        SelectedApplication = new Application
-        {
-            TRANS_TYPE = 0,
-            TDW_BOXNO = rebox.BoxNo,
-            MiniBox = rebox.MiniBox,
-            GrantType = manualGrantType,
-            RegionId = sessionservice.session!.Office.RegionId,
-            Id = txtSearchId,
-            Srd_No = txtSearchSRD,
-            LcType = "0",
-            AppDate = DateTime.Now.ToStandardDateString(),
-            AppStatus = "MAIN",
-            DocsPresent = ""
         };
-
-        showManualCapture = true;
-    }
-
-    private void ConfirmedRegion()
-    {
-        showConfirmRegion = false;
-        showBrmModal = true;
-        StateHasChanged();
-    }
-
-    private void CancelRegion()
-    {
-        showConfirmRegion = false;
-        showBrmModal = false;
-        StateHasChanged();
-    }
-
-    private async Task OnManualBrmSaved(bool merge)
-    {
-        await Search();
-        showManualCapture = false;
-    }
-    private async Task OnBrmSaved(bool merge)
-    {
-        await Search();
-        if (sessionservice.session.IsRmc())
-        {
-            rebox = await db.GetBoxCounts(rebox);
-        }
-        showBrmModal = false;
-    }
-
-    private void OnModalClosed()
-    {
-
-        SelectedApplication = new();
-        showBrmModal = false;
-        showManualCapture = false;
-        StateHasChanged();
+        nav.NavigateTo($"boxing/{rebox.BoxNo}");
     }
 
 }

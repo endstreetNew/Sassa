@@ -2,10 +2,8 @@
 
 @inject MisFileService db
 @inject IToastService toast
-<div class="pageTitle">
-<h3>MIS Data search</h3>
-</div>
 
+<BrmPageTitle Title="MIS file search" />
 <FluentStack>
 <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
 <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await SearchMis())"></FluentButton>

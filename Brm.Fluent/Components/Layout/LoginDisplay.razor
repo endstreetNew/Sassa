@@ -6,7 +6,7 @@
         <div style="float:right; margin-top:10px;">
             <label  style="margin-left: 10px">@sessionservice.session.Name</label>
             <label  style="margin-left: 10px">@(sessionservice.session.Office.OfficeName + ": " + sessionservice.session.Office.RegionName + $" :{ServicePoint}")</label>
-            <label  style="margin-left: 10px">@("(Users " + UserCount + ")")</label>
+            <a href="activeusers"  style="margin-left: 10px">@("(Users " + UserCount + ")")</a>
         </div>
 }
 else
@@ -16,7 +16,6 @@ else
             <label class="divUserDetail" style="margin-left: 10px">Initializing user session</label>
         </div>
     </div>
-    
 }
 
 @code
@@ -37,14 +36,5 @@ else
         ServicePoint = staticservice.GetServicePointName(sessionservice.session.Office.FspId);
         StateHasChanged();
     }
-
-    // private void GetServicePoint()
-    // {
-    //     try
-    //     {
-            
-    //     }
-    //     catch { }
-    // }
 }
 

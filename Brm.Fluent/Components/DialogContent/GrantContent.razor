@@ -1,0 +1,69 @@
+﻿ @inject StaticService staticservice
+ @inject BRMDbService db
+ @implements IDialogContentComponent<Enquiry>
+
+ <FluentStack Orientation="Orientation.Horizontal">
+    <FluentStack Orientation="Orientation.Vertical">
+        <strong>Details</strong>
+        <LabelValue Label="Brm Barcode" Value="@Content.BrmBarCode" />
+        <LabelValue Label="UnqFileNo" Value="@Content.UnqFileNo" />
+        <LabelValue Label="MisFileNo" Value="@Content.MisFileNo" />
+        <LabelValue Label="ApplicantNo" Value="@Content.ApplicantNo" />
+        <LabelValue Label="Province" Value="@Content.Province" />
+        <LabelValue Label="AppDate" Value="@Content.AppDate" />
+        <LabelValue Label="AppType" Value="@Content.AppType" />
+        <LabelValue Label="RegType" Value="@Content.RegType" />
+        <LabelValue Label="GrantType" Value="@Content.GrantType" />
+        <LabelValue Label="LastAction" Value="@Content.LastAction" />
+        <LabelValue Label="CaptureDate" Value="@Content.CaptureDate" />
+        <LabelValue Label="MergeParent" Value="@Content.MergeParent" />
+        <LabelValue Label="BrmRecord" Value="@Content.BrmRecord" />
+        <LabelValue Label="TdwRecord" Value="@Content.TdwRecord" />
+        <LabelValue Label="SocPenRecord" Value="@Content.SocPenRecord" />
+        <LabelValue Label="MultiGrant" Value="@Content.MultiGrant" />
+        <LabelValue Label="SocPenActive" Value="@Content.SocPenActive" />
+        <LabelValue Label="SocPenRecord" Value="@Content.SocPenRecord" />
+    </FluentStack>
+    <FluentDivider Orientation="Orientation.Vertical"></FluentDivider>
+    <FluentStack Orientation="Orientation.Vertical">
+        <strong>Activity</strong>
+        <FluentDataGrid Items="@activities.AsQueryable()" TGridItem="DcActivity" Pagination="@ActivityPagination">
+            <PropertyColumn Width="130px" Property="@(p => p.Username)" />
+            <PropertyColumn Width="100px" Property="@(p => p.ActivityDate)" />
+            <PropertyColumn Width="200px" Property="@(p => p.Area)" />
+            <PropertyColumn Width="130px" Property="@(p => p.Activity)" />
+            <PropertyColumn Width="130px" Property="@(p => staticservice.GetRegion(p.RegionId))" />
+            <PropertyColumn Width="130px" Property="@(p => staticservice.GetOfficeName(p.OfficeId.ToString()))" />
+        </FluentDataGrid>
+        <FluentPaginator State="@ActivityPagination" />
+        <strong>Delete/Update History for this Applicant</strong>
+        <FluentDataGrid Items="@history.AsQueryable()" TGridItem="DcFileDeleted" Pagination="@HistoryPagination">
+            <PropertyColumn Width="130px" Property="@(p => p.UnqFileNo)" />
+            <PropertyColumn Width="100px" Title="User" Property="@(p => p.UpdatedByAd)" />
+            <PropertyColumn Width="200px" Property="@(p => p.UpdatedDate)" />
+            <PropertyColumn Width="130px" Property="@(p => staticservice.GetRegion(p.RegionId))" />
+            <PropertyColumn Width="130px" Property="@(p => staticservice.GetOfficeName(p.OfficeId.ToString()))" />
+        </FluentDataGrid>
+        <FluentPaginator State="@HistoryPagination" />
+    </FluentStack>
+ </FluentStack>
+
+@code {
+    [Parameter]
+    public Enquiry Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    PaginationState ActivityPagination = new PaginationState() { ItemsPerPage = 5 };
+    PaginationState HistoryPagination = new PaginationState() { ItemsPerPage = 5 };
+
+    List<DcActivity> activities = new();
+    List<DcFileDeleted> history = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        activities = await db.GetFileActivity(Content.UnqFileNo);
+        history = await db.GetDeleteHistory(Content.ApplicantNo);
+    }
+}

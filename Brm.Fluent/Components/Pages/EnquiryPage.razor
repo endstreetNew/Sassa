@@ -1,224 +1,41 @@
 ﻿@page "/enquirypage"
 
-@using System.Threading
-
-@inject NavigationManager NavigationM
-@inject Navigation Navigate
+@inject Navigation nav
 @inject IToastService toast
 @inject BRMDbService db
 @inject StaticService sservice
+@inject IDialogService dialogService
 
-@implements IDisposable
+<BrmPageTitle Title="Enquiry" />
+<FluentStack>
+    <FluentTextField @bind-Value="@txtSearchBrm" Placeholder="Brm barcode or Id..." />
+    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())"></FluentButton>
+    @if (loading)
+    {
+    <FluentProgressRing ></FluentProgressRing>
+    }
+</FluentStack>
+
+<strong>Results</strong>
+<FluentDataGrid Items="@idResults.AsQueryable()" TGridItem="Enquiry" Pagination="@EnquiryPagination">
+    <PropertyColumn Width="130px" Property="@(p => p.BrmBarCode)" />
+    <PropertyColumn Width="100px" Property="@(p => p.CaptureDate)" />
+    <PropertyColumn Width="200px" Property="@(p => p.GrantType)" />
+    <TemplateColumn>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.PreviewLink())" Title="View cover" OnClick="@(() => btnViewCover(context.BrmBarCode))"></FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Document())" Title="Detail" OnClick="@(async () => await btnShowDetail(context))"></FluentButton>
+    </TemplateColumn>
+</FluentDataGrid>
+<FluentPaginator State="@EnquiryPagination" />
 
 
-<div class="row">
-    <div class="col" style="max-width:300px;">
-        <input class="form-control" placeholder="Brm barcode or Id..." @bind="txtSearchBrm" />
-    </div>
-    <div class="col" style="max-width:30px;">
-        <button type="button" class="btn btn-primary btn-sm" @onclick="@(async () => await Search())"><span class="oi oi-magnifying-glass" aria-hidden="true"></span></button>
-    </div>
-</div>
-
-@if (showDetail)
-{
-    <Modal Heading="Grant Detail" Cancel="OnConfirmationClose" Ok="OnConfirmationOk" Size="modal-xl">
-        <div class="row">
-            <div class="whiteArea col">
-                <strong>Details</strong>
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Brm BarCode</span>
-                    <label class="form-control" enabled="false">@e.BrmBarCode</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">CLM No</span>
-                    <label class="form-control" enabled="false">@e.UnqFileNo</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Mis File</span>
-                    <label class="form-control" enabled="false">@e.MisFileNo</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Applicant Id No</span>
-                    <label class="form-control" enabled="false">@e.ApplicantNo</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Province</span>
-                    <label class="form-control" enabled="false">@e.Province</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Application Date</span>
-                    <label class="form-control" enabled="false">@e.AppDate</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Application Type</span>
-                    <label class="form-control" enabled="false">@e.AppType</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Registry Type</span>
-                    <label class="form-control" enabled="false">@e.RegType</label>
-                </div>
-
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Grant Type</span>
-                    <label class="form-control" enabled="false">@e.GrantType</label>
-                </div>
-                @*<div class="input-group mb-1">
-                        <span class="input-group-text" style="width: 180px;">CSG Status</span>
-                        <label class="form-control" enabled="false">@e.CsgStatus</label>
-                    </div>*@
-
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Last Action Date</span>
-                    <label class="form-control" enabled="false">@e.LastAction</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Capture Date</span>
-                    <label class="form-control" enabled="false">@e.CaptureDate</label>
-                </div>
-                <div class="input-group mb-1">
-                    <span class="input-group-text" style="width: 180px;">Merge Parent</span>
-                    <label class="form-control" enabled="false">@e.MergeParent</label>
-                </div>
-                <div class="input-group mb-1">
-                    <div class="input-group-text">
-                        <input class="form-check-input mt-0" type="checkbox" disabled checked="@e.BrmRecord">
-                    </div>
-                    <label class="form-control" enabled="false">BRM Record</label>
-                </div>
-                <div class="input-group mb-1">
-                    <div class="input-group-text">
-                        <input class="form-check-input mt-0" type="checkbox" disabled checked="@e.TdwRecord">
-                    </div>
-                    <label class="form-control" enabled="false">TDW Record</label>
-                </div>
-                <div class="input-group mb-1">
-                    <div class="input-group-text">
-                        <input class="form-check-input mt-0" type="checkbox" disabled checked="@e.SocPenRecord">
-                    </div>
-                    <label class="form-control" enabled="false">SOCPEN Record</label>
-                </div>
-                <div class="input-group mb-1">
-                    <div class="input-group-text">
-                        <input class="form-check-input mt-0" type="checkbox" disabled checked="@e.MultiGrant">
-                    </div>
-                    <label class="form-control" enabled="false">Multi Grant</label>
-                </div>
-                <div class="input-group mb-1">
-                    <div class="input-group-text">
-                        <input class="form-check-input mt-0" type="checkbox" disabled checked="@e.SocPenActive">
-                    </div>
-                    <label class="form-control" enabled="false">SOCPEN Active</label>
-                </div>
-            </div>
-            <div class="whiteArea col">
-                <strong>Activity</strong>
-                @if (activities.Any())
-                {
-                    <table class="table table-sm" style="font-size:small;">
-                        <thead>
-                            <tr>
-
-                                <th scope="col">User</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Area</th>
-                                <th scope="col">Activity</th>
-                                <th scope="col">Region</th>
-                                <th scope="col">Office</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (var u in activities)
-                            {
-                                <tr>
-                                    <td>@u.Username</td>
-                                    <td>@u.ActivityDate</td>
-                                    <td>@u.Area</td>
-                                    <td>@u.Activity</td>
-                                    <td>@(sservice.GetRegion(u.RegionId))</td>
-                                    <td>@(sservice.GetOfficeName(u.OfficeId.ToString()))</td>
-                                </tr>
-                            }
-
-                        </tbody>
-                    </table>
-                }
-                <strong>Delete/Update History for this Applicant</strong>
-                @if (history != null)
-                {
-                    <table class="table table-sm" style="font-size:small;">
-                        <thead>
-                            <tr>
-
-                                <th scope="col">User</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Region</th>
-                                <th scope="col">Office</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (var u in activities)
-                            {
-                                <tr>
-                                    <td>@u.Username</td>
-                                    <td>@u.ActivityDate</td>
-                                    <td>@(sservice.GetRegion(u.RegionId))</td>
-                                    <td>@(sservice.GetOfficeName(u.OfficeId.ToString()))</td>
-                                </tr>
-                            }
-
-                        </tbody>
-                    </table>
-                }
-            </div>
-        </div>
-    </Modal>
-}
-
-@if (idResults.Any())
-{
-    <table class="table table-sm" style="font-size:small;">
-        <thead>
-            <tr>
-                <th scope="col">BRM Barcode</th>
-                <th scope="col">Capture Date</th>
-                <th scope="col">Grant Type</th>
-                <th scope="col">Action</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var u in idResults)
-            {
-                <tr>
-                    <td>@u.BrmBarCode</td>
-                    <td>@u.CaptureDate</td>
-                    <td>@u.GrantType</td>
-                    <td><NavLink class="btn btn-primary btn-sm active" target="_blank" href="@($"{NavigationM.BaseUri}coversheet/{u.BrmBarCode}")">View Cover</NavLink></td>
-                    @*<td><button class="btn btn-primary btn-sm active" @onclick="@(() => btnViewCover_Click(u.BrmBarCode))">View Cover</button></td>*@
-                    <td><button class="btn btn-primary btn-sm active" @onclick="@(() => btnShowDetail(u))">Detail</button></td>
-                </tr>
-            }
-
-        </tbody>
-    </table>
-}
 
 @code {
-    Enquiry e { get; set; } = new();
-    List<DcActivity> activities = new();
-    List<Enquiry> idResults { get; set; } = new();
-    List<DcFileDeleted> history = new();
-
-    //private CancellationTokenSource _cancellationTokenSource;
+    protected Enquiry e { get; set; } = new();
+    protected List<Enquiry> idResults { get; set; } = new();
+    protected PaginationState EnquiryPagination = new PaginationState() { ItemsPerPage = 15 };
 
     string txtSearchBrm = "";
-
-    bool showDetail;
-
     bool loading = false;
 
     async Task Search()
@@ -226,30 +43,33 @@
         try
         {
             if (loading) return;
-            loading = true;    
-            //_cancellationTokenSource = new CancellationTokenSource();
+            idResults.Clear();
+            loading = true;
             if (txtSearchBrm.Length == 8)
             {
                 e = await db.GetEnquiry(txtSearchBrm.ToUpper());
-                activities = await db.GetFileActivity(e.UnqFileNo);
-                idResults = new List<Enquiry>();
                 idResults.Add(e);
-                showDetail = true;
             }
             else if (txtSearchBrm.Length == 13)
             {
-                //txtSearchBrm = txtSearchBrm.GetDigitId();
                 idResults = await db.GetEnquiryById(txtSearchBrm);
             }
-            else
+            else if (txtSearchBrm.Length == 12)
             {
                 idResults = await db.GetEnquiryBySrd(txtSearchBrm);
             }
-            if(idResults.Any())
+            else 
             {
-                history = await db.GetDeleteHistory(idResults.First().ApplicantNo);
+                loading = false;
+                toast.ShowError("Invalid search criteria.");
+                await Task.CompletedTask;
             }
-
+            if(idResults.Count() == 1)
+            {
+                e = idResults.First();
+                loading = false;
+                await btnShowDetail(e);
+            }
         }
         catch (Exception ex)
         {
@@ -260,31 +80,26 @@
             loading = false;
         }
     }
-    protected void OnConfirmationClose()
+
+    protected void btnViewCover(string brmBarCode)
     {
-
-        showDetail = false;
-
+        nav.NavigateTo($"coversheet/{brmBarCode}");
     }
-    protected void OnConfirmationOk()
-    {
-        showDetail = false;
-    }
-
-    protected void btnViewCover_Click(string brmBarCode)
-    {
-        Navigate.NavigateTo($"{NavigationM.BaseUri}coversheet/{brmBarCode}");
-    }
-
     protected async Task btnShowDetail(Enquiry en)
     {
-        e = en;
-        activities = await db.GetFileActivity(en.UnqFileNo);
-        showDetail = true;
-    }
-
-    public void Dispose()
-    {
-
+        DialogParameters parameters = new()
+            {
+                Title = $"Detail for Brm Record {en.BrmBarCode}",
+                PrimaryAction = "Ok",
+                // PrimaryActionEnabled = false,
+                // SecondaryAction = "No",
+                Height = "90%",
+                Width = "100%",
+                TrapFocus = true,
+                Modal = true,
+                PreventScroll = true
+            };
+        IDialogReference dialog = await dialogService.ShowDialogAsync<GrantContent>(en, parameters);
+        var result = await dialog.Result;
     }
 }

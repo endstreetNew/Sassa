@@ -5,6 +5,7 @@
 
 @layout NoLayout
 
+@inject IDialogService dialogService
 @inject IToastService toast
 
 <h5>BRM Office Admin</h5>
@@ -45,10 +46,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if(showOfficeConfirmation)
-                        {
-                            <Confirmation Title="Confirm Office move" Message="@OfficeConfirmationMessage" Ok="() => btnMove_Click()" Cancel="@(() => showOfficeConfirmation = false)"></Confirmation>
-                        }
                         @foreach (var u in regionOffices)
                         {
                             <tr style="@(u.IsActive ? "background-color:lightgreen;":"background-color:lightgray;")">
@@ -76,7 +73,7 @@
                                                     }
                                                 </select>
                                             <div class="input-group-append input-group-sm">
-                                                    <button class="btn btn-primary btn-sm active" @onclick="@(() => ConfirmOfficeMove(u))">Move</button>
+                                                    <button class="btn btn-primary btn-sm active" @onclick="@(() => btnOfficeMove(u))">Move</button>
                                             </div>
                                         
                                         </div>
@@ -102,9 +99,6 @@
     protected bool IsLoaded = false;
     protected int SelectedOfficeId;
     protected string fromOfficeId = "";
-
-    protected bool showOfficeConfirmation;
-    protected string OfficeConfirmationMessage ="";
 
     protected override async Task OnInitializedAsync()
     {
@@ -171,23 +165,28 @@
         await GetRegionOffices();
     }
 
-    protected  void ConfirmOfficeMove(RegionOffice u)
+    protected  async Task btnOfficeMove(RegionOffice u)
     {
         fromOfficeId = u.OfficeId.ToString();
-        OfficeConfirmationMessage = $"Are you sure you want to move all data from office {u.OfficeName} to {regionOffices.Where(r => r.OfficeId == SelectedOfficeId).First().OfficeName} " + Environment.NewLine + "This action cannot be undone!";
-        showOfficeConfirmation = true;
+        var OfficeConfirmationMessage = $"Are you sure you want to move all data from office {u.OfficeName} to {regionOffices.Where(r => r.OfficeId == SelectedOfficeId).First().OfficeName} " + Environment.NewLine + "This action cannot be undone!";
+        DialogParameters parameters = new()
+            {
+                PrimaryAction = "Ok",
+                Height = "230px",
+                Width = "450px",
+                Title = $"Confirm Region change.",
+                PreventDismissOnOverlayClick = true,
+                PreventScroll = true,
+            };
+        IDialogReference dialog = await dialogService.ShowDialogAsync<ConfirmContent>(OfficeConfirmationMessage, parameters);
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            await sservice.MoveOffice(fromOfficeId, SelectedOfficeId.ToString());
+            IsLoaded = false;
+            await GetRegionOffices();
+        }
 
     }
-
-    protected async void btnMove_Click()
-    {
-
-        await sservice.MoveOffice(fromOfficeId, SelectedOfficeId.ToString());
-        IsLoaded = false;
-        showOfficeConfirmation = false;
-        await GetRegionOffices();
-        
-    }
-
 
 }

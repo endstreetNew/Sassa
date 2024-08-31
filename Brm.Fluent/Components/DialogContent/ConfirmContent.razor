@@ -1,0 +1,8 @@
+﻿ @implements IDialogContentComponent<String>
+
+ <FluentLabel style="width: 100%; font-weight:bold;">@Content</FluentLabel>
+
+@code {
+    [Parameter]
+    public String Content { get; set; } = default!;
+}

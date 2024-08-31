@@ -5,10 +5,7 @@
     <FluentNumberField @bind-Value="@rebox.MiniBox"></FluentNumberField>
     <FluentNumberField @bind-Value="@rebox.MiniBox" Disabled Size="5"></FluentNumberField>
     <FluentTextField @bind-Value="@rebox.RegType" Placeholder="Regtype" Disabled/>
-    @if (ShowLoad)
-    {
-        <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.List())" Title="Manual Capture" OnClick="btnLoadBox_Click">Load</FluentButton>
-    }
+    <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.Box())" Title="Manual Capture" OnClick="btnLoadBox_Click">Load</FluentButton>
 </FluentStack>
 
 @code {

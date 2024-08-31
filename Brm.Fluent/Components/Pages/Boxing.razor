@@ -1,24 +1,14 @@
 ﻿@page "/boxing"
-@page "/boxing/{tabNo:int}"
-@page "/boxing/{tabNo:int}/{boxNo}"
-
-@implements IDisposable
+@page "/boxing/{boxNo}"
+@page "/boxing/{boxNo}/{tabId}"
 
 @inject SessionService sessionservice
 @inject BRMDbService db
-<div class="pageTitle">
-@if (sessionservice.session.IsRmc())
-{
-    <h3>Re-Boxing</h3>
-}
-else
-{
-    <h3>Batching</h3>
-}
-</div>
 
-<TabControl PageActivate="OnPageActivate" ActivePageId="@tabNo">
-    <TabPage Text="Batching" Id="1" Enabled="true">
+<BrmPageTitle Title="@(sessionservice.session.IsRmc() ? "Re-Boxing":"Batching")" />
+
+<FluentTabs @bind-ActiveTabId="@tabId">
+    <FluentTab Label="Batching" Id="tab-1">
         @if (sessionservice.session.IsRmc())
         {
             <RMCBatch></RMCBatch>
@@ -27,51 +17,30 @@ else
         {
             <LOBatch></LOBatch>
         }
-    </TabPage>
-    <TabPage Text="Waybills" Id="2" Enabled="true">
+    </FluentTab>
+    <FluentTab Label="Waybills" Id="tab-2">
         <BatchWaybill></BatchWaybill>
-    </TabPage>
-    <TabPage Text="Re-Boxing" Id="3" Enabled="@(sessionservice.session.Office.OfficeType != "LO")">
+    </FluentTab>
+    <FluentTab Label="Re-Boxing" Disabled="@(!sessionservice.session.IsRmc())" Id="tab-3">
         <ReboxTab boxNo="@boxNo"></ReboxTab>
-    </TabPage>
-    <TabPage Text="TDW Dispatch" Id="4" Enabled="@(sessionservice.session.Office.OfficeType != "LO")">
+    </FluentTab>
+    <FluentTab Label="TDW Dispatch" Disabled="@(!sessionservice.session.IsRmc())" Id ="tab-4">
         <TdwBatch></TdwBatch>
-    </TabPage>
-</TabControl>
-
+    </FluentTab> 
+</FluentTabs>
 
 @code 
 {
     [Parameter]
     public string boxNo { get; set; } = "";
     [Parameter]
-    public int tabNo { get; set; }
+    public string tabId { get; set; } = "tab-1";
 
     protected override void OnInitialized()
     {
-        if (tabNo == 0)
-        {
             if (sessionservice.session.IsRmc())
             {
-                tabNo = 3;
+                tabId = "tab-3";
             }
-            else
-            {
-                tabNo = 1;
-            }
-        }
-
-    }
-
-    private void OnPageActivate(int e)
-    {
-        tabNo = e;
-    }
-
-    public void Dispose()
-    {
-        // GC.Collect();
-        // GC.WaitForPendingFinalizers();
-        // GC.Collect();
     }
 }

@@ -7,7 +7,9 @@
 @inject IJSRuntime JSRuntime
 
 
- <FluentDataGrid Items="@DTBrm.AsQueryable()" TGridItem="Application" Pagination="@pagination">
+<div style="display: table; table-layout: fixed; width: 100%;">
+    <div style="overflow-x: auto;">
+        <FluentDataGrid Style="min-width: max-content;" Items="@DTBrm.AsQueryable()" TGridItem="Application" Pagination="@pagination">
     <PropertyColumn Width="130px" Property="@(p => p.Id)" />
     <TemplateColumn Width="340px" Title="Actions" Align="@Align.End">
         <FluentButton Appearance="Appearance.Accent" Title="Batch" OnClick="@(() => btnBatch_Click(context))" Disabled="@(context.BatchNo > 0)">Batch</FluentButton>
@@ -30,6 +32,8 @@
         <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.ArrowDown())" Title="View" Disabled="@(!DTMerges.Where(b => b.Brm_Parent == context.Brm_Parent).Any())" OnClick="@(() => ShowChildren(context.Brm_BarCode))" />
         </TemplateColumn>
     </FluentDataGrid>
+    </div>
+</div>
     <FluentPaginator State="@pagination" />
     <FluentDivider Orientation="Orientation.Vertical"></FluentDivider>
     @if (!string.IsNullOrEmpty(parentBrm))

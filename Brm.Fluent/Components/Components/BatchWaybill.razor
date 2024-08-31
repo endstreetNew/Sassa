@@ -3,14 +3,12 @@
 @inject BRMDbService db
 @inject Navigation Navigate
 
+@inject IDialogService dialogService
+
 <h3>Batch Waybills</h3>
 @if (showDispatch)
 {
     <TdwDispatch waybill="@selectedWaybill" Cancel="OnCancelClick" Ok="OnOkClick"></TdwDispatch>
-}
-@if (showReceipt)
-{
-    <Confirmation Title="Confirmation" Message="@Message" Cancel="OnCancelClick" Ok="OnReceiptOkClick"></Confirmation>
 }
 @if (waybills.Any())
 {
@@ -60,17 +58,12 @@
 }
 
 
-
-
 @code {
 
     protected List<Waybill> waybills = new();
     protected Waybill? selectedWaybill;
 
-    //string filterStatus;
-    string Message = "";
     bool showDispatch;
-    bool showReceipt;
 
     protected override async Task OnInitializedAsync()
     {
@@ -93,17 +86,31 @@
 
     }
 
-    protected void btnReceive_Click(Waybill w)
+    protected async Task btnReceive_Click(Waybill w)
     {
         selectedWaybill = w;
-        Message = $"Confirm receipt of Waybill {w.WaybillNo}";
-        showReceipt = true;
+        var ConfirmationMessage = $"Confirm receipt of Waybill {w.WaybillNo}"; 
+        DialogParameters parameters = new()
+            {
+                PrimaryAction = "Ok",
+                Height = "230px",
+                Width = "450px",
+                Title = $"Confirm Region change.",
+                PreventDismissOnOverlayClick = true,
+                PreventScroll = true,
+            };
+        IDialogReference dialog = await dialogService.ShowDialogAsync<ConfirmContent>(ConfirmationMessage, parameters);
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            await OnReceiptOk();
+        }
+
     }
 
     protected void OnCancelClick()
     {
         showDispatch = false;
-        showReceipt = false;
     }
     protected void OnOkClick()
     {
@@ -119,11 +126,10 @@
         }
     }
 
-    protected async void OnReceiptOkClick()
+    protected async Task OnReceiptOk()
     {
         try
         {
-            showReceipt = false;
             if (selectedWaybill == null) throw new Exception("No waybill selected.");
             await db.ReceiveWaybill(selectedWaybill.BrmWaybill, "Received");
             waybills = await db.GetBatchWaybills();

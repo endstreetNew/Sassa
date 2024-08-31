@@ -11,42 +11,43 @@
 @if(sessionservice.session.IsBrmUser())
     {
          <div class="whiteArea">
+             <FluentStack>
                 <span><strong>User Details</strong></span>
-                    <hr />
-                <FluentButton Appearance="Appearance.Accent" OnClick="@OpenChangeUserOffice">Change Office</FluentButton>
-                <FluentStack>
-                    <span>Name</span>
-                    <FluentLabel>@sessionservice.session!.Name</FluentLabel>
-                </FluentStack>
-                <FluentStack>
-                    <span >Surname</span>
-                    <label>@sessionservice.session!.Surname</label>
-                </FluentStack>
-                <FluentStack>
-                    <span >Email</span>
-                    <label>@sessionservice.session!.Email</label>
-                </FluentStack>
-               <FluentStack>
-                    <span >Region</span>
-                    <label >@sessionservice.session!.Office.RegionName</label>
-                </FluentStack>
-                <FluentStack>
-                    <span >Office</span>
-                    <label >@sessionservice.session!.Office.OfficeName</label>
-                    
-                </FluentStack>
-                <FluentStack>
-                    <span >Service Point</span>
-                    <label >@staticservice.GetServicePointName(sessionservice.session.Office.FspId)</label>
-                </FluentStack>
-                <FluentStack>
-                    <span >Office Type</span>
-                    <label >@sessionservice.session.Office.OfficeType</label>
-                </FluentStack>
-                <FluentStack>
-                    <span >Supervisor</span>
-                    <label >@(sessionservice.session.IsInRole("GRP_BRM_Supervisors") ? "Yes" : "No")</label>
-                </FluentStack>
+            <FluentButton Appearance="Appearance.Accent" OnClick="@OpenChangeUserOffice">Change Office</FluentButton>
+            </FluentStack>
+            <hr />
+            <FluentStack>
+                <span>Name</span>
+                <FluentLabel>@sessionservice.session!.Name</FluentLabel>
+            </FluentStack>
+            <FluentStack>
+                <span >Surname</span>
+                <label>@sessionservice.session!.Surname</label>
+            </FluentStack>
+            <FluentStack>
+                <span >Email</span>
+                <label>@sessionservice.session!.Email</label>
+            </FluentStack>
+            <FluentStack>
+                <span >Region</span>
+                <label >@sessionservice.session!.Office.RegionName</label>
+            </FluentStack>
+            <FluentStack>
+                <span >Office</span>
+                <label >@sessionservice.session!.Office.OfficeName</label>
+            </FluentStack>
+            <FluentStack>
+                <span >Service Point</span>
+                <label >@staticservice.GetServicePointName(sessionservice.session.Office.FspId)</label>
+            </FluentStack>
+            <FluentStack>
+                <span >Office Type</span>
+                <label >@sessionservice.session.Office.OfficeType</label>
+            </FluentStack>
+            <FluentStack>
+                <span >Supervisor</span>
+                <label >@(sessionservice.session.IsInRole("GRP_BRM_Supervisors") ? "Yes" : "No")</label>
+            </FluentStack>
         </div>
         <div class="whiteArea">
                 <span><strong>Roles</strong></span>

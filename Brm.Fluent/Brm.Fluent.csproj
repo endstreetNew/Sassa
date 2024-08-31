@@ -8,11 +8,7 @@
 
   <ItemGroup>
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="8.0.8" />
-	<PackageReference Include="Microsoft.Fast.Components.FluentUI" Version="3.7.8" />
-	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-* " />
-	<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.DataGrid.EntityFrameworkAdapter" Version="4.9.3" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-* " />
-    <PackageReference Include="System.ServiceModel.Federation" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,16 +23,6 @@
   <ItemGroup>
     <Content Update="appsettings.Development.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="Components\Components\BoxStatus.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="Components\Components\ReboxTab.razor">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-    </Content>
-    <Content Update="wwwroot\favicon.ico">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

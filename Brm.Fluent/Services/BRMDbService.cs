@@ -46,29 +46,19 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     }
     public async Task<DcFile> CreateBRM(Application application, string reason)
     {
-        //Moved to the Api
-        //await RemoveBRM(application.Brm_BarCode, reason);
-
-        using (var _context = _contextFactory.CreateDbContext())
-        {
             decimal batch = 0;
-            var office = _context.DcLocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
+            var office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
             if (office.ManualBatch != "A")
             {
                 string batchType = application.Id.StartsWith("S") ? "SrdNoId" : application.AppStatus;
                 batch = string.IsNullOrEmpty(application.TDW_BOXNO) ? await CreateBatchForUser(batchType) : 0;
             }
-            application.OfficeId = office.OfficeId;
-            application.RegionId = office.RegionId;
-            application.FspId = _userSession.Office!.FspId;
-            application.BrmUserName = _userSession.SamName;
             application.BatchNo = batch;
 
             DcFile? file = await brmApiService.PostApplication(application);
 
             if (file?.UnqFileNo == null) throw new Exception("Error creating BRM record");
             return file;
-        }
     }
     public async Task<DcFile> GetBRMRecord(string barcode)
     {
@@ -1399,7 +1389,14 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             //}
             if (files.Any() || merges.Any())
             {
-                await _context.SaveChangesAsync();
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
         }
     }
