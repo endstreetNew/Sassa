@@ -38,6 +38,7 @@ namespace Brm.Fluent
             options.UseOracle(BrmConnection));
             //Services 
             builder.Services.AddScoped<BRMDbService>();
+            builder.Services.AddScoped<QueryableDataService>();
             builder.Services.AddSingleton<StaticService>();
             builder.Services.AddScoped<SessionService>();
 
@@ -101,6 +102,8 @@ namespace Brm.Fluent
             // UI Services
             builder.Services.AddRazorComponents().AddInteractiveServerComponents();
             builder.Services.AddFluentUIComponents();
+            builder.Services.AddDataGridEntityFrameworkAdapter();
+
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(10);

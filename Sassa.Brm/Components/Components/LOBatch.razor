@@ -124,7 +124,7 @@
                                 <input class="form-check-input mt-0" type="checkbox" @onchange="@(e => chkSelectAll(e))">
                             </div>
                             <label class="form-control" enabled="false">Select All Batches</label>
-                            <button class="btn btn-primary btn-sm active" disabled="@(DTBatch.result.Where(b => b.isSelected).Count() == 0)" @onclick="@(() => btnClose_Click())">Close Selected</button>
+                            <button class="btn btn-primary btn-sm active" disabled="@(DTBatch.result.Where(b => b.IsSelected).Count() == 0)" @onclick="@(() => btnClose_Click())">Close Selected</button>
                         </div>
                     }
                 </div>
@@ -155,7 +155,7 @@
                     {
                         <tr>
                             <td>
-                                <input type="checkbox" checked="@u.isSelected" disabled="@(!"Open".Contains(u.BatchStatus))" @onchange="@((e) => chkSelect(e,u))" />
+                                <input type="checkbox" checked="@u.IsSelected" disabled="@(!"Open".Contains(u.BatchStatus))" @onchange="@((e) => chkSelect(e,u))" />
                             </td>
                             <td>@u.BatchNo</td>
                             <td>@u.RegType</td>
@@ -374,19 +374,19 @@
         var selected = (bool)e.Value!;
         foreach (DcBatch batch in DTBatch.result.Where(r => r.BatchStatus == "Open"))
         {
-            batch.isSelected = selected;
+            batch.IsSelected = selected;
         }
     }
 
     protected void chkSelect(ChangeEventArgs e, DcBatch batch)
     {
         var selected = (bool)(e.Value??false);
-        batch.isSelected = selected;
+        batch.IsSelected = selected;
     }
 
     protected async Task btnClose_Click()
     {
-        foreach (DcBatch batch in DTBatch.result.Where(b => b.isSelected))
+        foreach (DcBatch batch in DTBatch.result.Where(b => b.IsSelected))
         {
             if(batch.BatchNo != 0)await db.SetBatchStatus(batch.BatchNo, "Closed");
         }

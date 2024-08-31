@@ -1,246 +1,146 @@
 ﻿@inject IToastService toast
 @inject SessionService sessionservice
 @inject BRMDbService db
+@inject QueryableDataService qdb
 @inject StaticService sservice
 @inject NavigationManager NavigationM
 @inject IJSRuntime Js
 
-@implements IDisposable
-
 @inject ReportDataService rd
+
+@inject IDialogService dialogService
 
 @using System.Text
 
-<h3>Batches for @sessionservice.session.Office.OfficeName</h3>
-<div >
-    @if (showConfirmation)
-    {
-        <Modal Heading="Confirmation" Cancel="OnConfirmationClose" Ok="OnConfirmationOk">
-            Are you Sure you want to close @selectedBatch.BatchNo ?
-        </Modal>
-    }
-    @if (DTBatch.count > 0)
-    {
-        <br />
-        @if (editBatch)
+<WidgetTitle Title="@title"/>
+
+@if (editBatch)
+{
+    <FluentStack Orientation="Orientation.Horizontal">
+        <FluentButton Appearance="Appearance.Accent" OnClick="@(() => OnBack())" Title="Back">Back</FluentButton>
+        <FluentTextField @bind-Value="@BrmBarCode" Placeholder="<Scan Barcode>" />
+        <FluentButton Appearance="Appearance.Accent" OnClick="@(() => AddFileToBatch())" Title="Add File">Add File</FluentButton>
+    </FluentStack>
+
+    <FluentDataGrid Items="@files" TGridItem="DcFile" Pagination="@filePaginator">
+        <PropertyColumn Width="130px" Property="@(p => p.UnqFileNo)" />
+        <PropertyColumn Width="100px" Property="@(p => p.BrmBarcode)" Sortable="true" />
+        <TemplateColumn Title="Actions">
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Delete())" OnClick="@(() => btnRemoveItem(context.BrmBarcode))" Title="Remove" Disabled="@(selectedBatch.BatchStatus != "Open")" />
+        </TemplateColumn>
+        <PropertyColumn Width="130px" Property="@(p => p.ApplicantNo)" Sortable="true" />
+        <PropertyColumn Width="130px" Property="@(p => p.FullName)" Sortable="true" />
+        <PropertyColumn Width="200px" Property="@(p => p.GrantType)" Sortable="true" />
+        <PropertyColumn Width="100px" Property="@(p => p.RegType)" Sortable="true" />
+        <PropertyColumn Width="100px" Property="@(p =>((DateTime)(p.TransDate??DateTime.MinValue)).ToShortDateString())" Sortable="true" />
+        <PropertyColumn Width="100px" Property="@(p => p.MergeStatus)" Sortable="true" />
+
+    </FluentDataGrid>
+    <FluentPaginator State="@filePaginator" />
+}
+else
+{
+    <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+        <FluentSelect TOption="String"
+                      Label="Status filter"
+                      Items="@sservice.GetBatchStatus("LO").Values"
+                      Id="lo-batchstatus-listbox"
+                      Width="200px"
+                      Height="250px"
+                      Placeholder="Make a selection..."
+                      OptionValue="@(p => p)"
+                      OptionText="@(p => p)"
+                      @bind-Value="@filterStatus"
+                      @onchange="FilterStatus"/>
+
+        <FluentTextField @bind-Value="@searchBatch" Placeholder="Batch number" />
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Search())" OnClick="@(() => FindBatch())" Title="Find batch" />
+
+        <FluentCheckbox @bind-Value="@showMybatches" Label="Show my batches" CheckStateChanged="(e) => FilterUser(e)" />
+        <FluentTextField @bind-Value="@BrmBarCode" Placeholder="<Scan Barcode>" />
+        <FluentButton Appearance="Appearance.Accent" OnClick="@(() => AddFileToBatch())" Title="Add File">Add File</FluentButton>
+
+        @if (filterStatus == "Open")
         {
-            <button class="btn btn-primary btn-sm active" @onclick="@(() => OnBack())">Back</button>
-            <div class="input-group mb-3">
-                <div class="input-group-text">
-                    <input class="form control" type="text" @bind="BrmBarCode" placeholder="<Scan Barcode>">
-                </div>
-                <button class="btn btn-primary" @onclick="@(() => NewBatch())">Add File</button>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <table class="table table-sm" style="font-size:x-small;">
-                        <thead>
-                            <tr>
-                                <th scope="col">CLM Unique Code</th>
-                                <th scope="col">BRM File no</th>
-                                <th scope="col">ID no</th>
-                                <th scope="col">Name and Surname</th>
-                                <th scope="col">Grant Type</th>
-                                <th scope="col">Reg Type </th>
-                                <th scope="col">App Date </th>
-                                <th scope="col">Merge </th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (var u in items.result)
-                            {
-                                <tr>
-                                    <td>@u.UnqFileNo</td>
-                                    <td>@u.BrmBarcode</td>
-                                    <td>@u.ApplicantNo</td>
-                                    <td>@u.FullName</td>
-                                    <td>@u.GrantType</td>
-                                    <td>@u.RegType</td>
-                                    <td>@(u.TransDate == null?"":((DateTime)u.TransDate).ToShortDateString())</td>
-                                    <td>@u.MergeStatus</td>
-                                    <td>
-                                        @if (selectedBatch.BatchStatus == "Open")
-                                        {
-                                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnRemoveItem(u.BrmBarcode))">Remove</button>
-                                        }
-                                    </td>
-                                </tr>
-                            }
-
-                        </tbody>
-                    </table>
-                    <Pager Paged="OnEditPaged" TotalSize="@items.count"></Pager>
-                </div>
-            </div>
+        <FluentCheckbox Label="Select all batches" CheckStateChanged = "(e) => chkSelectAll(e)" />
+        <FluentButton Appearance="Appearance.Accent" OnClick="@(() => AddFileToBatch())" Title="Close Selected" Disabled="@(DTBatch.ToList().Where(b => b.IsSelected).Count() == 0)">Close Selected</FluentButton>
         }
-        else
-        {
-            <div class="row input-group">
-                <div class="col">
-                    <div class="input-group mb-1">
+   </FluentStack>
 
-                        <span class="input-group-text">Status Filter</span>
-                        <select class="form-select" value="@filterStatus" @onchange="FilterStatus">
-                            <option value="" selected>select...</option>
-                            @foreach (var item in sservice.GetBatchStatus("LO"))
-                            {
-                                <option value=@item.Key>@item.Value</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group mb-1">
-                        <span class="input-group-text" style="width: 180px;">Batch number</span>
-                        <input type="text" @bind-value="@searchBatch" class="form-control" >
-                        <button class="btn btn-primary btn-sm active" @onclick="@(() => FindBatch())"><span class="oi oi-magnifying-glass" aria-hidden="true"></span></button>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group mb-1">
-                        <div class="input-group-text">
-                            <input class="form-check-input" type="checkbox" checked="@showMybatches" @oninput="FilterUser">
-                        </div>
-                        <label class="input-group-text">Show my batches</label>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <div class="input-group-text">
-                            <input class="form control" type="text" @bind="BrmBarCode" placeholder="<Scan Barcode>">
-                        </div>
-                        <button class="btn btn-primary btn-sm active" @onclick="@(() => NewBatch())">New Batch/Add File</button>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    @if (filterStatus == "Open")
-                    {
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                <input class="form-check-input mt-0" type="checkbox" @onchange="@(e => chkSelectAll(e))">
-                            </div>
-                            <label class="form-control" enabled="false">Select All Batches</label>
-                            <button class="btn btn-primary btn-sm active" disabled="@(DTBatch.result.Where(b => b.isSelected).Count() == 0)" @onclick="@(() => btnClose_Click())">Close Selected</button>
-                        </div>
-                    }
-                </div>
-                <div class="col">
-
-                </div>
-            </div>
-            <table class="table table-sm" style="font-size:small;">
-                <thead>
-                    <tr>
-
-                        <th scope="col">Select</th>
-                        <th scope="col">Batch No</th>
-                        <th scope="col">Batch Type</th>
-                        <th scope="col">Updated by</th>
-                        <th scope="col">Updated Date</th>
-                        <th scope="col">Batch Status</th>
-                        <th scope="col">Batch Comment</th>
-                        <th scope="col">BRM Waybill</th>
-                        <th scope="col">No of Files</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach (var u in DTBatch.result)
-                    {
-                        <tr>
-                            <td>
-                                <input type="checkbox" checked="@u.isSelected" disabled="@(!"Open".Contains(u.BatchStatus))" @onchange="@((e) => chkSelect(e,u))" />
-                            </td>
-                            <td>@u.BatchNo</td>
-                            <td>@u.RegType</td>
-                            <td>@u.UpdatedByAd</td>
-                            <td>@u.UpdatedDate</td>
-                            <td>@u.BatchStatus</td>
-                            <td>@u.BatchComment</td>
-                            <td>@u.BrmWaybill</td>
-                            <td>@u.NoOfFiles.ToString()</td>
-                            <td>
-                                @if (u.BatchStatus == "Open")
-                                {
-                                    <button class="btn btn-primary btn-sm active" @onclick="@(() => btnCloseBatch(u))">Verify & Close </button>
-                                    <button class="btn btn-primary btn-sm active" @onclick="@(() => btnEditBatch(u))">Edit Batch</button>
-                                }
-                            </td>
-                            <td>
-                                @if (u.BatchStatus != "Open")
-                                {
-                                    <button class="btn btn-primary btn-sm active" @onclick="@(() => btnPrintBatch(u))">View/Print</button>
-                                }
-                            </td>
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-            <Pager Paged="OnPaged" TotalSize="@DTBatch.count"></Pager>
-        }
-
-    }
-    else
-    { <p>No data. </p>}
-</div>
+    <FluentDataGrid Items="@DTBatch" TGridItem="DcBatch" Pagination="@batchPaginator">
+        <PropertyColumn Width="130px" Property="@(p => p.BatchNo)" />
+        <TemplateColumn Title="Selected" >
+            <FluentCheckbox @bind-Value="@context.IsSelected"  />
+        </TemplateColumn>
+        <TemplateColumn Title="Actions">
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Checkmark())" OnClick="@(() => btnCloseBatch(context))" Title="Verify/Close" Disabled="@(context.BatchStatus != "Open")" />
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Edit())" OnClick="@(() => btnEditBatch(context))" Title="Edit" Disabled="@(context.BatchStatus != "Open")" />
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Clipboard())" OnClick="@(() => btnPrintBatch(context))" Title="View/Print" Disabled="@(context.BatchStatus == "Open")" />
+        </TemplateColumn>
+        <PropertyColumn  Property="@(p => p.RegType)" Sortable="true" />
+        <PropertyColumn  Property="@(p => p.UpdatedByAd)" Sortable="true" />
+        <PropertyColumn  Property="@(p => p.UpdatedDate)" Sortable="true" />
+        <PropertyColumn  Property="@(p => p.BatchStatus)" Sortable="true" />
+        <PropertyColumn  Property="@(p => p.BatchComment)" Sortable="true" />
+        <PropertyColumn  Property="@(p => p.BrmWaybill)" Sortable="true" />
+        <PropertyColumn  Property="@(p => p.NoOfFiles)" Sortable="true" />
+    </FluentDataGrid>
+    <FluentPaginator State="@batchPaginator" />
+}
 
 @code {
-    protected PagedResult<DcBatch> DTBatch { get; set; } = new();
+    protected IQueryable<DcBatch> DTBatch { get; set; } = new List<DcBatch>().AsQueryable();
+    protected IQueryable<DcFile> files { get; set; } = new List<DcFile>().AsQueryable();
+
+    protected PaginationState filePaginator { get; set; } = new PaginationState();
+    protected PaginationState batchPaginator { get; set; } = new PaginationState();
+
     protected DcBatch selectedBatch { get; set; } = new DcBatch();
 
-    protected string filterStatus ="";
-
-    protected bool showConfirmation;
+    protected string title = "";
+    protected string filterStatus = "";
     protected bool showMybatches;
-
     protected bool editBatch;
-    protected PagedResult<DcFile> items = new();
-
     protected string BrmBarCode ="";
     protected string searchBatch = "";
 
-    int page = 1;
-    int editPage = 1;
-
     protected override async Task OnInitializedAsync()
     {
+        title = $"Batches for {sessionservice.session.Office.OfficeName}";
         filterStatus = "";
         try
         {
-            DTBatch = await db.GetBatches(filterStatus, page);
+            DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
         }
-
-
     }
 
     protected async Task FindBatch()
     {
-        page = 1;
         try
         {
-            decimal decimalBatch = decimal.Parse(searchBatch);
-
-            DTBatch = await db.FindBatch(decimalBatch, page);
-            StateHasChanged();
+            decimal.TryParse(searchBatch, out decimal result);
+            if (result > 0)
+            {
+                DTBatch = (await qdb.FindBatch(result)).AsQueryable();
+            }
+            if (!DTBatch.Any() || result == 0)
+            {
+                DTBatch = (await qdb.GetBatches("")).AsQueryable();
+                toast.ShowError("Batch not found");
+            }
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
         }
+
     }
 
-    protected async Task NewBatch()
+    protected async Task AddFileToBatch()
     {
         try
         {
@@ -266,10 +166,9 @@
     protected async Task FilterStatus(ChangeEventArgs args)
     {
         filterStatus = args.Value!.ToString()!;
-        page = 1;
         try
         {
-            DTBatch = await db.GetBatches(filterStatus, page);
+            DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();
             StateHasChanged();
         }
         catch (Exception ex)
@@ -278,24 +177,49 @@
         }
     }
 
-    protected async Task FilterUser(ChangeEventArgs args)
+    protected async Task FilterUser(bool? args)
     {
-        showMybatches = (bool)args.Value!;
-        page = 1;
+        showMybatches = args ?? false;
         try
         {
-            DTBatch = await db.GetMyBatches(showMybatches, page);
-            StateHasChanged();
+            DTBatch =  (await qdb.GetMyBatches(showMybatches)).AsQueryable();
+            title = showMybatches ? $"Batches for {sessionservice.session.Name}" : $"Batches for {sessionservice.session.Office.OfficeName}";
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
         }
     }
-    protected void btnCloseBatch(DcBatch batch)
+
+    protected async Task btnCloseBatch(DcBatch batch)
     {
         selectedBatch = batch;
-        showConfirmation = true;
+        var confirmMessage = $"Are you Sure you want to close {batch.BatchNo} ?";
+
+        DialogParameters parameters = new()
+            {
+                PrimaryAction = "Ok",
+                Height = "230px",
+                Width = "450px",
+                Title = $"Confirm Region change.",
+                PreventDismissOnOverlayClick = true,
+                PreventScroll = true,
+            };
+        IDialogReference dialog = await dialogService.ShowDialogAsync<ConfirmContent>(confirmMessage, parameters);
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            try
+            {
+                if (selectedBatch.BatchNo != 0) await db.SetBatchStatus(selectedBatch.BatchNo, "Closed");
+                DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();
+                toast.ShowSuccess($"Batch #{selectedBatch.BatchNo} Closed.");
+            }
+            catch (Exception ex)
+            {
+                toast.ShowError(ex.Message);
+            }
+        }
     }
 
     protected async Task btnEditBatch(DcBatch batch)
@@ -303,25 +227,26 @@
         try
         {
             selectedBatch = batch;
-            items = await db.GetAllFilesByBatchNo(batch.BatchNo, editPage);
+            files = (await qdb.GetAllFilesByBatchNoQuery(batch.BatchNo)).AsQueryable();
             editBatch = true;
-            DTBatch = await db.GetBatches(filterStatus, page);
-            StateHasChanged();
+            title = $"Editing batch {batch.BatchNo}";
+            DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
         }
     }
+
     protected async Task btnRemoveItem(string brmBarCode)
     {
         try
         {
             await db.RemoveFileFromBatch(brmBarCode);
-            items = await db.GetAllFilesByBatchNo(selectedBatch.BatchNo, editPage);
-            editBatch = items.count != 0;
-            DTBatch = await db.GetBatches(filterStatus, page);
-            StateHasChanged();
+            files = (await qdb.GetAllFilesByBatchNoQuery(selectedBatch.BatchNo)).AsQueryable();
+            editBatch = files.Any();
+            title = files.Any() ? $"Editing batch {selectedBatch.BatchNo}" : "Batches";
+            DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();
         }
         catch (Exception ex)
         {
@@ -334,76 +259,44 @@
         try
         {
             await db.AddFileToBatch(BrmBarCode, selectedBatch.BatchNo);
-            items = await db.GetAllFilesByBatchNo(selectedBatch.BatchNo, editPage);
+            files = (await qdb.GetAllFilesByBatchNoQuery(selectedBatch.BatchNo)).AsQueryable();
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
         }
     }
-    protected void OnConfirmationClose()
-    {
-
-        showConfirmation = false;
-
-    }
-    protected async Task OnConfirmationOk()
-    {
-        try
-        {
-            showConfirmation = false;
-            if (selectedBatch.BatchNo != 0) await db.SetBatchStatus(selectedBatch.BatchNo, "Closed");
-            DTBatch = await db.GetBatches(filterStatus, page);
-            toast.ShowSuccess($"Batch #{selectedBatch.BatchNo} Closed.");
-        }
-        catch (Exception ex)
-        {
-            toast.ShowError(ex.Message);
-        }
-    }
-
-
     protected async Task OnBack()
     {
-        DTBatch = await db.GetBatches(filterStatus, page);
-
         editBatch = false;
+        filterStatus = "";
+        DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();
+        title = $"Batches";
     }
-    protected void chkSelectAll(ChangeEventArgs e)
+    protected void chkSelectAll(bool? e)
     {
-        var selected = (bool)e.Value!;
-        foreach (DcBatch batch in DTBatch.result.Where(r => r.BatchStatus == "Open"))
+        var selected =e??false;
+        if (!DTBatch.ToList().Any()) return;
+        foreach (DcBatch batch in DTBatch.ToList().Where(r => r.BatchStatus == "Open"))
         {
-            batch.isSelected = selected;
+            batch.IsSelected = selected;
         }
     }
 
     protected void chkSelect(ChangeEventArgs e, DcBatch batch)
     {
         var selected = (bool)(e.Value??false);
-        batch.isSelected = selected;
+        batch.IsSelected = selected;
     }
 
     protected async Task btnClose_Click()
     {
-        foreach (DcBatch batch in DTBatch.result.Where(b => b.isSelected))
+        foreach (DcBatch batch in DTBatch.Where(b => b.IsSelected))
         {
             if(batch.BatchNo != 0)await db.SetBatchStatus(batch.BatchNo, "Closed");
         }
-        DTBatch = await db.GetBatches("Open", page);
+        DTBatch = (await qdb.GetBatches("Open")).AsQueryable();
         toast.ShowSuccess($"Selected batches Closed.");
-    }
-
-    protected async Task OnPaged(int _page)
-    {
-        page = _page;
-        DTBatch = await db.GetBatches(filterStatus, page);
-
-    }
-    protected async Task OnEditPaged(int _page)
-    {
-        editPage = _page;
-        items = await db.GetAllFilesByBatchNo(selectedBatch.BatchNo, editPage);
     }
 
     protected async Task btnPrintBatch(DcBatch batch)
@@ -432,10 +325,6 @@
         //await Js.InvokeAsync<object>("open", $"{NavigationM.BaseUri}batchcover/{batch.BatchNo}", "_blank");
     }
 
-    public void Dispose()
-    {
-
-    }
 
 }
 

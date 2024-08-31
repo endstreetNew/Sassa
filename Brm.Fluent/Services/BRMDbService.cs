@@ -1526,6 +1526,8 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             return result;
         }
     }
+
+
     //The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator.
     //This may lead to unpredictable results.
     //If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
@@ -1549,6 +1551,8 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
 
+
+
     public async Task<PagedResult<DcBatch>> GetMyBatches(bool myBatches, int page = 1)
     {
         using (var _context = _contextFactory.CreateDbContext())
@@ -1569,6 +1573,8 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             return result;
         }
     }
+
+
     public async Task SetBatchCount(decimal? batchId)
     {
         using (var _context = _contextFactory.CreateDbContext())
@@ -1705,9 +1711,10 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            return await _context.DcFiles.Where(f => f.BatchNo == BatchId).ToListAsync();
+            return await _context.DcFiles.OrderByDescending(f => f.UpdatedDate).Where(f => f.BatchNo == BatchId).AsNoTracking().ToListAsync();
         }
     }
+
     public async Task<PagedResult<DcFile>> GetAllFilesByBatchNo(decimal batchId, int page)
     {
         using (var _context = _contextFactory.CreateDbContext())
@@ -1725,6 +1732,8 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             return result;
         }
     }
+
+
     /// <summary>
     /// Remove Merged files from batch
     /// </summary>

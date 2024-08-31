@@ -429,7 +429,7 @@
         var selected = (bool)e.Value!;
         foreach (DcBatch batch in DTBatch.result.Where(r => r.BatchStatus == "Open"))
         {
-            batch.isSelected = selected;
+            batch.IsSelected = selected;
         }
     }
 
@@ -438,13 +438,13 @@
         var selected = (bool)e.Value!;
         //foreach (DcBatch batch in DTBatch.result)
         //{
-        batch.isSelected = selected;
+        batch.IsSelected = selected;
         //}
     }
 
     protected async Task btnClose_Click()
     {
-        foreach (DcBatch batch in DTBatch.result.Where(b => b.isSelected))
+        foreach (DcBatch batch in DTBatch.result.Where(b => b.IsSelected))
         {
             if(batch.BatchNo != 0)await db.SetBatchStatus(batch.BatchNo, "Closed");
         }

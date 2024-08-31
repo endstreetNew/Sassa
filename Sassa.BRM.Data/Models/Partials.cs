@@ -188,7 +188,7 @@ namespace Sassa.BRM.Models
     public partial class DcBatch
     {
         [NotMapped]
-        public bool isSelected { get; set; } = false;
+        public bool IsSelected { get; set; } = false;
         [NotMapped]
         public string BoxNo { get; set; }
         [NotMapped]

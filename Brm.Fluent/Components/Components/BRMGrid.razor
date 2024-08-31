@@ -11,11 +11,12 @@
     <div style="overflow-x: auto;">
         <FluentDataGrid Style="min-width: max-content;" Items="@DTBrm.AsQueryable()" TGridItem="Application" Pagination="@pagination">
     <PropertyColumn Width="130px" Property="@(p => p.Id)" />
-    <TemplateColumn Width="340px" Title="Actions" Align="@Align.End">
-        <FluentButton Appearance="Appearance.Accent" Title="Batch" OnClick="@(() => btnBatch_Click(context))" Disabled="@(context.BatchNo > 0)">Batch</FluentButton>
-        <FluentButton Appearance="Appearance.Accent"  Title="View" OnClick="@(() => btnView_Click(context))">View Cover</FluentButton>
-        <FluentButton BackgroundColor="Red" Color="White" Title="Delete" OnClick="@(() => btnDelete_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Delete</FluentButton>
-        <FluentButton Appearance="Appearance.Accent" Title="Edit Barcode" OnClick="@(() => btnEditBarcode_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Edit Barcode</FluentButton>
+    <TemplateColumn Title="Actions" >
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Cube())" Title="Batch" OnClick="@(() => btnBatch_Click(context))" Disabled="@(context.BatchNo > 0)"/>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Eye())" Title="View" OnClick="@(() => btnView_Click(context))"/>
+        <FluentButton BackgroundColor="Red" Color="White" IconEnd="@(new Icons.Regular.Size12.Delete())" Title="Delete" OnClick="@(() => btnDelete_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))"/>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Edit())" Title="Edit Barcode" OnClick="@(() => btnEditBarcode_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))"/>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.ArrowDown())" Title="Merged Records" Disabled="@(!DTMerges.Where(b => b.Brm_Parent == context.Brm_Parent).Any())" OnClick="@(() => ShowChildren(context.Brm_BarCode))" />
     </TemplateColumn>
     <PropertyColumn Width="100px" Property="@(p => p.Brm_BarCode)" Sortable="true" />
     <PropertyColumn Width="130px" Property="@(p => p.ChildId)" Sortable="true" />
@@ -28,9 +29,6 @@
     <PropertyColumn Width="100px" Property="@(p => p.TDW_BOXNO)" Sortable="true" />
         <PropertyColumn Width="80px" Property="@(p => p.MiniBox)" Sortable="true" />
         <PropertyColumn Width="80px" Property="@(p => p.ARCHIVE_YEAR)" Sortable="true" />
-        <TemplateColumn Width="80px" Title="Show Merged" Align="@Align.End">
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.ArrowDown())" Title="View" Disabled="@(!DTMerges.Where(b => b.Brm_Parent == context.Brm_Parent).Any())" OnClick="@(() => ShowChildren(context.Brm_BarCode))" />
-        </TemplateColumn>
     </FluentDataGrid>
     </div>
 </div>
@@ -43,10 +41,9 @@
     <hr />
         <FluentDataGrid Items="@DTMerges.Where(b => b.Brm_Parent == parentBrm).AsQueryable()" TGridItem="Application">
         <PropertyColumn Width="130px" Property="@(p => p.Id)" />
-        <TemplateColumn Width="300px" Title="Actions" Align="@Align.End">
-            <FluentButton Appearance="Appearance.Accent" Title="View" OnClick="@(() => btnView_Click(context))">View Cover</FluentButton>
-            <FluentButton Appearance="Appearance.Accent" Title="Delete" OnClick="@(() => btnDelete_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Delete</FluentButton>
-            <FluentButton Appearance="Appearance.Accent" Title="Edit Barcode" OnClick="@(() => btnEditBarcode_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Edit Barcode</FluentButton>
+        <TemplateColumn Title="Actions" Align="@Align.End">
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Eye())" Title="View" OnClick="@(() => btnView_Click(context))" />
+            <FluentButton BackgroundColor="Red" Color="White" IconEnd="@(new Icons.Regular.Size12.Delete())" Title="Delete" OnClick="@(() => btnDelete_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))" />
         </TemplateColumn>
         <PropertyColumn Width="100px" Property="@(p => p.Brm_BarCode)" Sortable="true" />
         <PropertyColumn Width="130px" Property="@(p => p.ChildId)" Sortable="true" />

@@ -5,11 +5,9 @@
 @inject StaticService staticservice
 @inject IDialogService DialogService
 
-<div class="pageTitle">
-<h3>Home</h3>
-</div>
+<BrmPageTitle Title="Home"/>
 @if(sessionservice.session.IsBrmUser())
-    {
+{
          <div class="whiteArea">
              <FluentStack>
                 <span><strong>User Details</strong></span>
