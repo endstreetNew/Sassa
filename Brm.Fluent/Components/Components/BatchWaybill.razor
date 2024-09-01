@@ -5,57 +5,23 @@
 
 @inject IDialogService dialogService
 
-<h3>Batch Waybills</h3>
-@if (showDispatch)
-{
-    <TdwDispatch waybill="@selectedWaybill" Cancel="OnCancelClick" Ok="OnOkClick"></TdwDispatch>
-}
-@if (waybills.Any())
-{
-    <table class="table table-sm" style="font-size:small;">
-        <thead>
-            <tr>
+<WidgetTitle Title="Batch waybills"/>
+<FluentDataGrid Items="@waybills.AsQueryable()" TGridItem="Waybill" Pagination="@waybillPaginator">
+    <PropertyColumn Property="@(p => p.BrmWaybill)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.WaybillNo)" Sortable="true" />
 
-                <th scope="col">BRM Waybill</th>
-                <th scope="col">TDW Waybill</th>
-                <th scope="col">Updated by</th>
-                <th scope="col">Updated Date</th>
-                <th scope="col">Status</th>
-                <th scope="col">No of Batches</th>
-                <th scope="col">No of Files</th>
-                <th scope="col">Action</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var u in waybills)
-            {
-                <tr>
-                    <td>@u.BrmWaybill</td>
-                    <td>@u.WaybillNo</td>
-                    <td>@u.UpdatedByAd</td>
-                    <td>@u.UpdatedDate</td>
-                    <td>@u.Status</td>
-                    <td>@u.NoOfBatches</td>
-                    <td>@u.NoOfFiles</td>
-                    <td colspan="2">
-
-                        @if (sessionservice.session.Office.OfficeType == "LO")
-                        {
-                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnDispatch_Click(u))">@(u.Status == "Closed" ? "Dispatch" : "Reprint")</button>
-                        }
-                        else
-                        {
-                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnReceive_Click(u))">Receive</button>
-                        }
-                    </td>
-                </tr>
-            }
-
-        </tbody>
-    </table>
-}
+    <TemplateColumn Title="Actions">
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Eye())" OnClick="@(() => btnDispatch_Click(context))" Title="@(context.Status == "Closed" ? "Dispatch" : "Reprint")" Disabled="@(sessionservice.session.IsRmc())"/>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Checkmark())" OnClick="@(() => btnReceive_Click(context))" Title="Edit" Disabled="@(!sessionservice.session.IsRmc())"/>
+    </TemplateColumn>
+    
+    <PropertyColumn Property="@(p => p.UpdatedByAd)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.UpdatedDate)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.Status)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.NoOfBatches)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.NoOfFiles)" Sortable="true" />
+</FluentDataGrid>
+<FluentPaginator State="@waybillPaginator" />
 
 
 @code {
@@ -63,7 +29,7 @@
     protected List<Waybill> waybills = new();
     protected Waybill? selectedWaybill;
 
-    bool showDispatch;
+    PaginationState waybillPaginator = new PaginationState { ItemsPerPage = 10 };
 
     protected override async Task OnInitializedAsync()
     {
@@ -72,12 +38,29 @@
     }
 
 
-    protected void btnDispatch_Click(Waybill w)
+    protected async Task btnDispatch_Click(Waybill w)
     {
         selectedWaybill = w;
         if (w.Status == "Closed")
         {
-            showDispatch = true;
+            DialogParameters parameters = new()
+                {
+                    Title = $"Capture New Brm Record",
+                    // PrimaryAction = "Ok",
+                    // PrimaryActionEnabled = false,
+                    SecondaryAction = "Cancel",
+                    // Height = "55%",
+                    TrapFocus = true,
+                    Modal = true,
+                    PreventScroll = true
+                };
+            IDialogReference dialog = await dialogService.ShowDialogAsync<TdwDispatchContent>(w, parameters);
+            var result = await dialog.Result;
+            if (result.Cancelled || result.Data is null) return;
+            Waybill? capturedWb = result.Data as Waybill;
+            if (capturedWb == null) return; //huh?
+            await db.DispatchWaybill(capturedWb.BrmWaybill, capturedWb.WaybillNo);
+            Navigate.NavigateTo($"transportcover/{capturedWb.BrmWaybill}");
         }
         else
         {
@@ -106,24 +89,6 @@
             await OnReceiptOk();
         }
 
-    }
-
-    protected void OnCancelClick()
-    {
-        showDispatch = false;
-    }
-    protected void OnOkClick()
-    {
-        try
-        {
-            showDispatch = false;
-
-            toast.ShowSuccess($"Transport Waybill Created.");
-        }
-        catch (Exception ex)
-        {
-            toast.ShowError(ex.Message);
-        }
     }
 
     protected async Task OnReceiptOk()

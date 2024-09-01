@@ -3,7 +3,7 @@
 
 @if (sessionservice.session != null)
 {
-        <div style="float:right; margin-top:10px;">
+    <div style="float:right; margin-top:10px;color:#1e1b1b;">
             <label  style="margin-left: 10px">@sessionservice.session.Name</label>
             <label  style="margin-left: 10px">@(sessionservice.session.Office.OfficeName + ": " + sessionservice.session.Office.RegionName + $" :{ServicePoint}")</label>
             <a href="activeusers"  style="margin-left: 10px">@("(Users " + UserCount + ")")</a>
@@ -11,7 +11,7 @@
 }
 else
 {
-    <div style="width: 100%;">
+    <div style="width: 100%;color:#1e1b1b;">
         <div style="float:right; width: 100%; margin-top:4px;">
             <label class="divUserDetail" style="margin-left: 10px">Initializing user session</label>
         </div>

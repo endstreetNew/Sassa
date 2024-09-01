@@ -98,7 +98,7 @@ else
     protected DcBatch selectedBatch { get; set; } = new DcBatch();
 
     protected string title = "";
-    protected string filterStatus = "";
+    protected string filterStatus = "Open";
     protected bool showMybatches;
     protected bool editBatch;
     protected string BrmBarCode ="";
@@ -107,7 +107,6 @@ else
     protected override async Task OnInitializedAsync()
     {
         title = $"Batches for {sessionservice.session.Office.OfficeName}";
-        filterStatus = "";
         try
         {
             DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();

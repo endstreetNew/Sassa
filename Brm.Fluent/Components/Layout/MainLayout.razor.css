@@ -1,12 +1,18 @@
 ﻿.site-title {
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
     font-size: 1.3em;
+    border-radius:4px;
     margin: 0;
-    font-weight:bold;
+    font-weight: bold;
+    color:#1e1b1b;
 }
 
-/*.content {
-    background-color: #E5E5E5;
-}*/
+.brmHeader {
+    background: linear-gradient(90deg, rgba(251,252,253,1) 0%, rgba(252,247,213,0.7592422385620915) 21%, rgba(255,228,0,1) 100%);
+}
+img {
+    border-radius: 4px;
+    width: 60px;
+}
 
 

@@ -1,13 +1,33 @@
-﻿@* <div class="input-group mb-2">
-    <span class="input-group-text" style="width: 140px;">TDW Waybill No</span>
-    <input type="text" @bind-value="@tdwWaybill" class="form-control" disabled="@(!string.IsNullOrEmpty(waybill.WaybillNo))">
-</div>
+﻿@implements IDialogContentComponent<Waybill>
 
-<div class="input-group mb-2" style="width:50%">
-    <span class="input-group-text" style="width: 140px;">Courier</span>
-    <input type="text" @bind-value="@courier" class="form-control" disabled="@(!string.IsNullOrEmpty(waybill.WaybillNo))">
-</div> *@
+    <FluentTextField @bind-Value=@Content.WaybillNo Label="Waybill #" Placeholder="<Enter Waybill>"/>
+    <FluentTextField @bind-Value=@Content.BrmWaybill Label="Brm waybill #" Placeholder="Brm Waybill #"/>
+    <FluentTextField @bind-Value=@Content.CourierName Label="Courier" Placeholder="TDW"/>
+    <hr />
+<FluentButton Appearance="Appearance.Accent" OnClick="@(async () => await btnSave())" >Save</FluentButton>
+<hr/>
+<strong>@message</strong>
+
 
 @code {
+    [Parameter]
+    public Waybill Content { get; set; } = default!;
+
+    [CascadingParameter]
+    public FluentDialog? Dialog { get; set; }
+
+    string message = "";
+
+    protected async Task btnSave()
+    {
+         if (string.IsNullOrEmpty(Content.WaybillNo))
+        {
+            message = "The TDW waybill no is required.";
+            return;
+        }
+        Dialog!.TogglePrimaryActionButton(true);
+        await Dialog.CloseAsync(Content);
+    }
+
 
 }
