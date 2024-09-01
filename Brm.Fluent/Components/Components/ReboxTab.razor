@@ -515,7 +515,7 @@
         catch (Exception ex)
         {
             toast.ShowError($"Box :{rebox.BoxNo} Coversheets error. {ex.Message}");
-            
+
 
         }
         //await Js.InvokeAsync<object>("open", $"{NavigationM.BaseUri}coversheets/{rebox.BoxNo}", "_blank");
@@ -524,39 +524,47 @@
 
     public async Task<DcFile> Rebox(Reboxing rebox)
     {
-
-        DcFile file = await db.GetReboxCandidate(rebox);
-
-        if (boxfiles.count > 0)
+        try
         {
-            if(file.IsPreservedType)
+
+            DcFile file = await db.GetReboxCandidate(rebox);
+
+            if (boxfiles.count > 0)
             {
-                if ((rebox.IsLCSelected && !file.ApplicationStatus.Contains("LC")) || (!rebox.IsLCSelected && file.ApplicationStatus.Contains("LC")))
+                if (file.IsPreservedType)
                 {
-                    throw new Exception($"Filetype / Boxtype mismatch expecting {rebox.RegType} file.");
+                    if ((rebox.IsLCSelected && !file.ApplicationStatus.Contains("LC")) || (!rebox.IsLCSelected && file.ApplicationStatus.Contains("LC")))
+                    {
+                        throw new Exception($"Filetype / Boxtype mismatch expecting {rebox.RegType} file.");
+                    }
                 }
             }
-        }
 
-        if (boxfiles.count == 0)
+            if (boxfiles.count == 0)
+            {
+                rebox.AltBoxNo = await db.GetNexRegionAltBoxSequence();
+            }
+            file.PrintOrder = boxfiles.count;
+
+            await db.Rebox(rebox, file);
+
+            if (rebox.BatchNo == 0)
+            {
+                string scanState = file.ScanDatetime == null ? "Not Scanned" : "Scanned";
+                toast.ShowSuccess($"BRM# {rebox.BrmBarcode} added to TDW box {rebox.BoxNo}. ({scanState})");
+                //rebox.RegType = file.ApplicationStatus.Trim("LC-".ToCharArray());
+            }
+            rebox.BrmBarcode = string.Empty;
+            rebox.MisFileNo = string.Empty;
+            rebox.NewBarcode = string.Empty;
+            await OnPaged(page);
+            return file;
+        }
+        catch (Exception ex)
         {
-            rebox.AltBoxNo = await db.GetNexRegionAltBoxSequence();
+            toast.ShowError(ex.Message);
+            throw;
         }
-        file.PrintOrder = boxfiles.count;
-
-        await db.Rebox(rebox, file);
-
-        if ( rebox.BatchNo == 0)
-        {
-            string scanState = file.ScanDatetime == null ? "Not Scanned" : "Scanned";
-            toast.ShowSuccess($"BRM# {rebox.BrmBarcode} added to TDW box {rebox.BoxNo}. ({scanState})");
-            //rebox.RegType = file.ApplicationStatus.Trim("LC-".ToCharArray());
-        }
-        rebox.BrmBarcode = string.Empty;
-        rebox.MisFileNo = string.Empty;
-        rebox.NewBarcode = string.Empty;
-        await OnPaged(page);
-        return file;
     }
 
     protected async Task OnPaged(int _page)

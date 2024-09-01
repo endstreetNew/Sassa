@@ -29,7 +29,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
         catch (Exception ex)
         {
-            Debug.Print(ex.Message);
+            throw new Exception("Error checking for duplicate");
         }
         return result;
     }

@@ -140,37 +140,44 @@
     }
     protected async Task btnEditBarcode_Click(Application app)
     {
-        if (DTMerges != null && DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
+        try
         {
-            //maybe not
-            toast.ShowWarning("Please remove merged records first.");
-        }
-        else
-        {
-            selectedApp = app;
-            var dialog = await dialogService.ShowDialogAsync<EditBarcode>("", new DialogParameters()
-                {
-                    Height = "240px",
-                    Width = "550px",
-                    Title = $"Edit Barcode: {app.Brm_BarCode}",
-                    PreventDismissOnOverlayClick = true,
-                    PreventScroll = true,
-                });
-
-            var result = await dialog.Result;
-            if (!result.Cancelled && result.Data != null)
+            if (DTMerges != null && DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
             {
-                if (selectedApp == null) throw new Exception("No record selected.");
-                if (string.IsNullOrEmpty((string)result.Data) || ((string)result.Data).Trim().Length != 8) throw new Exception("Invalid Brm Barcode.");
-                NewBarCode = ((string)result.Data).ToUpper().Trim();
-                if (await db.checkBRMExists(NewBarCode))
-                {
-                    toast.ShowError("New Barcode Exists!");
-                    return;
-                }
-                await db.EditBarCode(selectedApp, NewBarCode);
-                await Changed.InvokeAsync();
+                //maybe not
+                toast.ShowWarning("Please remove merged records first.");
             }
+            else
+            {
+                selectedApp = app;
+                var dialog = await dialogService.ShowDialogAsync<EditBarcode>("", new DialogParameters()
+                    {
+                        Height = "240px",
+                        Width = "550px",
+                        Title = $"Edit Barcode: {app.Brm_BarCode}",
+                        PreventDismissOnOverlayClick = true,
+                        PreventScroll = true,
+                    });
+
+                var result = await dialog.Result;
+                if (!result.Cancelled && result.Data != null)
+                {
+                    if (selectedApp == null) throw new Exception("No record selected.");
+                    if (string.IsNullOrEmpty((string)result.Data) || ((string)result.Data).Trim().Length != 8) throw new Exception("Invalid Brm Barcode.");
+                    NewBarCode = ((string)result.Data).ToUpper().Trim();
+                    if (await db.checkBRMExists(NewBarCode))
+                    {
+                        toast.ShowError("New Barcode Exists!");
+                        return;
+                    }
+                    await db.EditBarCode(selectedApp, NewBarCode);
+                    await Changed.InvokeAsync();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.Message);
         }
     }
     protected void ShowChildren(string parent)
