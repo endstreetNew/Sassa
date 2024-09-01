@@ -1,6 +1,7 @@
 ﻿@page "/searchapplicant"
 @page "/searchapplicant/{Id}"
 
+@inject NavigationManager nav
 @inject SessionService sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
@@ -64,7 +65,7 @@
     @if (sessionservice.session!.IsRmc())
     {
         <div class="col-4 float-right">
-        <BoxStatus rebox="@rebox"></BoxStatus>
+        <BoxStatus rebox="@rebox" OnloadBox="GotoBox"></BoxStatus>
         </div>
     }
 </div>
@@ -399,5 +400,14 @@
         showManualCapture = false;
         StateHasChanged();
     }
-
+    private void GotoBox()
+    {
+        if (string.IsNullOrEmpty(rebox.BoxNo))
+        {
+            toast.Error("Please enter a TDW BoxNo.");
+            return;
+        };
+        rebox.BoxNo = rebox.BoxNo.ToUpper();
+        nav.NavigateTo($"boxing/{rebox.BoxNo}");
+    }
 }

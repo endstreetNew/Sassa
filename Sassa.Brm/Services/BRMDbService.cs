@@ -30,7 +30,8 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
         catch (Exception ex)
         {
-            Debug.Print(ex.Message);
+            return true;
+            //throw new Exception("Duplicate BarCode");
         }
         return result;
     }

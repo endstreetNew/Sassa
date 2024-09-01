@@ -94,6 +94,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        filterStatus = "";
         title = $"Batches for {@sessionservice.session.Office.OfficeName}";
         filterStatus = "";
         try
@@ -114,7 +115,6 @@ else
         try
         {
             DTBatch = await qdb.GetBatches(filterStatus);
-            StateHasChanged();
         }
         catch (Exception ex)
         {

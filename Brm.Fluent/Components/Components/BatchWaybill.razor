@@ -1,18 +1,32 @@
 ﻿@inject IToastService toast
 @inject SessionService sessionservice
+@inject StaticService staticservice
 @inject BRMDbService db
 @inject Navigation Navigate
 
 @inject IDialogService dialogService
 
 <WidgetTitle Title="Batch waybills"/>
+<FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
+    <FluentSelect TOption="String"
+                  Label="Status filter"
+                  Items="@staticservice.GetBatchStatus("RMC").Values"
+                  Id="rmc-batchstatus-listbox"
+                  Width="200px"
+                  Height="250px"
+                  Placeholder="Make a selection..."
+                  OptionValue="@(p => p)"
+                  OptionText="@(p => p)"
+                  @bind-Value="@filterStatus"
+                  @onchange="FilterStatus" />
+</FluentStack>
 <FluentDataGrid Items="@waybills.AsQueryable()" TGridItem="Waybill" Pagination="@waybillPaginator">
     <PropertyColumn Property="@(p => p.BrmWaybill)" Sortable="true" />
     <PropertyColumn Property="@(p => p.WaybillNo)" Sortable="true" />
 
     <TemplateColumn Title="Actions">
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Eye())" OnClick="@(() => btnDispatch_Click(context))" Title="@(context.Status == "Closed" ? "Dispatch" : "Reprint")" Disabled="@(sessionservice.session.IsRmc())"/>
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Checkmark())" OnClick="@(() => btnReceive_Click(context))" Title="Edit" Disabled="@(!sessionservice.session.IsRmc())"/>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Eye())" OnClick="@(() => btnDispatch_Click(context))" Title="@(context.Status == "Closed" ? "Dispatch" : "Reprint")" Disabled="@(sessionservice.session.IsRmc() && "Closed|Completed".Contains(context.Status??""))" />
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Checkmark())" OnClick="@(() => btnReceive_Click(context))" Title="Receive" Disabled="@(!sessionservice.session.IsRmc())"/>
     </TemplateColumn>
     
     <PropertyColumn Property="@(p => p.UpdatedByAd)" Sortable="true" />
@@ -31,13 +45,27 @@
 
     PaginationState waybillPaginator = new PaginationState { ItemsPerPage = 10 };
 
+    protected string filterStatus = "";
+
     protected override async Task OnInitializedAsync()
     {
+        filterStatus = "";
         waybills = await db.GetBatchWaybills();
         sessionservice.session.BookMark.BoxingTab = 2;
     }
 
-
+    protected async Task FilterStatus(ChangeEventArgs args)
+    {
+        filterStatus = args.Value?.ToString() ?? "";
+        try
+        {
+            waybills = await db.GetBatchWaybills();
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.Message);
+        }
+    }
     protected async Task btnDispatch_Click(Waybill w)
     {
         selectedWaybill = w;
