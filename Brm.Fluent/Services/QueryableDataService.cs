@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using razor.Components.Models;
 using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
 using Sassa.BRM.Models;
+using Sassa.BRM.ViewModels;
 
 public class QueryableDataService
 {
@@ -22,6 +24,7 @@ public class QueryableDataService
         _dbService = dbService;
         _contextFactory = contextFactory;
     }
+    #region Batching
     public async Task<List<DcBatch>> GetBatches(string status)
     {
 
@@ -91,7 +94,6 @@ public class QueryableDataService
             }
         }
     }
-
     public async Task<List<DcFile>> GetAllFilesByBatchNoQuery(decimal batchId)
     {
 
@@ -109,4 +111,51 @@ public class QueryableDataService
         }
         return result;
     }
+    #endregion
+    #region Boxing and Re-Boxing
+    public async Task<List<ReboxListItem>> GetAllFilesByBoxNo(string boxNo)
+    {
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+            bool repaired = await _dbService.RepairAltBoxSequence(boxNo);
+
+            var interim = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).OrderByDescending(f => f.UpdatedDate).AsNoTracking().ToListAsync();
+            return interim.OrderBy(f => f.UnqFileNo)
+                        .Select(f => new ReboxListItem
+                        {
+                            ClmNo = f.UnqFileNo,
+                            BrmNo = f.BrmBarcode,
+                            IdNo = f.ApplicantNo,
+                            FullName = f.FullName,
+                            GrantType = StaticDataService.GrantTypes[f.GrantType],
+                            BoxNo = boxNo,
+                            AltBoxNo = f.AltBoxNo,
+                            Scanned = f.ScanDatetime != null,
+                            MiniBox = (int?)f.MiniBoxno,
+                            RegType = f.ApplicationStatus,
+                            TdwBatch = (int)f.TdwBatch
+                        }).ToList();
+        }
+    }
+    public async Task<List<ReboxListItem>> SearchBox(string boxNo, string searchText)
+    {
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+            return await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo.Contains(searchText) || bn.BrmBarcode.Contains(searchText))).OrderByDescending(f => f.UpdatedDate).AsNoTracking()
+                        .Select(f => new ReboxListItem
+                        {
+                            ClmNo = f.UnqFileNo,
+                            BrmNo = f.BrmBarcode,
+                            IdNo = f.ApplicantNo,
+                            FullName = f.FullName,
+                            GrantType = StaticDataService.GrantTypes[f.GrantType],
+                            BoxNo = boxNo,
+                            AltBoxNo = f.AltBoxNo,
+                            Scanned = f.ScanDatetime != null,
+                            MiniBox = (int?)f.MiniBoxno,
+                            TdwBatch = (int)f.TdwBatch
+                        }).ToListAsync();
+        }
+    }
+    #endregion
 }

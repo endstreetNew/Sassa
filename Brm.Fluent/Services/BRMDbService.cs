@@ -29,7 +29,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
         catch (Exception ex)
         {
-            throw new Exception("Error checking for duplicate");
+            throw new Exception($"Error checking for duplicate: {ex.Message}");
         }
         return result;
     }
@@ -360,7 +360,13 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             return _userSession.Office.RegionCode + await _raw.GetNextAltbox(_userSession.Office.RegionCode);
         }
     }
-    private async Task<bool> RepairAltBoxSequence(string boxNo)
+
+    /// <summary>
+    /// Todo: move to boxing service
+    /// </summary>
+    /// <param name="boxNo"></param>
+    /// <returns></returns>
+    public async Task<bool> RepairAltBoxSequence(string boxNo)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {

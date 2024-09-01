@@ -47,22 +47,27 @@
                 <label >@(sessionservice.session.IsInRole("GRP_BRM_Supervisors") ? "Yes" : "No")</label>
             </FluentStack>
         </div>
-        <div class="whiteArea">
+
                 <span><strong>Roles</strong></span>
                 <hr/>
                 @foreach (var role in sessionservice.session.Roles)
                 {
                     <FluentLabel>@role</FluentLabel>
                 }
-                </div>
-        <div class="whiteArea">
+
+
                 <span><strong>Appearance</strong></span>
                 <hr/>
-                <FluentDesignTheme Mode="@DesignThemeModes.System" OfficeColor="@officeColor" StorageName="theme" />
-
+                 <FluentDesignTheme Mode="@Mode" OfficeColor="@officeColor" StorageName="theme" />
                 <div style="min-height: 250px;">
                     <FluentGrid>
                         <FluentGridItem>
+                    <FluentGridItem>
+                        <FluentSelect Label="Theme"
+                                      Width="250px"
+                                      Items="@(Enum.GetValues<DesignThemeModes>())"
+                                      @bind-SelectedOption="@Mode" />
+                    </FluentGridItem>
                             <FluentSelect Label="Color"
                                           Items="@(Enum.GetValues<OfficeColor>().Select(i => (OfficeColor)i))"
                                           Height="200px"
@@ -80,15 +85,14 @@
                         </FluentGridItem>
                     </FluentGrid>
                 </div>
-          </div>
+
     }
     else
     {
-        <div class="whiteArea">
+
             <div class="spinner spinner-border text-primary" role="status">
                 <span class="visually-hidden">Loading...</span>
             </div>
-        </div>
     }
 
 @code

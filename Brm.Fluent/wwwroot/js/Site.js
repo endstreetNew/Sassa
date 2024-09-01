@@ -1,7 +1,11 @@
 ﻿function printPage() {
     window.print();
 }
-
+function SetIdFocus(elementId) {
+    var element = document.getElementById(elementId);
+    element.focus();
+    /*    return element === true;*/
+}
 function getHTML() {
   return document.getElementById('pdf').innerHTML;
 }
@@ -16,8 +20,7 @@ function jsSaveAsFile(filename, byteBase64)
     document.body.removeChild(link);
 }
 
-function triggerFileDownload(fileName, url)
-{
+function triggerFileDownload(fileName, url) {
     const anchorElement = document.createElement('a');
     anchorElement.href = url;
     anchorElement.download = fileName ?? '';
@@ -25,6 +28,14 @@ function triggerFileDownload(fileName, url)
     anchorElement.remove();
 }
 
+//function SetElementFocus(element) {
+//    element.focus();
+//}
+
+//function SetIdFocus(elementId) {
+//    var element = document.getElementById(elementId);
+//    element.focus();
+//}
 //const prodTheme = createProdTheme({
 //    palette: {
 //        themePrimary: '#0078d4',

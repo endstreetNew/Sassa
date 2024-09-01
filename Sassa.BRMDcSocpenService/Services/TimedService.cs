@@ -93,7 +93,7 @@
             Globals.Progress = "Syncing.";
             _fu.WriteJson(Globals, fileName);
             bookmark = _raw.GetBookMark("Select max(Capture_date) from dc_socpen");
-            bookmark = bookmark.AddDays(-14); //Start two weeks ago.
+            bookmark = bookmark.AddYears(-6);//.AddDays(-14); //Start two weeks ago.
             try
             {
                 //New SRD's
