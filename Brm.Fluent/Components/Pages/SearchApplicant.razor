@@ -9,30 +9,30 @@
 @inject NavigationManager nav
 @inject IJSRuntime js
 
-<BrmPageTitle Title="Capture"/>
+<BrmPageTitle Title="Capture" />
 
 <FluentStack>
-<FluentTextField @bind-Value="@txtSearchId" Placeholder="Enter Id here..." />
-<FluentTextField @bind-Value="@txtSearchSRD" Placeholder="Enter SRD here..."/>
-<FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())" ></FluentButton>
-<FluentSelect TOption="KeyValue"
-                Items="@GrantTypes"
-                Id="grant-type-listbox"
-                Width="200px"
-                Height="250px"
-                Placeholder="Select Grant type..."
-                OptionValue="@(p => p.Id)"
-                OptionText="@(p => p.Name)"
-                @bind-Value="@manualGrantType"/>
+    <FluentTextField @bind-Value="@txtSearchId" Placeholder="Enter Id here..." />
+    <FluentTextField @bind-Value="@txtSearchSRD" Placeholder="Enter SRD here..." />
+    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())"></FluentButton>
+    <FluentSelect TOption="KeyValue"
+                  Items="@GrantTypes"
+                  Id="grant-type-listbox"
+                  Width="200px"
+                  Height="250px"
+                  Placeholder="Select Grant type..."
+                  OptionValue="@(p => p.Id)"
+                  OptionText="@(p => p.Name)"
+                  @bind-Value="@manualGrantType" />
 
-@if (!string.IsNullOrEmpty(manualGrantType) && !DTSocPen.Where(a => a.GrantType == manualGrantType).Any())//a grantype is selected AND NO MATCHING sOCPEN rECORD
-{
-    <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.Edit())" Title="Manual Capture" OnClick="@(() => btnManualCapture_Click())">Manual Capture</FluentButton>
-}
-@if (sessionservice.session.IsRmc())
-{
-    <BoxStatus Alignment="HorizontalAlignment.Right" rebox="@rebox" OnloadBox="GotoBox"></BoxStatus>
-}
+    @if (!string.IsNullOrEmpty(manualGrantType) && !DTSocPen.Where(a => a.GrantType == manualGrantType).Any())//a grantype is selected AND NO MATCHING sOCPEN rECORD
+    {
+        <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.Edit())" Title="Manual Capture" OnClick="@(() => btnManualCapture_Click())">Manual Capture</FluentButton>
+    }
+    @if (sessionservice.session.IsRmc())
+    {
+        <BoxStatus Alignment="HorizontalAlignment.Right" rebox="@rebox" OnloadBox="GotoBox"></BoxStatus>
+    }
 </FluentStack>
 <br />
 <FluentCheckbox @bind-Value="@chkSearchFull" Label="Search Id History" />
@@ -40,53 +40,53 @@
 
 <FluentTabs Class="tab">
     <FluentTab Id="tab-1">
-            <Header>
-                Socpen Results
-            </Header>
-            <Content>
-<div style="display: table; table-layout: fixed; width: 100%;">
-    <div style="overflow-x: auto;">
-        <FluentDataGrid Style="min-width: max-content;" Items="@DTSocPen.AsQueryable()" TGridItem="Application" Pagination="@pagination">
-                <PropertyColumn Property="@(p => p.Id)" />
-                <TemplateColumn Title="Actions" Align="@Align.End">
-                    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Add())" Title="New" OnClick="@((p) => btnNewCover_Click(context))"></FluentButton>
-                </TemplateColumn>
-@*                 <TemplateColumn Width="100px" Title="Merged" Align="@Align.End">
-                    <FluentCheckbox @bind-Value="@context.IsMergeParent" Disabled/>
-                </TemplateColumn> *@
-@*              <TemplateColumn Width="100px" Title="CanMerge" Align="@Align.End">
-                    <FluentCheckbox @bind-Value="@context.IsMergeCandidate" Disabled />
-                </TemplateColumn> *@
-                <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />
-                <PropertyColumn Property="@(p => p.GrantName)"  Sortable="true" />
-                <PropertyColumn Property="@(p => p.ChildId)"  Sortable="true" />
-                <PropertyColumn Property="@(p => p.Srd_No)"  Sortable="true" />
-                <PropertyColumn Property="@(p => p.Status)"  Sortable="true" />
-                <PropertyColumn Property="@(p => p.Name)"  />
-                <PropertyColumn Property="@(p => p.SurName)" />
-                <PropertyColumn Property="@(p => p.AppDate)"  Sortable="true" />
-                <PropertyColumn Property="@(p => p.ARCHIVE_YEAR)" Sortable="true" />
-                <PropertyColumn Property="@(p => p.StatusDate)"  Sortable="true" />
-            </FluentDataGrid>
+        <Header>
+            Socpen Results
+        </Header>
+        <Content>
+            <div style="display: table; table-layout: fixed; width: 100%;">
+                <div style="overflow-x: auto;">
+                    <FluentDataGrid Style="min-width: max-content;" Items="@DTSocPen.AsQueryable()" TGridItem="Application" Pagination="@pagination">
+                        <PropertyColumn Property="@(p => p.Id)" />
+                        <TemplateColumn Title="Actions" Align="@Align.End">
+                            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Add())" Title="New" OnClick="@((p) => btnNewCover_Click(context))"></FluentButton>
+                        </TemplateColumn>
+                        @*                 <TemplateColumn Width="100px" Title="Merged" Align="@Align.End">
+                        <FluentCheckbox @bind-Value="@context.IsMergeParent" Disabled/>
+                        </TemplateColumn> *@
+                        @*              <TemplateColumn Width="100px" Title="CanMerge" Align="@Align.End">
+                        <FluentCheckbox @bind-Value="@context.IsMergeCandidate" Disabled />
+                        </TemplateColumn> *@
+                        <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />
+                        <PropertyColumn Property="@(p => p.GrantName)" Sortable="true" />
+                        <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />
+                        <PropertyColumn Property="@(p => p.Srd_No)" Sortable="true" />
+                        <PropertyColumn Property="@(p => p.Status)" Sortable="true" />
+                        <PropertyColumn Property="@(p => p.Name)" />
+                        <PropertyColumn Property="@(p => p.SurName)" />
+                        <PropertyColumn Property="@(p => p.AppDate)" Sortable="true" />
+                        <PropertyColumn Property="@(p => p.ARCHIVE_YEAR)" Sortable="true" />
+                        <PropertyColumn Property="@(p => p.StatusDate)" Sortable="true" />
+                    </FluentDataGrid>
+                </div>
             </div>
-         </div>
             <FluentPaginator State="@pagination" />
-            </Content>
-    </FluentTab>
-    <FluentTab Id="tab-2">
-            <Header>
-                BRM Results
-            </Header>
-            <Content>
-        <BRMGrid Changed="RefreshDTBrm" DTBrm="@DTBrmParents" DTMerges="@DTMerged"></BRMGrid>
         </Content>
     </FluentTab>
-     <FluentTab Id="tab-3">
-           <Header>
-                Record History
-            </Header>
-            <Content>
-               <BRMHistory IdNumber="@txtSearchId"></BRMHistory>
+    <FluentTab Id="tab-2">
+        <Header>
+            BRM Results
+        </Header>
+        <Content>
+            <BRMGrid Changed="RefreshDTBrm" DTBrm="@DTBrmParents" DTMerges="@DTMerged"></BRMGrid>
+        </Content>
+    </FluentTab>
+    <FluentTab Id="tab-3">
+        <Header>
+            Record History
+        </Header>
+        <Content>
+            <BRMHistory IdNumber="@txtSearchId"></BRMHistory>
         </Content>
     </FluentTab>
 </FluentTabs>
@@ -96,8 +96,8 @@
     [Parameter]
     public string Id { get; set; } = default!;
 
-    string txtSearchId ="";
-    string txtSearchSRD="";
+    string txtSearchId = "";
+    string txtSearchSRD = "";
     bool chkSearchFull;
 
     string manualGrantType = "";
@@ -267,19 +267,19 @@
         try
         {
             SelectedApplication = new Application
-            {
-                Id = txtSearchId,
-                Srd_No = txtSearchSRD,
-                TRANS_TYPE = 0,
-                TDW_BOXNO = rebox.BoxNo,
-                MiniBox = rebox.MiniBox,
-                GrantType = manualGrantType,
-                RegionId = sessionservice.session.Office.RegionId,
-                LcType = "0",
-                AppDate = DateTime.Now.ToStandardDateString(),
-                AppStatus = "MAIN",
-                DocsPresent = ""
-            };
+                {
+                    Id = txtSearchId,
+                    Srd_No = txtSearchSRD,
+                    TRANS_TYPE = 0,
+                    TDW_BOXNO = rebox.BoxNo,
+                    MiniBox = rebox.MiniBox,
+                    GrantType = manualGrantType,
+                    RegionId = sessionservice.session.Office.RegionId,
+                    LcType = "0",
+                    AppDate = DateTime.Now.ToStandardDateString(),
+                    AppStatus = "MAIN",
+                    DocsPresent = ""
+                };
             if (!await IsValid()) return;
             BrmCaptureModel br = new BrmCaptureModel
                 {
@@ -312,7 +312,7 @@
                 PrimaryActionEnabled = false,
                 // SecondaryAction = "No",
                 // Height = "55%",
-                 Width = br.IsManualCapture ? "90%": "30%",
+                Width = br.IsManualCapture ? "60%" : "30%",
                 TrapFocus = true,
                 Modal = true,
                 PreventScroll = true
@@ -334,9 +334,9 @@
         SelectedApplication.FspId = sessionservice.session.Office.FspId;
         SelectedApplication.BrmUserName = sessionservice.session.SamName;
         SelectedApplication.Source = "Capture";
-        if(capturedBrm.IsManualCapture)
+        if (capturedBrm.IsManualCapture)
         {
-            SelectedApplication.Name= capturedBrm.Name;
+            SelectedApplication.Name = capturedBrm.Name;
             SelectedApplication.SurName = capturedBrm.Surname;
             SelectedApplication.DocsPresent = capturedBrm.Documents;
             SelectedApplication.Source = "ManualCapture";
@@ -356,7 +356,7 @@
     {
         if (sessionservice.session.IsRmc())
         {
-            if(string.IsNullOrEmpty(rebox.BoxNo))
+            if (string.IsNullOrEmpty(rebox.BoxNo))
             {
                 toast.ShowError("a TDW BoxNo is required to capture at the RMC.");
                 return false;
@@ -398,9 +398,10 @@
         }
         return true;
     }
+
     private void GotoBox()
     {
-        if(string.IsNullOrEmpty(rebox.BoxNo))
+        if (string.IsNullOrEmpty(rebox.BoxNo))
         {
             toast.ShowError("Please enter a TDW BoxNo.");
             return;

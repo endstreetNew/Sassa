@@ -289,7 +289,7 @@
             rebox.MiniBox = batch.MiniBox;
             List<string> barcodes = await db.GetBatchBarcodes((decimal)rebox.BatchNo);
 
-            rebox.ToRegionId = rebox.RegType;
+            rebox.SelectedType = rebox.RegType;
             rebox.MisFileNo = string.Empty;
             rebox.NewBarcode = string.Empty;
             foreach (string brmBarCode in barcodes)

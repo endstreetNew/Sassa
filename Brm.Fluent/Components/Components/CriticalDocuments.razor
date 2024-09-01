@@ -5,30 +5,30 @@
 @foreach (var section in "General Particulars|Particulars of Income|Particulars of Assets".Split('|'))
 {
     <h5>@(section)</h5>
-        OddCol = 0;
-        EvenCol = 0;
-        <div class="row">
-            <div class="col">
-                @foreach (var doc in docs.Where(d => d.DOC_SECTION == section))
+    OddCol = 0;
+    EvenCol = 0;
+    <FluentStack Orientation="Orientation.Horizontal">
+        <div class="col">
+            @foreach (var doc in docs.Where(d => d.DOC_SECTION == section))
+            {
+                if (OddCol % 2 == 0)
                 {
-                    if (OddCol % 2 == 0)
-                    {
-                        <div><input type="checkbox" checked="@(_docspresent.Contains(doc.DOC_ID.ToString()))" @onchange="(e) => OnDocsChanged(doc, e)" /><label class="chkboxLabel">@doc.DOC_NAME</label></div>
-                    }
-                    OddCol = OddCol + 1;
+                    <div><input type="checkbox" checked="@(_docspresent.Contains(doc.DOC_ID.ToString()))" @onchange="(e) => OnDocsChanged(doc, e)" /><label class="chkboxLabel">@doc.DOC_NAME</label></div>
                 }
-            </div>
-            <div class="col">
-                @foreach (var doc in docs.Where(d => d.DOC_SECTION == section))
-                {
-                    if (EvenCol % 2 != 0)
-                    {
-                        <div><input type="checkbox" checked="@(_docspresent.Contains(doc.DOC_ID.ToString()))" @onchange="(e) => OnDocsChanged(doc, e)" /><label class="chkboxLabel">@doc.DOC_NAME</label></div>
-                    }
-                    EvenCol = EvenCol + 1;
-                }
-            </div>
+                OddCol = OddCol + 1;
+            }
         </div>
+        <div class="col">
+            @foreach (var doc in docs.Where(d => d.DOC_SECTION == section))
+            {
+                if (EvenCol % 2 != 0)
+                {
+                    <div><input type="checkbox" checked="@(_docspresent.Contains(doc.DOC_ID.ToString()))" @onchange="(e) => OnDocsChanged(doc, e)" /><label class="chkboxLabel">@doc.DOC_NAME</label></div>
+                }
+                EvenCol = EvenCol + 1;
+            }
+        </div>
+    </FluentStack>
     <br />
 }
 

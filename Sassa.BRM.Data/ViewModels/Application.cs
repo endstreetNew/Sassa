@@ -35,17 +35,11 @@ namespace Sassa.BRM.Models
         public string LastReviewDate { get; set; }
         [JsonIgnore]
         public string DateApproved { get; set; }
-        [JsonIgnore]
-        public string Prim_Status { get; set; }
-        [JsonIgnore]
-        public string Sec_Status { get; set; }
+        //[JsonIgnore]
+        //public string Prim_Status { get; set; }
+        //[JsonIgnore]
+        //public string Sec_Status { get; set; }
         public string LcType { get; set; }
-        [JsonIgnore]
-        public string Child_App_Date { get; set; }
-        [JsonIgnore]
-        public string Child_Status_Date { get; set; }
-        [JsonIgnore]
-        public string Child_Status_Code { get; set; }
         public string Srd_No { get; set; }
         public string Brm_Parent { get; set; }
         public string Brm_BarCode { get; set; }

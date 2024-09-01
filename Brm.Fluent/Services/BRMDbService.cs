@@ -1269,9 +1269,6 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                     DocsPresent = f.file.DocsPresent,
                     AppStatus = f.file.ApplicationStatus,
                     StatusDate = null,
-                    Child_App_Date = null,
-                    Child_Status_Code = null,
-                    Child_Status_Date = null,
                     TDW_BOXNO = f.file.TdwBoxno,
                     MiniBox = (int)(f.file.MiniBoxno ?? 0),
                     BatchNo = (decimal)(f.file.BatchNo ?? 0),
@@ -1287,8 +1284,6 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                     IsNew = false,
                     IsRMC = _userSession.IsRmc(),
                     SocpenIsn = 0,
-                    Prim_Status = "",
-                    Sec_Status = "",
                     RowType = "",
                     ARCHIVE_YEAR = f.file.ArchiveYear,
                     DateApproved = null

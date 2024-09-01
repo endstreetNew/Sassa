@@ -11,8 +11,6 @@
         <FluentRadio Value="1">LooseCorrespondence</FluentRadio>
         <FluentRadio Value="2">Review</FluentRadio>
     </FluentRadioGroup>
-
-
     @if (Content.ApplicationType == ApplicationType.LooseCorrespondence)
     {
         <FluentSelect TOption="KeyValue"
@@ -62,36 +60,38 @@
         <hr />
     }
     <FluentTextField @bind-Value=@Content.BrmBarcode Label="Please scan a new TDW sticker to put onto the file." />
-    @if (Dialog != null && !duplicate)
+    
+</FluentStack>
+
+    @if (Content.IsManualCapture)
+    {
+        <FluentDivider />
+        <FluentStack Width="70%" Orientation="Orientation.Vertical">
+
+        <CriticalDocuments GrantType="@Content.GrantType" DocsPresent="@Content.Documents" DocsChanged="OnDocsChanged"></CriticalDocuments>
+
+        </FluentStack>
+    }
+</FluentStack>
+<FluentStack Orientation="Orientation.Horizontal">
+    <strong>@message</strong>
+    <FluentSpacer />
+    @if (!duplicate)
     {
         <FluentButton Appearance="Appearance.Accent" OnClick="@(async () => await btnSave(false))">Save</FluentButton>
     }
-    @if (duplicate)
+    else
     {
-            
-            @if (sessionservice.session!.IsInRole("GRP_BRM_Monitoring"))
-            {
-                @if (Dialog != null)
-                {
-                    <FluentButton OnClick="@(async () => await btnOverwrite_Click())">OverWrite</FluentButton>
-                }
-            }
-            else
-            {
-                <p>Only members of the BRM_Monitoring group can overwrite this record.</p>
-            }
+        @if (sessionservice.session!.IsInRole("GRP_BRM_Monitoring"))
+        {
+            <FluentButton Appearance="Appearance.Accent" OnClick="@(async () => await btnOverwrite_Click())">OverWrite</FluentButton>
+        }
+        else
+        {
+            <p>Only members of the BRM_Monitoring group can overwrite this record.</p>
+        }
     }
-    <strong>@message</strong>
-</FluentStack>
-@if (Content.IsManualCapture)
-{
-<FluentDivider />
-    <FluentStack Width="70%" Orientation="Orientation.Vertical">
-
-    <CriticalDocuments GrantType="@Content.GrantType" DocsPresent="@Content.Documents" DocsChanged="OnDocsChanged"></CriticalDocuments>
-
-    </FluentStack>
-}
+   
 </FluentStack>
 @code {
     [Parameter]
@@ -174,6 +174,11 @@
                         return;
                     }
                 }
+            }
+            if (string.IsNullOrEmpty(Content.Documents))
+            {
+                message = "Critical Documents are required";
+                return;
             }
             message = "Saved SuccessFully";
             Dialog!.TogglePrimaryActionButton(true);
