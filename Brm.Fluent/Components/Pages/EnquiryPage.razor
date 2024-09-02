@@ -6,14 +6,10 @@
 @inject StaticService sservice
 @inject IDialogService dialogService
 
-<BrmPageTitle Title="Enquiry" />
+<BrmPageTitle Title="Enquiry" Loading="loading"/>
 <FluentStack>
     <FluentTextField @bind-Value="@txtSearchBrm" Placeholder="Brm barcode or Id..." />
     <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())"></FluentButton>
-    @if (loading)
-    {
-    <FluentProgressRing ></FluentProgressRing>
-    }
 </FluentStack>
 
 <strong>Results</strong>

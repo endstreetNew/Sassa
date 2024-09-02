@@ -12,7 +12,7 @@
 
 @using System.Text
 
-<WidgetTitle Title="@title"/>
+<WidgetTitle Title="@title" Loading = "loading"/>
 
 @if (editBatch)
 {
@@ -62,8 +62,8 @@ else
 
         @if (filterStatus == "Open")
         {
-        <FluentCheckbox Label="Select all batches" CheckStateChanged = "(e) => chkSelectAll(e)" />
-        <FluentButton Appearance="Appearance.Accent" OnClick="@(() => AddFileToBatch())" Title="Close Selected" Disabled="@(DTBatch.ToList().Where(b => b.IsSelected).Count() == 0)">Close Selected</FluentButton>
+            <FluentCheckbox Label="Select all batches" CheckStateChanged = "(e) => chkSelectAll(e)" />
+            <FluentButton Appearance="Appearance.Accent" OnClick="@(() => btnClose_Click())" Title="Close Selected" Disabled="@(DTBatch.ToList().Where(b => b.IsSelected).Count() == 0)">Close Selected</FluentButton>
         }
    </FluentStack>
 
@@ -104,16 +104,23 @@ else
     protected string BrmBarCode ="";
     protected string searchBatch = "";
 
+    protected bool loading;
+
     protected override async Task OnInitializedAsync()
     {
         title = $"Batches for {sessionservice.session.Office.OfficeName}";
         try
         {
+            loading = true;
             DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
+        }
+        finally
+        {
+            loading = false;
         }
     }
 
@@ -122,6 +129,7 @@ else
         try
         {
             decimal.TryParse(searchBatch, out decimal result);
+            loading = true;
             if (result > 0)
             {
                 DTBatch = (await qdb.FindBatch(result)).AsQueryable();
@@ -135,6 +143,10 @@ else
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
+        }
+        finally
+        {
+            loading = false;
         }
 
     }
@@ -151,6 +163,7 @@ else
             {
                 throw new Exception($"File {BrmBarCode} already in batch {application.BatchNo}");
             };
+            loading = true;
             string batchType = application.ApplicantNo.StartsWith("S") ? "SrdNoId" : application.RegType;
             selectedBatch.BatchNo = await db.CreateBatchForUser(batchType);
             await btnAddFileToBatch();
@@ -158,6 +171,10 @@ else
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
+        }
+        finally
+        {
+            loading = false;
         }
 
     }
@@ -167,12 +184,17 @@ else
         filterStatus = args.Value!.ToString()!;
         try
         {
+            loading = true;
             DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();
             StateHasChanged();
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
+        }
+        finally
+        {
+            loading = false;
         }
     }
 
@@ -181,12 +203,17 @@ else
         showMybatches = args ?? false;
         try
         {
+            loading = true;
             DTBatch =  (await qdb.GetMyBatches(showMybatches)).AsQueryable();
             title = showMybatches ? $"Batches for {sessionservice.session.Name}" : $"Batches for {sessionservice.session.Office.OfficeName}";
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
+        }
+        finally
+        {
+            loading = false;
         }
     }
 
@@ -210,6 +237,7 @@ else
         {
             try
             {
+                loading = true;
                 if (selectedBatch.BatchNo != 0) await db.SetBatchStatus(selectedBatch.BatchNo, "Closed");
                 DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();
                 toast.ShowSuccess($"Batch #{selectedBatch.BatchNo} Closed.");
@@ -218,6 +246,10 @@ else
             {
                 toast.ShowError(ex.Message);
             }
+            finally
+            {
+                loading = false;
+            }
         }
     }
 
@@ -225,6 +257,7 @@ else
     {
         try
         {
+            loading = true;
             selectedBatch = batch;
             files = (await qdb.GetAllFilesByBatchNoQuery(batch.BatchNo)).AsQueryable();
             editBatch = true;
@@ -235,12 +268,17 @@ else
         {
             toast.ShowError(ex.Message);
         }
+        finally
+        {
+            loading = false;
+        }
     }
 
     protected async Task btnRemoveItem(string brmBarCode)
     {
         try
         {
+            loading = true;
             await db.RemoveFileFromBatch(brmBarCode);
             files = (await qdb.GetAllFilesByBatchNoQuery(selectedBatch.BatchNo)).AsQueryable();
             editBatch = files.Any();
@@ -251,12 +289,17 @@ else
         {
             toast.ShowError(ex.Message);
         }
+        finally
+        {
+            loading = false;
+        }
     }
     //Always use newbatch to do validation
     protected async Task btnAddFileToBatch()
     {
         try
         {
+            loading = true;
             await db.AddFileToBatch(BrmBarCode, selectedBatch.BatchNo);
             files = (await qdb.GetAllFilesByBatchNoQuery(selectedBatch.BatchNo)).AsQueryable();
         }
@@ -264,13 +307,19 @@ else
         {
             toast.ShowError(ex.Message);
         }
+        finally
+        {
+            loading = false;
+        }
     }
     protected async Task OnBack()
     {
+        loading = true;
         editBatch = false;
         filterStatus = "";
         DTBatch = (await qdb.GetBatches(filterStatus)).AsQueryable();
         title = $"Batches";
+        loading = false;
     }
     protected void chkSelectAll(bool? e)
     {
@@ -290,18 +339,21 @@ else
 
     protected async Task btnClose_Click()
     {
+        loading = true;
         foreach (DcBatch batch in DTBatch.Where(b => b.IsSelected))
         {
             if(batch.BatchNo != 0)await db.SetBatchStatus(batch.BatchNo, "Closed");
         }
         DTBatch = (await qdb.GetBatches("Open")).AsQueryable();
         toast.ShowSuccess($"Selected batches Closed.");
+        loading = false;
     }
 
     protected async Task btnPrintBatch(DcBatch batch)
     {
         try
         {
+            loading = true;
             List<DcFile> files = await db.GetAllFilesByBatchNo(batch.BatchNo);
             StringBuilder sb = new StringBuilder();
 
@@ -320,10 +372,13 @@ else
             toast.ShowError($"Batch cover :{batch.BatchNo} error.");
 
         }
+        finally
+        {
+            loading = false;
+        }
         await Js.InvokeVoidAsync("open", $"{NavigationM.BaseUri}batchcover/{batch.BatchNo.ToString()}", "_blank");
         //await Js.InvokeAsync<object>("open", $"{NavigationM.BaseUri}batchcover/{batch.BatchNo}", "_blank");
     }
-
 
 }
 

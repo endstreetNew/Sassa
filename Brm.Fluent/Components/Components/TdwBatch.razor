@@ -133,10 +133,10 @@
         loading = true;
         int tdwBatch = await db.CreateTdwBatch(boxfiles.Where(b => b.IsSelected).ToList());
         loading = false;
-        _ = btnPrintBatch_Click(tdwBatch);
+        btnPrintBatch_Click(tdwBatch);
         await btnLoadBoxes_Click();
     }
-    protected async Task btnPrintBatch_Click(int tdwBatch)
+    protected void btnPrintBatch_Click(int tdwBatch)
     {
         _ = Js.InvokeVoidAsync("open", $"{nav.BaseUri}tdwbatchcover/{tdwBatch}", "_blank");
     }

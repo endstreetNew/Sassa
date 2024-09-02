@@ -3,7 +3,7 @@
 @inject MisFileService db
 @inject IToastService toast
 
-<BrmPageTitle Title="MIS file search" />
+<BrmPageTitle Title="MIS file search" Loading ="loading"/>
 <FluentStack>
 <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
 <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await SearchMis())"></FluentButton>
@@ -27,6 +27,8 @@
     protected List<MisLivelinkTbl> misFiles = new();
     protected string searchId = "";
 
+    protected bool loading;
+
     protected async Task SearchMis()
     {
         if(string.IsNullOrEmpty(searchId) || searchId.Length < 13)
@@ -34,6 +36,8 @@
             toast.ShowError("Please enter a valid applicant id.");
             return;
         }
+        loading = true;
         misFiles = await db.GetMisFiles(searchId);
+        loading = false;
     }
 }

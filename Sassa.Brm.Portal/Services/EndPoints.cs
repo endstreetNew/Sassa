@@ -7,7 +7,7 @@
             Add("ProdOneBrm", config[@"EndPoints:ProdOneBrm"]!);
             Add("ProdTwoBrm", config[@"EndPoints:ProdTwoBrm"]!);
             Add("QaBrm", config[@"EndPoints:QABrm"]!);
-            Add("Reports", config[@"EndPoints:Reports"]!);
+            Add("Brm.Fluent", config[@"EndPoints:Fluent"]!);
             Add("Kofax", config[@"EndPoints:Kofax"]!);
             Add("TheDocumentWarehouse", config[@"EndPoints:TheDocumentWarehouse"]!);
         }

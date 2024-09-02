@@ -5,7 +5,7 @@
 @inject SessionService sessionservice
 @inject BRMDbService db
 
-<BrmPageTitle Title="@(sessionservice.session.IsRmc() ? "Re-Boxing":"Batching")" />
+<BrmPageTitle Title="@(sessionservice.session.IsRmc() ? "Re-Boxing":"Batching")"/>
 
 <FluentTabs @bind-ActiveTabId="@tabId">
     <FluentTab Label="Batching" Id="tab-1">

@@ -9,7 +9,7 @@
 @inject NavigationManager nav
 @inject IJSRuntime js
 
-<BrmPageTitle Title="Capture" />
+<BrmPageTitle Title="Capture" Loading="loading" />
 
 <FluentStack>
     <FluentTextField @bind-Value="@txtSearchId" Placeholder="Enter Id here..." />
@@ -113,6 +113,7 @@
     protected Reboxing rebox = new Reboxing();
 
     PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+    protected bool loading;
 
     protected override async Task OnInitializedAsync()
     {
@@ -139,6 +140,7 @@
             DTBrm.Clear();
             DTBrmParents.Clear();
             DTMerged.Clear();
+            loading = true;
             //Searching on SRD
             if (!string.IsNullOrEmpty(txtSearchSRD))
             {
@@ -174,6 +176,7 @@
                 MergeSocpen();
                 await RefreshDTBrm();
             }
+            loading = false;
         }
         catch (Exception ex)
         {
