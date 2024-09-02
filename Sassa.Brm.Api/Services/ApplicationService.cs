@@ -15,13 +15,13 @@ using System.Diagnostics;
 namespace Sassa.BRM.Api.Services;
 
 
-public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory)
+public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory,StaticService staticService)
 {
-
 
     #region BRM Records
     public async Task<DcFile> ValidateApiAndInsert(Application application, string reason)
     {
+        while (!staticService.IsInitialized) { };
         using (var _context = dbContextFactory.CreateDbContext())
         {
             try
@@ -31,7 +31,8 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 {
                     throw new Exception("Child ID too long.");
                 }
-                var office = _context.DcLocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
+                var office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
+                application.RegionId = office.RegionId;
                 if (office.ManualBatch == "A")
                 {
                     application.BatchNo = 0;
@@ -41,18 +42,12 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                     throw new Exception("Manual batch not set for this office.");
                 }
 
-                if (StaticDataService.LocalOffices != null && StaticDataService.LocalOffices.Any())
+                var result =  await _context.DcFiles.Where(f => f.BrmBarcode == application.Brm_BarCode).ToListAsync();
+                if(result.Any())
                 {
-                    application.RegionId = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).FirstOrDefault()!.RegionId;
+                    throw new Exception("Duplicate Barcode.");
                 }
-                else
-                {
-                    throw new Exception("Office not found");
-                }
-                if ((await _context.DcFiles.Where(f => f.BrmBarcode == application.Brm_BarCode).ToListAsync()).Any())
-                {
-                    throw new Exception("Duplicate BRM");
-                }
+
             }
             catch (Exception ex)
             {

@@ -1,4 +1,4 @@
-﻿@inject Navigation Navigate
+﻿@inject NavigationManager nav
 @inject SessionService sessionservice
 @inject TdwBatchService db
 @inject IToastService toast
@@ -11,318 +11,145 @@
 @using System.Text
 @using System.IO;
 @using Sassa.BRM.Data.ViewModels;
+<BrmPageTitle Title="Tdw Batching" Loading="@loading"/>
+<FluentTabs>
+    <FluentTab Label="Batching" Id="tdwtab-1" Disabled="@(!(sessionservice.session!.Office!.OfficeType != "LO" && sessionservice.session.IsInRole("GRP_BRM_Monitoring")))">
+        <FluentStack Orientation="Orientation.Horizontal">
+            <FluentDatePicker Label="From Date" @bind-Value="@period.FromNullDate" />
+            <FluentDatePicker Label="To Date" @bind-Value="@period.ToNullDate" />
+            <FluentTextField Placeholder="<BoxNo>" @bind-Value="boxSearch" />
+            <FluentButton Appearance="Appearance.Accent" @onclick="btnLoadBoxes_Click">Load</FluentButton>
+            <FluentButton Appearance="Appearance.Accent" @onclick="() => btnPrint_Click()" Disabled="@(!boxfiles.Where(b => b.IsSelected).Any())">Dispatch Selected</FluentButton>
+        </FluentStack>
+        <FluentDataGrid Items="@boxfiles.AsQueryable()" TGridItem="TdwBatchViewModel" Pagination="@boxPagination">
+            <PropertyColumn Property="@(p => p.BoxNo)" Sortable="true" />
+            <TemplateColumn Title="Actions">
+                <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
+                <FluentCheckbox @bind-Value="context.IsSelected"></FluentCheckbox>
+                <FluentButton IconEnd="@(new Icons.Regular.Size12.LockOpen())" OnClick="@(() => btnUnlock_Click(context.BoxNo))" Title="Unlock box" Disabled="@(!(sessionservice.session!.Office!.OfficeType != "LO" && sessionservice.session.IsInRole("GRP_BRM_Monitoring")))"/>
+         </FluentStack>
+            </TemplateColumn>
+           
+            <PropertyColumn Property="@(p => p.MiniBoxes)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Files)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Region)" Sortable="true" />
+        </FluentDataGrid>
+        <FluentPaginator State="@boxPagination" />
+    </FluentTab>
+    <FluentTab Label="Batch History" Id="tdwtab-2" Disabled="@(!(sessionservice.session!.Office!.OfficeType != "LO" && sessionservice.session.IsInRole("GRP_BRM_Monitoring")))">
+        <FluentStack Orientation="Orientation.Horizontal">
+            <FluentDatePicker Label="From Date" @bind-Value="@period.FromNullDate" />
+            <FluentDatePicker Label="To Date" @bind-Value="@period.ToNullDate" />
+            <FluentButton Appearance="Appearance.Accent" @onclick="btnLoadBatches_Click">Load batched files</FluentButton>
+           
+        </FluentStack>
 
+        <FluentDataGrid Items="@batchedfiles.AsQueryable()" TGridItem="TdwBatchViewModel" Pagination="@batchPagination">
+            <PropertyColumn Property="@(p => p.TdwBatchNo)" Sortable="true" />
+            <TemplateColumn Title="Actions">
+                <FluentButton IconEnd="@(new Icons.Regular.Size12.Eye())" @onclick="() => btnPrintBatch_Click(context.TdwBatchNo)"/>
+            </TemplateColumn>
+            <PropertyColumn Property="@(p => p.User)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Boxes)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Files)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Region)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.TdwSendDate)" Sortable="true" />
+        </FluentDataGrid>
+        <FluentPaginator State="@batchPagination" />
+    </FluentTab>
 
-<TabControl>
-    <TabPage Text="Batching" Id="1" Enabled="@(sessionservice.session!.Office!.OfficeType != "LO" && sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">
-            <div class="whiteArea col">
-                <div class="row">
-                    <div class="col">
-                        <div class="row">
-                            <div class="col">
-                                <div class="input-group mb-1">
-                                    <span class="input-group-text">From Date</span>
-                                    <input class="form-control" type="date" @bind="period.FromDate">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-1">
-                                    <span class="input-group-text">To Date</span>
-                                    <input class="form-control" type="date" @bind="period.ToDate">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="input-group mb-1">
-                                    <span class="input-group-text">BoxNo</span>
-                                    <input class="form-control" type="text" @bind="boxSearch">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-2">
-                        <button class="btn btn-primary active float-right" Text="Load" @onclick="btnLoadBoxes_Click">Load </button>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="whiteArea col">
+    <FluentTab Label="Dispatch History" Id="tdwtab-3">
 
-                        if (boxfiles.count == 0)
-                        {
-                            <div class="row">
-                                <div class="col">
-                                    <h5>No Closed Boxes ready for dispatch.</h5>
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="row">
-                                <div>
-                                    <div class="input-group mb-3">
-                                        <button type="button" class="btn btn-warning btn-sm active" style="width: 160px; margin: 5px 0 5px;" @onclick="@(() => btnPrint_Click())" disabled="@(!boxfiles.result.Where(b => b.IsSelected).Any())">Dispatch</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="whiteArea col">
-                                    <div class="alert alert-danger" role="alert">
-                                        Dispatching boxes to TDW will permanently lock the selected boxes!
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <table class="table table-sm" style="font-size:small;">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Select</th>
-                                            <th scope="col">Box No</th>
-                                            <th scope="col">MiniBoxes</th>
-                                            <th scope="col">LC Files</th>
-                                            <th scope="col">Region</th>
-                                            <th scope="col">Unlock</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach (TdwBatchViewModel p in boxfiles.result)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-                                                        <input type="checkbox" @bind="@p.IsSelected" />
-                                                    </div>
-                                                </td>
-                                                <td>@p.BoxNo</td>
-                                                <td>@p.MiniBoxes</td>
-                                                <td>@p.Files</td>
-                                                <td>@p.Region</td>
-                                                <td>
-                                                    <div class="input-group mb-3">
-                                                        @if(p.IsLocked || p.TdwBatchNo != 0 || p.TdwSendDate != null)
-                                                        {
-                                                            <button type="button" class="btn btn-primary btn-sm" style="width: 160px; margin: 5px 0 5px;" @onclick="@(() => btnUnlock_Click(@p.BoxNo))">Unlock box </button>
-                                                        }
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                                <Pager Paged="OnPaged" TotalSize="@boxfiles.count" PageSize="20"></Pager>
-                            </div>
-                        }
-                </div>
-            </div>
-
-    </TabPage>
-    <TabPage Text="Batch History" Id="2" Enabled="@(sessionservice.session.Office.OfficeType != "LO" && sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">
-
-                 <div class="whiteArea col">
-                    <div class="row">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="input-group mb-1">
-                                        <span class="input-group-text">From Date</span>
-                                        <input class="form-control" type="date" @bind="period.FromDate">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="input-group mb-1">
-                                        <span class="input-group-text">To Date</span>
-                                        <input class="form-control" type="date" @bind="period.ToDate">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <button class="btn btn-primary active float-right" Text="Load" @onclick="btnLoadBatches_Click">Load </button>
-                        </div>
-                    </div>
-                 </div> 
-
-            @if (batchedfiles.count > 0)
-            {
-                <div class="row">
-
-                    <table class="table table-sm" style="font-size:small;">
-                        <thead>
-                            <tr>
-                                <th scope="col">Batch No</th>
-                                <th scope="col">User</th>
-                                <th scope="col">Boxes</th>
-                                <th scope="col">LC Files</th>
-                                <th scope="col">Region</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (TdwBatchViewModel p in batchedfiles.result)
-                            {
-                                <tr>
-                                    <td>@p.TdwBatchNo</td>
-                                    <td>@p.User</td>
-                                    <td>@p.Boxes</td>
-                                    <td>@p.Files</td>
-                                    <td>@p.Region</td>
-                                    <td>@p.TdwSendDate</td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary btn-sm" style="width: 160px; margin: 0px 0 5px;" @onclick="@(() => btnPrint_Click(@p.TdwBatchNo))">Reprint Cover</button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <Pager Paged="OnHistoryPaged" TotalSize="@batchedfiles.count" PageSize="20"></Pager>
-                 </div>
-               
-            }
-            else
-            {
-                <p> No Dispatched Files history</p>
-            }
-    </TabPage>
-    <TabPage Text="Dispatch History" Id="3" Enabled = "true">
-        @if (files.count >0)
-        {
-            <div class="whiteArea col">
-                <div class="row">
-
-                    <table class="table table-sm" style="font-size:small;">
-                        <thead>
-                            <tr>
-                                <th scope="col">ReportName</th>
-                                <th scope="col">User</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Region</th>
-                                <th scope="col">Date</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (CsvListItem p in files.result)
-                            {
-                                <tr>
-                                    <td>@p.ReportName</td>
-                                    <td>@p.UserName</td>
-                                    <td>@p.FileName</td>
-                                    <td>@p.RegionCode</td>
-                                    <td>@p.ReportDate</td>
-                                    <td>
-                                        <div class="input-group mb-3">
-                                            <button type="button" class="btn btn-primary btn-sm" style="width: 160px; margin: 5px 0 5px;" @onclick="@(() => btnResend_Click(@p.FileName))">Resend batch</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    <Pager Paged="OnDispatchHistoryPaged" TotalSize="@files.count" PageSize="20"></Pager>
-                </div>
-            </div>
-        }
-    </TabPage>
-</TabControl>
+        <FluentDataGrid Items="@files.AsQueryable()" TGridItem="CsvListItem" Pagination="@filePagination">
+            <TemplateColumn Title="Actions">
+                <FluentButton IconEnd="@(new Icons.Regular.Size12.Mail())" OnClick="@(() => btnResend_Click(context.FileName))" Title="Resend batch" />
+            </TemplateColumn>
+            <PropertyColumn Property="@(p => p.ReportName)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.UserName)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.FileName)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.RegionCode)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.ReportDate)" Sortable="true" />
+        </FluentDataGrid>
+        <FluentPaginator State="@filePagination" />
+    </FluentTab>
+</FluentTabs>
 
 
 @code {
     protected string boxSearch = "";
 
-    PagedResult<TdwBatchViewModel> batchedfiles = new();
-    PagedResult<TdwBatchViewModel> boxfiles = new();
-    PagedResult<CsvListItem> files = new();
+    List<TdwBatchViewModel> batchedfiles = new();
+    List<TdwBatchViewModel> boxfiles = new();
+    List<CsvListItem> files = new();
+
+    PaginationState boxPagination = new PaginationState() { ItemsPerPage = 10 };
+    PaginationState batchPagination = new PaginationState() { ItemsPerPage = 10 };
+    PaginationState filePagination = new PaginationState() { ItemsPerPage = 10 };
 
     ReportPeriod period = new ReportPeriod() { FromDate = DateTime.Now.AddDays(-180), ToDate = DateTime.Now };
 
-    int page = 1;
-    int historypage = 1;
-    int sendpage = 1;
-
+    bool loading;
 
     protected override async Task OnInitializedAsync()
     {
-        sessionservice.session.BookMark.BoxingTab = 4;
+        files = rs.GetTdwFileList(sessionservice.session.Office.RegionCode, sessionservice.session.SamName);
         await Task.CompletedTask;
     }
     //Loader boxes for batching tab
     protected async Task btnLoadBoxes_Click()
     {
-        if(!string.IsNullOrEmpty(boxSearch))
+        loading = true;
+        if (!string.IsNullOrEmpty(boxSearch))
         {
             boxfiles = await db.GetBox(boxSearch);
         }
         else
         {
-            await OnPaged(page);
+            boxfiles = await db.GetAllBoxes(period);
         }
-
+        loading = false;
     }
 
     protected async Task btnLoadBatches_Click()
     {
-        await OnHistoryPaged(historypage);
-
-    }
-
-    protected async Task btnPrint_Click()
-    {
-        int tdwBatch = await db.CreateTdwBatch(boxfiles.result.Where(b => b.IsSelected).ToList());
-        //Todo: send tdwBatch data to TDW
-        btnPrint_Click(tdwBatch);
-        boxfiles = await db.GetAllBoxes(page, period);
-    }
-
-    protected void btnPrint_Click(int tdwBatch)
-    {
-        //Display and print the cover
-        Navigate.NavigateTo($"tdwbatchcover/{tdwBatch}");
-    }
-    protected async Task btnUnlock_Click(string boxNo)
-    {
-        await db.UnlockBox(boxNo);
-        boxSearch = "";
-        boxfiles = new();
-        await OnPaged(page);
-    }
-
-
-    protected async Task OnHistoryPaged(int _page)
-    {
         try
         {
-            historypage = _page;
-            //todo:fix
-            batchedfiles = await db.GetTdwBatches(historypage,period);
+            loading = true;
+            batchedfiles = await db.GetTdwBatches(period);
         }
         catch
         {
             toast.ShowError("Error loading Batch History");
         }
-
+        finally
+        {
+            loading = false;
+        }
     }
 
-    /// <summary>
-    /// Get all the boxes to be BATCHED
-    ///  </summary>
-    /// <param name="_page"></param>
-    /// <returns></returns>
-    protected async Task OnPaged(int _page)
+    protected async Task btnPrint_Click()
     {
-        page = _page;
-        //todo:fix
-        boxfiles = await db.GetAllBoxes(page,period);
+        toast.ShowWarning("Dispatching boxes to TDW will permanently lock the selected box!");
+        loading = true;
+        int tdwBatch = await db.CreateTdwBatch(boxfiles.Where(b => b.IsSelected).ToList());
+        loading = false;
+        _ = btnPrintBatch_Click(tdwBatch);
+        await btnLoadBoxes_Click();
+    }
+    protected async Task btnPrintBatch_Click(int tdwBatch)
+    {
+        _ = Js.InvokeVoidAsync("open", $"{nav.BaseUri}tdwbatchcover/{tdwBatch}", "_blank");
+    }
+    protected async Task btnUnlock_Click(string boxNo)
+    {
+
+        await db.UnlockBox(boxNo);
+        boxSearch = "";
+        await btnLoadBoxes_Click();
     }
 
-    protected async Task OnDispatchHistoryPaged(int _page)
-    {
-            sendpage = _page;
-            files = rs.GetTdwFiles(sessionservice.session.Office.RegionCode, sessionservice.session.SamName, sendpage);
-            await Task.CompletedTask;
-    }
     protected void btnResend_Click(string fileName)
     {
-        db.ResendFile(fileName);
+        db.SendFile(fileName);
     }
 }

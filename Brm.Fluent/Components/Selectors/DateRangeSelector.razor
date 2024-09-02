@@ -1,0 +1,27 @@
+﻿<FluentStack Orientation="Orientation.Horizontal">
+    <FluentDatePicker Label="From Date" Value="@FromDate"
+                      ValueChanged="SetBackingProperty"  />
+    <FluentDatePicker Label="To Date" Value="ToDate"
+                      ValueChanged="SetBackingProperty" />
+</FluentStack>
+
+@code {
+    public DateTime? FromDate = DateTime.Today.AddDays(-180);
+    public DateTime? ToDate = DateTime.Today;
+    protected DateTime fromDate;
+    protected DateTime toDate;
+
+    public ReportPeriod Period
+    {
+        get
+        {
+            return new ReportPeriod() { FromDate = fromDate , ToDate = toDate };
+        }
+    }
+
+    private void SetBackingProperty()
+    {
+        fromDate = FromDate.ToDateTime();
+        toDate = ToDate.ToDateTime();
+    }
+}

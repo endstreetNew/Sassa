@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using Microsoft.EntityFrameworkCore;
 using razor.Components.Models;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
@@ -14,23 +15,20 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
 
     UserSession _session = session.session!;//SessionService must be loaded before this service
 
-    public async Task<PagedResult<TdwBatchViewModel>> GetBox(string boxNo)
+    public async Task<List<TdwBatchViewModel>> GetBox(string boxNo)
     {
-
-
         try
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
 
                 List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo.ToString()).ToListAsync();
-                PagedResult<TdwBatchViewModel> result = new PagedResult<TdwBatchViewModel>();
-
+                List<TdwBatchViewModel> result = new();
                 if (!allFiles.Any()) return result;
                 foreach (var box in allFiles.Select(f => f.TdwBoxno).Distinct().ToList())
                 {
                     var dcFiles = allFiles.Where(f => f.TdwBoxno == box).ToList();
-                    result.result.Add(
+                    result.Add(
                    new TdwBatchViewModel
                    {
                        BoxNo = box,
@@ -42,8 +40,6 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
                        IsLocked = dcFiles.First().BoxLocked == 1 ? true : false
                    });
                 }
-
-                result.count = allFiles.Select(f => f.TdwBoxno).Distinct().Count();
                 return result;
             }
         }
@@ -54,7 +50,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
 
     }
 
-    public async Task<PagedResult<TdwBatchViewModel>> GetAllBoxes(int page, ReportPeriod period)
+    public async Task<List<TdwBatchViewModel>> GetAllBoxes(ReportPeriod period)
     {
 
 
@@ -62,16 +58,16 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.TdwBatch == 0 && bn.RegionId == _session.Office.RegionId && bn.ApplicationStatus.Contains("LC") && !string.IsNullOrEmpty(bn.TdwBoxno) && (bn.UpdatedDate < period.ToDate && bn.UpdatedDate > period.FromDate)).ToListAsync();
-                PagedResult<TdwBatchViewModel> result = new PagedResult<TdwBatchViewModel>();
+                List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.TdwBatch == 0 && bn.RegionId == _session.Office.RegionId && bn.ApplicationStatus.Contains("LC") && !string.IsNullOrEmpty(bn.TdwBoxno) && (bn.UpdatedDate <= period.ToDate && bn.UpdatedDate >= period.FromDate)).ToListAsync();
+                List<TdwBatchViewModel> result = new();
 
                 if (!allFiles.Any()) return result;
 
 
-                foreach (var box in allFiles.Select(f => f.TdwBoxno).Distinct().Skip((page - 1) * 20).Take(20).ToList())
+                foreach (var box in allFiles.Select(f => f.TdwBoxno).Distinct().ToList())
                 {
                     var dcFiles = allFiles.Where(f => f.TdwBoxno == box).ToList();
-                    result.result.Add(
+                    result.Add(
                    new TdwBatchViewModel
                    {
                        BoxNo = box,
@@ -83,8 +79,6 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
                        IsLocked = dcFiles.First().BoxLocked == 1 ? true : false
                    });
                 }
-
-                result.count = allFiles.Select(f => f.TdwBoxno).Distinct().Count();
                 return result;
             }
         }
@@ -95,56 +89,19 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
 
     }
 
-    //    public async Task<PagedResult<TdwBatchViewModel>> GetTdwBatches(int page)
-    //{
-    //    try
-    //    {
-    //            //List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.RegionId == _session.Office.RegionId && bn.TdwBoxno != null ).AsNoTracking().ToListAsync();
-    //            //List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.RegionId == _session.Office.RegionId && !string.IsNullOrEmpty(bn.TdwBoxno)).AsNoTracking().ToListAsync();
-    //            //List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.RegionId == _session.Office.RegionId && !string.IsNullOrEmpty(bn.TdwBoxno)).AsNoTracking().ToListAsync();
-
-    //            List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.RegionId == _session.Office.RegionId && !string.IsNullOrEmpty(bn.TdwBoxno)).AsNoTracking().ToListAsync();
-    //            PagedResult<TdwBatchViewModel> result = new PagedResult<TdwBatchViewModel>();
-    //            List<DcFile> batchFiles = new List<DcFile>();
-    //        foreach (var batch in allFiles.Select(f => f.TdwBatch).Distinct().Skip((page - 1) * 20).Take(20).ToList())
-    //        {
-    //            var dcFiles = allFiles.Where(f => f.TdwBatch == batch).ToList();
-    //            result.result.Add(
-    //           new TdwBatchViewModel
-    //           {
-    //               TdwBatchNo = (int)batch,
-    //               Region = sservice.GetRegion(_session.Office.RegionId),
-    //               Boxes = dcFiles.Select(a => a.TdwBoxno).Distinct().Count(),
-    //               Files = dcFiles.Count(),
-    //               User = dcFiles.First().UpdatedByAd,
-    //               TdwSendDate = dcFiles.First().TdwBatchDate,
-    //           });
-    //        }
-
-    //        result.count = allFiles.Select(f => f.TdwBatch).Distinct().Count();
-    //            return result;
-    //        }
-    //    catch (Exception ex)
-    //    {
-    //        throw new Exception(ex.Message);
-    //    }
-
-
-    //}
-
-    public async Task<PagedResult<TdwBatchViewModel>> GetTdwBatches(int page, ReportPeriod period)
+    public async Task<List<TdwBatchViewModel>> GetTdwBatches(ReportPeriod period)
     {
         try
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
                 List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.RegionId == _session.Office.RegionId && !string.IsNullOrEmpty(bn.TdwBoxno) && bn.TdwBatch != 0 && (bn.UpdatedDate < period.ToDate && bn.UpdatedDate > period.FromDate)).AsNoTracking().ToListAsync();
-                PagedResult<TdwBatchViewModel> result = new PagedResult<TdwBatchViewModel>();
+                List<TdwBatchViewModel> result = new();
                 List<DcFile> batchFiles = new List<DcFile>();
-                foreach (var batch in allFiles.Select(f => f.TdwBatch).Distinct().Skip((page - 1) * 20).Take(20).ToList())
+                foreach (var batch in allFiles.Select(f => f.TdwBatch).Distinct().ToList())
                 {
                     var dcFiles = allFiles.Where(f => f.TdwBatch == batch).ToList();
-                    result.result.Add(
+                    result.Add(
                    new TdwBatchViewModel
                    {
                        TdwBatchNo = (int)batch,
@@ -155,8 +112,6 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
                        TdwSendDate = dcFiles.First().TdwBatchDate
                    });
                 }
-
-                result.count = allFiles.Select(f => f.TdwBatch).Distinct().Count();
                 return result;
             }
         }
@@ -168,7 +123,123 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
 
     }
 
-    /// <summary>
+    //public async Task<PagedResult<TdwBatchViewModel>> GetBox(string boxNo)
+    //{
+
+
+    //    try
+    //    {
+    //        using (var _context = _contextFactory.CreateDbContext())
+    //        {
+
+    //            List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo.ToString()).ToListAsync();
+    //            PagedResult<TdwBatchViewModel> result = new PagedResult<TdwBatchViewModel>();
+
+    //            if (!allFiles.Any()) return result;
+    //            foreach (var box in allFiles.Select(f => f.TdwBoxno).Distinct().ToList())
+    //            {
+    //                var dcFiles = allFiles.Where(f => f.TdwBoxno == box).ToList();
+    //                result.result.Add(
+    //               new TdwBatchViewModel
+    //               {
+    //                   BoxNo = box,
+    //                   Region = _staticService.GetRegion(_session.Office.RegionId!),
+    //                   MiniBoxes = (int)dcFiles.Sum(f => f.MiniBoxno ?? 1),
+    //                   Files = dcFiles.Count(),
+    //                   User = _session.SamName,
+    //                   TdwSendDate = dcFiles.First().TdwBatchDate,
+    //                   IsLocked = dcFiles.First().BoxLocked == 1 ? true : false
+    //               });
+    //            }
+
+    //            result.count = allFiles.Select(f => f.TdwBoxno).Distinct().Count();
+    //            return result;
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw new Exception(ex.Message);
+    //    }
+
+    //}
+
+    //public async Task<PagedResult<TdwBatchViewModel>> GetAllBoxes(int page, ReportPeriod period)
+    //{
+
+
+    //    try
+    //    {
+    //        using (var _context = _contextFactory.CreateDbContext())
+    //        {
+    //            List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.TdwBatch == 0 && bn.RegionId == _session.Office.RegionId && bn.ApplicationStatus.Contains("LC") && !string.IsNullOrEmpty(bn.TdwBoxno) && (bn.UpdatedDate < period.ToDate && bn.UpdatedDate > period.FromDate)).ToListAsync();
+    //            PagedResult<TdwBatchViewModel> result = new PagedResult<TdwBatchViewModel>();
+
+    //            if (!allFiles.Any()) return result;
+
+
+    //            foreach (var box in allFiles.Select(f => f.TdwBoxno).Distinct().Skip((page - 1) * 20).Take(20).ToList())
+    //            {
+    //                var dcFiles = allFiles.Where(f => f.TdwBoxno == box).ToList();
+    //                result.result.Add(
+    //               new TdwBatchViewModel
+    //               {
+    //                   BoxNo = box,
+    //                   Region = _staticService.GetRegion(_session.Office.RegionId!),
+    //                   MiniBoxes = (int)dcFiles.Sum(f => f.MiniBoxno ?? 0),
+    //                   Files = dcFiles.Count(),
+    //                   User = _session.SamName,
+    //                   TdwSendDate = dcFiles.First().TdwBatchDate,
+    //                   IsLocked = dcFiles.First().BoxLocked == 1 ? true : false
+    //               });
+    //            }
+
+    //            result.count = allFiles.Select(f => f.TdwBoxno).Distinct().Count();
+    //            return result;
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw new Exception(ex.Message);
+    //    }
+
+    //}
+
+    //public async Task<PagedResult<TdwBatchViewModel>> GetTdwBatches(int page, ReportPeriod period)
+    //{
+    //    try
+    //    {
+    //        using (var _context = _contextFactory.CreateDbContext())
+    //        {
+    //            List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.RegionId == _session.Office.RegionId && !string.IsNullOrEmpty(bn.TdwBoxno) && bn.TdwBatch != 0 && (bn.UpdatedDate < period.ToDate && bn.UpdatedDate > period.FromDate)).AsNoTracking().ToListAsync();
+    //            PagedResult<TdwBatchViewModel> result = new PagedResult<TdwBatchViewModel>();
+    //            List<DcFile> batchFiles = new List<DcFile>();
+    //            foreach (var batch in allFiles.Select(f => f.TdwBatch).Distinct().Skip((page - 1) * 20).Take(20).ToList())
+    //            {
+    //                var dcFiles = allFiles.Where(f => f.TdwBatch == batch).ToList();
+    //                result.result.Add(
+    //               new TdwBatchViewModel
+    //               {
+    //                   TdwBatchNo = (int)batch,
+    //                   Region = _staticService.GetRegion(_session.Office!.RegionId!),
+    //                   Boxes = dcFiles.Select(a => a.TdwBoxno).Distinct().Count(),
+    //                   Files = dcFiles.Count(),
+    //                   User = dcFiles.First().UpdatedByAd,
+    //                   TdwSendDate = dcFiles.First().TdwBatchDate
+    //               });
+    //            }
+
+    //            result.count = allFiles.Select(f => f.TdwBatch).Distinct().Count();
+    //            return result;
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw new Exception(ex.Message);
+    //    }
+
+
+    //}
+    ///// <summary>
     /// Get TDW batch and send mail
     /// </summary>
     /// <param name="boxes"></param>
@@ -207,9 +278,6 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         }
         return boxes;
     }
-
-
-
     /// <summary>
     /// Create TDW batch and send mail
     /// </summary>
@@ -232,7 +300,6 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         }
         return tdwBatch;
     }
-
     /// <summary>
     /// New TDW Batch feature
     /// </summary>
@@ -262,7 +329,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
                         Firstname = parent.UserFirstname,
                         Surname = parent.UserLastname,
                         ID_Number = parent.ApplicantNo,
-                        Year = (parent.UpdatedDate ?? DateTime.Now).ToString("YYYY"),
+                        Year = ((DateTime)(parent.UpdatedDate ?? DateTime.Now)).ToString("yyyy"),
                         Location = parent.TdwBoxno,
                         Reg = parent.RegType,
                         //Bin  = parent. ,
@@ -302,7 +369,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         }
     }
 
-    public void ResendFile(string fileName)
+    public void SendFile(string fileName)
     {
 
         string batchPart = fileName.Split('-')[2];

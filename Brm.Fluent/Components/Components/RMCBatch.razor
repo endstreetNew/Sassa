@@ -162,7 +162,25 @@ else
     {
         try
         {
+
             if (batch.MiniBox < 1 || string.IsNullOrEmpty(batch.BoxNo)) throw new Exception($"Invalid Box or MiniBox.");
+            var OfficeConfirmationMessage = $"This function will move files to a new box even if the file is currently boxed.{Environment.NewLine}Are you sure you want to continue ?";
+            DialogParameters parameters = new()
+                {
+                    PrimaryAction = "Ok",
+                    Height = "230px",
+                    Width = "450px",
+                    Title = $"Rebox boxed files.",
+                    PreventDismissOnOverlayClick = true,
+                    PreventScroll = true,
+                };
+            IDialogReference dialog = await dialogService.ShowDialogAsync<ConfirmContent>(OfficeConfirmationMessage, parameters);
+            var result = await dialog.Result;
+            if (result.Cancelled)
+            {
+                toast.ShowInfo("Operation cancelled by user.");
+                return;
+            }
             switch (batch.RegType)
             {
                 case ("LC-MAIN"):
@@ -197,9 +215,10 @@ else
             foreach (string brmBarCode in barcodes)
             {
                 rebox.BrmBarcode = brmBarCode;
-                await Rebox(rebox);
+                await Rebox(rebox,true);
             }
             await db.SetBatchStatus(rebox.BatchNo, "Closed");
+            filterStatus = "";
             DTBatch = await qdb.GetBatches(filterStatus);
             toast.ShowSuccess("Batch No " + rebox.BatchNo + " added to TDW box " + rebox.BoxNo + ".");
         }
@@ -209,21 +228,19 @@ else
         }
     }
 
-    protected async Task Rebox(Reboxing rebox)
+    protected async Task Rebox(Reboxing rebox,bool force = false)
     {
         try
         {
             DcFile file = await db.GetReboxCandidate(rebox);
-            if (string.IsNullOrEmpty(file.TdwBoxno))
+            if (string.IsNullOrEmpty(file.TdwBoxno) || force)
             {
-                //DTBatch = await qdb.GetBatches(filterStatus); huh?
+
                 await db.Rebox(rebox, file);
             }
             rebox.BrmBarcode = string.Empty;
             rebox.MisFileNo = string.Empty;
             rebox.NewBarcode = string.Empty;
-            DTBatch = await qdb.GetBatches(filterStatus);
-
         }
         catch (Exception ex)
         {

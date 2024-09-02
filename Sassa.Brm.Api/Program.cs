@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Sassa.BRM.Models;
 using Sassa.BRM.Api.Services;
+using Sassa.Brm.Common.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddDbContextFactory<ModelContext>(options =>
 options.UseOracle(BrmConnectionString));
 builder.Services.AddScoped<ApplicationService>();
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<StaticService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

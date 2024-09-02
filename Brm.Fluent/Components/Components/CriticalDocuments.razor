@@ -1,5 +1,5 @@
 ﻿@inject BRMDbService db
-@inject StaticService sservice
+@inject StaticService staticservice
 
 
 @foreach (var section in "General Particulars|Particulars of Income|Particulars of Assets".Split('|'))
@@ -8,7 +8,7 @@
     OddCol = 0;
     EvenCol = 0;
     <FluentStack Orientation="Orientation.Horizontal">
-        <div class="col">
+        <FluentStack Orientation="Orientation.Vertical">
             @foreach (var doc in docs.Where(d => d.DOC_SECTION == section))
             {
                 if (OddCol % 2 == 0)
@@ -17,8 +17,8 @@
                 }
                 OddCol = OddCol + 1;
             }
-        </div>
-        <div class="col">
+        </FluentStack>
+       <FluentStack Orientation="Orientation.Vertical">
             @foreach (var doc in docs.Where(d => d.DOC_SECTION == section))
             {
                 if (EvenCol % 2 != 0)
@@ -27,7 +27,7 @@
                 }
                 EvenCol = EvenCol + 1;
             }
-        </div>
+        </FluentStack>
     </FluentStack>
     <br />
 }
@@ -50,7 +50,7 @@
     {
         _docspresent = DocsPresent.Split(';').ToList();
         _docspresent = _docspresent.Distinct().Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
-        docs = sservice.GetGrantDocuments(GrantType);
+        docs = staticservice.GetGrantDocuments(GrantType);
     }
 
     protected override void OnParametersSet()

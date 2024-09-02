@@ -96,9 +96,9 @@
     }
 
 
-    private void btnCancel_Click()
+    private async Task btnCancel_Click()
     {
-        Navigation.NavigateTo($"boxing/4");
+        await Js.InvokeVoidAsync("window.close");
     }
 
     private async Task btnPrintReceipt_Click()

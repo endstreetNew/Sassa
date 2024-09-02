@@ -359,7 +359,29 @@ using System.Data;
             return result;
         }
 
-        public PagedResult<CsvListItem> GetBoxHisTory(string regionCode, string username, int page)
+    public List<CsvListItem> GetTdwFileList(string regionCode, string username)
+    {
+        List<CsvListItem> result = new ();
+        string[] files = new string[0];
+        try
+        {
+            files = Directory.GetFiles(StaticDataService.ReportFolder, $"{regionCode}-{username.ToUpper()}-TDW*");
+        }
+        catch //(Exception ex)
+        {
+
+        }
+
+
+        foreach (string filePath in files)
+        {
+            result.Add(new CsvListItem(Path.GetFileName(filePath)));
+        }
+        //Page the result..
+        return result = result.OrderByDescending(r => r.ReportDate).ToList();
+    }
+
+    public PagedResult<CsvListItem> GetBoxHisTory(string regionCode, string username, int page)
         {
             PagedResult<CsvListItem> result = new PagedResult<CsvListItem>();
             string[] files = new string[0];
