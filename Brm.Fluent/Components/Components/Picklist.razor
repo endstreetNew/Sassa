@@ -1,5 +1,6 @@
 ﻿
 @inject BRMDbService db
+@inject QueryableDataService qdb
 @inject IToastService toast
 
 <br />
@@ -34,7 +35,7 @@
     <div class="row justify-content-start">
         <div class="col-sm-5">
             <div style="max-width:600px">
-            @if (pickLists.count >0)
+            @if (pickLists.Any())
             {
                 <table class="table table-sm" style="font-size:small;">
                     <thead>
@@ -49,7 +50,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (DcPicklist p in pickLists.result)
+                        @foreach (DcPicklist p in pickLists)
                         {
                         <tr>
                             <td>@p.UnqPicklist</td>
@@ -63,13 +64,12 @@
                         }
                     </tbody>
                 </table>
-                <Pager Paged="OnPaged" TotalSize="@pickLists.count"></Pager>
             }
             </div>
         </div>
         <div class="col">
             <h5>Picklist items</h5>
-            @if (items.count > 0)
+            @if (items.Any())
             {
                 <div class="input-group mb-3">
                     <div class="input-group-text">
@@ -90,7 +90,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (DcPicklistItem p in items.result)
+                        @foreach (DcPicklistItem p in items)
                         {
                         <tr>
                             <td>@p.UnqPicklist</td>
@@ -107,15 +107,14 @@
                         }
                     </tbody>
                 </table>
-                <Pager Paged="OnItemsPaged" TotalSize="@items.count"></Pager>
 
             }
         </div>
     </div>
 
     @code{
-        PagedResult<DcPicklist> pickLists= new();
-        private PagedResult<DcPicklistItem> items = new();
+        List<DcPicklist> pickLists= new();
+        private List<DcPicklistItem> items = new();
 
         protected string SearchTxt = "";
 
@@ -178,7 +177,7 @@
                 {
                     throw new Exception("Invalid search text.");
                 }
-                pickLists = await db.SearchPickLists(SearchTxt, page);
+                pickLists = await qdb.SearchPickLists(SearchTxt);
 
             }
             catch(Exception ex)
@@ -188,7 +187,7 @@
         }
         protected async Task LoadPickList()
         {
-            pickLists = await db.GetPickLists(filterRequestUser, filterInProgress, page);
+            pickLists = await qdb.GetPickLists(filterRequestUser, filterInProgress);
 
         }
         protected async Task OnPaged(int _page)
@@ -202,7 +201,7 @@
         {
             UnqPickList = item.UnqPicklist;
             if (string.IsNullOrEmpty(UnqPickList)) return;
-            items = await db.GetPicklistItems(UnqPickList, itempage);
+            items = await qdb.GetPicklistItems(UnqPickList);
         }
 
         //protected override async Task OnParametersSetAsync()
@@ -213,13 +212,13 @@
         protected async Task OnItemsPaged(int _page)
         {
             itempage = _page;
-            items = await db.GetPicklistItems(UnqPickList, itempage);
+            items = await qdb.GetPicklistItems(UnqPickList);
 
         }
         protected async Task btnItemStatus_Click(decimal itemId)
         {
             await db.SetStatusPickListItem(itemId);
-            items = await db.GetPicklistItems(UnqPickList, itempage);
+            items = await qdb.GetPicklistItems(UnqPickList);
             await LoadPickList();
             toast.ShowInfo("Item status changed.");
             ////if (db.IsAllItemsStatus(UnqPickList,"Received"))
@@ -241,16 +240,9 @@
                 toast.ShowInfo("Item not found.");
                 return;
             }
-            items = await db.GetPicklistItems(UnqPickList, itempage);
+            items = await qdb.GetPicklistItems(UnqPickList);
             await LoadPickList();
             toast.ShowInfo("Item status changed.");
-            //if (db.IsAllItemsStatus(UnqPickList,"Received"))
-            //{
-            //    toast.ShowInfo("All Items received for this Picklist!");
-            //}
-            //else
-            //{
 
-            //}
         }
     }

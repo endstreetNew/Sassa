@@ -1,44 +1,15 @@
 ﻿@page "/destruction"
-@inject SessionService sessionservice
-@inject BRMDbService db
-<div class="pageTitle">
-<h3>File Destruction</h3>
-</div>
 
-@if (sessionservice.session != null)
-{
-    <TabControl PageActivate="@OnPageActivate" ActivePageId="@ActivePage">
-        <TabPage Text="Exclusions" Id="1" Enabled="true">
-            <DestExclusions></DestExclusions>
-        </TabPage>
-        <TabPage Text="Approval" Id="2" Enabled="true">
-            <DestApproval></DestApproval>
-        </TabPage>
-        <TabPage Text="List Export" Id="3" Enabled="true">
-            <DestTdwExport></DestTdwExport>
-        </TabPage>
-    </TabControl>
-}
+<BrmPageTitle Title="Destruction" />
+<FluentTabs>
+    <FluentTab Label="Exclusions" Id="destructionTab-1">
+        <DestExclusions></DestExclusions>
+    </FluentTab>
+    <FluentTab Label="Approval" Id="destructionTab-2">
+        <DestApproval></DestApproval>
+    </FluentTab>
+    <FluentTab Label="List Export" Id="destructionTab-3">
+        <DestTdwExport></DestTdwExport>
+    </FluentTab>
+</FluentTabs>
 
-@code {
-    int ActivePage = 1;
-    //protected override async Task OnInitializedAsync()
-    //{
-
-
-    //}
-    private void OnPageActivate(int e)
-    {
-        switch (e)
-        {
-            case 1://Search
-                break;
-            case 2://Requests
-                break;
-            case 3://PickLists
-                break;
-            default:
-                break;
-        }
-    }
-}

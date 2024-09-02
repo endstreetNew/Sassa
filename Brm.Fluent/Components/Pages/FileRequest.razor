@@ -1,49 +1,17 @@
 ﻿@page "/filerequest"
 @inject SessionService sessionservice
-@inject BRMDbService db
-@inject CSService cs
-@inject IToastService toast
-@inject IWebHostEnvironment _env
+<BrmPageTitle Title="File requests" />
 
-<div class="pageTitle">
-<h3>File Requests</h3>
-</div>
-@if (sessionservice.session != null)
-{
-<TabControl PageActivate="@OnPageActivate" ActivePageId="1">
-    <TabPage Text="Request Files" Id="1" Enabled="true">
+<FluentTabs>
+    <FluentTab Label="Request Files" Id="frTab-1">
         <SearchFiles></SearchFiles>
-    </TabPage>
-    <TabPage Text="View Requests" Id="2" Enabled="true">
+    </FluentTab>
+    <FluentTab Label="View Requests" Id="frTab-2">
         <ViewRequests></ViewRequests>
-    </TabPage>
-        <TabPage Text="Picklist Progress" Id="3" Enabled="@(sessionservice.session.Office.OfficeType != "LO")">
+    </FluentTab>
+    <FluentTab Label="Picklist Progress" Id="frTab-3" Disabled="@(!sessionservice.session.IsRmc())">
         <Picklist></Picklist>
-    </TabPage>
-</TabControl>
-}
+    </FluentTab>
+</FluentTabs>
 
 
-@code {
-
-    
-    //protected override async Task OnInitializedAsync()
-    //{
-
-
-    //}
-    private void OnPageActivate(int e)
-    {
-        switch (e)
-        {
-            case 1://Search
-                break;
-            case 2://Requests
-                break;
-            case 3://PickLists
-                break;
-            default:
-                break;
-        }
-    }
-}

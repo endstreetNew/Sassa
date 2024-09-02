@@ -12,7 +12,6 @@ using Sassa.BRM.ViewModels;
 public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, SessionService _sessionService, BRMDbService _dbService, MailMessages _mail, RawSqlService _raw)
 {
 
-
     #region Batching
     public async Task<List<DcBatch>> GetBatches(string status)
     {
@@ -147,7 +146,6 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
         }
     }
     #endregion
-
     #region TdwBatching
     public async Task<List<TdwBatchViewModel>> GetBox(string boxNo)
     {
@@ -374,6 +372,133 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
         catch
         {
             //ignore confirmation errors
+        }
+    }
+    #endregion
+    #region FileRequests
+    public async Task<List<DcFileRequest>> GetFileRequests(bool filterUser, bool filterOffice, string statusFilter = "", string reasonFilter = "")
+    {
+        List<DcFileRequest> result = new List<DcFileRequest>();
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+            var query = _context.DcFileRequests.AsQueryable();
+
+            if (filterUser)
+            {
+                query = query.Where(r => r.RequestedByAd == _sessionService.session.SamName);
+            }
+            if (filterOffice)
+            {
+                if (_sessionService.session.IsRmc())
+                {
+                    query = query.Where(r => r.RegionId == _sessionService.session.Office.RegionId);
+                }
+                else
+                {
+                    query = query.Where(r => r.RequestedOfficeId == _sessionService.session.Office.OfficeId);
+                }
+            }
+            if (!string.IsNullOrEmpty(reasonFilter))
+            {
+                query = query.Where(r => r.ReqCategoryType.ToString() == reasonFilter);
+            }
+            if (!string.IsNullOrEmpty(statusFilter))
+            {
+                query = query.Where(r => r.Status == statusFilter);
+            }
+
+            //var reversed = query.AsEnumerable().Reverse();
+            result = await query.OrderByDescending(d => d.RequestedDate).ToListAsync();
+            foreach (var req in result)
+            {
+                try
+                {
+                    req.Reason = StaticDataService.RequestCategoryTypes.Where(r => r.TypeId == req.ReqCategoryType).First().TypeDescr;
+                }
+                catch (Exception ex)
+                {
+                    var ss = ex.Message;
+                }
+            }
+            return result;
+        }
+    }
+
+    public async Task<List<DcPicklist>> SearchPickLists(string searchTxt)
+    {
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+            var query = _context.DcPicklists.OrderByDescending(o => o.PicklistDate).AsQueryable();
+            query = query.Where(r => r.UnqPicklist.ToLower().Contains(searchTxt.ToLower()));
+
+            return await query.Where(r => r.RegionId == _sessionService.session.Office.RegionId).AsNoTracking().ToListAsync();
+
+        }
+    }
+
+    public async Task<List<DcPicklist>> GetPickLists(bool filterRequestUser, bool filterInProgress)
+    {
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+            List<DcPicklist> result = new();
+
+            var query = _context.DcPicklists.OrderByDescending(o => o.PicklistDate).AsQueryable();
+
+            if (filterRequestUser)
+            {
+                query = query.Where(r => r.RequestedByAd.ToLower() == _sessionService.session.SamName.ToLower());
+            }
+            else if (filterInProgress)
+            {
+                query = query.Where(r => r.Status != "Returned");
+            }
+            else
+            {
+                query = query.Where(r => r.RegionId == _sessionService.session.Office.RegionId);
+            }
+
+
+            return await query.Where(r => r.RegionId == _sessionService.session.Office.RegionId).AsNoTracking().ToListAsync();
+
+        }
+    }
+
+    internal async Task<List<DcPicklistItem>> GetPicklistItems(string unq_picklist)
+    {
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+            return await _context.DcPicklistItems.Where(p => p.UnqPicklist == unq_picklist).OrderByDescending(p => p.PicklistItemId).AsNoTracking().ToListAsync();
+
+        }
+    }
+    #endregion
+
+    #region Destruction
+    public async Task<List<DcExclusion>> getExclusions()
+    {
+
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+
+            return await _context.DcExclusions.Where(p => p.RegionId == decimal.Parse(_sessionService.session.Office.RegionId)).OrderByDescending(e => e.ExclDate).AsNoTracking().ToListAsync();
+
+        }
+    }
+
+    public async Task<List<DcExclusionBatch>> GetExclusionBatches(string year)
+    {
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+            return await _context.DcExclusionBatches.Where(p => p.ExclusionYear == year).OrderByDescending(d => d.CreatedDate).AsNoTracking().ToListAsync();
+        }
+    }
+
+    public async Task<List<DcExclusionBatch>> GetApprovedBatches(string year)
+    {
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+
+            return await _context.DcExclusionBatches.Where(p => p.ExclusionYear == year && !string.IsNullOrEmpty(p.ApprovedBy)).OrderByDescending(e => e.CreatedDate).AsNoTracking().ToListAsync();
         }
     }
     #endregion

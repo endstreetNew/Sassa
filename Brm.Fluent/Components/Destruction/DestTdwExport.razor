@@ -1,6 +1,7 @@
 ﻿@using System.IO
 @inject SessionService sessionservice
 @inject BRMDbService db
+@inject QueryableDataService qdb
 @inject StaticService sservice
 @inject IToastService toast
 @inject IWebHostEnvironment environment
@@ -43,7 +44,7 @@
             </tr>
         </thead>
         <tbody>
-        @foreach (DcExclusionBatch p in batches.result)
+        @foreach (DcExclusionBatch p in batches)
         {
             <tr>
                 <td>@p.BatchId</td>
@@ -61,7 +62,7 @@
         }
         </tbody>
     </table>
-    <Pager Paged="OnApprovedBatchPaged" TotalSize="@batches.count"></Pager>
+
     <br />
     <button class="btn btn-primary btn-sm active" @onclick="@(() => btnExport_Batch_Click())">Export</button>
     <div id="divError"></div>
@@ -101,19 +102,18 @@
 
     protected int RegionId;
     protected string destructionYear = "";
-    protected PagedResult<DcExclusionBatch> batches = new PagedResult<DcExclusionBatch>();
-    int batchpage = 1;
+    protected List<DcExclusionBatch> batches = new();
 
     protected override async Task OnInitializedAsync()
     {
         destructionYear = StaticDataService.DestructionYears.First();
         RegionId = int.Parse(sessionservice.session.Office.RegionId);
-        await OnApprovedBatchPaged(batchpage);
+        await OnApprovedBatchPaged();
     }
 
     protected async Task Reload_Click()
     {
-        await OnApprovedBatchPaged(batchpage);
+        await OnApprovedBatchPaged();
     }
 
     private List<IBrowserFile> loadedFiles = new();
@@ -160,90 +160,7 @@
 
     }
 
-    // protected void CommandBtn_Click(object sender, GridViewCommandEventArgs e)
-    // {
-    //    int batchId = (int)GridApproved.DataKeys[int.Parse(e.CommandArgument.ToString())].Value;
-    //    switch (e.CommandName)
-    //    {
-
-    //        case "Download":
-
-    //            divError.Visible = true;
-    //            string Filename = string.Format("{0} - Destruction.csv", batchId);
-    //            lblError.Text = "Downloading file :" + Filename;
-    //            string csv = dProcess.dData.getTDWcsv(batchId);
-
-
-    //            //Download the CSV file.
-    //            Response.Clear();
-    //            Response.Buffer = true;
-    //            Response.AddHeader("content-disposition", "attachment;filename=" + Filename);
-    //            Response.Charset = "";
-    //            Response.ContentType = "application/text";
-    //            Response.Output.Write(csv);
-    //            Response.Flush();
-    //            Response.End();
-    //            divError.Visible = false;
-    //            break;
-
-    //        case "FTP":
-    //            dProcess.dData.getTDWcsvToFTP(batchId);
-    //            divError.Visible = false;
-    //            break;
-    //        default:
-    //            divError.Visible = false;
-    //            break;
-
-    //    }
-
-    //    GridApproved.DataSource = dProcess.dData.GetApprovedBatches();
-    //    GridApproved.DataBind();
-    // }
-
-    // protected void UploadBtn_Click(object sender, EventArgs e)
-    // {
-    //    //divError.Visible = false;
-    //    if (CompletedFile.FileContent.Length > 0)
-    //    {
-
-    //        string content;
-
-    //        using (var reader = new StreamReader(CompletedFile.FileContent))
-    //        {
-    //            content = reader.ReadToEnd();
-    //        }
-    //        var rows = content.Replace("\r\n", "|").Split('|');
-    //        string newstatus = rows.First();
-    //        switch (newstatus.ToLower())
-    //        {
-    //            case "destroyed":
-    //                newstatus = "Destroyed";
-    //                break;
-    //            case "tdwnotfound":
-    //                newstatus = "TDWNotFound";
-    //                break;
-    //        }
-    //        try
-    //        {
-    //            dProcess.dData.BatchResult = "";
-    //            foreach (string pension in rows.Skip(1))
-    //            {
-    //                dProcess.dData.UpdateDestructionStatus(pension.Trim(), newstatus);
-    //            }
-    //            if (dProcess.dData.BatchResult != "")
-    //            {
-    //                lblError.Text = dProcess.dData.BatchResult;
-    //                divError.Visible = true;
-    //            }
-    //        }
-    //        catch
-    //        {
-    //            lblError.Text = dProcess.dData.BatchResult;
-    //            divError.Visible = true;
-    //        }
-
-    //    }
-    // }
+    
 
     protected async Task btnExport_Batch_Click()
     {
@@ -264,10 +181,10 @@
         }
     }
 
-    protected async Task OnApprovedBatchPaged(int _page)
+    protected async Task OnApprovedBatchPaged()
     {
-        batchpage = _page;
-        batches = await db.GetApprovedBatches(destructionYear, batchpage);
+
+        batches = await qdb.GetApprovedBatches(destructionYear);
 
     }
 

@@ -37,11 +37,11 @@
         <FluentPaginator State="@boxPagination" />
     </FluentTab>
     <FluentTab Label="Batch History" Id="tdwtab-2" Disabled="@(!(sessionservice.session!.Office!.OfficeType != "LO" && sessionservice.session.IsInRole("GRP_BRM_Monitoring")))">
+
         <FluentStack Orientation="Orientation.Horizontal">
             <FluentDatePicker Label="From Date" @bind-Value="@period.FromNullDate" />
             <FluentDatePicker Label="To Date" @bind-Value="@period.ToNullDate" />
             <FluentButton Appearance="Appearance.Accent" @onclick="btnLoadBatches_Click">Load batched files</FluentButton>
-           
         </FluentStack>
 
         <FluentDataGrid Items="@batchedfiles.AsQueryable()" TGridItem="TdwBatchViewModel" Pagination="@batchPagination">
@@ -56,6 +56,7 @@
             <PropertyColumn Property="@(p => p.TdwSendDate)" Sortable="true" />
         </FluentDataGrid>
         <FluentPaginator State="@batchPagination" />
+
     </FluentTab>
 
     <FluentTab Label="Dispatch History" Id="tdwtab-3">

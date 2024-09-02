@@ -86,7 +86,15 @@ namespace Sassa.Brm.Common.Helpers
             double result;
             return double.TryParse(text, out result);
         }
-
+        /// <summary>
+        /// Used for PieChart Calculations
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        public static string ToD(this double x)
+        {
+            return x.ToString().Replace(",", ".");
+        }
         //public static string Add60Days(this string date)
         //{
         //    DateTime dt = DateTime.ParseExact(date.Replace("/", ""), "yyyyMMdd", CultureInfo.InvariantCulture);

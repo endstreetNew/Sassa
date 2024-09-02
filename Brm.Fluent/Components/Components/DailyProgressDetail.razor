@@ -20,7 +20,7 @@
     <tbody>
     @if(IsValid)
     {
-            @foreach (var u in pagedDetail.result)
+            @foreach (var u in pagedDetail)
             {
                 <tr>
                     <td>@u.MonthDay</td>
@@ -36,40 +36,27 @@
     }
     </tbody>
 </table>
-<Pager Paged="OnPaged" TotalSize="@DayDetail.count" PageSize="16"></Pager>
 
 @code {
     [Parameter]
-    public PagedResult<DayDetail> DayDetail { get; set; } = new();
+    public List<Brm.Fluent.Components.Report.DayDetail> DayDetail { get; set; } = new();
 
-    //UserOffice office;
-    protected PagedResult<DayDetail> pagedDetail = new PagedResult<DayDetail>();
-    int page = 1;
-    //CaptureDay day;
+    protected List<Brm.Fluent.Components.Report.DayDetail> pagedDetail = new();
 
     bool IsValid = false;
 
     protected override void OnInitialized()
     {
-        if (DayDetail.count == 0) 
+        if (DayDetail.Any()) 
         {
             IsValid = false;
             return;
         }
-        //day = DayDetail.result.First();
-        pagedDetail.count = DayDetail.count;
-        pagedDetail.result = DayDetail.result.ToList();
-        OnPaged(1);
     }
 
-    protected void OnPaged(int _page)
-    {
-        page = _page;
-        pagedDetail.result = DayDetail.result.Skip((page - 1) * 16).Take(16).ToList();
-        IsValid = pagedDetail.result.Any();
-    }   
 
-    protected async Task btnSaveReport(DayDetail cDay)
+
+    protected async Task btnSaveReport(Brm.Fluent.Components.Report.DayDetail cDay)
     {
         try
         {

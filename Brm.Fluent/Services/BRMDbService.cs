@@ -1091,16 +1091,16 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
 
-    public async Task<TreeNode> GetCSFiles(string idNo)
+    public async Task<FileTreeNode> GetCSFiles(string idNo)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            TreeNode node = new TreeNode();
+            FileTreeNode node = new FileTreeNode();
             var intermediate = await _context.DcDocumentImages.AsNoTracking().Where(d => d.IdNo == idNo).ToListAsync();
             var files = intermediate.Where(d => (d.Filename.ToLower().EndsWith(".pdf") || !(d.Type ?? false)));
             foreach (var file in files)
             {
-                TreeNode child = new TreeNode
+                FileTreeNode child = new FileTreeNode
                 {
                     ParentId = file.Parentnode == null ? 0 : (int)file.Parentnode,
                     Id = ((int)(file.Csnode ?? 0)),

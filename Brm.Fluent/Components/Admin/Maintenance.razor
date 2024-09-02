@@ -1,41 +1,13 @@
 ﻿@page "/officeadmin"
-<div class="pageTitle">
-<h3>Maintenance functions</h3>
-</div>
-<TabControl ActivePageId="1">
-    <TabPage Text="Socpen Office Links" Id="1" Enabled="true">
+<BrmPageTitle Title="Maintenance functions"/>
+<FluentTabs>
+    <FluentTab Label="Socpen Office Links" Id="adminTab-1">
         <OfficeAdmin></OfficeAdmin>
-    </TabPage>
-    <TabPage Text="Brm Offices" Id="2" Enabled="true">
+   </FluentTab>
+    <FluentTab Label="Brm Offices" Id="adminTab-2">
         <BrmOfficeAdmin></BrmOfficeAdmin>
-    </TabPage>
-    <TabPage Text="Fixed Service Points" Id="3" Enabled="true">
+    </FluentTab>
+    <FluentTab Label="Fixed Service Points" Id="adminTab-1">
         <ServicePointAdmin></ServicePointAdmin>
-    </TabPage>
-</TabControl>
-
-@code {
-
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     //await OnTabActivate(1);
-    // }
-    // private async Task OnTabActivate(int e)
-    // {
-    //     switch (e)
-    //     {
-    //         case 1:
-
-    //             break;
-    //         case 2:
-
-    //             break;
-    //         case 3:
-                
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-
-}
+    </FluentTab>
+</FluentTabs>

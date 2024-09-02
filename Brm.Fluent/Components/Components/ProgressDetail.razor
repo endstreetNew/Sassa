@@ -1,6 +1,7 @@
 @inject Navigation Navigate
 @inject SessionService sessionservice
 @inject BRMDbService db
+@inject QueryableDataService qdb
 @inject StaticService sservice
 @inject ProgressService og
 @inject ReportDataService rs
@@ -135,7 +136,7 @@
     string expandedClass = "";//"oi caret-bottom";
     string expandedText = "+";
 
-    List<MonthDetail> dashboardData = new();
+    List<Brm.Fluent.Components.Report.MonthDetail> dashboardData = new();
 
     protected override void OnInitialized()
     {
@@ -182,7 +183,7 @@
         IsDashboardLoaded = false;
     }
 
-    protected void Expand(MonthDetail u)
+    protected void Expand(Brm.Fluent.Components.Report.MonthDetail u)
     {
         u.IsExpanded = !u.IsExpanded;
        // expandedClass = u.IsExpanded ? "oi oi-caret-bottom" : "oi oi-caret-right";

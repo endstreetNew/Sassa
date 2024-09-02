@@ -44,100 +44,16 @@ using Sassa.BRM.ViewModels;
             //onlineGrants.Clear();
             return result;
         }
-        //public async Task<List<MissingSummary>> GetMissingProgress(ReportPeriod from, ReportPeriod to, string regionId)
-        //{
-        //    var onlineGrants = _econtext.ProcessedGrants.Where(d => d.ProcessDate >= from.FromDate && d.ProcessDate <= to.ToDate && d.RegionCode == StaticD.RegionCode(regionId)).AsNoTracking().AsQueryable();
-        //    List<DcSocpen> records = await _context.DcSocpen.Where(s => s.ApplicationDate <= to.ToDate && s.RegionId == regionId && s.StatusCode == "ACTIVE" && s.GrantType != "S").AsNoTracking().ToListAsync();
-        //    List<MissingSummary> result = new List<MissingSummary>();
-        //    foreach (ReportPeriod period in StaticD.QuarterList(from, to).Values.OrderBy(o => o.FromDate))
-        //    {
-        //        List<DcSocpen> periodRecords = records.Where(s => s.ApplicationDate >= period.FromDate && s.ApplicationDate <= period.ToDate).ToList();
-        //        result.Add(new MissingSummary
-        //        {
-        //            Quarter = period,
-        //            HistoryMissing = records.Count(s => s.CaptureDate == null && s.ApplicationDate <= period.FromDate && s.TdwRec == null ),
-        //            HistoryCaptured = records.Count(s => s.ApplicationDate <= period.FromDate && s.CaptureDate >= period.FromDate && s.CaptureDate <= period.ToDate),
-        //            NewGrants = periodRecords.Count(),
-        //            OnlineGrants = onlineGrants.Where(d => d.ProcessDate >= period.FromDate && d.ProcessDate <= period.ToDate && d.RegionCode == StaticD.RegionCode(regionId)).Count(),
-        //            PeriodCaptured = periodRecords.Count(s => s.CaptureDate >= period.FromDate && s.CaptureDate <= period.ToDate),
-        //            Scanned = periodRecords.Where(s => s.ScanDate != null).Count(),
-        //            CsLoaded = periodRecords.Where(s => s.CsDate != null).Count(),
-        //            TdwSent = periodRecords.Where(s => s.TdwRec != null).Count()
-        //        }); 
 
-        //    }
-        //    records.Clear();
-        //    return result;
-        //}
-        public async Task<PagedResult<DcSocpen>> GetMissingFiles(ReportPeriod period, string regionId, int page = 1)
+        public async Task<List<DcSocpen>> GetMissingFiles(ReportPeriod period, string regionId)
         {
-            PagedResult<DcSocpen> result = new PagedResult<DcSocpen>();
-            //&& s.GrantType != "S" && s.MisFiles == null
-            result.count = await _context.DcSocpens.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate >= period.FromDate && s.RegionId == regionId && s.StatusCode == "ACTIVE" && s.MisFile == null).AsNoTracking().CountAsync();
-            result.result = await _context.DcSocpens.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate >= period.FromDate && s.RegionId == regionId && s.StatusCode == "ACTIVE" && s.MisFile == null).AsNoTracking().OrderBy(s => s.ApplicationDate).Skip((page - 1) * 24).Take(24).ToListAsync();
-            //result.count = await _context.DcSocpen.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate >= period.FromDate && s.RegionId == regionId && s.StatusCode == "ACTIVE").AsNoTracking().CountAsync();
-            //result.result = await _context.DcSocpen.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate >= period.FromDate && s.RegionId == regionId && s.StatusCode == "ACTIVE").AsNoTracking().OrderBy(s => s.ApplicationDate).Skip((page - 1) * 24).Take(24).ToListAsync();
-            return result;
+            return await _context.DcSocpens.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate >= period.FromDate && s.RegionId == regionId && s.StatusCode == "ACTIVE" && s.MisFile == null).AsNoTracking().OrderBy(s => s.ApplicationDate).ToListAsync();
         }
         #endregion
 
         #region Progress
 
-        //public async Task<ProgressDashBoard> GetProgress(ReportPeriod from, ReportPeriod to, string RegionId)
-        //{
-        //    try
-        //    {
-
-
-        //    ProgressDashBoard progress = new ProgressDashBoard();
-        //    progress.result.result = await CaptureProgressItems(from, to, RegionId);
-        //    progress.result.count = progress.result.result.Count();
-
-        //    return progress;
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
-
-        //public async Task<List<CaptureProgress>> CaptureProgressItems(ReportPeriod from, ReportPeriod to, string RegionId)
-        //{
-        //    var onlineGrants = _econtext.ProcessedGrants.Where(d => d.ProcessDate >= from.FromDate && d.ProcessDate <= to.ToDate && d.RegionCode == StaticD.RegionCode(RegionId)).AsNoTracking().AsQueryable();
-        //    //int onlineGrantsStart = await onlineGrants.Where(d => d.ProcessDate <= from.FromDate && d.RegionCode == StaticD.RegionCode(RegionId)).AsNoTracking().CountAsync();
-        //    //int onlineGrantsEnd = await onlineGrants.Where(d => d.ProcessDate <= from.ToDate && d.RegionCode == StaticD.RegionCode(RegionId)).AsNoTracking().CountAsync();
-
-        //    var history = _context.DcSocpen.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate <= to.ToDate && s.RegionId == RegionId && s.StatusCode == "ACTIVE").AsNoTracking().AsQueryable();
-        //    //progress.TotalMissingStart = await _context.DcSocpen.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate <= from.FromDate && s.RegionId == RegionId && s.StatusCode == "ACTIVE").AsNoTracking().CountAsync() - onlineGrantsStart;
-        //    //progress.TotalMissingEnd = await _context.DcSocpen.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate <= to.ToDate && s.RegionId == RegionId && s.StatusCode == "ACTIVE").AsNoTracking().CountAsync() - onlineGrantsEnd;
-
-        //    List<DcSocpen> records = await _context.DcSocpen.Where(s => s.ApplicationDate >= from.FromDate && s.ApplicationDate <= to.ToDate && s.RegionId == RegionId && s.StatusCode == "ACTIVE").AsNoTracking().ToListAsync();
-        //    List<ProcessedGrant> erecords = await _econtext.ProcessedGrants.Where(d => d.ProcessDate >= from.FromDate && d.ProcessDate <= to.ToDate && d.RegionCode == StaticD.RegionCode(RegionId)).AsNoTracking().ToListAsync();
-        //    List<CaptureProgress> result = new List<CaptureProgress>();
-        //    foreach (ReportPeriod period in StaticD.QuarterList(from, to).Values)
-        //    {
-        //        List<DcSocpen> periodRecords = records.Where(s => s.ApplicationDate >= period.FromDate && s.ApplicationDate <= period.ToDate).ToList();
-        //        int onlineApplications = erecords.Where(d => d.ProcessDate >= period.FromDate && d.ProcessDate <= period.ToDate).Count();
-        //        var periodHistory = history.Where(s => s.ApplicationDate <= period.FromDate).ToList();
-        //        int periodHistoryCount = history.Where(s => s.ApplicationDate <= period.FromDate).Count() - onlineApplications;
-        //        result.Add(new CaptureProgress
-        //        {
-        //            Quarter = period,
-        //            RegionId = RegionId,
-        //            History = periodHistoryCount,
-        //            Missing = periodRecords.Where(s => s.CaptureReference == null && s.TdwRec == null).Count(),
-        //            Total = periodRecords.Count(),
-        //            Captured = periodRecords.Where(s => s.CaptureDate >= period.FromDate).Count() + erecords.Where(d => d.ProcessDate >= period.FromDate && d.ProcessDate <= period.ToDate).Count(),
-        //            OnlineApplications = onlineApplications,
-        //            Scanned = periodRecords.Where(s => s.ScanDate != null).Count(),
-        //            CsLoaded = periodRecords.Where(s => s.CsDate != null).Count(),
-        //            TdwSent = periodRecords.Where(s => s.TdwRec != null).Count()
-
-        //        }) ;
-        //    }
-        //    return result;
-        //}
-        public async Task<List<QuarterDetail>> GetCaptureProgress(ReportPeriod from, ReportPeriod to, UserOffice office)
+        public async Task<List<Brm.Fluent.Components.Report.QuarterDetail>> GetCaptureProgress(ReportPeriod from, ReportPeriod to, UserOffice office)
         {
             //List<DcSocpen> periodRecords = await _context.DcSocpen.Where(s => s.ApplicationDate >= period.FromDate && s.ApplicationDate <= period.ToDate && (s.RegionId == RegionId || s.LocalofficeId == localOfficeId) && s.StatusCode == "ACTIVE").AsNoTracking().ToListAsync();
             //List<DcSocpen> periodRecords = await _context.DcSocpen.Where(s => s.ApplicationDate >= period.FromDate && s.ApplicationDate <= period.ToDate && s.LocalofficeId == localOfficeId && s.StatusCode == "ACTIVE").AsNoTracking().ToListAsync();
@@ -152,11 +68,11 @@ using Sassa.BRM.ViewModels;
                                     AND LOCALOFFICE_ID = '{office.OfficeId}'";
                 List<DcSocpen> records = await _context.DcSocpens.FromSqlRaw(sql).AsNoTracking().ToListAsync();
 
-                List<QuarterDetail> result = new List<QuarterDetail>();
+                List<Brm.Fluent.Components.Report.QuarterDetail> result = new ();
                 foreach (ReportPeriod period in StaticDataService.QuarterList(from, to).Values.OrderBy(o => o.FromDate))
                 {
                     List<DcSocpen> periodRecords = records.Where(s => s.ApplicationDate >= period.FromDate && s.ApplicationDate <= period.ToDate).ToList();
-                    result.Add(new QuarterDetail
+                    result.Add(new Brm.Fluent.Components.Report.QuarterDetail
                     {
                         Quarter = period,
                         MonthDetail = GetMonthDetail(period, periodRecords, office),
@@ -179,16 +95,16 @@ using Sassa.BRM.ViewModels;
                 throw;
             }
         }
-        public async Task<List<MonthDetail>> GetMonthDetail(DateTime fromDate, DateTime toDate, UserOffice office)
+        public async Task<List<Brm.Fluent.Components.Report.MonthDetail>> GetMonthDetail(DateTime fromDate, DateTime toDate, UserOffice office)
         {
             List<DcSocpen> records = await _context.DcSocpens.Where(s => s.ApplicationDate >= fromDate && s.ApplicationDate <= toDate && (s.RegionId == office.RegionId || s.LocalofficeId == office.OfficeId) && s.StatusCode == "ACTIVE").AsNoTracking().ToListAsync();
-            List<MonthDetail> result = new List<MonthDetail>();
+            List<Brm.Fluent.Components.Report.MonthDetail> result = new();
             for (int year = fromDate.Year; year <= toDate.Year; year++)
             {
                 for (int month = fromDate.Month; month <= toDate.Month; month++)
                 {
                     List<DcSocpen> periodRecords = records.Where(s => s.ApplicationDate >= new DateTime(year, month, 1) && s.ApplicationDate <= new DateTime(year, month, DateTime.DaysInMonth(year, month))).ToList();
-                    result.Add(new MonthDetail
+                    result.Add(new Brm.Fluent.Components.Report.MonthDetail
                     {
                         Year = year,
                         Month = month,
@@ -206,15 +122,15 @@ using Sassa.BRM.ViewModels;
             }
             return result;
         }
-        public List<MonthDetail> GetMonthDetail(ReportPeriod period, List<DcSocpen> records, UserOffice office)
+        public List<Brm.Fluent.Components.Report.MonthDetail> GetMonthDetail(ReportPeriod period, List<DcSocpen> records, UserOffice office)
         {
-            List<MonthDetail> result = new List<MonthDetail>();
+            List<Brm.Fluent.Components.Report.MonthDetail> result = new();
             for (int year = period.FromDate.Year; year <= period.ToDate.Year; year++)
             {
                 for (int month = period.FromDate.Month; month <= period.ToDate.Month; month++)
                 {
                     List<DcSocpen> periodRecords = records.Where(s => s.ApplicationDate >= new DateTime(year, month, 1) && s.ApplicationDate <= new DateTime(year, month, DateTime.DaysInMonth(year, month))).ToList();
-                    result.Add(new MonthDetail
+                    result.Add(new Brm.Fluent.Components.Report.MonthDetail
                     {
                         Year = year,
                         Month = month,
@@ -232,19 +148,18 @@ using Sassa.BRM.ViewModels;
             }
             return result;
         }
-        public PagedResult<DayDetail> GetDayDetail(int year, int month, List<DcSocpen> records, int page = 1)
+        public List<Brm.Fluent.Components.Report.DayDetail> GetDayDetail(int year, int month, List<DcSocpen> records, int page = 1)
         {
-            PagedResult<DayDetail> result = new PagedResult<DayDetail>();
+            List<Brm.Fluent.Components.Report.DayDetail> result = new();
             string localOfficeId = "";
             for (int day = 1; day <= DateTime.DaysInMonth(year, month); day++)
             {
                 List<DcSocpen> periodRecords = records.Where(s => s.ApplicationDate == new DateTime(year, month, day)).ToList();
-                result.count = periodRecords.Count();
                 if (periodRecords.Any())
                 {
                     localOfficeId = periodRecords.First().LocalofficeId;
                 }
-                result.result.Add(new DayDetail
+                result.Add(new Brm.Fluent.Components.Report.DayDetail
                 {
                     Year = year,
                     Month = month,
@@ -259,22 +174,20 @@ using Sassa.BRM.ViewModels;
                     //TdwSent = periodRecords.Where(s => s.TdwRec != null).Count()
                 }); ;
             }
-            result.count = result.result.Count();
             return result;
         }
-        public PagedResult<OfficeDetail> GetOfficeDetail(List<DcSocpen> records, int page = 1)
+        public List<Brm.Fluent.Components.Report.OfficeDetail> GetOfficeDetail(List<DcSocpen> records, int page = 1)
         {
-            PagedResult<OfficeDetail> result = new PagedResult<OfficeDetail>();
+            List<Brm.Fluent.Components.Report.OfficeDetail> result = new();
             string localOfficeId = "";
             foreach (string office in records.DistinctBy(o => o.LocalofficeId).Select(o => o.LocalofficeId).ToList())
             {
                 List<DcSocpen> officeRecords = records.Where(s => s.LocalofficeId == office).ToList();
-                result.count = officeRecords.Count();
                 if (officeRecords.Any())
                 {
                     localOfficeId = officeRecords.First().LocalofficeId;
                 }
-                result.result.Add(new OfficeDetail
+                result.Add(new Brm.Fluent.Components.Report.OfficeDetail
                 {
 
                     OfficeId = localOfficeId,
@@ -287,7 +200,6 @@ using Sassa.BRM.ViewModels;
                     //TdwSent = periodRecords.Where(s => s.TdwRec != null).Count()
                 });
             }
-            result.count = result.result.Count();
             return result;
         }
 

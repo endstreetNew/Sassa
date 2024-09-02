@@ -86,7 +86,6 @@ namespace Brm.Fluent
             });
             builder.Services.AddSingleton<EmailClient>();
             builder.Services.AddSingleton<MailMessages>();
-            builder.Services.AddScoped<IAlertService, AlertService>();
             builder.Services.AddScoped<Navigation>();
             builder.Services.AddScoped<CSService>();
             builder.Services.AddScoped<ReportDataService>();

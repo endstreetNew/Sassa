@@ -1,5 +1,6 @@
 ﻿@inject SessionService  sessionservice
 @inject BRMDbService db
+@inject QueryableDataService qdb
 @inject StaticService sservice
 @inject IToastService toast
 
@@ -61,7 +62,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (DcExclusionBatch p in batches.result)
+        @foreach (DcExclusionBatch p in batches)
         {
             <tr>
                 <td>@p.BatchId</td>
@@ -79,27 +80,26 @@
         }
     </tbody>
 </table>
-<Pager Paged="OnExclusionBatchPaged" TotalSize="@batches.count"></Pager>
+
 <br />
 
 @code {
 
     protected int RegionId;
     protected string destructionYear = "";
-    protected PagedResult<DcExclusionBatch> batches = new PagedResult<DcExclusionBatch>();
-    int batchpage = 1;
+    protected List<DcExclusionBatch> batches = new ();
 
     protected override async Task OnInitializedAsync()
     {
         destructionYear = StaticDataService.DestructionYears.First();
         RegionId = int.Parse(sessionservice.session.Office.RegionId);
-        await OnExclusionBatchPaged(1);
+        await OnExclusionBatchPaged();
 
     }
 
     protected async Task Reload_Click()
     {
-        await OnExclusionBatchPaged(batchpage);
+        await OnExclusionBatchPaged();
     }
 
     protected async Task btnApprove_Batch_Click(decimal batchId)
@@ -107,7 +107,7 @@
         try
         {
             await db.ApproveBatch(batchId);
-            await OnExclusionBatchPaged(batchpage);
+            await OnExclusionBatchPaged();
 
         }
         catch (Exception ex)
@@ -115,10 +115,8 @@
             toast.ShowError(ex.Message);
         }
     }
-    protected async Task OnExclusionBatchPaged(int _page)
+    protected async Task OnExclusionBatchPaged()
     {
-        batchpage = _page;
-        batches = await db.GetExclusionBatches(destructionYear,batchpage);
-
+        batches = await qdb.GetExclusionBatches(destructionYear);
     }
 }

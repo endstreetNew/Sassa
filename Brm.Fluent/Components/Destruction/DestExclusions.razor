@@ -1,5 +1,6 @@
 ﻿@inject SessionService sessionservice
 @inject BRMDbService db
+@inject QueryableDataService qdb
 @inject IToastService toast
 
 <br />
@@ -63,7 +64,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (DcExclusion p in exclusions.result)
+        @foreach (DcExclusion p in exclusions)
         {
             <tr>
                 <td>@p.IdNo</td>
@@ -78,7 +79,7 @@
         }
     </tbody>
 </table>
-<Pager Paged="OnExclusionsPaged" TotalSize="@exclusions.count"></Pager>
+
 <br />
 <button class="btn btn-primary btn-sm active" @onclick="@(() => btnSubmitBatch_Click())">Submit @sessionservice.session.Office.RegionName batch for Final Approval</button>
 
@@ -90,14 +91,13 @@
     protected UserOffice office = new();
     protected string txtSearchId = "";
 
-    protected PagedResult<DcExclusion> exclusions = new PagedResult<DcExclusion>();
+    protected List<DcExclusion> exclusions = new List<DcExclusion>();
 
-    int exclusionpage = 1;
 
     protected override async Task OnInitializedAsync()
     {
         destructionYear = StaticDataService.DestructionYears.First();
-        await OnExclusionsPaged(exclusionpage);
+        await OnExclusionsPaged();
     }
 
     private async Task btnAdd_Click()
@@ -105,7 +105,7 @@
         try
         {
             await db.AddExclusion(txtSearchId, exclusionType);
-            await OnExclusionsPaged(exclusionpage);
+            await OnExclusionsPaged();
         }
         catch (Exception ex)
         {
@@ -116,7 +116,7 @@
     private async Task btnRemoveExclusion_Click(decimal id)
     {
         await db.RemoveExclusion(id);
-        await OnExclusionsPaged(exclusionpage);
+        await OnExclusionsPaged();
     }
 
     private async Task btnSubmitBatch_Click()
@@ -124,7 +124,7 @@
         try
         {
             await db.UpdateExclusionBatch(destructionYear);
-            await OnExclusionsPaged(exclusionpage);
+            await OnExclusionsPaged();
         }
         catch (Exception ex)
         {
@@ -159,14 +159,12 @@
             }
         }
 
-        await OnExclusionsPaged(exclusionpage);
+        await OnExclusionsPaged();
 
     }
 
-    protected async Task OnExclusionsPaged(int _page)
+    protected async Task OnExclusionsPaged()
     {
-        exclusionpage = _page;
-        exclusions = await db.getExclusions(exclusionpage);
-
+        exclusions = await qdb.getExclusions();
     }
 }

@@ -8,20 +8,17 @@
 @inject ProgressService og
 @inject ReportDataService rs
 @inject IToastService toast
-<div class="pageTitle">
-<h3>Reports</h3>
-</div>
 
-<TabControl ActivePageId="1" PageActivate="OnTabActivate">
-    <TabPage Text="Reports" Id="1" Enabled="true">
-
-             <br/>
-             <div class="row">
-                 <div class="col">
+<BrmPageTitle Title="Reports"></BrmPageTitle>
+<FluentTabs>
+    <FluentTab Label="Reports" Id="reportTab-1">
+        <br />
+        <div class="row">
+            <div class="col">
                 <table>
                     <tr>
                         <td>
-                        
+
                             <div class="input-group mb-1">
                                 <span class="input-group-text">Select report</span>
                                 <select class="form-select" @bind="rIndex">
@@ -38,14 +35,14 @@
                         </td>
                     </tr>
                 </table>
-                </div>
             </div>
-            <br />
-            <div class="row">
-                <span><strong>Filter Options</strong></span>
-            </div>
-            @if(rIndex == "11")
-            {
+        </div>
+        <br />
+        <div class="row">
+            <span><strong>Filter Options</strong></span>
+        </div>
+        @if (rIndex == "11")
+        {
             <div class="input-group mb-1">
                 <span class="input-group-text">Region</span>
                 <select class="form-select" @bind="office.RegionId">
@@ -56,10 +53,10 @@
                     }
                 </select>
             </div>
-            }
-            else
-            {
-            @if(rIndex == "3" || rIndex == "8" || rIndex == "12")
+        }
+        else
+        {
+            @if (rIndex == "3" || rIndex == "8" || rIndex == "12")
             {
                 <div class="row">
                     <div class="col">
@@ -88,7 +85,7 @@
                     </div>
                 </div>
             }
-            else if(rIndex == "9")
+            else if (rIndex == "9")
             {
                 <div class="row">
                     <div class="col">
@@ -159,82 +156,77 @@
                                 <option value="@val.Key">@val.Value</option>
                             }
                         </select>
-                   </div>
+                    </div>
                 }
             }
-            }
-    </TabPage>
-    <TabPage Text="Progress" Id="2" Enabled="true">
-@*        <MissingFiles></MissingFiles>*@
-          <ProgressSummary></ProgressSummary>
-    </TabPage>
-    <TabPage Text="Capture Progress" Id="3" Enabled="true">
-         <OfficeProgress></OfficeProgress>
-     </TabPage>
-    <TabPage Text="Current Wip" Id="4" Enabled="true">
+        }
+    </FluentTab>
+    <FluentTab Label="Progress" Id="reportTab-2">
+        <ProgressSummary></ProgressSummary>
+    </FluentTab>
+    <FluentTab Label="Capture Progress" Id="reportTab-3">
+        <OfficeProgress></OfficeProgress>
+    </FluentTab>
+    <FluentTab Label="Current Wip" Id="reportTab-4">
+        <br />
+        <div class="row">
+            <span><strong>Progress for Region : @sservice.GetRegion(office.RegionId) Period : @period.FromDate to @period.ToDate</strong></span>
+            <br />
+        </div>
+        <div class="row">
+            <span><strong>Missing Files (Includes files in 60 day capture window)</strong></span>
+            <br />
+        </div>
+        @if (IsMissingDashboardLoaded)
+        {
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-sm" style="font-size:x-small;">
+                        <thead>
+                            @*SELECT r.Region_NAME,g.TYPE_NAME, b.Application_date, b.BENEFICIARY_ID,b.CHILD_ID,b.NAME,b.SURNAME FROM DC_SOCPEN*@
+                            <tr>
+                                <th scope="col">Grant Type</th>
+                                <th scope="col">Application Date</th>
+                                <th scope="col">Beneficiary Id</th>
+                                <th scope="col">Child Id</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Surname</th>
+                                <th scope="col">Age(Days)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-<br/>
-                 <div class="row">
-                    <span><strong>Progress for Region : @sservice.GetRegion(office.RegionId) Period : @period.FromDate to @period.ToDate</strong></span>
-                    <br/>
-                </div>
-                 <div class="row">
-                    <span><strong>Missing Files (Includes files in 60 day capture window)</strong></span>
-                    <br/>
-                </div>
-            @if (IsMissingDashboardLoaded)
-            {
-                 <div class="row">
-                    <div class="col-12">
-                        <table class="table table-sm" style="font-size:x-small;">
-                            <thead>
-                                @*SELECT r.Region_NAME,g.TYPE_NAME, b.Application_date, b.BENEFICIARY_ID,b.CHILD_ID,b.NAME,b.SURNAME FROM DC_SOCPEN*@
-                                <tr>
-                                    <th scope="col">Grant Type</th>
-                                    <th scope="col">Application Date</th>
-                                    <th scope="col">Beneficiary Id</th>
-                                    <th scope="col">Child Id</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Surname</th>
-                                    <th scope="col">Age(Days)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @foreach (var u in missingFiles.result)
-                                {
-                                    <tr style="background-color:@(u.ApplicationDate < DateTime.Now.AddDays(-60) ? "orange":"white" );">
-                                        <td>@sservice.GetGrantType(u.GrantType)</td>
-                                        <td>@u.ApplicationDate</td>
-                                        <td>@u.BeneficiaryId</td>
-                                        <td>@u.ChildId</td>
-                                        <td>@u.Name</td>
-                                        <td>@u.Surname</td>
+                            @foreach (var u in missingFiles)
+                            {
+                                <tr style="background-color:@(u.ApplicationDate < DateTime.Now.AddDays(-60) ? "orange":"white" );">
+                                    <td>@sservice.GetGrantType(u.GrantType)</td>
+                                    <td>@u.ApplicationDate</td>
+                                    <td>@u.BeneficiaryId</td>
+                                    <td>@u.ChildId</td>
+                                    <td>@u.Name</td>
+                                    <td>@u.Surname</td>
                                     <td>@DateTime.Now.Subtract(u.ApplicationDate == null ? DateTime.Now : (DateTime)u.ApplicationDate).Days</td>
-                                    </tr>
-                                }
+                                </tr>
+                            }
 
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-            }
-            else
-            {
-                <span>Loading...</span>
-            }
-                <div class="row">
-                    <Pager TotalSize="@missingFiles.count" Paged="OnMissingPaged" PageSize=24></Pager>
-                </div>
-                <br/>
-
-
-    </TabPage>
-    <TabPage Text="Download reports" Id="5" Enabled="true">
-        <ReportDownload Title="Report List" Paged="OnPaged" pagedResult="files" OnDelete="DeleteReport" ReportFolder="@StaticDataService.ReportFolder"></ReportDownload>
-    </TabPage>
-</TabControl>
+        }
+        else
+        {
+            <span>Loading...</span>
+        }
+        <div class="row">
+        </div>
+        <br />
+    </FluentTab>
+    <FluentTab Label="Download reports" Id="reportTab-5">
+        <ReportDownload Title="Report List"></ReportDownload>
+    </FluentTab>
+</FluentTabs>
 
 @code
 {
@@ -260,47 +252,20 @@
     Dictionary<string, string> reportList = new();
     Dictionary<string, ReportPeriod> quarterList = new();
 
-    PagedResult<CsvListItem> files = new();
-    PagedResult<DcSocpen> missingFiles = new PagedResult<DcSocpen>();
+    List<CsvListItem> files = new();
+    List<DcSocpen> missingFiles = new();
 
     string GrantType = "";
-    int page;
-    int missingpage;
 
     protected override async Task OnInitializedAsync()
     {
         office = sessionservice.session!.Office!;
-        page = 1;
         IsMissingDashboardLoaded = false;
         IsDashboardLoaded = false;
-        await OnTabActivate(1);
-    }
-
-    private async Task OnTabActivate(int e)
-    {
-        switch (e)
-        {
-            case 1:
-                quarterList = StaticDataService.QuarterList();
-                reportList = rs.reportList;
-                break;
-            case 2:
-                quarterList = StaticDataService.QuarterList();
-                break;
-            case 3:
-
-                break;
-            case 4:
-                period = StaticDataService.AfterLastQuarter;
-                await Task.Delay(100);
-                await OnMissingPaged(missingpage);
-                break;
-            case 5:
-                files = rs.GetFiles(sessionservice.session.Office.RegionCode, sessionservice.session.SamName, page);
-                break;
-            default:
-                break;
-        }
+        quarterList = StaticDataService.QuarterList();
+        reportList = rs.reportList;
+        period = StaticDataService.AfterLastQuarter;
+        await OnMissingPaged();
     }
 
     protected void SelectRegion(ChangeEventArgs e)
@@ -367,44 +332,18 @@
 
     }
 
-    protected void OnPaged(int _page)
-    {
-        page = _page;
-        files = rs.GetFiles(sessionservice.session.Office.RegionCode, sessionservice.session.SamName, page);
-    }
-
-    protected async Task OnMissingPaged(int _page)
+    protected async Task OnMissingPaged()
     {
         IsMissingDashboardLoaded = false;
-        missingpage = _page;
         await Task.Delay(100);
-        missingFiles = await og.GetMissingFiles(period, office.RegionId, missingpage);
+        missingFiles = await og.GetMissingFiles(period,office.RegionId);
         IsMissingDashboardLoaded = true;
-    }
-
-    protected void DeleteReport(string fileName)
-    {
-        rs.DeleteReport(fileName);
-        files = rs.GetFiles(sessionservice.session.Office.RegionCode, sessionservice.session.SamName, page);
     }
 
     protected void btnResetProgress_Click()
     {
         IsDashboardLoaded = false;
     }
-
-    //protected async Task btnLoadProgress_Click()
-    //{
-    //    await Task.Delay(100);
-    //    if(string.IsNullOrEmpty(fromQuarter) || string.IsNullOrEmpty(toQuarter) || string.IsNullOrEmpty(office.RegionId))
-    //    {
-    //        toast.ShowInfo($"Please select report Filter.");
-    //        return;
-    //    }
-    //    toast.ShowInfo($"Progress Dashboard loading...");
-    //    dashboardData = await og.GetMissingProgress(quarterList[fromQuarter], quarterList[toQuarter],office.RegionId);
-    //    IsDashboardLoaded = true;
-    //}
 
     protected async Task btnSaveReport(string quarterName)
     {

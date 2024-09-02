@@ -1,140 +1,58 @@
 ﻿@inject SessionService sessionservice
 @inject BRMDbService db
+@inject QueryableDataService qdb
 @inject StaticService sservice
 @inject IToastService toast
 
-<br />
-<div class="row align-items-center">
-    <div class="col">
-        <div class="input-group mb-1">
-            <div class="input-group-text">
-                <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" checked="@filterUser" @onchange="@(e => UserFilterChange(e))">
-            </div>
-            <label class="form-control" aria-label="Show requested by me.">Show my requests.</label>
-        </div>
-    </div>
-    <div class="col">
-        <div class="input-group mb-1">
-            <div class="input-group-text">
-                <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" checked="@filterOffice" @onchange="@(e => OfficeFilterChange(e))">
-            </div>
-            <label class="form-control" aria-label="Show requested by me.">Show my office requests.</label>
-        </div>
-    </div>
-    <div class="col">
-        <div class="input-group mb-1">
-            <span class="input-group-text">Status filter</span>
-            <select class="form-select" @onchange="@(e => StatusFilterChange(e))">
-                <option value="" selected>select...</option>
-                @foreach (var item in StaticDataService.RequestStatus)
-                {
-                    <option value=@item.Key>@item.Value</option>
-                }
-            </select>
-        </div>
-    </div>
-    <div class="col">
-        <div class="input-group mb-1">
-            <span class="input-group-text">Request reason filter</span>
-            <select class="form-select" @onchange="@(e => ReasonFilterChange(e))">
-                <option value="" selected>select...</option>
-                @foreach (var item in sservice.GetRequestCategoryTypes())
-                {
-                    <option value=@item.Key>@item.Value</option>
-                }
-            </select>
-        </div>
-    </div>
+<WidgetTitle Title ="View Requests" Loading ="loading"/>
+<FluentStack Orientation="Orientation.Horizontal">
 
-    @if (sessionservice.session.Office.OfficeType == "RMC" && sessionservice.session.IsInRole("GRP_BRM_Supervisors"))
-        {
-            <div class="col goldArea">
-            <div class="input-group mb-1">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"># of Files's</span>
-                </div>
-                <input type="text" class="form-control" aria-label="Records in request" @bind="requestCount">
-                <div class="input-group-append">
-                    <button class="btn btn-primary active" @onclick="btnTDWRequest_Click" type="button">Request</button>
-                </div>
-            </div>
-            </div>
-        }
-    
-</div>
-@*@if (db.session.Office.OfficeType == "RMC")
-{
-    <div><input type="checkbox" @onchange="@(e => chkSelectAll(e))" /><label class="chkboxLabel">Select All Picklist Candidates</label></div>
-}*@
-@if (fileRequests != null)
-{
-    <div class="container">
-        <div class="row">
-            <div class="col">
+    <FluentCheckbox Label="Show my requests" @bind-Value="@filterUser" @onchange="@(e => UserFilterChange(e))"></FluentCheckbox>
+    <FluentCheckbox Label="Show my office requests" @bind-Value="@filterOffice" @onchange="@(e => OfficeFilterChange(e))"></FluentCheckbox>
+    <FluentSelect TOption="String"
+                  Items="@StaticDataService.RequestStatus.Keys"
+                  Id="appstatus-listbox"
+                  Width="200px"
+                  Height="250px"
+                  Placeholder="<Request Status>"
+                  OptionValue="@(p => p)"
+                  OptionText="@(p => StaticDataService.RequestStatus[p])"
+                  @onchange="@(e => StatusFilterChange(e))" />
+    <FluentSelect TOption="DcReqCategoryType"
+                  Items="@StaticDataService.RequestCategoryTypes"
+                  Id="appstatus-listbox"
+                  Width="240px"
+                  Height="250px"
+                  Placeholder="<Request Category Type>"
+                  OptionValue="@(p => p.TypeId.ToString())"
+                  OptionText="@(p => p.TypeDescr)"
+                  @onchange="@(e => ReasonFilterChange(e))" />
+    <FluentNumberField Placeholder="<# of Files>" @bind-Value="requestCount" Disabled="@(!sessionservice.session.IsRmc() || !sessionservice.session.IsInRole("GRP_BRM_Supervisors"))" />
+    <FluentButton Appearance="Appearance.Accent" @onclick="btnTDWRequest_Click" Disabled="@(!sessionservice.session.IsRmc() || !sessionservice.session.IsInRole("GRP_BRM_Supervisors"))">Request</FluentButton>
+
+</FluentStack>
+
+<FluentStack Orientation="Orientation.Horizontal">
                 <PieChart PieData="@piedata"></PieChart>
-            </div>
-            <div class="col">
                 <PieChart PieData="@regiondata"></PieChart>
-            </div>
-        </div>
-    </div>
-    <table class="table table-sm" style="font-size:small;">
-        <thead>
-            <tr>
-                @*<th scope="col">Select</th>*@
-                <th scope="col">Id</th>
-                <th scope="col">Office</th>
-                <th scope="col">Reason</th>
-                <th scope="col">Date requested</th>
-                <th scope="col">Grant type</th>
-                <th scope="col">Name</th>
-                <th scope="col">Surname</th>
-                <th scope="col">Requested by</th>
-                <th scope="col">Status</th>
-                @*<th scope="col">Action</th>*@
-            </tr>
-        </thead>
-        <tbody>
+</FluentStack>
 
-            @foreach (var u in fileRequests.result)
-            {
-                <tr>
-                    @*<td>
-                        @if (u.Status == "TDWPicklist" && db.session.Office.OfficeType == "RMC")
-                        {<input type="checkbox" @bind="@u.isSelected" />}
-                    </td>*@
-                    <td>@u.IdNo</td>
-                    <td>@u.RequestedOfficeId</td>
-                    <td>@u.Reason</td>
-                    <td>@u.RequestedDate</td>
-                    <td>@u.GrantType</td>
-                    <td>@u.Name</td>
-                    <td>@u.Surname</td>
-                    <td>@u.RequestedByAd</td>
-                    <td>@u.Status</td>
-                    @*<td> 
-                        @if (u.Status != "Closed")
-                        {
-                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnCancelRequest_Click(u))">Cancel/Close</button>
-                        }
-                    </td>*@
-                </tr>
-            }
-
-        </tbody>
-    </table>
-    <Pager Paged="OnPaged" TotalSize="@fileRequests.count"></Pager>
-}
-else
-{
-    <div class="spinner spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-}
+    <FluentDataGrid Items="@fileRequests.AsQueryable()" TGridItem="DcFileRequest" Pagination="@requestPaginator">
+        <PropertyColumn Property="@(p => p.IdNo)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.RequestedOfficeId)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Reason)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.RequestedDate)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.GrantType)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Name)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Surname)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.RequestedByAd)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Status)" Sortable="true" />
+    </FluentDataGrid>
+    <FluentPaginator State="@requestPaginator" />
 
 @code {
 
-    PagedResult<DcFileRequest> fileRequests = new();
+    List<DcFileRequest> fileRequests = new();
     bool filterUser = false;
     bool filterOffice = true;
     string filterStatus = "";
@@ -143,13 +61,14 @@ else
     PieData piedata = new();
     PieData regiondata = new();
 
-    int page;
+    PaginationState requestPaginator = new PaginationState() { ItemsPerPage = 10 };
+
+    bool loading;
+
     int requestCount = 500;
 
     protected override async Task OnInitializedAsync()
     {
-
-        page = 1;
         await LoadRequests();
     }
     #region Requests
@@ -176,18 +95,20 @@ else
         filterReason = (string)e.Value!;
         await LoadRequests();
     }
-    protected Task LoadRequests()
+    protected async Task LoadRequests()
     {
-        fileRequests = db.GetFileRequests(filterUser, filterOffice, page, filterStatus, filterReason);
+        loading = true;
         piedata = db.GetRequestPieData();
         regiondata = db.GetRequestPieData(sessionservice.session.Office.RegionId);
-        return Task.CompletedTask;
+        fileRequests = await qdb.GetFileRequests(filterUser, filterOffice, filterStatus, filterReason);
+        loading = false;
+
     }
 
     protected void chkSelectAll(ChangeEventArgs e)
     {
         var selected = (bool)e.Value!;
-        foreach (DcFileRequest req in fileRequests.result.Where(r => r.Status == "TDWPicklist"))
+        foreach (DcFileRequest req in fileRequests.Where(r => r.Status == "TDWPicklist"))
         {
             req.isSelected = selected;
         }
@@ -216,37 +137,6 @@ else
 
         }
     }
-    //private List<SelectedRequest> GetSelectedRequests()
-    //{
-    //    List<SelectedRequest> selectedIds = new List<SelectedRequest>();
-    //    foreach (var row in fileRequests.result.Where(f => f.isSelected).ToList())
-    //    {
-    //        SelectedRequest sr = new SelectedRequest { GrantTypeName = row.GrantType, IDNo = row.IdNo, Requested_By_AD = row.RequestedByAd, GrantTypeId = row.GrantType };
-    //        selectedIds.Add(sr);
-    //    }
-    //    return selectedIds;
-    //}
 
-    //protected async Task btnCancelRequest_Click(DcFileRequest fr)
-    //{
-    //    try
-    //    {
-    //        throw new Exception("Function in development");
-    //        await db.ChangeFileRequestStatus(fr, "Closed");
-    //        await LoadRequests();
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        toast.ShowError(ex.Message);
-    //    }
-
-    //}
-
-    protected void OnPaged(int _page)
-    {
-        page = _page;
-        fileRequests = db.GetFileRequests(filterUser, filterOffice, page, filterStatus, filterReason);
-
-    }
     #endregion
 }

@@ -1,5 +1,6 @@
-﻿@typeparam TItem
-@inject IJSRuntime JS
+﻿@inject IJSRuntime JS
+@inject ReportDataService rs
+@inject SessionService sessionservice
 
 
 <h3>@Title</h3>
@@ -23,7 +24,7 @@
             </thead>
             <tbody>
 
-                @foreach (var u in pagedResult.result)
+                @foreach (var u in pagedResult)
                 {
                     <tr>
                         @foreach (var prop in props)
@@ -64,7 +65,6 @@
             </tbody>
         </table>
     </div>
-    <Pager TotalSize="pagedResult.count" Paged="OnPaged" PageSize="PageSize"></Pager>
 }
 else
 {
@@ -73,55 +73,35 @@ else
 
 @code {
     [Parameter]
-    public PagedResult<TItem> pagedResult { get; set; } = new PagedResult<TItem>();
-
-    [Parameter]
     public string? Title { get; set; }
 
-    [Parameter]
-    public EventCallback<int> Paged { get; set; }
+    List<CsvListItem> pagedResult = new();
 
-    [Parameter]
-    public EventCallback<string> OnDelete { get; set; }
+    List<PropertyInfo> props = new List<PropertyInfo>();
 
-    [Parameter]
-    public int PageSize { get; set; } = 12;
-
-    [Parameter]
-    public string ReportFolder { get; set; } = "";
-
-    IList<PropertyInfo> props = new List<PropertyInfo>();
-
-    int page;
     protected override void OnInitialized()
     {
-        page = 1;
-        if (pagedResult.result == null || !pagedResult.result.Any())
+        pagedResult = rs.GetFiles(sessionservice.session.Office.RegionCode, sessionservice.session.SamName);
+        if (!pagedResult.Any())
         {
             return;
         }
-        Type? myType = pagedResult.result.First()?.GetType();
+        Type? myType = pagedResult.First()?.GetType();
         if (myType == null) return;
         props = new List<PropertyInfo>(myType.GetProperties());
     }
     protected override void OnParametersSet()
     {
-        page = 1;
-        if (!pagedResult.result.Any()) return;
-        page = 1;
-        Type? myType = pagedResult.result.First()?.GetType();
+        if (!pagedResult.Any()) return;
+        Type? myType = pagedResult.First()?.GetType();
         if (myType == null) return;
         props = new List<PropertyInfo>(myType.GetProperties());
-    }
-    protected async Task OnPaged(int _page)
-    {
-        page = _page;
-        await Paged.InvokeAsync(page);
     }
 
     protected void btnDelete_Click(string fileName)
     {
-        OnDelete.InvokeAsync(fileName);
+        rs.DeleteReport(fileName);
+        pagedResult = rs.GetFiles(sessionservice.session.Office.RegionCode, sessionservice.session.SamName);
     }
 
     private Stream GetFileStream(string path)
@@ -129,23 +109,12 @@ else
         return File.OpenRead(path);
     }
 
-    private async Task DownloadFileFromStream(PropertyInfo pi,TItem? u)
+    private async Task DownloadFileFromStream(PropertyInfo pi,CsvListItem u)
     {
         try
         {
-
             var fileName = @pi.GetValue(u)?.ToString();
-
-
             await JS.InvokeVoidAsync("triggerFileDownload", fileName, $"/brmFiles/{fileName}");
-            //var path = ReportFolder + @pi.GetValue(u)?.ToString();
-            // var fileStream = GetFileStream(fileName);
-
-            // using (var streamRef = new DotNetStreamReference(stream: fileStream))
-            // {
-            //     await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
-
-            // }
         }
         catch(Exception ex)
         {

@@ -97,7 +97,7 @@
                         </thead>
                         <tbody>
 
-                            @foreach (QuarterDetail u in quarters)
+                            @foreach (Brm.Fluent.Components.Report.QuarterDetail u in quarters)
                             {
                                 <tr>
                                     <td style="cursor: pointer;font-size:12px;font-weight:bold;"><span class="@expandedClass" aria-hidden="true" @onclick="@(() => ExpandSummary(u))">@(u.IsExpanded ? "-" : "+")</span></td>
@@ -180,7 +180,7 @@
     string expandedClass = "";//"oi caret-bottom";
     string expandedText = "+";
 
-    List<QuarterDetail> quarters = new List<QuarterDetail>();
+    List<Brm.Fluent.Components.Report.QuarterDetail> quarters = new();
 
     protected override void OnInitialized()
     {
@@ -228,14 +228,14 @@
         IsDashboardLoaded = false;
     }
 
-    protected void ExpandSummary(QuarterDetail u)
+    protected void ExpandSummary(Brm.Fluent.Components.Report.QuarterDetail u)
     {
         u.IsExpanded = !u.IsExpanded;
        // expandedClass = u.IsExpanded ? "oi oi-caret-bottom" : "oi oi-caret-right";
         expandedText = u.IsExpanded ? "-" : "+";
     }
 
-    protected void Expand(MonthDetail u)
+    protected void Expand(Brm.Fluent.Components.Report.MonthDetail u)
     {
         u.IsExpanded = !u.IsExpanded;
        // expandedClass = u.IsExpanded ? "oi oi-caret-bottom" : "oi oi-caret-right";
