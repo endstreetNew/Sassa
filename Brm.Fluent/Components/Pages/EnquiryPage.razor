@@ -5,6 +5,7 @@
 @inject BRMDbService db
 @inject StaticService sservice
 @inject IDialogService dialogService
+@inject IJSRuntime Js
 
 <BrmPageTitle Title="Enquiry" Loading="loading"/>
 <FluentStack>
@@ -79,7 +80,8 @@
 
     protected void btnViewCover(string brmBarCode)
     {
-        nav.NavigateTo($"coversheet/{brmBarCode}");
+        //nav.NavigateTo($"coversheet/{brmBarCode}");
+        _ = Js.InvokeVoidAsync("open", $"coversheet/{brmBarCode}", "_blank");
     }
     protected async Task btnShowDetail(Enquiry en)
     {
