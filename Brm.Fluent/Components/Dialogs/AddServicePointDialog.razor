@@ -1,0 +1,68 @@
+﻿@using System.ComponentModel.DataAnnotations
+
+@inject StaticService staticService
+@inject SessionService session
+
+@implements IDialogContentComponent<DcFixedServicePoint>
+
+<EditForm EditContext="@_editContext" FormName="simple_register" >
+    
+<FluentStack Orientation="Orientation.Vertical">
+    <DataAnnotationsValidator />
+    <FluentTextField Placeholder="<Service Point name>" Value="@Content.ServicePointName" />
+    <FluentSelect TOption="DcLocalOffice"
+                  Items="@regionOffices"
+                      Id="appstatus-listbox"
+                      Width="240px"
+                      Height="250px"
+                      Placeholder="<Parent Office>"
+                      OptionValue="@(p => p.OfficeId)"
+                      OptionText="@(p => p.OfficeName)"
+                      @bind-Value="@Content.OfficeId" />
+    </FluentStack>
+    </EditForm>
+
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent"
+                  Disabled="@(!_editContext.Validate())"
+                  OnClick="@SaveAsync">
+        Save
+    </FluentButton>
+    <FluentButton Appearance="Appearance.Neutral"
+                  OnClick="@CancelAsync">
+        Cancel
+    </FluentButton>
+</FluentDialogFooter>
+
+@code
+{
+    private EditContext _editContext = default!;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    [Parameter]
+    public DcFixedServicePoint Content { get; set; } = default!;
+
+    protected List<DcLocalOffice> regionOffices = new();
+
+    protected override void OnInitialized()
+    {
+        _editContext = new EditContext(Content);
+        regionOffices = StaticDataService.LocalOffices.OrderBy(o => o.OfficeName).Where(lo => lo.RegionId == session.session.Office.RegionId).ToList();
+    }
+
+    private async Task SaveAsync()
+    {
+        if (_editContext.Validate())
+        {
+            await Dialog.CloseAsync(Content);
+        }
+    }
+
+    private async Task CancelAsync()
+    {
+        await Dialog.CancelAsync();
+    }
+
+}

@@ -23,15 +23,6 @@
                       OptionValue="@(p => p.Key.ToString())"
                       OptionText="@(p => p.Value)"
                       @bind-Value="@Content.CategoryTypeString" />
-@*         <FluentSelect TOption="DcStakeholder"
-                      Items="@StaticDataService.StakeHolders"
-                      Id="appstatus-listbox"
-                      Width="240px"
-                      Height="250px"
-                      Placeholder="<Stakeholder>"
-                      OptionValue="@(p => p.StakeholderId.ToString())"
-                      OptionText="@(p => p.Name)"
-                      @bind-Value="@Content.StakeHolder" /> *@
         <FluentSelect TOption="String"
                       Items="@StaticDataService.GrantTypes.Keys.ToList()"
                       Id="appstatus-listbox"

@@ -105,7 +105,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            bool repaired = await _dbService.RepairAltBoxSequence(boxNo);
+            //bool repaired = await _dbService.RepairAltBoxSequence(boxNo);
 
             var interim = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).AsNoTracking().ToListAsync();//OrderByDescending(f => f.UpdatedDate)
             return interim.OrderBy(f => f.UnqFileNo)

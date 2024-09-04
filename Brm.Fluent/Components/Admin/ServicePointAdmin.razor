@@ -4,9 +4,9 @@
 @inject SocpenService ss
 
 @using Sassa.Socpen.Data;
-@* @using Sassa.BRM.Components.Layout *@
 @layout NoLayout
 @inject IToastService toast
+@inject IDialogService dialogService
 
 <h5>BRM Fixed Service Point Admin</h5>
 
@@ -30,17 +30,12 @@
 </div>
 <div class="row">
     <div class="col" style="float:right;">
-        <button class="btn btn-primary active" @onclick="@(() => {IsAdding = !IsAdding;})">Add Service point</button>
+        <button class="btn btn-primary active" @onclick="@(() => AddServicePoint())">Add Service point</button>
     </div>
 </div>
 
 <div class="whiteArea">
-    @if(IsAdding)
-    {
-        <AddServicePoint RegionId="@regionId" Ok="OnOkClick" Cancel="OnOkClick"></AddServicePoint>
-    }
-    else
-    {
+
     @if (IsLoaded)
     {
         <div class="row">
@@ -85,7 +80,7 @@
                 <br/>
             </div>
             }
-            }
+
 </div>
 
 @code {
@@ -116,9 +111,25 @@
         IsLoaded = true;
     }
 
-    protected void OnOkClick()
+    protected async Task AddServicePoint()
     {
-        IsAdding = false;
+        DcFixedServicePoint request = new();
+
+        DialogParameters parameters = new()
+            {
+                Title = $"Service Point for {sessionservice.session.Office.RegionName}.",
+                SecondaryAction = "Cancel",
+                TrapFocus = true,
+                Modal = true,
+                PreventScroll = true
+            };
+        IDialogReference dialog = await dialogService.ShowDialogAsync<AddServicePointDialog>(request, parameters);
+        var result = await dialog.Result;
+        if (result.Cancelled || result.Data is null) return;
+        DcFixedServicePoint capturedWb = (result.Data as DcFixedServicePoint)!;
+        if (capturedWb == null) return; //huh?
+        await staticservice.CreateServicePoint(capturedWb);
+        toast.ShowSuccess("Service Point added");
     }
 
     private void OnValueChanged(ChangeEventArgs e, DcFixedServicePoint u)

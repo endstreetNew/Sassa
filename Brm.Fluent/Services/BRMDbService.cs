@@ -5,7 +5,6 @@ using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
 using Sassa.BRM.Models;
 using Sassa.BRM.ViewModels;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Text;
@@ -23,7 +22,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                var interim = await _context.DcFiles.Where(f => f.BrmBarcode == brmno).ToListAsync();
+                var interim = await _context.DcFiles.Where(f => f.BrmBarcode == brmno).Select(p => p.UnqFileNo).ToListAsync();
                 result = interim.Any();
             }
         }
@@ -622,56 +621,6 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
 
     }
 
-    public PagedResult<DcFileRequest> GetFileRequests(bool filterUser, bool filterOffice, int page, string statusFilter = "", string reasonFilter = "")
-    {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            PagedResult<DcFileRequest> result = new PagedResult<DcFileRequest>();
-            var query = _context.DcFileRequests.AsQueryable();
-
-            if (filterUser)
-            {
-                query = query.Where(r => r.RequestedByAd == _userSession.SamName);
-            }
-            if (filterOffice)
-            {
-                if (_userSession.Office.OfficeType == "RMC")
-                {
-                    query = query.Where(r => r.RegionId == _userSession.Office.RegionId);
-                }
-                else
-                {
-                    query = query.Where(r => r.RequestedOfficeId == _userSession.Office.OfficeId);
-                }
-            }
-            if (!string.IsNullOrEmpty(reasonFilter))
-            {
-                query = query.Where(r => r.ReqCategoryType.ToString() == reasonFilter);
-            }
-            if (!string.IsNullOrEmpty(statusFilter))
-            {
-                query = query.Where(r => r.Status == statusFilter);
-            }
-
-            result.count = query.Count();
-            //var reversed = query.AsEnumerable().Reverse();
-            result.result = query.AsEnumerable().OrderByDescending(d => d.RequestedDate).Skip((page - 1) * 12).Take(12).ToList();
-            foreach (var req in result.result)
-            {
-                _staticService.GetRequestCategoryTypes();
-                try
-                {
-                    req.Reason = StaticDataService.RequestCategoryTypes.Where(r => r.TypeId == req.ReqCategoryType).First().TypeDescr;
-                }
-                catch (Exception ex)
-                {
-                    var ss = ex.Message;
-                }
-            }
-            return result;
-        }
-    }
-
     /// <summary>
     /// Deprecated for now Compliant and NonCompliant status to be set by Kofax data
     /// </summary>
@@ -712,8 +661,13 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             {
                 query = query.Where(r => r.RegionId == _userSession.Office.RegionId);
             }
-
-            result.count = query.Where(r => r.RegionId == _userSession.Office.RegionId).Count();
+            //The query uses a row limiting operator ('Skip' / 'Take') without an 'OrderBy' operator. This may lead to unpredictable results.
+            //If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
+            //The query uses the 'Distinct' operator after applying an ordering.
+            //If there are any row limiting operation used before 'Distinct' and after ordering then ordering will be used for it.
+            //Ordering(s) will be erased after 'Distinct' and results afterwards would be unordered.
+            //Orderby => Distinct
+      result.count = query.Where(r => r.RegionId == _userSession.Office.RegionId).Count();
             result.result = await query.Where(r => r.RegionId == _userSession.Office.RegionId).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
             return result;
         }
