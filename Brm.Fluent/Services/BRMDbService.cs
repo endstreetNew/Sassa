@@ -17,13 +17,11 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     #region Brm Capture
     public async Task<bool> checkBRMExists(string brmno)
     {
-        bool result = true;
         try
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                var interim = await _context.DcFiles.Where(f => f.BrmBarcode == brmno).Select(p => p.UnqFileNo).ToListAsync();
-                result = interim.Any();
+                return await _context.DcFiles.Where(f => f.BrmBarcode == brmno).CountAsync() > 0;
             }
         }
         catch (Exception ex)
@@ -31,7 +29,6 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             return true;
             //throw new Exception($"Error checking for duplicate: {ex.Message}");
         }
-        return result;
     }
     public async Task EditBarCode(Application brm, string barCode)
     {
@@ -147,7 +144,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            var interim = await _context.DcFiles.Where(b => b.TdwBoxno == boxNo && b.BoxLocked == 1).ToListAsync();
+            var interim = await _context.DcFiles.Where(b => b.TdwBoxno == boxNo && b.BoxLocked == 1).Select(f => f.BoxLocked).ToListAsync();
             return interim.Any();
         }
     }
@@ -156,11 +153,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            var files = _context.DcFiles.Where(b => b.BrmBarcode == brmBarcode);
-            foreach (var file in files)
-            {
-                file.TdwBoxno = null;
-            }
+            await _context.DcFiles.Where(b => b.BrmBarcode == brmBarcode).ForEachAsync(f => { f.TdwBoxno = null; });
             await _context.SaveChangesAsync();
         }
     }

@@ -42,8 +42,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                     throw new Exception("Manual batch not set for this office.");
                 }
 
-                var result =  await _context.DcFiles.Where(f => f.BrmBarcode == application.Brm_BarCode).Select(b => b.BrmBarcode).ToListAsync();
-                if(result.Any())
+                if (await _context.DcFiles.Where(f => f.BrmBarcode == application.Brm_BarCode).CountAsync() > 0)
                 {
                     throw new Exception("Duplicate Barcode.");
                 }
@@ -57,11 +56,11 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         return await CreateBRM(application, reason);
     }
 
-    public bool checkBRMExists(string brmno)
+    public async Task<bool> checkBRMExists(string brmno)
     {
         using (var _context = dbContextFactory.CreateDbContext())
         {
-            return _context.DcFiles.Where(f => f.BrmBarcode == brmno).Select(b => b.BrmBarcode).ToList().Any();
+            return await _context.DcFiles.Where(f => f.BrmBarcode == brmno).CountAsync() >0;
         }
         //return _context.DcFiles.Where(k => k.BrmBarcode.ToLower() == brmno.ToLower()).Any();
     }

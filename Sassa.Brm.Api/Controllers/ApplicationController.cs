@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sassa.Brm.Api.Helpers;
-using Sassa.BRM.Models;
 using Sassa.BRM.Api.Services;
+using Sassa.BRM.Models;
 //using System.ServiceModel.Channels;
 
 namespace Sassa.BRM.Controller

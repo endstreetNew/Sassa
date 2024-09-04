@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sassa.BRM.Models;
-using Sassa.BRM.Api.Services;
 using Sassa.Brm.Common.Services;
+using Sassa.BRM.Api.Services;
+using Sassa.BRM.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);

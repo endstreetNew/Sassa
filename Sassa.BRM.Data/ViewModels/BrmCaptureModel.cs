@@ -1,10 +1,6 @@
 ﻿using Sassa.BRM.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sassa.BRM.ViewModels
 {
@@ -16,7 +12,7 @@ namespace Sassa.BRM.ViewModels
         }
         [Required]
         public ApplicationType ApplicationType { get; set; } = ApplicationType.Application;
-        [Required] 
+        [Required]
         public string Name { get; set; } = "";
         [Required]
         public string Surname { get; set; } = "";

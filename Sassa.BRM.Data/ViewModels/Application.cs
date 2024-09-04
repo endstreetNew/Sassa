@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Sassa.BRM.Models
 {
@@ -10,14 +9,14 @@ namespace Sassa.BRM.Models
         public string Id { get; set; }
         //Change to accomodate invalid child ids from socpen
         private string child_id;
-        public string ChildId 
+        public string ChildId
         {
-            get 
+            get
             {
                 if (!"6C59".Contains(GrantType)) return null;
-                return child_id; 
+                return child_id;
             }
-            set { child_id = value == null ? null : value.Trim().PadLeft(13, '0');}
+            set { child_id = value == null ? null : value.Trim().PadLeft(13, '0'); }
         }
         //-----------------------------------------------
         public string Name { get; set; }
@@ -139,7 +138,7 @@ namespace Sassa.BRM.Models
             {
                 if (!AppStatus.StartsWith("LC-"))
                 {
-                   AppStatus = "LC-" + AppStatus;
+                    AppStatus = "LC-" + AppStatus;
                 }
             }
             return "Valid";

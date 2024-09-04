@@ -23,9 +23,9 @@ namespace Sassa.BRM.Models
         public string Description { get; set; }
 
         [Required]
-        public string CategoryString 
+        public string CategoryString
         {
-            get {return Category.ToString(); }
+            get { return Category.ToString(); }
             set
             {
                 Category = decimal.Parse(value);

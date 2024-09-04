@@ -10,7 +10,8 @@ namespace Sassa.BRM.ViewModels
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
         //Workaround for stupid component
-        public DateTime? FromNullDate { 
+        public DateTime? FromNullDate
+        {
             set
             {
                 if (value.HasValue)
