@@ -1,13 +1,14 @@
 ﻿<div class="widgetTitle">
-    <FluentStack Orientation="Orientation.Horizontal">
+<FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
         <h5>@Title</h5>
         @if (Loading)
         {
             <FluentSpacer />
             <FluentProgressRing></FluentProgressRing>
         }
-    </FluentStack>
+</FluentStack>
 </div>
+
 @code {
     [Parameter]
     public string Title { get; set; } = "";

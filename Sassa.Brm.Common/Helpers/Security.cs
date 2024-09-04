@@ -59,7 +59,8 @@ namespace Sassa.Brm.Common.Helpers
             string? userName = cp.Identity!.Name!.TrimStart(@"SASSA\\".ToCharArray());
             if (string.IsNullOrEmpty(userName)) throw new Exception("Authentication failed.");
             PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
-            UserPrincipal user = UserPrincipal.FindByIdentity(ctx, userName);
+            UserPrincipal user = UserPrincipal.FindByIdentity(ctx, IdentityType.SamAccountName, userName);
+            if(user is null) throw new Exception("You Do not have access to this server.");
             UserSession _session = new UserSession(user.Name, user.Surname, user.SamAccountName, user.EmailAddress);
 
             //Get user Roles

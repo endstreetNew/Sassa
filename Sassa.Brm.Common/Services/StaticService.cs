@@ -391,6 +391,17 @@ namespace Sassa.Brm.Common.Services
                       select r).ToDictionary(i => i.TypeId.ToString(), i => i.TypeDescr);
 
         }
+        public Dictionary<decimal, string> GetDecimalRequestCategoryTypes(string CategoryId)
+        {
+            if (string.IsNullOrEmpty(CategoryId)) return new Dictionary<decimal, string>();
+            decimal.TryParse(CategoryId, out decimal catid);
+            return (from r in StaticDataService.RequestCategoryTypes!
+                    join c in StaticDataService.RequestCategoryTypeLinks!
+                           on r.TypeId equals c.TypeId
+                    where c.CategoryId == catid
+                    select r).ToDictionary(i => i.TypeId, i => i.TypeDescr);
+
+        }
         public Dictionary<string, string> GetStakeHolders()
         {
             var result = StaticDataService.StakeHolders!.Distinct().ToDictionary(i => i.StakeholderId.ToString(), i => i.Name + " " + i.Surname);

@@ -1,27 +1,18 @@
 ﻿@if (PieData != null)
 {
-@*     <WidgetTitle title="@($"{PieData.ChartName (@PieData.TotalItems)} items.")"/> *@
-    <div class="row">
-        <div class="col">
-            <h5 class="card-title">@PieData.ChartName (@PieData.TotalItems) items.</h5>
-        </div>
-    </div>
-    <div class="row" >
-        <div class="col card border-0">
-            <div class="card-body">
-                <svg style="display:block; margin:auto; vertical-align:central;" height="@height" width="@width" viewBox="0, 0, 2000, 2000">
-                    @foreach (var p in PieData.Segments)
-                    {
-                        //todo:changed 100 to totalitems
-                        @(RotAngle = RotAngle + (((p.Percent / 100) * 360.0) - 90))
-                        <path d="@GenerateArc(1000, 1000, 800, p.Percent)" fill="@p.Color" transform="rotate(@RotAngle.ToString().Replace(",","."),1000,1000)"></path>
-                        @(RotAngle += 90)
-                    }
-                </svg>
-            </div>
-        </div>
-        <div class=" col card border-0" style="display:block; margin:auto; vertical-align:central;" height="@height" width="@width">
-            <div class="card-body">
+    <FluentStack Orientation="Orientation.Vertical">
+        <WidgetTitle title="@($"{PieData.ChartName}({@PieData.TotalItems}) items.")" />
+        <FluentStack Orientation="Orientation.Horizontal">
+            <svg style="display:block; margin:auto; vertical-align:central;" height="@height" width="@width" viewBox="0, 0, 2000, 2000">
+                @foreach (var p in PieData.Segments)
+                {
+                    //todo:changed 100 to totalitems
+                    @(RotAngle = RotAngle + (((p.Percent / 100) * 360.0) - 90))
+                    <path d="@GenerateArc(1000, 1000, 800, p.Percent)" fill="@p.Color" transform="rotate(@RotAngle.ToString().Replace(",","."),1000,1000)"></path>
+                    @(RotAngle += 90)
+                }
+            </svg>
+            <FluentStack Orientation="Orientation.Vertical">
                 <h6 class="card-title">Legend:</h6>
                 <ul style="list-style-type: none;">
                     @foreach (var p in PieData.Segments)
@@ -29,9 +20,9 @@
                         <li><span class="badge badge-pill" style="background-color: @p.Color;height:15px; width:15px;">&nbsp;</span><small>&nbsp;@p.Name&nbsp;(@((int)p.Percent)%)</small></li>
                     }
                 </ul>
-            </div>
-        </div>
-    </div>
+            </FluentStack>
+        </FluentStack>
+    </FluentStack>
 
 }
 

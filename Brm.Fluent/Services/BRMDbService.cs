@@ -29,7 +29,8 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
         catch (Exception ex)
         {
-            throw new Exception($"Error checking for duplicate: {ex.Message}");
+            return true;
+            //throw new Exception($"Error checking for duplicate: {ex.Message}");
         }
         return result;
     }
@@ -123,70 +124,6 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     #endregion
 
     #region Boxing and Re-Boxing
-    public async Task<PagedResult<ReboxListItem>> GetAllFilesByBoxNo(string boxNo, int page)
-    {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            bool repaired = await RepairAltBoxSequence(boxNo);
-
-            PagedResult<ReboxListItem> result = new PagedResult<ReboxListItem>();
-            result.count = _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).Count();
-
-            var interim = _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).OrderByDescending(f => f.UpdatedDate).ToList();
-            result.result = interim.Skip((page - 1) * 20).Take(20).OrderBy(f => f.UnqFileNo)
-                        .Select(f => new ReboxListItem
-                        {
-                            ClmNo = f.UnqFileNo,
-                            BrmNo = f.BrmBarcode,
-                            IdNo = f.ApplicantNo,
-                            FullName = f.FullName,
-                            GrantType = StaticDataService.GrantTypes[f.GrantType],
-                            BoxNo = boxNo,
-                            AltBoxNo = f.AltBoxNo,
-                            Scanned = f.ScanDatetime != null,
-                            MiniBox = (int?)f.MiniBoxno,
-                            RegType = f.ApplicationStatus,
-                            TdwBatch = (int)f.TdwBatch
-                        }).ToList();
-            return result;
-        }
-    }
-    public async Task<PagedResult<ReboxListItem>> SearchBox(string boxNo, int page, string searchText)
-    {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            PagedResult<ReboxListItem> result = new PagedResult<ReboxListItem>();
-            searchText = searchText.ToUpper();
-            result.count = _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo.Contains(searchText) || bn.BrmBarcode.Contains(searchText))).Count();
-            if (result.count == 0) throw new Exception("No result!");
-            result.result = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo.Contains(searchText) || bn.BrmBarcode.Contains(searchText))).OrderByDescending(f => f.UpdatedDate).Skip((page - 1) * 20).Take(20).OrderBy(f => f.UnqFileNo).AsNoTracking()
-                        .Select(f => new ReboxListItem
-                        {
-                            ClmNo = f.UnqFileNo,
-                            BrmNo = f.BrmBarcode,
-                            IdNo = f.ApplicantNo,
-                            FullName = f.FullName,
-                            GrantType = StaticDataService.GrantTypes[f.GrantType],
-                            BoxNo = boxNo,
-                            AltBoxNo = f.AltBoxNo,
-                            Scanned = f.ScanDatetime != null,
-                            MiniBox = (int?)f.MiniBoxno,
-                            TdwBatch = (int)f.TdwBatch
-                        }).ToListAsync();
-            return result;
-        }
-    }
-
-    //public async Task LockBox(string boxNo)
-    //{
-    //    using (var _context = _contextFactory.CreateDbContext())
-    //    {
-    //        List<DcFile> boxfiles = await _context.DcFiles.Where(b => b.TdwBoxno == boxNo).ToListAsync();
-    //        boxfiles.ToList().ForEach(f => { f.TdwBatch = 0; f.BoxLocked = 0; });
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
-
     /// <summary>
     /// TDW Bat submit reboxing change
     /// </summary>
@@ -236,7 +173,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         {
             if (notScanned)
             {
-                var interimNs = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && bn.ScanDatetime == null).OrderBy(f => f.UnqFileNo).AsNoTracking().ToListAsync();
+                var interimNs = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && bn.ScanDatetime == null).AsNoTracking().ToListAsync();
                 return interimNs.Select(f => new ReboxListItem
                 {
                     ClmNo = f.UnqFileNo,
@@ -249,7 +186,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                     Scanned = f.ScanDatetime != null
                 }).ToList();
             }
-            var interim = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).OrderBy(f => f.UnqFileNo).AsNoTracking().ToListAsync();
+            var interim = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).AsNoTracking().ToListAsync();
             return interim.Select(f => new ReboxListItem
             {
                 ClmNo = f.UnqFileNo,
@@ -549,83 +486,73 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
 
     #region File Requests
 
-    public async Task AddFileRequest(RequestModel fr)
+    public async Task<int> AddFileRequest(RequestModel fr)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
+            DcFileRequest req; 
             try
             {
-
+                //Get all the tdw Grants
+                List<TdwFileLocation> tdws = await _context.TdwFileLocations.Where(l => l.Description == fr.IdNo).GroupBy(p => new { p.Description, p.GrantType })
+                .Select(g => g.First()).AsNoTracking().ToListAsync();
+                //Get the existing requests
+                var requests = await _context.DcFileRequests.Where(r => r.IdNo == fr.IdNo).ToListAsync();
+                //successCount
+                int count = 0;
                 if (string.IsNullOrEmpty(fr.GrantType))
                 {
-                    foreach (string granttype in StaticDataService.GrantTypes.Keys) //All Grant types
+                    //All Grant types
+                    foreach (var tdw in tdws) 
                     {
-                        fr.GrantType = granttype;
-                        await AddValidRequest(fr);
+                        fr.GrantType = tdw.GrantType;
+                        if (requests.Where(r => r.GrantType == fr.GrantType).Any())
+                        {
+                            req = requests.Where(r => r.GrantType == fr.GrantType).First();
+                        }
+                        else
+                        { 
+                            req = new DcFileRequest() { IdNo = fr.IdNo, GrantType = fr.GrantType, ReqCategoryDetail = fr.Description, ReqCategory = fr.Category, ReqCategoryType = fr.CategoryType, Stakeholder = fr.StakeHolder };
+                            _context.DcFileRequests.Add(req);
+                        }
+                        await AddRequestFromTDW(_context,tdw, req);
+                        count++;
                     }
-                    return;
+                    return count;
                 }
-                await AddValidRequest(fr);
-            }
-            catch //(Exception ex)
-            {
-                throw;
-            }
-
-        }
-    }
-    public async Task AddValidRequest(RequestModel fr)
-    {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            try
-            {
-                var requests = await _context.DcFileRequests.Where(r => r.IdNo == fr.IdNo && r.GrantType == fr.GrantType && r.Status != "Compliant" && r.Status != "NonCompliant").ToListAsync();
-                if (requests.Any())
+                if (tdws.Where(t => t.GrantType == fr.GrantType).Any())
                 {
-                    //throw new Exception("An in progress request exists. Please finalize the existing request first.");
-                    return;
+                    var tdw = tdws.Where(t => t.GrantType == fr.GrantType).First();
+                        if (requests.Where(r => r.GrantType == fr.GrantType).Any())
+                        {
+                            req = requests.Where(r => r.GrantType == fr.GrantType).First();
+                        }
+                        else
+                        { 
+                            req = new DcFileRequest() { IdNo = fr.IdNo, GrantType = fr.GrantType, ReqCategoryDetail = fr.Description, ReqCategory = fr.Category, ReqCategoryType = fr.CategoryType, Stakeholder = fr.StakeHolder };
+                            _context.DcFileRequests.Add(req);
+                        }
+                        await AddRequestFromTDW(_context,tdw, req);
+                    count++;
+                    
                 }
-                List<TdwFileLocation> tdws = await _context.TdwFileLocations.Where(l => l.Description == fr.IdNo).AsNoTracking().ToListAsync();
-                foreach (TdwFileLocation tdw in tdws.Where(t => t.GrantType == fr.GrantType))
-                {
-                    await AddRequestFromTDW(tdw, fr);
-                }
+                return count;
             }
-            catch //(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
         }
 
     }
-    private async Task AddRequestFromTDW(TdwFileLocation tdw, RequestModel fr)
+ 
+    private async Task AddRequestFromTDW(ModelContext context,TdwFileLocation tdw, DcFileRequest req)
     {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            var reqs = await _context.DcFileRequests.Where(r => r.IdNo == tdw.Description && r.GrantType == tdw.GrantType).ToListAsync();
-            DcFileRequest req;
-            if (!reqs.Any())
-            {
-                _context.ChangeTracker.Clear();
-                req = new DcFileRequest();
-                req.IdNo = fr.IdNo;
-                req.GrantType = tdw.GrantType;
-                _context.DcFileRequests.Add(req);
-            }
-            else
-            {
-                req = reqs.First();
-            }
-            //req.AppDate
-            req.Stakeholder = decimal.Parse(fr.Category);
-            req.ReqCategory = decimal.Parse(fr.Category);
-            req.ReqCategoryType = decimal.Parse(fr.CategoryType);
-            req.ReqCategoryDetail = fr.Description;
-            req.IdNo = tdw.Description;
+
             if (!string.IsNullOrEmpty(tdw.FilefolderAltcode))
             {
                 req.MisFileNo = tdw.FilefolderAltcode.Length == 12 ? "" : tdw.FilefolderAltcode;
+                req.UnqFileNo = tdw.FilefolderAltcode.Length == 12 ? tdw.FilefolderAltcode : "" ;
             }
             req.BrmBarcode = tdw.FilefolderCode;
             req.GrantType = tdw.GrantType;
@@ -636,8 +563,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             req.RegionId = _userSession.Office.RegionId;
             req.Name = tdw.Name;//Could query Socpen for the name and surname
             req.Status = "TDWPicklist";
-            await _context.SaveChangesAsync();
-        }
+            await context.SaveChangesAsync();
     }
     public async Task<string> GetSearchId(SearchModel sm)
     {
@@ -1485,97 +1411,6 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
 
-    /// <summary>
-    /// LO -> Open|Closed|Transport RMC => Received|Delivered
-    /// </summary>
-    /// <param name="listIsFor"></param>
-    /// <param name="status"></param>
-    /// <returns></returns>
-    public async Task<PagedResult<DcBatch>> GetBatches(string status, int page)
-    {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            PagedResult<DcBatch> result = new PagedResult<DcBatch>();
-            if (_userSession.IsRmc())
-            {
-                if (status == "" || status == "RMCBatch")
-                {
-                    result.count = _context.DcBatches.Where(b => b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _userSession.Office.OfficeId).Count();
-                    result.result = await _context.DcBatches.Where(b => b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _userSession.Office.OfficeId).OrderByDescending(b => b.UpdatedDate).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
-                }
-                else
-                {
-                    List<string> regionOffices = _staticService.GetOfficeIds(_userSession.Office.RegionId);
-                    result.count = _context.DcBatches.Where(b => b.BatchStatus == status && b.NoOfFiles > 0 && regionOffices.Contains(b.OfficeId)).Count();
-                    result.result = await _context.DcBatches.Where(b => b.BatchStatus == status && b.NoOfFiles > 0 && regionOffices.Contains(b.OfficeId)).OrderByDescending(b => b.UpdatedDate).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
-                }
-            }
-            else
-            {
-                if (status != "")
-                {
-                    result.count = _context.DcBatches.Where(b => b.BatchStatus == status && b.OfficeId == _userSession.Office.OfficeId).Count();
-                    result.result = await _context.DcBatches.Where(b => b.BatchStatus == status && b.OfficeId == _userSession.Office.OfficeId).OrderByDescending(b => b.UpdatedDate).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
-                }
-                else
-                {
-                    result.count = _context.DcBatches.Where(b => b.OfficeId == _userSession.Office.OfficeId).Count();
-                    result.result = await _context.DcBatches.Where(b => b.OfficeId == _userSession.Office.OfficeId).OrderByDescending(b => b.UpdatedDate).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
-                }
-            }
-
-            return result;
-        }
-    }
-
-
-    //The query uses a row limiting operator ('Skip'/'Take') without an 'OrderBy' operator.
-    //This may lead to unpredictable results.
-    //If the 'Distinct' operator is used after 'OrderBy', then make sure to use the 'OrderBy' operator after 'Distinct' as the ordering would otherwise get erased.
-    public async Task<PagedResult<DcBatch>> FindBatch(decimal searchBatch, int page = 1)
-    {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            PagedResult<DcBatch> result = new PagedResult<DcBatch>();
-            if (_userSession.IsRmc())
-            {
-                result.count = _context.DcBatches.Where(b => b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _userSession.Office.OfficeId && b.BatchNo == searchBatch).Count();
-                result.result = await _context.DcBatches.Where(b => b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _userSession.Office.OfficeId && b.BatchNo == searchBatch).OrderByDescending(b => b.UpdatedDate).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
-            }
-            else
-            {
-                result.count = _context.DcBatches.Where(b => b.OfficeId == _userSession.Office.OfficeId).Count();
-                result.result = await _context.DcBatches.Where(b => b.OfficeId == _userSession.Office.OfficeId && b.BatchNo == searchBatch).OrderByDescending(b => b.UpdatedDate).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
-            }
-
-            return result;
-        }
-    }
-
-
-
-    public async Task<PagedResult<DcBatch>> GetMyBatches(bool myBatches, int page = 1)
-    {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            PagedResult<DcBatch> result = new PagedResult<DcBatch>();
-
-            if (myBatches)
-            {
-                result.count = _context.DcBatches.Where(b => b.UpdatedByAd == _userSession.SamName).Count();
-                result.result = await _context.DcBatches.Where(b => b.UpdatedByAd == _userSession.SamName).OrderByDescending(b => b.UpdatedDate).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
-            }
-            else
-            {
-                result.count = _context.DcBatches.Where(b => b.OfficeId == _userSession.Office.OfficeId).Count();
-                result.result = await _context.DcBatches.Where(b => b.OfficeId == _userSession.Office.OfficeId).OrderByDescending(b => b.UpdatedDate).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
-            }
-
-            return result;
-        }
-    }
-
-
     public async Task SetBatchCount(decimal? batchId)
     {
         using (var _context = _contextFactory.CreateDbContext())
@@ -1723,7 +1558,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             //List<DcFile> files = await _context.DcFiles.Where(f => f.BatchNo == batchId).ToListAsync();
             PagedResult<DcFile> result = new PagedResult<DcFile>();
             result.count = _context.DcFiles.Where(f => f.BatchNo == batchId).Count();
-            result.result = await _context.DcFiles.OrderByDescending(f => f.UpdatedDate).Where(f => f.BatchNo == batchId).Skip((page - 1) * 12).Take(12).ToListAsync();
+            result.result = await _context.DcFiles.Where(f => f.BatchNo == batchId).Skip((page - 1) * 12).Take(12).ToListAsync();
             foreach (var file in result.result)
             {
                 var merge = await _context.DcMerges.FirstOrDefaultAsync(m => m.BrmBarcode == file.BrmBarcode);
@@ -2405,7 +2240,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         using (var _context = _contextFactory.CreateDbContext())
         {
             result.count = _context.DcExclusionBatches.Where(p => p.ExclusionYear == year).Count();
-            result.result = await _context.DcExclusionBatches.Where(p => p.ExclusionYear == year).OrderByDescending(d => d.CreatedDate).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
+            result.result = await _context.DcExclusionBatches.Where(p => p.ExclusionYear == year).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
             return result;
             //using (Entities context = new Entities())
             //{
@@ -2451,7 +2286,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         using (var _context = _contextFactory.CreateDbContext())
         {
             result.count = _context.DcExclusionBatches.Where(p => p.ExclusionYear == year && !string.IsNullOrEmpty(p.ApprovedBy)).Count();
-            result.result = await _context.DcExclusionBatches.Where(p => p.ExclusionYear == year && !string.IsNullOrEmpty(p.ApprovedBy)).OrderByDescending(e => e.CreatedDate).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
+            result.result = await _context.DcExclusionBatches.Where(p => p.ExclusionYear == year && !string.IsNullOrEmpty(p.ApprovedBy)).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
             return result;
         }
     }

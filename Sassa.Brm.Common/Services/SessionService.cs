@@ -14,7 +14,8 @@ public class SessionService(StaticService _staticservice,AuthenticationStateProv
         {
             if (!_session.IsLoggedIn())
             {
-                GetUserSession().Wait(); 
+                try { GetUserSession().Wait(); }
+                catch {}
             }
             return _session;
         } 

@@ -1,12 +1,12 @@
 ﻿<div class="pageTitle">
-    <FluentStack Orientation="Orientation.Horizontal">
+<FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
         <h3>@Title</h3>
         @if (Loading)
         {
-            <FluentSpacer/>
+            <FluentSpacer />
             <FluentProgressRing></FluentProgressRing>
         }
-    </FluentStack>
+</FluentStack>
 </div>
 @code {
     [Parameter]

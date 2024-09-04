@@ -624,9 +624,9 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 req = reqs.First();
             }
             //req.AppDate
-            req.Stakeholder = decimal.Parse(fr.Category);
-            req.ReqCategory = decimal.Parse(fr.Category);
-            req.ReqCategoryType = decimal.Parse(fr.CategoryType);
+            req.Stakeholder = fr.Category;
+            req.ReqCategory = fr.Category;
+            req.ReqCategoryType = fr.CategoryType;
             req.ReqCategoryDetail = fr.Description;
             req.IdNo = tdw.Description;
             if (!string.IsNullOrEmpty(tdw.FilefolderAltcode))

@@ -11,21 +11,21 @@
                 <span class="input-group-text">Request Category</span>
                 <select class="form-select" @bind="@fr.Category">
                     @*<option value="" selected>select...</option>*@
-                    @foreach (var grant in sservice.GetRequestCategories())
+                    @foreach (var grant in StaticDataService.RequestCategories)
                     {
-                        <option value=@grant.Key>@grant.Value</option>
+                        <option value=@grant.CategoryId>@grant.CategoryDescr</option>
                     }
                 </select>
             </div>
             <div class="input-group mb-1">
                 <span class="input-group-text">Stakeholder</span>
-                <text class="form-control">@sservice.GetStakeHolders()[fr.Category]</text>
+                <text class="form-control">@(StaticDataService.StakeHolders.Where(f => f.DepartmentId == fr.Category).FirstOrDefault() == null ? "" : StaticDataService.StakeHolders.Where(f => f.DepartmentId == fr.Category).FirstOrDefault()!.Name)</text>
             </div>
             <div class="input-group mb-1">
                 <span class="input-group-text">Request Reason</span>
                 <select class="form-select" @bind="@fr.CategoryType">
                     <option value="" selected>select...</option>
-                    @foreach (var item in sservice.GetRequestCategoryTypes(fr.Category))
+                    @foreach (var item in sservice.GetRequestCategoryTypes(fr.CategoryString))
                     {
                         <option value=@item.Key>@item.Value</option>
                     }
@@ -61,11 +61,10 @@
     [Parameter]
     public Dictionary<string, string> grantTypes { get; set; } = new();
 
-    protected RequestModel? fr;
+    protected RequestModel fr = new();
 
     protected override void OnInitialized()
     {
-        fr = new RequestModel();
         fr.IdNo = IdNo;
     }
     protected async Task OnModalOk()
@@ -73,7 +72,7 @@
         try
         {
             Validate();
-            fr!.StakeHolder = sservice.GetStakeHolders()[fr.Category];
+            fr.StakeHolder = StaticDataService.StakeHolders.Where(s => s.DepartmentId == fr.Category).First().StakeholderId;
             await db.AddFileRequest(fr);
             toast.Success("Request processed");
             OnModalCancel();
@@ -91,7 +90,7 @@
 
     private void Validate()
     {
-        if (string.IsNullOrEmpty(fr!.Category) || string.IsNullOrEmpty(fr!.CategoryType) )//|| string.IsNullOrEmpty(fr.Description))
+        if (fr.Category == 0 || fr.CategoryType==0 )//|| string.IsNullOrEmpty(fr.Description))
         {
             throw new Exception("Please complete required fields.");
         }

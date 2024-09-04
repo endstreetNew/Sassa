@@ -2,62 +2,52 @@
 @inject CSService cs
 @inject IToastService toast
 @inject IWebHostEnvironment _env
+@inject StaticService sservice
+@inject IDialogService dialogService
 
-@if (showRequestModal)
+@* @if (showRequestModal)
 {
     <FileRequestModal IdNo="@sm.IdNo" CloseModal="OnCloseModal" grantTypes="@Tdwgrants"></FileRequestModal>
-}
-
-<div style="padding: 10px 0 5px 0;">
-    <div style="display: table-row;">
-        <div id="divSearchID" style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-            <input class="form-control" placeholder="Enter ApplicantId here..." @bind="sm.IdNo" />
-        </div>
-        <div id="divSearchBRM" style="vertical-align: bottom; display: table-cell; padding: 0 5px 0 5px;">
-            <input class="form-control" placeholder="Enter BRM Barcode here..." @bind="sm.BrmNo" />
-        </div>
-        <div id="divSearchSRD" style="vertical-align: bottom; display: table-cell; padding: 0 5px 0 5px;">
-            <input class="form-control" placeholder="Enter SRD here..." @bind="sm.SrdNo" />
-        </div>
-        <div id="divSearchCLM" style="vertical-align: bottom; display: table-cell; padding: 0 5px 0 5px;">
-            <input class="form-control" placeholder="Enter CLM No here..." @bind="sm.ClmNo" />
-        </div>
-        <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-            <button type="button" class="btn btn-primary btn-sm form-control" @onclick="@(async () => await btnSearch_Click())"><span class="oi oi-magnifying-glass" aria-hidden="true"></span></button>
-        </div>
-    </div>
-</div>
+} *@
+<FluentStack>
+    <FluentTextField @bind-Value="sm.IdNo" Placeholder="<Enter Id>" />
+    <FluentTextField @bind-Value="sm.BrmNo" Placeholder="<Enter Brm Barcode>" />
+    <FluentTextField @bind-Value="sm.SrdNo" Placeholder="<Enter Srd No>" />
+    <FluentTextField @bind-Value="sm.ClmNo" Placeholder="<Enter Claim No>" />
+    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await btnSearch_Click())"></FluentButton>
+</FluentStack>
 
 @if (showpreview)
 {
-    <div class="fileTree">
-        <div role="toolbar" class="input-group mb-6">
-            <button @onclick="@(() => { showpreview = false; })" class="btn btn-primary btn-sm" type="button">Back</button>
-            <span class="input-group-text">  </span>
-            <button class="btn btn-secondary btn-sm" @onclick="FirstPage"><span class="oi oi-media-skip-backward"></span></button>
-            <button class="btn btn-secondary btn-sm" @onclick="PreviousPage"><span class="oi oi-media-step-backward"></span></button>
-            <span class="input-group-text">  </span>
-            <button class="btn btn-secondary btn-sm" @onclick="NextPage"><span class="oi oi-media-step-forward"></span></button>
-            <button class="btn btn-secondary btn-sm" @onclick="LastPage"><span class="oi oi-media-skip-forward"></span></button>
-        </div>
+
+    <FluentStack Orientation="Orientation.Vertical">
+        <FluentStack Orientation="Orientation.Horizontal">
+            <FluentButton Appearance="Appearance.Outline" OnClick="@(() => { showpreview = false; })">Back</FluentButton>
+            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Icons.Regular.Size16.ArrowLeft())" OnClick="FirstPage"></FluentButton>
+            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Icons.Regular.Size16.ArrowPrevious())" OnClick="PreviousPage"></FluentButton>
+            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Icons.Regular.Size16.ArrowNext())" OnClick="NextPage"></FluentButton>
+            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Icons.Regular.Size16.ArrowRight())" OnClick="LastPage"></FluentButton>
+            <FluentSpacer/>
+        </FluentStack>
         <hr />
         <embed src="CSImages/@viewSource" style="width:100%" height="800" type="application/pdf" />
-    </div>
+    </FluentStack>
 }
 else
 {
-    <div class="fileTree">
-        <h5>Documents</h5>
-        <hr />
+    <FluentStack Orientation="Orientation.Vertical">
+        <WidgetTitle Title="Documents"/>
         @if (node != null)
         {
 
             <PdfBrowser Node="node" Preview="OnPreview"></PdfBrowser>
 
         }
-    </div>
-    <button type="button" class="btn btn-primary btn-sm" @onclick="btnRequest_Click">Request Physical file(s)</button>
-    <button type="button" class="btn btn-primary btn-sm" @onclick="@(async () => await btnSearch_Click())">Refresh</button>
+    <FluentStack Orientation="Orientation.Horizontal">
+            <FluentButton Appearance="Appearance.Accent" OnClick="btnRequest_Click">Request Physical file(s)</FluentButton>
+            <FluentButton Appearance="Appearance.Accent" OnClick="@(async () => await btnSearch_Click())">Refresh</FluentButton>
+    </FluentStack>
+    </FluentStack>
 }
 
 @code {
@@ -66,9 +56,9 @@ else
     SearchModel sm = new SearchModel();
     Dictionary<string, string> Tdwgrants = new();
     Dictionary<string, string> folderItems = new();
-    bool showRequestModal = false;
+    // bool showRequestModal = false;
     bool showpreview = false;
-    string viewSource ="";
+    string viewSource = "";
     int viewIndex;
     FileTreeNode? node;
     List<FileTreeNode> files = new();
@@ -85,13 +75,39 @@ else
             }
             else
             {
-                showRequestModal = true;
+                await ShowRequestModal();
             }
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
         }
+    }
+    protected async Task ShowRequestModal()
+    {
+        RequestModel request = new RequestModel(){IdNo = sm.IdNo};
+
+        DialogParameters parameters = new()
+                {
+                Title = $"Request file(s) for{sm.IdNo}.",
+                    // PrimaryAction = "Ok",
+                    // PrimaryActionEnabled = false,
+                    SecondaryAction = "Cancel",
+                    // Height = "55%",
+                    TrapFocus = true,
+                    Modal = true,
+                    PreventScroll = true
+                };
+        IDialogReference dialog = await dialogService.ShowDialogAsync<FileRequestDialog>(request, parameters);
+        var result = await dialog.Result;
+        if (result.Cancelled || result.Data is null) return;
+        RequestModel capturedWb = (result.Data as RequestModel)!;
+        if (capturedWb == null) return; //huh?
+        capturedWb.StakeHolder = StaticDataService.StakeHolders.Where(s => s.DepartmentId == capturedWb.Category).First().StakeholderId;
+
+        int insertedCount = await db.AddFileRequest(capturedWb);
+        toast.ShowSuccess("Request processed");
+
     }
 
     protected async Task btnSearch_Click()
@@ -116,11 +132,6 @@ else
         }
     }
 
-    private void OnCloseModal()
-    {
-        showRequestModal = false;
-    }
-
     private async Task Validate()
     {
         if (string.IsNullOrEmpty(sm.IdNo) && string.IsNullOrEmpty(sm.BrmNo) && string.IsNullOrEmpty(sm.ClmNo) && string.IsNullOrEmpty(sm.SrdNo))
@@ -131,15 +142,15 @@ else
         {
             sm.BrmNo = sm.BrmNo.ToUpper();
         }
-        if(string.IsNullOrEmpty(sm.IdNo))
+        if (string.IsNullOrEmpty(sm.IdNo))
         {
             sm.IdNo = await db.GetSearchId(sm);
-            if(string.IsNullOrEmpty(sm.IdNo))
+            if (string.IsNullOrEmpty(sm.IdNo))
             {
                 throw new Exception("No Id To Search On.");
             }
         }
-        if(sm.IdNo.Contains("S"))
+        if (sm.IdNo.Contains("S"))
         {
             throw new Exception("Cant Search CS with temp Id");
         }

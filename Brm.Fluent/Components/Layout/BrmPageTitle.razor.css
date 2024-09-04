@@ -1,9 +1,6 @@
 ﻿.pageTitle {
-    margin: auto;
-    padding: 4px 4px 4px 4px;
     text-align: center;
     border-radius: 5px;
     background: var(--neutral-layer-4);
-    display: inline-block;
     width: 100%;
 }

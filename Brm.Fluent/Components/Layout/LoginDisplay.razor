@@ -1,7 +1,7 @@
 ﻿@inject SessionService sessionservice
 @inject StaticService staticservice
 
-@if (sessionservice.session != null)
+@if (!string.IsNullOrEmpty(sessionservice.session.Name))
 {
     <div style="float:right; margin-top:10px;color:#1e1b1b;">
             <label  style="margin-left: 10px">@sessionservice.session.Name</label>
@@ -11,11 +11,7 @@
 }
 else
 {
-    <div style="width: 100%;color:#1e1b1b;">
-        <div style="float:right; width: 100%; margin-top:4px;">
-            <label class="divUserDetail" style="margin-left: 10px">Initializing user session</label>
-        </div>
-    </div>
+    <WidgetTitle Title="You do not have access to this server."/>
 }
 
 @code

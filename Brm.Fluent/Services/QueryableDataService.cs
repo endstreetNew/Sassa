@@ -24,13 +24,13 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
                 if (status == "" || status == "RMCBatch")
                 {
                     //string.IsNullOrEmpty(b.BoxNo) &&
-                    return await _context.DcBatches.Where( b =>  b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _sessionService.session.Office.OfficeId).OrderByDescending(b => b.UpdatedDate).AsNoTracking().ToListAsync();
+                    return await _context.DcBatches.Where( b =>  b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _sessionService.session.Office.OfficeId).AsNoTracking().ToListAsync();
                 }
                 else
                 {
                     List<string> regionOffices = _staticService.GetOfficeIds(_sessionService.session.Office.RegionId);
                     //string.IsNullOrEmpty(b.BoxNo) &&
-                    return await  _context.DcBatches.Where(b =>  b.BatchStatus == status && b.NoOfFiles > 0 && regionOffices.Contains(b.OfficeId)).OrderByDescending(b => b.UpdatedDate).AsNoTracking().ToListAsync();
+                    return await  _context.DcBatches.Where(b =>  b.BatchStatus == status && b.NoOfFiles > 0 && regionOffices.Contains(b.OfficeId)).AsNoTracking().ToListAsync();
                 }
             }
             else
@@ -38,12 +38,12 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
                 if (status != "")
                 {
                     //result.count = _context.DcBatches.Where(b => b.BatchStatus == status && b.OfficeId == _sessionService.session.Office.OfficeId).Count();
-                    return await _context.DcBatches.Where(b => b.BatchStatus == status && b.OfficeId == _sessionService.session.Office.OfficeId).OrderByDescending(b => b.UpdatedDate).AsNoTracking().ToListAsync();
+                    return await _context.DcBatches.Where(b => b.BatchStatus == status && b.OfficeId == _sessionService.session.Office.OfficeId).AsNoTracking().ToListAsync();
                 }
                 else
                 {
                     //result.count = _context.DcBatches.Where(b => b.OfficeId == _sessionService.session.Office.OfficeId).Count();
-                    return await _context.DcBatches.Where(b => b.OfficeId == _sessionService.session.Office.OfficeId).OrderByDescending(b => b.UpdatedDate).AsNoTracking().ToListAsync();
+                    return await _context.DcBatches.Where(b => b.OfficeId == _sessionService.session.Office.OfficeId).AsNoTracking().ToListAsync();
                 }
             }
         }
@@ -57,12 +57,12 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
             if (_sessionService.session.IsRmc())
             {
                 //result.count = _context.DcBatches.Where(b => b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _sessionService.session.Office.OfficeId && b.BatchNo == searchBatch).Count();
-                return await _context.DcBatches.Where(b => b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _sessionService.session.Office.OfficeId && b.BatchNo == searchBatch).OrderByDescending(b => b.UpdatedDate).AsNoTracking().ToListAsync();
+                return await _context.DcBatches.Where(b => b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _sessionService.session.Office.OfficeId && b.BatchNo == searchBatch).AsNoTracking().ToListAsync();
             }
             else
             {
                 //result.count = _context.DcBatches.Where(b => b.OfficeId == _sessionService.session.Office.OfficeId).Count();
-                return await _context.DcBatches.Where(b => b.OfficeId == _sessionService.session.Office.OfficeId && b.BatchNo == searchBatch).OrderByDescending(b => b.UpdatedDate).AsNoTracking().ToListAsync();
+                return await _context.DcBatches.Where(b => b.OfficeId == _sessionService.session.Office.OfficeId && b.BatchNo == searchBatch).AsNoTracking().ToListAsync();
             }
         }
     }
@@ -73,12 +73,12 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
             if (myBatches)
             {
                 // result.count = _context.DcBatches.Where(b => b.UpdatedByAd == _sessionService.session.SamName).Count();
-                return await  _context.DcBatches.Where(b => b.UpdatedByAd == _sessionService.session.SamName).OrderByDescending(b => b.UpdatedDate).AsNoTracking().ToListAsync();
+                return await  _context.DcBatches.Where(b => b.UpdatedByAd == _sessionService.session.SamName).AsNoTracking().ToListAsync();
             }
             else
             {
                 //result.count = _context.DcBatches.Where(b => b.OfficeId == _sessionService.session.Office.OfficeId).Count();
-                return await _context.DcBatches.Where(b => b.OfficeId == _sessionService.session.Office.OfficeId).OrderByDescending(b => b.UpdatedDate).AsNoTracking().ToListAsync();
+                return await _context.DcBatches.Where(b => b.OfficeId == _sessionService.session.Office.OfficeId).AsNoTracking().ToListAsync();
             }
         }
     }
@@ -107,7 +107,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
         {
             bool repaired = await _dbService.RepairAltBoxSequence(boxNo);
 
-            var interim = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).OrderByDescending(f => f.UpdatedDate).AsNoTracking().ToListAsync();
+            var interim = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).AsNoTracking().ToListAsync();//OrderByDescending(f => f.UpdatedDate)
             return interim.OrderBy(f => f.UnqFileNo)
                         .Select(f => new ReboxListItem
                         {
@@ -129,7 +129,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            return await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo.Contains(searchText) || bn.BrmBarcode.Contains(searchText))).OrderByDescending(f => f.UpdatedDate).AsNoTracking()
+            return await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo.Contains(searchText) || bn.BrmBarcode.Contains(searchText))).AsNoTracking()
                         .Select(f => new ReboxListItem
                         {
                             ClmNo = f.UnqFileNo,
@@ -408,7 +408,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
             }
 
             //var reversed = query.AsEnumerable().Reverse();
-            result = await query.OrderByDescending(d => d.RequestedDate).ToListAsync();
+            result = await query.Take(200).ToListAsync();
             foreach (var req in result)
             {
                 try
@@ -428,9 +428,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            var query = _context.DcPicklists.OrderByDescending(o => o.PicklistDate).AsQueryable();
-            query = query.Where(r => r.UnqPicklist.ToLower().Contains(searchTxt.ToLower()));
-
+            var query = _context.DcPicklists.Where(r => r.UnqPicklist.ToLower().Contains(searchTxt.ToLower())).AsQueryable();
             return await query.Where(r => r.RegionId == _sessionService.session.Office.RegionId).AsNoTracking().ToListAsync();
 
         }
@@ -442,7 +440,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
         {
             List<DcPicklist> result = new();
 
-            var query = _context.DcPicklists.OrderByDescending(o => o.PicklistDate).AsQueryable();
+            var query = _context.DcPicklists.AsQueryable();
 
             if (filterRequestUser)
             {
@@ -467,7 +465,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            return await _context.DcPicklistItems.Where(p => p.UnqPicklist == unq_picklist).OrderByDescending(p => p.PicklistItemId).AsNoTracking().ToListAsync();
+            return await _context.DcPicklistItems.Where(p => p.UnqPicklist == unq_picklist).AsNoTracking().ToListAsync();
 
         }
     }
@@ -480,7 +478,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
         using (var _context = _contextFactory.CreateDbContext())
         {
 
-            return await _context.DcExclusions.Where(p => p.RegionId == decimal.Parse(_sessionService.session.Office.RegionId)).OrderByDescending(e => e.ExclDate).AsNoTracking().ToListAsync();
+            return await _context.DcExclusions.Where(p => p.RegionId == decimal.Parse(_sessionService.session.Office.RegionId)).AsNoTracking().ToListAsync();
 
         }
     }
@@ -489,7 +487,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            return await _context.DcExclusionBatches.Where(p => p.ExclusionYear == year).OrderByDescending(d => d.CreatedDate).AsNoTracking().ToListAsync();
+            return await _context.DcExclusionBatches.OrderByDescending(d => d.BatchId).Where(p => p.ExclusionYear == year).AsNoTracking().ToListAsync();
         }
     }
 
@@ -498,7 +496,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
         using (var _context = _contextFactory.CreateDbContext())
         {
 
-            return await _context.DcExclusionBatches.Where(p => p.ExclusionYear == year && !string.IsNullOrEmpty(p.ApprovedBy)).OrderByDescending(e => e.CreatedDate).AsNoTracking().ToListAsync();
+            return await _context.DcExclusionBatches.OrderByDescending(e => e.BatchId).Where(p => p.ExclusionYear == year && !string.IsNullOrEmpty(p.ApprovedBy)).AsNoTracking().ToListAsync();
         }
     }
     #endregion

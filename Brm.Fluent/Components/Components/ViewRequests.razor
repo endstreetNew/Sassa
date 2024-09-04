@@ -29,9 +29,7 @@
                   @onchange="@(e => ReasonFilterChange(e))" />
     <FluentNumberField Placeholder="<# of Files>" @bind-Value="requestCount" Disabled="@(!sessionservice.session.IsRmc() || !sessionservice.session.IsInRole("GRP_BRM_Supervisors"))" />
     <FluentButton Appearance="Appearance.Accent" @onclick="btnTDWRequest_Click" Disabled="@(!sessionservice.session.IsRmc() || !sessionservice.session.IsInRole("GRP_BRM_Supervisors"))">Request</FluentButton>
-
 </FluentStack>
-
 <FluentStack Orientation="Orientation.Horizontal">
                 <PieChart PieData="@piedata"></PieChart>
                 <PieChart PieData="@regiondata"></PieChart>
@@ -75,13 +73,14 @@
 
     protected async Task UserFilterChange(ChangeEventArgs e)
     {
-        filterUser = (bool)e.Value!;
+
+        filterUser = ((string?)e.Value ?? "True") == "True";
         await LoadRequests();
     }
 
     protected async Task OfficeFilterChange(ChangeEventArgs e)
     {
-        filterOffice = (bool)e.Value!;
+        filterOffice = ((string?)e.Value ?? "True") == "True";
         await LoadRequests();
     }
 

@@ -132,7 +132,7 @@
         {
             throw new Exception($"No ResCodes found for region {regionId}");
         }
-        regionOffices = StaticDataService.LocalOffices.Where(o => o.RegionId == regionId).OrderBy(o => o.OfficeName).Select(o =>
+        regionOffices = StaticDataService.LocalOffices.OrderBy(o => o.OfficeName).Where(o => o.RegionId == regionId).Select(o =>
         new RegionOffice
         {
             OfficeId = int.Parse(o.OfficeId),
@@ -154,7 +154,7 @@
         }));
 
         regionOffices = regionOffices.OrderBy(o => o.OfficeName).ToList();
-        unlinkedSpOffices = regionOffices.Where(r => r.OfficeId == 0).OrderBy(r => r.OfficeName).ToList();
+        unlinkedSpOffices = regionOffices.OrderBy(r => r.OfficeName).Where(r => r.OfficeId == 0).ToList();
         IsLoaded = true;
     }
 

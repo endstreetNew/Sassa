@@ -1,0 +1,95 @@
+﻿@using System.ComponentModel.DataAnnotations
+@implements IDialogContentComponent<RequestModel>
+@inject StaticService staticService
+@* @implements IDisposable *@
+
+<EditForm EditContext="@_editContext" FormName="simple_register" >
+    <DataAnnotationsValidator />
+    <FluentSelect TOption="KeyValuePair<string,string>"
+                      Items="@staticService.GetRequestCategories().ToList()"
+                      Id="appstatus-listbox"
+                      Width="240px"
+                      Height="250px"
+                      Placeholder="<Request Category>"
+                      OptionValue="@(p => p.Key)"
+                      OptionText="@(p => p.Value)"
+                      @bind-Value="@Content.CategoryString" />
+        <FluentSelect TOption="KeyValuePair<decimal,string>"
+                  Items="@staticService.GetDecimalRequestCategoryTypes(Content.Category.ToString()).ToList()"
+                      Id="appstatus-listbox"
+                      Width="240px"
+                      Height="250px"
+                      Placeholder="<Request Category Type>"
+                      OptionValue="@(p => p.Key.ToString())"
+                      OptionText="@(p => p.Value)"
+                      @bind-Value="@Content.CategoryTypeString" />
+@*         <FluentSelect TOption="DcStakeholder"
+                      Items="@StaticDataService.StakeHolders"
+                      Id="appstatus-listbox"
+                      Width="240px"
+                      Height="250px"
+                      Placeholder="<Stakeholder>"
+                      OptionValue="@(p => p.StakeholderId.ToString())"
+                      OptionText="@(p => p.Name)"
+                      @bind-Value="@Content.StakeHolder" /> *@
+        <FluentSelect TOption="String"
+                      Items="@StaticDataService.GrantTypes.Keys.ToList()"
+                      Id="appstatus-listbox"
+                      Width="240px"
+                      Height="250px"
+                      Placeholder="<Grant type>"
+                      OptionValue="@(p => p)"
+                      OptionText="@(p => @StaticDataService.GrantTypes[p])"
+                      @bind-Value="@Content.GrantType" />
+        <FluentTextArea Name="register_name"
+                         @bind-Value="@Content.Description"
+                         Label="Detail"
+                    Style="width: 100%;"
+                         Required />
+    </EditForm>
+
+<FluentDialogFooter>
+    <FluentButton Appearance="Appearance.Accent"
+                  Disabled="@(!_editContext.Validate())"
+                  OnClick="@SaveAsync">
+        Save
+    </FluentButton>
+    <FluentButton Appearance="Appearance.Neutral"
+                  OnClick="@CancelAsync">
+        Cancel
+    </FluentButton>
+</FluentDialogFooter>
+
+@code
+{
+    private EditContext _editContext = default!;
+
+    [CascadingParameter]
+    public FluentDialog Dialog { get; set; } = default!;
+
+    [Parameter]
+    public RequestModel Content { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        _editContext = new EditContext(Content);
+    }
+
+
+    private async Task SaveAsync()
+    {
+        if (_editContext.Validate())
+        {
+            await Dialog.CloseAsync(Content);
+        }
+    }
+
+    private async Task CancelAsync()
+    {
+        await Dialog.CancelAsync();
+    }
+    // public void Dispose()
+    // {
+    //     _editContext.OnValidationStateChanged -= _editContext_OnValidationStateChanged;
+    // }
+}

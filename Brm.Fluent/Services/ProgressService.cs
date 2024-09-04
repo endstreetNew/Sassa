@@ -21,7 +21,7 @@ using Sassa.BRM.ViewModels;
         {
             //List<ProcessedGrant> onlineGrants = await _econtext.ProcessedGrants.Where(d => d.ProcessDate >= from.FromDate && d.ProcessDate <= to.ToDate && d.RegionCode == StaticD.RegionCode(regionId)).AsNoTracking().ToListAsync();
             int missingStart = await _context.DcSocpens.Where(s => s.ApplicationDate <= from.FromDate && s.RegionId == regionId && s.StatusCode == "ACTIVE" && s.CaptureDate == null && s.TdwRec == null).AsNoTracking().CountAsync();
-            var records = await _context.DcSocpens.Where(s => s.ApplicationDate >= from.FromDate && s.ApplicationDate <= to.ToDate && s.RegionId == regionId && s.StatusCode == "ACTIVE" && s.MisFile == null && s.EcmisFile == null).AsNoTracking().ToListAsync();
+            var records = _context.DcSocpens.Where(s => s.ApplicationDate >= from.FromDate && s.ApplicationDate <= to.ToDate && s.RegionId == regionId && s.StatusCode == "ACTIVE" && s.MisFile == null && s.EcmisFile == null).AsNoTracking().AsQueryable();
             List<MissingFile> result = new List<MissingFile>();
             foreach (ReportPeriod period in StaticDataService.QuarterList(from, to).Values.OrderBy(o => o.FromDate))
             {
@@ -40,14 +40,12 @@ using Sassa.BRM.ViewModels;
                 result.Add(entry);
                 missingStart = missingStart + entry.NewGrants - entry.Captured - entry.OnlineGrants;
             }
-            records.Clear();
-            //onlineGrants.Clear();
             return result;
         }
 
         public async Task<List<DcSocpen>> GetMissingFiles(ReportPeriod period, string regionId)
         {
-            return await _context.DcSocpens.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate >= period.FromDate && s.RegionId == regionId && s.StatusCode == "ACTIVE" && s.MisFile == null).AsNoTracking().OrderBy(s => s.ApplicationDate).ToListAsync();
+            return await _context.DcSocpens.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate >= period.FromDate && s.RegionId == regionId && s.StatusCode == "ACTIVE" && s.MisFile == null).AsNoTracking().ToListAsync();
         }
         #endregion
 
