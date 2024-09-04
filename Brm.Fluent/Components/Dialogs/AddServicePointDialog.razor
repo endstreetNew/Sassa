@@ -9,7 +9,7 @@
     
 <FluentStack Orientation="Orientation.Vertical">
     <DataAnnotationsValidator />
-    <FluentTextField Placeholder="<Service Point name>" Value="@Content.ServicePointName" />
+        <FluentTextField Placeholder="<Service Point name>" @bind-Value="@Content.ServicePointName" Required />
     <FluentSelect TOption="DcLocalOffice"
                   Items="@regionOffices"
                       Id="appstatus-listbox"
@@ -18,9 +18,10 @@
                       Placeholder="<Parent Office>"
                       OptionValue="@(p => p.OfficeId)"
                       OptionText="@(p => p.OfficeName)"
-                      @bind-Value="@Content.OfficeId" />
+                      @bind-Value="@Content.OfficeId" 
+                      Required />
     </FluentStack>
-    </EditForm>
+</EditForm>
 
 <FluentDialogFooter>
     <FluentButton Appearance="Appearance.Accent"

@@ -24,7 +24,7 @@
         <PropertyColumn Width="130px" Property="@(p => p.UnqFileNo)" />
         <PropertyColumn Width="100px" Property="@(p => p.BrmBarcode)" Sortable="true" />
         <TemplateColumn Title="Actions">
-            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Delete())" OnClick="@(() => btnRemoveItem(context.BrmBarcode))" Title="Remove" Disabled="@(selectedBatch.BatchStatus != "Open")" />
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Delete())" OnClick="@(() => btnRemoveItem(context.BrmBarcode,context.BatchNo))" Title="Remove" Disabled="@(selectedBatch.BatchStatus != "Open")" />
         </TemplateColumn>
         <PropertyColumn Width="130px" Property="@(p => p.ApplicantNo)" Sortable="true" />
         <PropertyColumn Width="130px" Property="@(p => p.FullName)" Sortable="true" />
@@ -263,11 +263,11 @@ else
     //     }
 
     // }
-    protected async Task btnRemoveItem(string brmBarCode)
+    protected async Task btnRemoveItem(string brmBarCode,decimal? batchNo)
     {
         try
         {
-            await db.RemoveFileFromBatch(brmBarCode);
+            await db.RemoveFileFromBatch(brmBarCode,batchNo);
             files = await qdb.GetAllFilesByBatchNoQuery(selectedBatch.BatchNo);
             editBatch = files.Any();
             DTBatch = await qdb.GetBatches(filterStatus);

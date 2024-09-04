@@ -7,6 +7,7 @@ using Sassa.BRM.Models;
 using Sassa.BRM.ViewModels;
 using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 
@@ -34,10 +35,9 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            DcFile file = await _context.DcFiles.Where(d => d.BrmBarcode == brm.Brm_BarCode).FirstAsync();
-            file.BrmBarcode = barCode;
+            await _context.DcFiles.Where(d => d.BrmBarcode == brm.Brm_BarCode).ForEachAsync(f => { f.BrmBarcode = barCode; });
             await _context.SaveChangesAsync();
-            CreateActivity("Update ", file.SrdNo, file.Lctype, "Update BRM Barcode", file.UnqFileNo);
+            CreateActivity("Update ", brm.Srd_No, (string.IsNullOrEmpty(brm.LcType)? 0:decimal.Parse(brm.LcType)), "Update BRM Barcode");
         }
 
     }
@@ -319,11 +319,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                     {
                         AltBoxNo = await GetNexRegionAltBoxSequence();
                     }
-                    var fix = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).ToListAsync();
-                    foreach (var file in fix)
-                    {
-                        file.AltBoxNo = AltBoxNo;
-                    }
+                    await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).ForEachAsync(f => { f.AltBoxNo = AltBoxNo; });
                     await _context.SaveChangesAsync();
                     return true;
                 }
@@ -334,11 +330,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
 
 
                     AltBoxNo = await GetNexRegionAltBoxSequence();
-                    var fix = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).ToListAsync();
-                    foreach (var file in fix)
-                    {
-                        file.AltBoxNo = AltBoxNo;
-                    }
+                    await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).ForEachAsync(f => { f.AltBoxNo = AltBoxNo; });
                     await _context.SaveChangesAsync();
                     return true;
                 }
@@ -568,21 +560,21 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             }
             else if (!string.IsNullOrEmpty(sm.ClmNo))
             {
-                var src = await _context.DcFiles.Where(f => f.UnqFileNo == sm.ClmNo).FirstOrDefaultAsync();
+                var src = await _context.DcFiles.Where(f => f.UnqFileNo == sm.ClmNo).Select(f => f.ApplicantNo).FirstOrDefaultAsync();
                 if (src == null)
                 {
                     throw new Exception("CLM No not found");
                 }
-                sm.IdNo = src.ApplicantNo;
+                sm.IdNo = src;
             }
             else if (!string.IsNullOrEmpty(sm.BrmNo))
             {
-                var src = await _context.DcFiles.Where(f => f.BrmBarcode == sm.BrmNo).FirstOrDefaultAsync();
+                var src = await _context.DcFiles.Where(f => f.BrmBarcode == sm.BrmNo).Select(f => f.ApplicantNo).FirstOrDefaultAsync();
                 if (src == null)
                 {
                     throw new Exception("BRM Barcode not found");
                 }
-                sm.IdNo = src.ApplicantNo;
+                sm.IdNo = src;
             }
             return sm.IdNo;
         }
@@ -748,13 +740,8 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             }
             else
             {
-                var files = _context.DcFiles.Where(f => f.BrmBarcode == item.BrmNo);
-                if (files.Any())
-                {
-                    DcFile file = files.First();
-                    file.ScanDatetime = DateTime.Now;
-                    await _context.SaveChangesAsync();
-                }
+                await _context.DcFiles.Where(f => f.BrmBarcode == item.BrmNo).ForEachAsync(f => { f.ScanDatetime = DateTime.Now; });
+                await _context.SaveChangesAsync();
             }
             await SyncFileRequestStatusReceived(item);
         }
@@ -1436,19 +1423,17 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             }
         }
     }
-    public async Task RemoveFileFromBatch(string brmBarCode)
+    public async Task RemoveFileFromBatch(string brmBarCode,decimal? batchNo)
     {
-        decimal batchNo;
         DcFile file;
         using (var _context = _contextFactory.CreateDbContext())
         {
             _context.ChangeTracker.Clear();
-            file = await _context.DcFiles.Where(f => f.BrmBarcode == brmBarCode).FirstAsync();
-            batchNo = ((decimal)(file.BatchNo ?? 0));
-            file.BatchNo = 0;
+            await _context.DcFiles.Where(f => f.BrmBarcode == brmBarCode).ForEachAsync(f => { f.BatchNo = 0; });
             await _context.SaveChangesAsync();
         }
-        CreateActivity("Batching", file.SrdNo, file.Lctype, "Remove File", file.UnqFileNo);
+        //Removed for performance
+        //CreateActivity("Batching", file.SrdNo, file.Lctype, "Remove File", file.UnqFileNo);
         if (batchNo != 0) await SetBatchCount(batchNo);
 
     }
@@ -1504,7 +1489,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         {
             //List<DcFile> files = await _context.DcFiles.Where(f => f.BatchNo == batchId).ToListAsync();
             PagedResult<DcFile> result = new PagedResult<DcFile>();
-            result.count = _context.DcFiles.Where(f => f.BatchNo == batchId).Count();
+            result.count = await _context.DcFiles.Where(f => f.BatchNo == batchId).CountAsync();
             result.result = await _context.DcFiles.Where(f => f.BatchNo == batchId).Skip((page - 1) * 12).Take(12).ToListAsync();
             foreach (var file in result.result)
             {
@@ -1640,7 +1625,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             {
                 throw new Exception("Invalid batch No.");
             }
-            return await (from file in _context.DcFiles.Where(f => f.BatchNo == batchNo) select file.BrmBarcode).ToListAsync();
+            return await _context.DcFiles.Where(f => f.BatchNo == batchNo).Select(f => f.BrmBarcode).ToListAsync();
         }
     }
 
@@ -1648,23 +1633,20 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            return await (from pli in _context.DcPicklistItems.Where(f => f.UnqPicklist == pickListNo) select pli.BrmNo).ToListAsync();
+            return await _context.DcPicklistItems.Where(f => f.UnqPicklist == pickListNo).Select(f => f.BrmNo).ToListAsync();
         }
     }
     public async Task DispatchWaybill(string brmWaybill, string tdwWaybill)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            List<DcBatch> batches = await _context.DcBatches.Where(b => b.BrmWaybill == brmWaybill).ToListAsync();
-
-            foreach (var batch in batches)
+            await _context.DcBatches.Where(b => b.BrmWaybill == brmWaybill).ForEachAsync(f =>
             {
-                batch.BatchStatus = "Transport";
-                batch.WaybillNo = tdwWaybill;
-                batch.WaybillDate = DateTime.Now;
-                batch.CourierName = "TDW";
-                batch.BatchCurrent = "N";
-            }
+                f.BatchStatus = "Transport";
+                f.WaybillNo = tdwWaybill;
+                f.WaybillDate = DateTime.Now;
+                f.CourierName = "TDW";
+            });
             await _context.SaveChangesAsync();
         }
     }
@@ -1876,15 +1858,16 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
 
-    public async Task<List<Enquiry>> GetEnquiryBySrd(string idNumber)
+    public async Task<List<Enquiry>> GetEnquiryBySrd(string srdNo)
     {
+        srdNo = srdNo.Trim();
         List<Enquiry> resultlist = new List<Enquiry>();
         using (var _context = _contextFactory.CreateDbContext())
         {
-            var dcfiles = await _context.DcFiles.Where(f => f.SrdNo.Contains(idNumber.Trim())).ToListAsync();
+            var dcfiles = await _context.DcFiles.Where(f => f.SrdNo == srdNo).ToListAsync();
             if (!dcfiles.Any()) throw new Exception("SRD not found");
             var brmBarcodeList = dcfiles.Select(f => f.BrmBarcode).ToList();
-            var socpen = await _context.DcSocpens.Where(f => f.BeneficiaryId == idNumber || f.SrdNo.ToString() == idNumber.Trim()).ToListAsync();
+            var socpen = await _context.DcSocpens.Where(f => f.BeneficiaryId == srdNo || f.SrdNo.ToString() == srdNo.Trim()).ToListAsync();
             foreach (DcFile file in dcfiles)
             {
                 Enquiry result = new Enquiry();
