@@ -23,7 +23,7 @@
             <FluentNavLink Href="misfiles" Icon="@(new Icons.Regular.Size20.DocumentTableSearch())" IconColor="Color.Accent">MIS Files</FluentNavLink>
             <FluentNavLink Href="boxing" Icon="@(new Icons.Regular.Size20.Box())" IconColor="Color.Accent">@(sessionservice.session.IsRmc() ? "Re-boxing" : "Batching")</FluentNavLink>
 
-            @*
+
             <FluentNavLink Href="reportpage" Icon="@(new Icons.Regular.Size20.DocumentPrint())" IconColor="Color.Accent">Reports</FluentNavLink>
             @if (sessionservice.session.IsRmc())
             {
@@ -34,7 +34,7 @@
             <FluentNavLink Href="officeadmin" Icon="@(new Icons.Regular.Size20.CheckboxPerson())" IconColor="Color.Accent">Office Admin</FluentNavLink>
             }
             }
-            *@
+
 
         </FluentNavMenu>
     </nav>

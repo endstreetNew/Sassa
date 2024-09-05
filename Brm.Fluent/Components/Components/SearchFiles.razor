@@ -5,10 +5,7 @@
 @inject StaticService sservice
 @inject IDialogService dialogService
 
-@* @if (showRequestModal)
-{
-    <FileRequestModal IdNo="@sm.IdNo" CloseModal="OnCloseModal" grantTypes="@Tdwgrants"></FileRequestModal>
-} *@
+<WidgetTitle Title="Search Documents" />
 <FluentStack>
     <FluentTextField @bind-Value="sm.IdNo" Placeholder="<Enter Id>" />
     <FluentTextField @bind-Value="sm.BrmNo" Placeholder="<Enter Brm Barcode>" />

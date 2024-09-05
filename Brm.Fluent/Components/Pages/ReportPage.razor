@@ -168,63 +168,10 @@
         <OfficeProgress></OfficeProgress>
     </FluentTab>
     <FluentTab Label="Current Wip" Id="reportTab-4">
-        <br />
-        <div class="row">
-            <span><strong>Progress for Region : @sservice.GetRegion(office.RegionId) Period : @period.FromDate to @period.ToDate</strong></span>
-            <br />
-        </div>
-        <div class="row">
-            <span><strong>Missing Files (Includes files in 60 day capture window)</strong></span>
-            <br />
-        </div>
-        @if (IsMissingDashboardLoaded)
-        {
-            <div class="row">
-                <div class="col-12">
-                    <table class="table table-sm" style="font-size:x-small;">
-                        <thead>
-                            @*SELECT r.Region_NAME,g.TYPE_NAME, b.Application_date, b.BENEFICIARY_ID,b.CHILD_ID,b.NAME,b.SURNAME FROM DC_SOCPEN*@
-                            <tr>
-                                <th scope="col">Grant Type</th>
-                                <th scope="col">Application Date</th>
-                                <th scope="col">Beneficiary Id</th>
-                                <th scope="col">Child Id</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Surname</th>
-                                <th scope="col">Age(Days)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            @foreach (var u in missingFiles)
-                            {
-                                <tr style="background-color:@(u.ApplicationDate < DateTime.Now.AddDays(-60) ? "orange":"white" );">
-                                    <td>@sservice.GetGrantType(u.GrantType)</td>
-                                    <td>@u.ApplicationDate</td>
-                                    <td>@u.BeneficiaryId</td>
-                                    <td>@u.ChildId</td>
-                                    <td>@u.Name</td>
-                                    <td>@u.Surname</td>
-                                    <td>@DateTime.Now.Subtract(u.ApplicationDate == null ? DateTime.Now : (DateTime)u.ApplicationDate).Days</td>
-                                </tr>
-                            }
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        }
-        else
-        {
-            <span>Loading...</span>
-        }
-        <div class="row">
-        </div>
-        <br />
+        <CurrentWip></CurrentWip>
     </FluentTab>
     <FluentTab Label="Download reports" Id="reportTab-5">
-        <ReportDownload Title="Report List"></ReportDownload>
+         <ReportDownload Title="Report List"></ReportDownload> 
     </FluentTab>
 </FluentTabs>
 
@@ -239,15 +186,10 @@
     string toQuarter ="";
     string forMonth ="";
 
-    //string customSql;
-
     protected bool IsDashboardLoaded;
     protected bool IsMissingDashboardLoaded;
 
     ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddMonths(-1), ToDate = DateTime.Now };
-    //DateTime FromDate = DateTime.Now.AddMonths(-1);
-    //DateTime ToDate = DateTime.Now;
-    //List<MissingSummary> dashboardData;
 
     Dictionary<string, string> reportList = new();
     Dictionary<string, ReportPeriod> quarterList = new();
@@ -265,7 +207,7 @@
         quarterList = StaticDataService.QuarterList();
         reportList = rs.reportList;
         period = StaticDataService.AfterLastQuarter;
-        await OnMissingPaged();
+        //await OnMissingPaged();
     }
 
     protected void SelectRegion(ChangeEventArgs e)
@@ -334,10 +276,10 @@
 
     protected async Task OnMissingPaged()
     {
-        IsMissingDashboardLoaded = false;
-        await Task.Delay(100);
-        missingFiles = await og.GetMissingFiles(period,office.RegionId);
-        IsMissingDashboardLoaded = true;
+        // IsMissingDashboardLoaded = false;
+        // await Task.Delay(100);
+        // missingFiles = await og.GetMissingFiles(period,office.RegionId);
+        // IsMissingDashboardLoaded = true;
     }
 
     protected void btnResetProgress_Click()
@@ -363,4 +305,5 @@
             toast.ShowError(ex.Message);
         }
     }
+
 }

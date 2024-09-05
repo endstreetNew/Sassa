@@ -1,0 +1,49 @@
+﻿@using Microsoft.EntityFrameworkCore
+
+@inject SessionService sessionservice
+@inject StaticService sservice
+@inject IDbContextFactory<ModelContext> _contextFactory
+@inject ReportDataService rs
+@inject IToastService toast
+
+@implements IDisposable
+
+<WidgetTitle Title="@($"Progress for region : {@office.RegionName} Period : {@period.FromDate} to {@period.ToDate}")" Loading="loading"/>
+@if(_context != null)
+{
+    <FluentDataGrid Items="@(_context!.DcSocpens.Where(s => s.CaptureReference == null && s.TdwRec == null && s.ApplicationDate >= period.FromDate && s.RegionId == office.RegionId && s.StatusCode == "ACTIVE" && s.MisFile == null).AsQueryable())" TGridItem="DcSocpen" Pagination="@missingPaginator">
+        <PropertyColumn Property="@(p => p.ApplicationDate)" Sortable="true" />
+        <PropertyColumn Property="@(p => sservice.GetGrantType(p.GrantType))" Sortable="true" Title = "Grant Type" />
+        <PropertyColumn Property="@(p => p.BeneficiaryId)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.GrantType)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Name)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Surname)" Sortable="true" />
+        <PropertyColumn Property="@(p => DateTime.Now.Subtract(p.ApplicationDate == null ? DateTime.Now : (DateTime)p.ApplicationDate))" Title="Days" />
+    </FluentDataGrid>
+    <FluentPaginator State="@missingPaginator" />
+}
+
+@code {
+    protected UserOffice office = new();
+    protected ModelContext? _context;
+
+    PaginationState missingPaginator = new PaginationState() { ItemsPerPage = 15 };
+    ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddMonths(-1), ToDate = DateTime.Now };
+
+    protected bool loading = false;
+
+    protected override void OnInitialized()
+    {
+        loading = true;
+        office = sessionservice.session!.Office!;
+        period = StaticDataService.AfterLastQuarter;
+        _context = _contextFactory.CreateDbContext();
+        loading = false;
+    }
+    public void Dispose()
+    {
+        if(_context != null)_context.Dispose();
+    }
+
+}
