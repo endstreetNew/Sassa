@@ -85,7 +85,7 @@
 
     protected async Task btnNextStatus_Click(DcPicklist p)
     {
-        await db.ChangePickListStatus(p);
+        await qdb.ChangePickListStatus(p);
         await LoadPickList();
         toast.ShowInfo("PickList " + p.nextStatus);
     }

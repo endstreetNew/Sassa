@@ -9,6 +9,7 @@ public interface IChatService
     event EventHandler<UserLogoutEventArgs> UserLoggedOut;
     event EventHandler<Message> MessageReceived;
 
+    User Login(User user, ConnectedClient client);
     User Login(string username, ConnectedClient client);
     IEnumerable<User> GetAllUsers();
     void Logout(string username);

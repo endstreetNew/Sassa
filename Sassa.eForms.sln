@@ -42,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brm.Fluent", "Brm.Fluent\Br
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Brm.FluentTemplate", "Brm.FluentTemplate\Brm.FluentTemplate.csproj", "{4D3EF54F-A2E7-4796-B9E2-7ED667FFD305}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.Chat", "Plugin.Chat\Plugin.Chat.csproj", "{CAF8C844-03D7-4512-9995-20E7F4A5D620}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Plugin.Chat", "Plugin.Chat\Plugin.Chat.csproj", "{CAF8C844-03D7-4512-9995-20E7F4A5D620}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

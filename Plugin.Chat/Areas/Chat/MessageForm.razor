@@ -1,16 +1,16 @@
 ﻿@inject IChatService ChatService
 
-<div class="msg-form-container row">
-    <div class="col">
+<div class="container">
+    <div style="height:100%;">
         <EditForm Model=@_newMessage OnValidSubmit="HandleValidSubmit">
-            <div class="form-group row">                
-                <div class="col mb-2">
+            <div>                
+                <div >
                     <InputText id="message" @bind-Value=_newMessage.Text
-                        class="form-control" placeholder="type your message here..." />
+                        placeholder="<your message here...>" />
                 </div>                
                 <div class="col-2">
                     @if(!_sending){
-                        <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-comment"></i></button>
+                        <button type="submit"><i ></i></button>
                     }
                 </div> 
             </div>                       

@@ -26,6 +26,7 @@ public class UserStateProvider : IUserStateProvider
     public void AddOrUpdate(User state)
     {
         _users.AddOrUpdate(state.Username, k => state, (k, s) => state);
+        if (state.Client == null) return;
         _usersByClientId.AddOrUpdate(state.Client.Id, k => state, (k, s) => state);
     }
 

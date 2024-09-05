@@ -1,0 +1,25 @@
+﻿@page "/autochat"
+@using Plugin.Chat.Services
+@inject AutoLoginService autoLoginService
+@inject SessionService session
+
+
+<div class="row h-100">
+    <Users />
+    <div class="col m-1">
+        <Chat />
+        <MessageForm LoggedUser=@user />
+    </div>
+</div>
+
+@code {
+
+    private PostMessage _message = new PostMessage();
+    private User? user;
+    protected override async Task OnInitializedAsync()
+    {
+        user = new User(session.session.SamName);
+        autoLoginService.Login(user);
+        await InvokeAsync(this.StateHasChanged);
+    }
+}

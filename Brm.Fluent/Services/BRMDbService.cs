@@ -295,53 +295,53 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     /// </summary>
     /// <param name="boxNo"></param>
     /// <returns></returns>
-    public async Task<bool> RepairAltBoxSequence(string boxNo)
-    {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            string AltBoxNo;
-            //Repair null altbox values
+    //public async Task<bool> RepairAltBoxSequence(string boxNo)
+    //{
+    //    using (var _context = _contextFactory.CreateDbContext())
+    //    {
+    //        string AltBoxNo;
+    //        //Repair null altbox values
 
-            //todo: test this
-            _context.ChangeTracker.Clear();
-            try
-            {
-                //nullaltboxfiles
-                var nullaltboxfiles = _context.DcFiles.Where(b => string.IsNullOrEmpty(b.AltBoxNo) && b.TdwBoxno == boxNo).ToList();
-                if (nullaltboxfiles.ToList().Any())
-                {
-                    var altboxes = _context.DcFiles.Where(b => !string.IsNullOrEmpty(b.AltBoxNo) && b.TdwBoxno == boxNo);
-                    if (altboxes.ToList().Any())
-                    {
-                        AltBoxNo = altboxes.First().AltBoxNo;
-                    }
-                    else
-                    {
-                        AltBoxNo = await GetNexRegionAltBoxSequence();
-                    }
-                    await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).ForEachAsync(f => { f.AltBoxNo = AltBoxNo; });
-                    await _context.SaveChangesAsync();
-                    return true;
-                }
-                //Repair RegionMisMatch values
-                var regionmismatchfiles = _context.DcFiles.Where(b => !b.AltBoxNo.Contains(_userSession.Office.RegionCode) && b.TdwBoxno == boxNo).ToList();
-                if (regionmismatchfiles.ToList().Any())
-                {
+    //        //todo: test this
+    //        _context.ChangeTracker.Clear();
+    //        try
+    //        {
+    //            //nullaltboxfiles
+    //            var nullaltboxfiles = _context.DcFiles.Where(b => string.IsNullOrEmpty(b.AltBoxNo) && b.TdwBoxno == boxNo).ToList();
+    //            if (nullaltboxfiles.ToList().Any())
+    //            {
+    //                var altboxes = _context.DcFiles.Where(b => !string.IsNullOrEmpty(b.AltBoxNo) && b.TdwBoxno == boxNo);
+    //                if (altboxes.ToList().Any())
+    //                {
+    //                    AltBoxNo = altboxes.First().AltBoxNo;
+    //                }
+    //                else
+    //                {
+    //                    AltBoxNo = await GetNexRegionAltBoxSequence();
+    //                }
+    //                await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).ForEachAsync(f => { f.AltBoxNo = AltBoxNo; });
+    //                await _context.SaveChangesAsync();
+    //                return true;
+    //            }
+    //            //Repair RegionMisMatch values
+    //            var regionmismatchfiles = _context.DcFiles.Where(b => !b.AltBoxNo.Contains(_userSession.Office.RegionCode) && b.TdwBoxno == boxNo).ToList();
+    //            if (regionmismatchfiles.ToList().Any())
+    //            {
 
 
-                    AltBoxNo = await GetNexRegionAltBoxSequence();
-                    await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).ForEachAsync(f => { f.AltBoxNo = AltBoxNo; });
-                    await _context.SaveChangesAsync();
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                var message = ex.Message;
-            }
-            return false;
-        }
-    }
+    //                AltBoxNo = await GetNexRegionAltBoxSequence();
+    //                await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).ForEachAsync(f => { f.AltBoxNo = AltBoxNo; });
+    //                await _context.SaveChangesAsync();
+    //                return true;
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            var message = ex.Message;
+    //        }
+    //        return false;
+    //    }
+    //}
     public async Task<DcFile> GetReboxCandidate(Reboxing rebox)
     {
         using (var _context = _contextFactory.CreateDbContext())
@@ -658,29 +658,29 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
 
-    public async Task<PagedResult<DcPicklist>> SearchPickLists(string searchTxt, int page)
-    {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            PagedResult<DcPicklist> result = new PagedResult<DcPicklist>();
-            var query = _context.DcPicklists.OrderByDescending(o => o.PicklistDate).AsQueryable();
-            query = query.Where(r => r.UnqPicklist.ToLower().Contains(searchTxt.ToLower()));
-            result.count = query.Where(r => r.RegionId == _userSession.Office.RegionId).Count();
-            result.result = await query.Where(r => r.RegionId == _userSession.Office.RegionId).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
-            return result;
-        }
-    }
+    //public async Task<PagedResult<DcPicklist>> SearchPickLists(string searchTxt, int page)
+    //{
+    //    using (var _context = _contextFactory.CreateDbContext())
+    //    {
+    //        PagedResult<DcPicklist> result = new PagedResult<DcPicklist>();
+    //        var query = _context.DcPicklists.OrderByDescending(o => o.PicklistDate).AsQueryable();
+    //        query = query.Where(r => r.UnqPicklist.ToLower().Contains(searchTxt.ToLower()));
+    //        result.count = query.Where(r => r.RegionId == _userSession.Office.RegionId).Count();
+    //        result.result = await query.Where(r => r.RegionId == _userSession.Office.RegionId).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
+    //        return result;
+    //    }
+    //}
 
-    public async Task ChangePickListStatus(DcPicklist pi)
-    {
-        using (var _context = _contextFactory.CreateDbContext())
-        {
-            DcPicklist? pl = await _context.DcPicklists.FindAsync(pi.UnqPicklist);
-            if (pl == null) throw new Exception($"Picklist {pi.UnqPicklist} not found.");
-            pl.Status = pi.nextStatus;
-            await _context.SaveChangesAsync();
-        }
-    }
+    //public async Task ChangePickListStatus(DcPicklist pi)
+    //{
+    //    using (var _context = _contextFactory.CreateDbContext())
+    //    {
+    //        DcPicklist? pl = await _context.DcPicklists.FindAsync(pi.UnqPicklist);
+    //        if (pl == null) throw new Exception($"Picklist {pi.UnqPicklist} not found.");
+    //        pl.Status = pi.nextStatus;
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
 
     internal async Task<PagedResult<DcPicklistItem>> GetPicklistItems(string unq_picklist, int page)
     {
@@ -1777,10 +1777,11 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
 
     public async Task<List<Enquiry>> GetEnquiryById(string idNumber)
     {
+        idNumber = idNumber.Trim();
         List<Enquiry> resultlist = new List<Enquiry>();
         using (var _context = _contextFactory.CreateDbContext())
         {
-            var dcfiles = await _context.DcFiles.Where(f => f.ApplicantNo.Contains(idNumber.Trim())).ToListAsync();
+            var dcfiles = await _context.DcFiles.Where(f => f.ApplicantNo == idNumber).ToListAsync();
             if (!dcfiles.Any()) throw new Exception("Applicant Id not found");
             var brmBarcodeList = dcfiles.Select(f => f.BrmBarcode).ToList();
             var merges = await _context.DcMerges.Where(m => brmBarcodeList.Contains(m.BrmBarcode)).ToListAsync();

@@ -36,7 +36,16 @@ public User Login(string username, ConnectedClient client)
     return user;
 }
 
-public IEnumerable<User> GetAllUsers() => _usersProvider.GetAll();
+    public User Login(User user, ConnectedClient client)
+    {
+        //var user = new User(username);
+        user.Connect(client);
+        _usersProvider.AddOrUpdate(user);
+        this.UserLoggedIn?.Invoke(this, new UserLoginEventArgs(user));
+        return user;
+    }
+
+    public IEnumerable<User> GetAllUsers() => _usersProvider.GetAll();
 
 public event EventHandler<UserLoginEventArgs> UserLoggedIn;
 

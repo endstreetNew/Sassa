@@ -1,20 +1,24 @@
-﻿
-@inject IChatService ChatService
+﻿@inject IChatService ChatService
 
+@if (null != _users)
+{
+    if (_users.Count() > 5)
+    {
+        <h5>Users(@_users.Count())</h5>
+    }
+    else
+    {
+        <ul>
+        @foreach (var user in _users)
+        {
+            <li><p><span class='mr-1 status-@( (null != user.Client) ? "online" : "offline")'><i class="fa fa-user"></i></span>@user.Username</p></li>
+        }
+        </ul>
+    }
+}
 
-    <div class="col-3 users">    
-        <div class='users-list p-2'>
-            @if(null != _users){
-                foreach (var user in _users)
-                {
-                    <p><span class='mr-1 status-@( (null != user.Client) ? "online" : "offline")'><i class="fa fa-user"></i></span>@user.Username</p>    
-                }
-            }
-        </div>
-    </div>
-
-@code{
-    private IEnumerable<User> _users;
+@code {
+    private IEnumerable<User> _users = new List<User>();
     protected override void OnInitialized()
     {
         ChatService.UserLoggedIn += OnUserLoggedIn;

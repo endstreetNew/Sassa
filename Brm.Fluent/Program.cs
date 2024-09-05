@@ -8,7 +8,7 @@ using Sassa.Brm.Common.Models;
 using Sassa.BRM.Models;
 using Sassa.Socpen.Data;
 
-using Plugin.Chat.Services;
+//using Plugin.Chat.Services;
 
 namespace Brm.Fluent
 {
@@ -19,7 +19,7 @@ namespace Brm.Fluent
             var builder = WebApplication.CreateBuilder(args);
 
 
-            //Framewor Services
+            //Framework Services
             builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
             builder.Services.AddAuthorization(options =>
             {
@@ -79,8 +79,8 @@ namespace Brm.Fluent
             //HttpClient (for API and Aspire)
             builder.Services.AddHttpClient();
             //Chat
-            builder.Services.AddChatService();
-            // UI Services
+            //builder.Services.AddChatService();
+            // UI 
             builder.Services.AddRazorComponents().AddInteractiveServerComponents();
             builder.Services.AddFluentUIComponents();
             builder.Services.AddDataGridEntityFrameworkAdapter();

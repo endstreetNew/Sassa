@@ -469,6 +469,17 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
 
         }
     }
+
+    public async Task ChangePickListStatus(DcPicklist pi)
+    {
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+            DcPicklist? pl = await _context.DcPicklists.FindAsync(pi.UnqPicklist);
+            if (pl == null) throw new Exception($"Picklist {pi.UnqPicklist} not found.");
+            pl.Status = pi.nextStatus;
+            await _context.SaveChangesAsync();
+        }
+    }
     #endregion
 
     #region Destruction

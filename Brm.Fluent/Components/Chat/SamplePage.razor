@@ -1,7 +1,9 @@
-﻿@page "/chat"
+﻿@page "/samplechat"
 @inject IChatService ChatService
+@inject IConnectedClientService ConnectedClientService
+@inject SessionService session
 
-@if(null != _loginBox?.User){
+@* @if(null != _loginBox?.User){ *@
     <div class="row h-100">
         <Users />
         <div class="col m-1">
@@ -9,28 +11,31 @@
             <MessageForm LoggedUser=@_loginBox.User />
         </div>
     </div>
-}else{
+@* }else{
     <LoginPage @ref="_loginBox" />
-}
+} *@
 
 @code{
-    private LoginPage _loginBox;
+    private LoginPage? _loginBox;
     private PostMessage _message = new PostMessage();
 
     protected override void OnInitialized()
     {
-        if (null != this.ChatService)
-            this.ChatService.UserLoggedIn += OnUserLoggedIn;
+
+        //ChatService.Login(session.session.SamName, this.ConnectedClientService.Client);
+
+        // if (this.ChatService != null)
+        //     this.ChatService.UserLoggedIn += OnUserLoggedIn;
     }
 
-    private async void OnUserLoggedIn(object sender, UserLoginEventArgs args)
-    {
-        await InvokeAsync(this.StateHasChanged);
-    }
+    // private async void OnUserLoggedIn(object sender, UserLoginEventArgs args)
+    // {
+    //     await InvokeAsync(this.StateHasChanged);
+    // }
 
-    private void Dispose()
-    {
-        if (null != this.ChatService)
-            this.ChatService.UserLoggedIn -= OnUserLoggedIn;
-    }
+    // private void Dispose()
+    // {
+    //     if (null != this.ChatService)
+    //         this.ChatService.UserLoggedIn -= OnUserLoggedIn;
+    // }
 }
