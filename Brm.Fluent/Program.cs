@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
-using razor.Components;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
-using Sassa.Brm.Common.Services;
 using Sassa.BRM.Models;
 using Sassa.Socpen.Data;
+
+using Plugin.Chat.Services;
 
 namespace Brm.Fluent
 {
@@ -19,7 +19,7 @@ namespace Brm.Fluent
             var builder = WebApplication.CreateBuilder(args);
 
 
-            //Authentication Services
+            //Framewor Services
             builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
             builder.Services.AddAuthorization(options =>
             {
@@ -28,29 +28,18 @@ namespace Brm.Fluent
             builder.Services.AddCascadingAuthenticationState();
             builder.Services.AddScoped<AuthenticationStateProvider, WindowsAuthenticationStateProvider>();
             builder.Services.AddHttpContextAccessor();
-            //connection strings   
+            builder.Services.AddScoped<Navigation>();
+            //Connection strings   
             string BrmConnection = builder.Configuration.GetConnectionString("BrmConnection")!;
             string CsConnection = builder.Configuration.GetConnectionString("CsConnection")!;
-            //Factory pattern for context
+            //Factory pattern for contexts
             builder.Services.AddDbContextFactory<ModelContext>(options =>
             options.UseOracle(BrmConnection));
             builder.Services.AddDbContextFactory<SocpenContext>(options =>
             options.UseOracle(BrmConnection));
-            //Services 
-            builder.Services.AddScoped<BRMDbService>();
-            builder.Services.AddScoped<QueryableDataService>();
-            builder.Services.AddSingleton<StaticService>();
-            builder.Services.AddScoped<SessionService>();
-
-            builder.Services.AddSingleton<BrmApiService>();
-            builder.Services.AddScoped<MisFileService>();
-            builder.Services.AddScoped<DestructionService>();
-            builder.Services.AddScoped<SocpenService>();
-            builder.Services.AddScoped<TdwBatchService>();
-            builder.Services.AddSingleton<BarCodeService>();
-            builder.Services.AddSingleton<RawSqlService>();
-            builder.Services.AddSingleton<FileService>();
-
+            //DataServices 
+            builder.Services.AddDataServices();
+            //Common Services
             builder.Services.AddSingleton<IEmailSettings, EmailSettings>(c =>
             {
                 EmailSettings emailSettings = new EmailSettings();
@@ -84,20 +73,13 @@ namespace Brm.Fluent
                 emailSettings.RegionIDEmails.Add("3", builder.Configuration.GetValue<string>("TDWEmail:NORTHERN CAPE")!);
                 return emailSettings;
             });
-            builder.Services.AddSingleton<EmailClient>();
-            builder.Services.AddSingleton<MailMessages>();
-            builder.Services.AddScoped<Navigation>();
-            builder.Services.AddScoped<CSService>();
-            builder.Services.AddScoped<ReportDataService>();
-            builder.Services.AddScoped<ProgressService>();
-            builder.Services.AddScoped<Helper>();
-
-            builder.Services.AddScoped<ActiveUser>();
-            builder.Services.AddSingleton<ActiveUserList>();
-
+            builder.Services.AddSharedServices();
+            //Api
+            builder.Services.AddSingleton<BrmApiService>();
+            //HttpClient (for API and Aspire)
             builder.Services.AddHttpClient();
-
-
+            //Chat
+            builder.Services.AddChatService();
             // UI Services
             builder.Services.AddRazorComponents().AddInteractiveServerComponents();
             builder.Services.AddFluentUIComponents();

@@ -1,5 +1,4 @@
-﻿//using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+﻿using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 
 namespace Sassa.Brm.Common.Services;
@@ -10,7 +9,7 @@ public class MailMessages
 
     IEmailSettings _addresses;
     EmailClient client;
-    public MailMessages(IConfiguration config,IEmailSettings addresses,EmailClient emailClient)
+    public MailMessages(IEmailSettings addresses,EmailClient emailClient)
     {
         client = emailClient;
         _addresses = addresses;
@@ -87,5 +86,14 @@ public class MailMessages
         //send mail to Requestor
         string body = $"<br/>The Status has been updated to {status} on Picklist: {idNo} requested by you.<br/><br/>Kind Regards<br/><br/>BRM System<br/>Please do not reply to this mail<br/><br/><br/>";
         client.SendMail($"no-reply@sassa.gov.za", ToMail, "FILE REQUEST STATUS CHANGE NOTIFICATION", body, new List<string>());
+    }
+
+    public void SendInternalMessage(UserSession session, string ToUser, string Message)
+    {
+        string? tomail = ToUser.GetADEmail();
+        if (string.IsNullOrEmpty(tomail)) throw new Exception("unable to reach user."); //Skip if no tomail address
+        //send mail to Requestor
+        string body = $"<br/>{Message}<br/><br/>Kind Regards<br/><br/>{session.Name} {session.Surname} (BRM System)<br/><br/><br/>";
+        client.SendMail(session.Email, tomail, $"Brm mail.", body, new List<string>());
     }
 }

@@ -1,0 +1,36 @@
+﻿@page "/chat"
+@inject IChatService ChatService
+
+@if(null != _loginBox?.User){
+    <div class="row h-100">
+        <Users />
+        <div class="col m-1">
+            <Chat />
+            <MessageForm LoggedUser=@_loginBox.User />
+        </div>
+    </div>
+}else{
+    <LoginPage @ref="_loginBox" />
+}
+
+@code{
+    private LoginPage _loginBox;
+    private PostMessage _message = new PostMessage();
+
+    protected override void OnInitialized()
+    {
+        if (null != this.ChatService)
+            this.ChatService.UserLoggedIn += OnUserLoggedIn;
+    }
+
+    private async void OnUserLoggedIn(object sender, UserLoginEventArgs args)
+    {
+        await InvokeAsync(this.StateHasChanged);
+    }
+
+    private void Dispose()
+    {
+        if (null != this.ChatService)
+            this.ChatService.UserLoggedIn -= OnUserLoggedIn;
+    }
+}

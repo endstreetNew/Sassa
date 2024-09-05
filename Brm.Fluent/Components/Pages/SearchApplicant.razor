@@ -51,12 +51,6 @@
                         <TemplateColumn Title="Actions" Align="@Align.End">
                             <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Add())" Title="New" OnClick="@((p) => btnNewCover_Click(context))"></FluentButton>
                         </TemplateColumn>
-                        @*                 <TemplateColumn Width="100px" Title="Merged" Align="@Align.End">
-                        <FluentCheckbox @bind-Value="@context.IsMergeParent" Disabled/>
-                        </TemplateColumn> *@
-                        @*              <TemplateColumn Width="100px" Title="CanMerge" Align="@Align.End">
-                        <FluentCheckbox @bind-Value="@context.IsMergeCandidate" Disabled />
-                        </TemplateColumn> *@
                         <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />
                         <PropertyColumn Property="@(p => p.GrantName)" Sortable="true" />
                         <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />

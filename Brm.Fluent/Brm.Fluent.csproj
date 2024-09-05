@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Plugin.Chat\Plugin.Chat.csproj" />
     <ProjectReference Include="..\Sassa.Barcoder\Sassa.Barcoder.csproj" />
     <ProjectReference Include="..\Sassa.Brm.Common\Sassa.Brm.Common.csproj" />
     <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
