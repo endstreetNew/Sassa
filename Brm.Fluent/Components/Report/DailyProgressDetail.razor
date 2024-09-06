@@ -1,0 +1,15 @@
+﻿<WidgetTitle Title="@($"Progess for {DayDetail.First().Day}/{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(DayDetail.First().Month)}/{Year}" )" />
+
+<FluentDataGrid Items="@(DayDetail.AsQueryable())" TGridItem="DayDetail">
+    <PropertyColumn Property="@(p => p.Captured)" Sortable="true" Title="Captured" />
+    <PropertyColumn Property="@(p => p.Scanned)" Sortable="true" Title="Scanned" />
+    <PropertyColumn Property="@(p => p.CsLoaded)" Title="ContentServer" Sortable="true" />
+</FluentDataGrid>
+
+@code {
+    [Parameter]
+    public List<DayDetail> DayDetail { get; set; } = new();
+
+    [Parameter]
+    public int Year { get; set; } = 0;
+}

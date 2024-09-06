@@ -77,6 +77,8 @@
 
     PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
 
+    public List<Application> SavedDTBrm { get; set; } = new();
+
     protected async Task btnBatch_Click(Application app)
     {
         //Navigate.NavigateTo($"coversheet/{app.Brm_BarCode}");
@@ -180,6 +182,20 @@
     }
     protected void ShowChildren(string parent)
     {
-        parentBrm = parent;
+        if (string.IsNullOrEmpty(parentBrm))
+        {
+            SavedDTBrm = DTBrm.ToList();
+            DTBrm = DTBrm.Where(b => b.Brm_Parent == parent).ToList();
+            parentBrm = parent;
+            pagination.ItemsPerPage = 1;
+        }
+        else
+        {
+            DTBrm = SavedDTBrm.ToList();
+            SavedDTBrm.Clear();
+            parentBrm = "";
+            pagination.ItemsPerPage = 10;
+        }
+
     }
 }

@@ -1,5 +1,5 @@
 ﻿@page "/reportpage"
-@page "/reportpage/{param}"
+@using Sassa.BRM.Data.ViewModels
 @inject Navigation Navigate
 @inject Helper helper
 @inject SessionService sessionservice
@@ -12,154 +12,45 @@
 <BrmPageTitle Title="Reports"></BrmPageTitle>
 <FluentTabs>
     <FluentTab Label="Reports" Id="reportTab-1">
-        <br />
-        <div class="row">
-            <div class="col">
-                <table>
-                    <tr>
-                        <td>
-
-                            <div class="input-group mb-1">
-                                <span class="input-group-text">Select report</span>
-                                <select class="form-select" @bind="rIndex">
-                                    <option selected>select...</option>
-                                    @foreach (var val in reportList)
-                                    {
-                                        <option value="@val.Key">@val.Value</option>
-                                    }
-                                </select>
-                            </div>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary active" @onclick="btnFTPExport_Click">Save Report</button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <span><strong>Filter Options</strong></span>
-        </div>
-        @if (rIndex == "11")
-        {
-            <div class="input-group mb-1">
-                <span class="input-group-text">Region</span>
-                <select class="form-select" @bind="office.RegionId">
-                    <option value="" selected>All...</option>
-                    @foreach (var region in sservice.GetRegions())
-                    {
-                        <option value="@region.Key">@region.Value</option>
-                    }
-                </select>
-            </div>
-        }
-        else
-        {
-            @if (rIndex == "3" || rIndex == "8" || rIndex == "12")
-            {
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group mb-1">
-                            <span class="input-group-text">From Quarter</span>
-                            <select class="form-select" @bind="fromQuarter">
-                                <option selected>select...</option>
-                                @foreach (var val in quarterList)
-                                {
-                                    <option value="@val.Key">@val.Key</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-1">
-                            <span class="input-group-text">To Quarter</span>
-                            <select class="form-select" @bind="toQuarter">
-                                <option selected>select...</option>
-                                @foreach (var val in quarterList)
-                                {
-                                    <option value="@val.Key">@val.Key</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            }
-            else if (rIndex == "9")
-            {
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group mb-1">
-                            <span class="input-group-text">For Month</span>
-                            <select class="form-select" @bind="forMonth">
-                                <option selected>select...</option>
-                                @foreach (var val in StaticDataService.MonthList())
-                                {
-                                    <option value="@val.Key">@val.Value</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group mb-1">
-                            <span class="input-group-text">From Date</span>
-                            <input class="form-control" type="date" @bind="period.FromDate">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="input-group mb-1">
-                            <span class="input-group-text">To Date</span>
-                            <input class="form-control" type="date" @bind="period.ToDate">
-                        </div>
-                    </div>
-                </div>
-            }
-            @if (rIndex != "9" && rIndex != "10")
-            {
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Region</span>
-                    <select class="form-select" @bind="office.RegionId">
-                        <option value="" selected>All...</option>
-                        @foreach (var region in sservice.GetRegions())
-                        {
-                            <option value="@region.Key">@region.Value</option>
-                        }
-                    </select>
-                </div>
-            }
-            @if (rIndex != "3" && rIndex != "10")
-            {
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Office</span>
-                    <select class="form-select" @bind="office.OfficeId">
-                        <option value="" selected>All...</option>
-                        @foreach (var val in sservice.GetOffices(office.RegionId))
-                        {
-                            <option value="@val.OfficeId">@val.OfficeName</option>
-                        }
-                    </select>
-                </div>
-                @if (rIndex != "8" && rIndex != "9" && rIndex != "10" && rIndex != "7")
+        <FluentStack Orientation="Orientation.Vertical">
+            <FluentStack Orientation="Orientation.Horizontal">
+                <FluentSelect Placeholder="Select report" @bind-SelectedOption="@report" Items="rs.reportList" TOption="ReportDefinition" OptionValue="@(p => p.ReportIndex)" OptionText="@(p => p.ReportName)" />
+                <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
+            </FluentStack>
+            <WidgetTitle Title="Filter Options" />
+            <FluentStack Orientation="Orientation.Horizontal">
+                @foreach (var option in report.FilterOptions)
                 {
-                    <div class="input-group mb-1">
-                        <span class="input-group-text">Grant Type</span>
-                        <select class="form-select" @bind="GrantType">
-                            <option value="" selected>All...</option>
-                            @foreach (var val in sservice.GetGrantTypes())
-                            {
-
-                                <option value="@val.Key">@val.Value</option>
-                            }
-                        </select>
-                    </div>
+                    switch (option)
+                    {
+                        case "FromDate":
+                            <FluentDatePicker Placeholder="<From Date>" @bind-Value="period.FromNullDate" />
+                            break;
+                        case "ToDate":
+                            <FluentDatePicker Placeholder="<To Date>" @bind-Value="period.ToNullDate" />
+                            break;
+                        case "FromQuarter":
+                            <FluentSelect TOption="KeyValuePair<string,ReportPeriod>" Items="StaticDataService.QuarterList().ToList()" @bind-Value="@fromQuarter" OptionValue="@(p => p.Key)" OptionText="@(p => p.Key)" Placeholder="From Quarter" />
+                            break;
+                        case "ToQuarter":
+                            <FluentSelect TOption="KeyValuePair<string,ReportPeriod>" Items="StaticDataService.QuarterList().ToList()" @bind-Value="@toQuarter" OptionValue="@(p => p.Key)" OptionText="@(p => p.Key)" Placeholder="To Quarter" />
+                            break;
+                        case "ForMonth":
+                            <FluentSelect TOption="KeyValuePair<string,string>" Items="StaticDataService.MonthList().ToList()" @bind-Value="@forMonth" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" Placeholder="For Month" />
+                            break;
+                        case "Region":
+                            <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
+                            break;
+                        case "Office":
+                            <FluentSelect Height="300px" TOption="KeyValuePair<string,string>" Items="@(sservice.GetReportOffices(office.RegionId).ToList())" Placeholder="<Office>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.OfficeId" />
+                            break;
+                        case "GrantType":
+                            <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@grantType" />
+                            break;
+                    }
                 }
-            }
-        }
+            </FluentStack>
+        </FluentStack>
     </FluentTab>
     <FluentTab Label="Progress" Id="reportTab-2">
         <ProgressSummary></ProgressSummary>
@@ -171,43 +62,38 @@
         <CurrentWip></CurrentWip>
     </FluentTab>
     <FluentTab Label="Download reports" Id="reportTab-5">
-         <ReportDownload Title="Report List"></ReportDownload> 
+        <ReportDownload Title="Report List"></ReportDownload>
     </FluentTab>
 </FluentTabs>
 
 @code
 {
-    [Parameter]
-    public string param { get; set; } = "";
-
     protected UserOffice office = new();
-    string rIndex = "";
-    string fromQuarter ="";
-    string toQuarter ="";
-    string forMonth ="";
+    ReportDefinition report = new();
+    string fromQuarter = "";
+    string toQuarter = "";
+    string forMonth = "";
 
     protected bool IsDashboardLoaded;
     protected bool IsMissingDashboardLoaded;
 
     ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddMonths(-1), ToDate = DateTime.Now };
 
-    Dictionary<string, string> reportList = new();
     Dictionary<string, ReportPeriod> quarterList = new();
 
     List<CsvListItem> files = new();
     List<DcSocpen> missingFiles = new();
 
-    string GrantType = "";
+    string grantType = "All";
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
+        report = rs.reportList.First();
         office = sessionservice.session!.Office!;
         IsMissingDashboardLoaded = false;
         IsDashboardLoaded = false;
         quarterList = StaticDataService.QuarterList();
-        reportList = rs.reportList;
         period = StaticDataService.AfterLastQuarter;
-        //await OnMissingPaged();
     }
 
     protected void SelectRegion(ChangeEventArgs e)
@@ -217,69 +103,80 @@
         office.OfficeId = sservice.GetOffices(office.RegionId).First().OfficeId;
     }
 
-    private async Task btnFTPExport_Click()
+
+    private async Task ValidateReportFilter()
     {
         try
         {
-            await Task.Delay(100);
-            if (rIndex == "7" && string.IsNullOrEmpty(office.OfficeId)) //Performance Report
+            string FileName = helper.GetFileName(report.ReportName.Replace(" ", "_"), sessionservice.session);
+            foreach (var option in report.FilterOptions)
             {
-                throw new Exception("Please select an office for this report.");
+                switch (option)
+                {
+                    case "From Date":
+                    case "To Date":
+                        break;
+                    case "From Quarter":
+                        if (string.IsNullOrEmpty(fromQuarter))
+                        {
+                            throw new Exception("Please select From Quarter");
+                        }
+                        break;
+                    case "ToQuarter":
+                        if (string.IsNullOrEmpty(toQuarter))
+                        {
+                            throw new Exception("Please select To Quarter.");
+                        }
+                        break;
+                    case "ForMonth":
+                        if (string.IsNullOrEmpty(forMonth))
+                        {
+                            throw new Exception("Please select For Month.");
+                        }
+                        break;
+                    case "Region":
+                        if (string.IsNullOrEmpty(office.RegionId))
+                        {
+                            throw new Exception("Please select Region.");
+                        }
+                        break;
+                    case "Office":
+                        if (string.IsNullOrEmpty(office.OfficeId))
+                        {
+                            throw new Exception("Please select Office.");
+                        }
+                        break;
+                    case "GrantType":
+                        if (string.IsNullOrEmpty(grantType))
+                        {
+                            throw new Exception("Please select Grant Type.");
+                        }
+                        break;
+
+                }
             }
-            if (rIndex == "3" || rIndex == "12")
+            if (report.ReportIndex == "3" || report.ReportIndex == "12")
             {
                 period.FromDate = quarterList[fromQuarter].FromDate;
                 period.ToDate = quarterList[toQuarter].ToDate;
             }
-
-            toast.ShowInfo($"{reportList[rIndex]} queued.");
-            string FileName = helper.GetFileName(reportList[rIndex].Replace(" ", "_"),sessionservice.session);
-            //db.session.Office.RegionCode + "-" + db.session.SamName.ToUpper() + "-" + reportList[rIndex].Replace(" ", "_") + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");
-
-            if (rIndex == "8")
+            if (report.ReportIndex == "11" && !(sessionservice.session.IsRmc() && sessionservice.session.IsInRole("GRP_BRM_Supervisors")))
             {
-                await rs.SaveReport(rIndex, quarterList[fromQuarter],quarterList[toQuarter], office.RegionId, FileName);
+                throw new Exception("Reserved function.");
             }
-            else
-            {
-                if(rIndex == "9")
-                {
-                    var monthYear = forMonth.Split('|');
-                    int month = int.Parse(monthYear[0]);
-                    int year = int.Parse(monthYear[1]);
-                    await rs.SaveCsvReport(new DateTime(year, month, 1).ToString("dd/MM/yyyy"),new DateTime(year, month, DateTime.DaysInMonth(year, month)).ToString("dd/MM/yyyy"),rIndex, office.OfficeId, "RMC", office.RegionId, GrantType, FileName);
-                }
-                else if(rIndex == "11")
-                {
-                    if (sessionservice.session.IsRmc() && sessionservice.session.IsInRole("GRP_BRM_Supervisors"))
-                    {
-                        await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), rIndex, office.OfficeId, office.OfficeType, office.RegionId, GrantType, FileName, "");
-                    }
-                    else
-                    {
-                        throw new Exception("Reserved function.");
-                    }
-                }
-                else
-                {
-                    await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), rIndex, office.OfficeId, office.OfficeType, office.RegionId, GrantType, FileName);
-                }
-            }
+            toast.ShowInfo($"{report.ReportName} queued.");
 
+            if (report.ReportIndex == "8")
+            {
+                await rs.SaveReport(report.ReportIndex, quarterList[fromQuarter], quarterList[toQuarter], office.RegionId, FileName);
+                return;
+            }
+            await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), report.ReportIndex, office.OfficeId, office.OfficeType, office.RegionId, grantType, FileName);
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
         }
-
-    }
-
-    protected async Task OnMissingPaged()
-    {
-        // IsMissingDashboardLoaded = false;
-        // await Task.Delay(100);
-        // missingFiles = await og.GetMissingFiles(period,office.RegionId);
-        // IsMissingDashboardLoaded = true;
     }
 
     protected void btnResetProgress_Click()
@@ -291,14 +188,11 @@
     {
         try
         {
-            await Task.Delay(100);
-
             period.FromDate = quarterList[quarterName].FromDate;
             period.ToDate = quarterList[quarterName].ToDate;
-            toast.ShowInfo($"{reportList["3"]} queued.");
-            string FileName = helper.GetFileName(reportList["3"].Replace(" ", "_"),sessionservice.session);
-            //db.session.Office.RegionCode + "-" + db.session.SamName.ToUpper() + "-" + reportList["3"].Replace(" ", "_") + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");
-            await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), "3", office.OfficeId, "RMC", office.RegionId, GrantType, FileName);
+            toast.ShowInfo($"{report.ReportName} queued.");
+            string FileName = helper.GetFileName(report.ReportName.Replace(" ", "_"), sessionservice.session);
+            await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), "3", office.OfficeId, "RMC", office.RegionId, grantType, FileName);
         }
         catch (Exception ex)
         {

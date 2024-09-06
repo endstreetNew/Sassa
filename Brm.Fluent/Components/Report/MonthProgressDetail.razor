@@ -1,0 +1,30 @@
+﻿<WidgetTitle Title="@($"Progess for {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(MonthDetail.First().Month)} {Year}" )" />
+
+<FluentDataGrid Items="@(MonthDetail.Any(m=>m.IsExpanded) ? MonthDetail.Where(m=>m.IsExpanded).AsQueryable(): MonthDetail.AsQueryable())" TGridItem="MonthDetail">
+    <TemplateColumn>
+            <FluentButton Appearance="Appearance.Accent" OnClick="@(() => ExpandMonthSummary(context))">@expandedText</FluentButton>
+    </TemplateColumn>
+    <PropertyColumn Property="@(p => p.Captured)" Sortable="true" Title="Captured" />
+    <PropertyColumn Property="@(p => p.Scanned)" Sortable="true" Title="Scanned"  />
+    <PropertyColumn Property="@(p => p.CsLoaded)" Title="ContentServer" Sortable="true" />
+</FluentDataGrid>
+<FluentSplitter Orientation="Orientation.Vertical" />
+@if (MonthDetail.Where(mbox=>mbox.IsExpanded).Any())
+{
+    <DailyProgressDetail DayDetail="MonthDetail.Where(mbox=>mbox.IsExpanded).First().DayDetail" Year="Year"></DailyProgressDetail>
+}
+
+@code {
+    [Parameter]
+    public List<MonthDetail> MonthDetail { get; set; } = new();
+
+    [Parameter]
+    public int  Year { get; set; } = 0;
+
+    string expandedText = "+";
+    protected void ExpandMonthSummary(Brm.Fluent.Components.Report.MonthDetail u)
+    {
+        u.IsExpanded = !u.IsExpanded;
+        expandedText = u.IsExpanded ? "-" : "+";
+    }
+}

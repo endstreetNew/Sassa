@@ -167,8 +167,18 @@ namespace Sassa.Brm.Common.Services
         }
         public Dictionary<string, string> GetRegions()
         {
-            return StaticDataService.Regions!.ToDictionary(key => key.RegionId, value => value.RegionName); ;
+            return StaticDataService.Regions!.ToDictionary(key => key.RegionId, value => value.RegionName);
         }
+        //Includes All
+        public Dictionary<string, string> GetReportOffices(string regionId)
+        {
+            return new Dictionary<string, string> { { "All", "All" } }.Concat(GetOffices(regionId).ToDictionary(key => key.OfficeId, value => value.OfficeName)).ToDictionary(k => k.Key, v => v.Value);
+        }
+        public Dictionary<string, string> GetReportGrants()
+        {
+            return new Dictionary<string, string> { { "All", "All" } }.Concat(StaticDataService.GrantTypes).ToDictionary(k => k.Key, v => v.Value);
+        }
+        //----------
         public List<DcLocalOffice> GetOffices(string regionId)
         {
             return StaticDataService.LocalOffices!.Where(o => o.RegionId == regionId).ToList();

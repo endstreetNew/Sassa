@@ -29,7 +29,7 @@
                       Height="250px"
                       Placeholder="<Grant type>"
                       OptionValue="@(p => p)"
-                      OptionText="@(p => @StaticDataService.GrantTypes[p])"
+                      OptionText="@(p => StaticDataService.GrantTypes[p])"
                       @bind-Value="@Content.GrantType" />
         <FluentTextArea Name="register_name"
                          @bind-Value="@Content.Description"

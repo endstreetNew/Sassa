@@ -1,0 +1,111 @@
+@inject Navigation Navigate
+@inject SessionService sessionservice
+@inject BRMDbService db
+@inject StaticService sservice
+@inject ProgressService og
+@inject ReportDataService rs
+@inject IToastService toast
+
+@if (!IsDashboardLoaded)
+{
+    <FluentStack Orientation="Orientation.Vertical">
+        <FluentStack Orientation="Orientation.Horizontal">
+            <FluentLabel>Office Progress</FluentLabel>
+            <FluentButton Appearance="Appearance.Accent" @onclick="btnLoadProgress_Click">Load Detail</FluentButton>
+        </FluentStack>
+        <WidgetTitle Title="Filter Options" />
+        <FluentSelect Height="340px" TOption="KeyValuePair<string,ReportPeriod>" Items="StaticDataService.QuarterList().ToList()" @bind-Value="@fromQuarter" OptionValue="@(p => p.Key)" OptionText="@(p => p.Key)" Placeholder="For Quarter" />
+        @*                 <FluentSelect TOption="KeyValuePair<string,ReportPeriod>" Items="StaticDataService.QuarterList().ToList()" @bind-Value="@toQuarter" OptionValue="@(p => p.Key)" OptionText="@(p => p.Key)" Placeholder="To Quarter" /> *@
+        <FluentSelect Height="340px" TOption="KeyValuePair<string,string>" Items="@sservice.GetRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
+        <FluentSelect Height="340px" TOption="KeyValuePair<string,string>" Items="@(sservice.GetReportOffices(office.RegionId).ToList())" Placeholder="<Office>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.OfficeId" />
+    </FluentStack>
+}
+else
+{
+    <WidgetTitle Title="@($"Progress for Region: {@office.RegionName} Office: {@office.OfficeName} Period: {@fromQuarter}  to {@toQuarter}")" />
+
+    <FluentDataGrid Items="quarters.AsQueryable()" TGridItem="QuarterDetail">
+        <TemplateColumn>
+            <FluentButton Appearance="Appearance.Accent" OnClick="@(() => ExpandSummary(context))">@expandedText</FluentButton>
+        </TemplateColumn>
+        <PropertyColumn Property="@(p => p.Quarter.FinancialQuarter)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Captured)" Sortable="true" Title="Captured" />
+        <PropertyColumn Property="@(p => p.PercentageCaptured)" Title="% Captured" Sortable="true" />
+        <PropertyColumn Property="@(p => p.PercentageMissing)" Title="% Missing(new)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Scanned)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.CsLoaded)" Title="ContentServer" Sortable="true" />
+        <PropertyColumn Property="@(p => p.TdwSent)" Title="TDW" />
+    </FluentDataGrid>
+    <FluentSplitter Orientation="Orientation.Vertical" />
+    @if (quarters.First().IsExpanded && quarters.First().Month == Month)
+    {
+        <MonthProgressDetail MonthDetail="quarters.First().MonthDetail" Year="quarters.First().Year"></MonthProgressDetail>
+    }
+    <FluentButton Appearance="Appearance.Accent" @onclick="btnResetProgress_Click">Close Dashboard</FluentButton>
+
+}
+
+@code {
+    protected UserOffice office = new();
+    string fromQuarter = "";
+    string toQuarter = "";
+    bool IsDashboardLoaded;
+
+    ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddMonths(-1), ToDate = DateTime.Now };
+
+    string expandedText = "+";
+
+    List<Brm.Fluent.Components.Report.QuarterDetail> quarters = new();
+    List<MonthDetail> monthDetail = new();
+    int Month = 0;
+    protected override void OnInitialized()
+    {
+        office = sessionservice.session.Office;
+        IsDashboardLoaded = false;
+    }
+
+    protected async Task btnLoadProgress_Click()
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(office.OfficeId))
+            {
+                toast.ShowInfo($"Please select an office for this dashboard.");
+                return;
+            }
+            else
+            {
+                office.OfficeName = sservice.GetOfficeName(office.OfficeId);
+            }
+            if (string.IsNullOrEmpty(fromQuarter))//|| string.IsNullOrEmpty(toQuarter))
+            {
+                toast.ShowInfo($"Please check your period filter, it is invalid");
+                return;
+            }
+            await Task.Delay(100);
+            toast.ShowInfo($"Progress Dashboard loading...");
+            quarters = await og.GetCaptureProgress(StaticDataService.QuarterList()[fromQuarter], StaticDataService.QuarterList()[fromQuarter], office);
+
+            IsDashboardLoaded = true;
+        }
+        catch
+        {
+            toast.ShowInfo($"Please check your Filter, it is invalid");
+        }
+    }
+
+    protected void btnResetProgress_Click()
+    {
+        IsDashboardLoaded = false;
+    }
+
+    protected void ExpandSummary(Brm.Fluent.Components.Report.QuarterDetail u)
+    {
+        u.IsExpanded = !u.IsExpanded;
+        Month = u.Month;
+        expandedText = u.IsExpanded ? "-" : "+";
+
+    }
+
+
+}

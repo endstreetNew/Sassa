@@ -10,64 +10,17 @@
 <div>
 @if(!IsDashboardLoaded)
 {
-        <div class="row">
-            <span><strong>Filter Options</strong></span>
-        </div>
-        <div class="row">
-            <div class="col">
-                        <div class="input-group mb-1">
-                            <span class="input-group-text">From Quarter</span>
-                            <select class="form-select" @bind="fromQuarter">
-                                <option selected>select...</option>
-                                @foreach (var val in StaticDataService.QuarterList())
-                                {
-                                    <option value="@val.Key">@val.Key</option>
-                                }
-                            </select>
-                        </div>
-            </div>
-                        <div class="col">
-                        <div class="input-group mb-1">
-                            <span class="input-group-text">To Quarter</span>
-                            <select class="form-select" @bind="toQuarter">
-                                <option selected>select...</option>
-                                @foreach (var val in StaticDataService.QuarterList())
-                                {
-                                    <option value="@val.Key">@val.Key</option>
-                                }
-                            </select>
-                        </div>
-            </div>
-            <div class="col">
-                <div class="input-group mb-1">
-                    <span class="input-group-text">Region</span>
-                    <select class="form-select" @bind="office.RegionId">
-                        <option value="" selected>All...</option>
-                        @foreach (var region in sservice.GetRegions())
-                        {
-                            <option value="@region.Key">@region.Value</option>
-                        }
-                    </select>
-                </div>
-            </div>
-            <div class="col">
-                 <div class="input-group mb-1">
-                        <span class="input-group-text">Office</span>
-                        <select class="form-select" @bind="office.OfficeId">
-                            <option value="" selected>All...</option>
-                            @foreach (var val in sservice.GetOffices(office.RegionId))
-                            {
-                                <option value="@val.OfficeId">@val.OfficeName</option>
-                            }
-                        </select>
-                    </div>
-             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-            <button class="btn btn-primary active" @onclick="btnLoadProgress_Click">Load Detail</button>
-            </div>
-        </div>
+        <FluentStack Orientation="Orientation.Vertical">
+            <FluentStack Orientation="Orientation.Horizontal">
+                <FluentLabel>Offic Progress</FluentLabel>
+                <FluentButton Appearance="Appearance.Accent" @onclick="btnLoadProgress_Click">Load Detail</FluentButton>
+            </FluentStack>
+            <WidgetTitle Title="Filter Options" />
+                <FluentSelect TOption="KeyValuePair<string,ReportPeriod>" Items="StaticDataService.QuarterList().ToList()" @bind-Value="@fromQuarter" OptionValue="@(p => p.Key)" OptionText="@(p => p.Key)" Placeholder="From Quarter" />
+                <FluentSelect TOption="KeyValuePair<string,ReportPeriod>" Items="StaticDataService.QuarterList().ToList()" @bind-Value="@toQuarter" OptionValue="@(p => p.Key)" OptionText="@(p => p.Key)" Placeholder="To Quarter" />
+                <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
+                <FluentSelect Height="300px" TOption="KeyValuePair<string,string>" Items="@(sservice.GetReportOffices(office.RegionId).ToList())" Placeholder="<Office>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.OfficeId" />
+            </FluentStack>
     }
     else
     {
@@ -85,9 +38,7 @@
                             <tr class="table-header">
                                 <th scope="col"></th>
                                 <th scope="col">Quarter</th>
-                               @* <th scope="col">Total Grants</th>*@
                                 <th scope="col">Captured</th>
-                                @*<th scope="col">Online</th>*@
                                 <th scope="col">% Captured</th>
                                 <th scope="col">% Missing</th>
                                 <th scope="col">Scanned</th>
@@ -102,9 +53,7 @@
                                 <tr>
                                     <td style="cursor: pointer;font-size:12px;font-weight:bold;"><span class="@expandedClass" aria-hidden="true" @onclick="@(() => ExpandSummary(u))">@(u.IsExpanded ? "-" : "+")</span></td>
                                     <td>@u.Quarter.FinancialQuarter</td>
-                                    @*<td>@u.Total</td>*@
                                     <td>@u.Captured</td>
-                                    @*<td>@u.OnlineApplications</td>*@
                                     <td>@u.PercentageCaptured</td>
                                     <td>@u.PercentageMissing</td>
                                     <td>@u.Scanned</td>

@@ -12,7 +12,7 @@ public class ReportDataService
 
     private string connectionString = string.Empty;
     // private string reportFolder;
-    public Dictionary<string, string> reportList;
+    public ReportList reportList;
 
     ProgressService _ogs;
     //BRMDbService db;
@@ -41,28 +41,30 @@ public class ReportDataService
                 }
             }
         }
-        //var rr = .Bind(folders);
-        reportList = new Dictionary<string, string>();
-        //reportList.Add("1", "Destruction List");
-        //reportList.Add("2", "Destruction Status");
-        reportList.Add("3", "Not Captured Report");
-        reportList.Add("4", "Active Users");
-        reportList.Add("5", "Activity Log");
-        reportList.Add("6", "Activity By Action per User");
-        reportList.Add("7", "Performance Report");
-        reportList.Add("8", "Missing File Summary");
-        reportList.Add("9", "Monthly Scanning Report");
-        reportList.Add("10", "Deleted files Report");
-        reportList.Add("11", "Manual Capture Report");
-        reportList.Add("12", "Missing Files Report");
 
-        //db = _db;
+
+        reportList = new ReportList();
+        //FilterOptions = new FilterOptions() { "FromQuarter", "ToQuarter", "FromDate", "ToDate", "Region", "Office", "AllOfficesInRegion", "GrantType", "ForMonth" }
+        reportList.Add(new ReportDefinition() { ReportIndex = "3", ReportName = "Not Captured Report",FilterOptions = new FilterOptions() { "FromQuarter", "ToQuarter", "Region" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "4", ReportName = "Active Users", FilterOptions = new FilterOptions() {  "FromDate", "ToDate", "Region", "Office", "GrantType" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "5", ReportName = "Activity Log", FilterOptions = new FilterOptions() {  "FromDate", "ToDate", "Region", "Office", "GrantType" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "6", ReportName = "Activity By Action per User", FilterOptions = new FilterOptions() {  "FromDate", "ToDate", "Region", "Office", "GrantType" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "7", ReportName = "Performance Report", FilterOptions = new FilterOptions() {  "FromDate", "ToDate", "Region", "Office" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "8", ReportName = "Missing File Summary", FilterOptions = new FilterOptions() {  "FromQuarter", "ToQuarter", "Region", "Office" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "9", ReportName = "Monthly Scanning Report", FilterOptions = new FilterOptions() { "ForMonth", "Region" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "10", ReportName = "Deleted files Report", FilterOptions = new FilterOptions() { "FromDate", "ToDate" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "11", ReportName = "Manual Capture Report", FilterOptions = new FilterOptions() { "Region" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "12", ReportName = "Missing Files Report" , FilterOptions = new FilterOptions() { "FromQuarter", "ToQuarter", "Region", "Office", "GrantType" } });
 
         _ogs = ogs;
     }
 
     public async Task SaveCsvReport(string dateFrom, string dateTo, string rIndex, string office_id, string office_type, string region_id, string grant_type, string filename, string status = "", string sql = "")
     {
+        //New Office and Grant filter
+        if (office_id == "All") office_id = "";
+        if (grant_type == "All") grant_type = "";
+        //--------------------------
         ReportHeader header = new ReportHeader();
         header.FromDate = dateFrom;
         header.ToDate = dateTo;
@@ -234,9 +236,9 @@ public class ReportDataService
                                                     join DC_REGION r on r.Region_ID = dc.region_id 
                                                     join DC_LOCAL_OFFICE o on o.OFFICE_ID = dc.localoffice_id 
                                                     join DC_GRANT_TYPE g on g.Type_ID = dc.grant_type
-                                                    where dc.localoffice_id ='{office_id}'
-                                                    and dc.Application_Date >= to_date('{dateFrom}', 'dd/mm/YYYY') 
-                                                    and dc.Application_Date <= to_date('{dateTo}', 'dd/mm/YYYY')";
+                                                    where dc.Application_Date >= to_date('{dateFrom}', 'dd/mm/YYYY') 
+                                                    and dc.Application_Date <= to_date('{dateTo}', 'dd/mm/YYYY')" +
+                                                     (string.IsNullOrEmpty(office_id) ? "" : $" AND dc.localoffice_id  = '{office_id}'");
                             break;
                         case "10":
                             cmd.CommandText = $@"Select Updated_date as UpdatedDate,UPDATED_BY_AD as UserName,UNQ_File_NO as ClmNo,'Deleted' as Action, lo.Office_name as Location,Applicant_no as IdNumber,BRM_BARCODE as BrmBarcode,FILE_COMMENT as Reason
