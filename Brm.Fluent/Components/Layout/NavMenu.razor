@@ -1,9 +1,5 @@
 ﻿@using Microsoft.Extensions.Configuration
 
-@* @using Plugin.Chat.Services
-@implements IDisposable
-@inject AutoLoginService autoLoginService *@
-
 @inject SessionService sessionservice
 @inject StaticService staticservice
 @inject IConfiguration config
@@ -22,20 +18,15 @@
             <FluentNavLink Href="@RsWeb" Target="_blank" Icon="@(new Icons.Regular.Size20.BuildingSwap())" IconColor="Color.Accent">RSWeb</FluentNavLink>
             <FluentNavLink Href="misfiles" Icon="@(new Icons.Regular.Size20.DocumentTableSearch())" IconColor="Color.Accent">MIS Files</FluentNavLink>
             <FluentNavLink Href="boxing" Icon="@(new Icons.Regular.Size20.Box())" IconColor="Color.Accent">@(sessionservice.session.IsRmc() ? "Re-boxing" : "Batching")</FluentNavLink>
-
-
             <FluentNavLink Href="reportpage" Icon="@(new Icons.Regular.Size20.DocumentPrint())" IconColor="Color.Accent">Reports</FluentNavLink>
             @if (sessionservice.session.IsRmc())
             {
-            <FluentNavLink Href="destruction" Icon="@(new Icons.Regular.Size20.DeleteLines())" IconColor="Color.Accent">Destruction</FluentNavLink>
-
-            @if (sessionservice.session.IsInRole("GRP_BRM_Office_Name_Change"))
-            {
-            <FluentNavLink Href="officeadmin" Icon="@(new Icons.Regular.Size20.CheckboxPerson())" IconColor="Color.Accent">Office Admin</FluentNavLink>
+                <FluentNavLink Href="destruction" Icon="@(new Icons.Regular.Size20.DeleteLines())" IconColor="Color.Accent">Destruction</FluentNavLink>
+                @if (sessionservice.session.IsInRole("GRP_BRM_Office_Name_Change"))
+                {
+                    <FluentNavLink Href="officeadmin" Icon="@(new Icons.Regular.Size20.CheckboxPerson())" IconColor="Color.Accent">Office Admin</FluentNavLink>
+                }
             }
-            }
-
-
         </FluentNavMenu>
     </nav>
 </div>
