@@ -58,7 +58,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.TdwBatch == 0 && bn.RegionId == _session.Office.RegionId && bn.ApplicationStatus.Contains("LC") && !string.IsNullOrEmpty(bn.TdwBoxno) && (bn.UpdatedDate <= period.ToDate && bn.UpdatedDate >= period.FromDate)).ToListAsync();
+                List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.TdwBatch == 0 && bn.RegionId == _session.Office.RegionId && bn.Lctype > 0 && !string.IsNullOrEmpty(bn.TdwBoxno) && (bn.UpdatedDate <= period.ToDate && bn.UpdatedDate >= period.FromDate)).ToListAsync();
                 List<TdwBatchViewModel> result = new();
 
                 if (!allFiles.Any()) return result;
@@ -360,15 +360,35 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         }
     }
 
-    public async Task UnlockBox(string boxNo)
+    //public async Task UnlockBox(string boxNo)
+    //{
+    //    using (var _context = _contextFactory.CreateDbContext())
+    //    {
+    //        await _context.DcFiles.Where(f => f.TdwBoxno == boxNo).ForEachAsync(f => { f.TdwBatch = 0; f.TdwBatchDate = null; f.BoxLocked = 0; });
+    //        await _context.SaveChangesAsync();
+    //    }
+    //}
+
+    /// <summary>
+    /// TDW Bat submit reboxing change
+    /// </summary>
+    /// <param name="boxNo"></param>
+    /// <param name="IsOpen"></param>
+    /// <returns></returns>
+    public async Task<bool> OpenCloseBox(string boxNo, bool IsOpen)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            await _context.DcFiles.Where(f => f.TdwBoxno == boxNo).ForEachAsync(f => { f.TdwBatch = 0; f.TdwBatchDate = null; f.BoxLocked = 0; });
+            int tdwBatch = IsOpen ? 1 : 0;
+
+            //await _context.DcFiles.Where(b => b.TdwBoxno == boxNo).ForEachAsync(f => f.TdwBatch = tdwBatch);
+            await _context.DcFiles.Where(f => f.TdwBoxno == boxNo).ForEachAsync(f => { f.TdwBatch = tdwBatch; f.BoxLocked = IsOpen ? 0 : 1; });
+
             await _context.SaveChangesAsync();
+
+            return !IsOpen;
         }
     }
-
     public void SendFile(string fileName)
     {
 

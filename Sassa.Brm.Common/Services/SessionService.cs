@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.JSInterop;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 using System.Security.Claims;
 
 namespace Sassa.Brm.Common.Services;
 
-public class SessionService(StaticService _staticservice,AuthenticationStateProvider auth)
+public class SessionService(StaticService _staticservice,AuthenticationStateProvider auth, IJSRuntime jsRuntime)
 {
 
     private UserSession _session = new UserSession("", "", "", ""); 
@@ -41,4 +42,10 @@ public class SessionService(StaticService _staticservice,AuthenticationStateProv
         //Trigger the change for UI update
         UserOfficeChanged?.Invoke(this, EventArgs.Empty);
     }
+
+    public async Task LogToConsole(string message)
+    {
+        await jsRuntime.InvokeVoidAsync("console.log", message);
+    }
+
 }

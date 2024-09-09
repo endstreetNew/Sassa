@@ -26,7 +26,7 @@
             <TemplateColumn Title="Actions">
                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
                 <FluentCheckbox @bind-Value="context.IsSelected"></FluentCheckbox>
-                <FluentButton IconEnd="@(new Icons.Regular.Size12.LockOpen())" OnClick="@(() => btnUnlock_Click(context.BoxNo))" Title="Unlock box" Disabled="@(!(sessionservice.session!.Office!.OfficeType != "LO" && sessionservice.session.IsInRole("GRP_BRM_Monitoring")))"/>
+                <FluentButton IconEnd="@(new Icons.Regular.Size12.LockOpen())" OnClick="@(() => btnUnlock_Click(context.BoxNo))" Title="Unlock box" Disabled="@(!(sessionservice.session.IsRmc() && sessionservice.session.IsInRole("GRP_BRM_Monitoring")) || context.IsLocked)"/>
          </FluentStack>
             </TemplateColumn>
            
@@ -100,6 +100,7 @@
     protected async Task btnLoadBoxes_Click()
     {
         loading = true;
+        boxSearch = boxSearch.ToUpper();
         if (!string.IsNullOrEmpty(boxSearch))
         {
             boxfiles = await db.GetBox(boxSearch);
@@ -144,7 +145,7 @@
     protected async Task btnUnlock_Click(string boxNo)
     {
 
-        await db.UnlockBox(boxNo);
+        await db.OpenCloseBox(boxNo,false);
         boxSearch = "";
         await btnLoadBoxes_Click();
     }

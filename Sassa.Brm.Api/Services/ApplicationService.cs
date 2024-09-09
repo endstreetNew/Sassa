@@ -26,10 +26,14 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         {
             try
             {
-                application.ChildId = application.ChildId.Trim();
-                if (application.ChildId.Length > 13)
+                if (application.Brm_BarCode.Length !=8)
                 {
-                    throw new Exception("Child ID too long.");
+                    throw new Exception("Invalid Barcode.");
+                }
+                application.ChildId = application.ChildId.Trim();
+                if (application.ChildId.Length != 13)
+                {
+                    throw new Exception("Child ID Invalid.");
                 }
                 var office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
                 application.RegionId = office.RegionId;
@@ -46,24 +50,20 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 {
                     throw new Exception("Duplicate Barcode.");
                 }
-
+                return await CreateBRM(application, reason);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        return await CreateBRM(application, reason);
     }
-
-    public async Task<bool> checkBRMExists(string brmno)
-    {
-        using (var _context = dbContextFactory.CreateDbContext())
-        {
-            return await _context.DcFiles.Where(f => f.BrmBarcode == brmno).CountAsync() >0;
-        }
-        //return _context.DcFiles.Where(k => k.BrmBarcode.ToLower() == brmno.ToLower()).Any();
-    }
+    /// <summary>
+    /// The regionID is required 
+    /// </summary>
+    /// <param name="application"></param>
+    /// <param name="reason"></param>
+    /// <returns></returns>
     public async Task<DcFile> CreateBRM(Application application, string reason)
     {
 
@@ -71,51 +71,42 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         DcFile file;
         using (var _context = dbContextFactory.CreateDbContext())
         {
-            try { 
-            file = new DcFile()
-            {
-                UnqFileNo = "",
-                ApplicantNo = application.Id,
-                BrmBarcode = application.Brm_BarCode,
-                BatchAddDate = DateTime.Now,
-                TransType = application.TRANS_TYPE,
-                BatchNo = application.BatchNo,
-                GrantType = application.GrantType,
-                OfficeId = application.OfficeId,
-                RegionId = application.RegionId,
-                FspId = application.FspId,
-                DocsPresent = application.DocsPresent,
-                UpdatedDate = DateTime.Now,
-                UserFirstname = application.Name,
-                UserLastname = application.SurName,
-                ApplicationStatus = application.AppStatus,
-                TransDate = application.AppDate.ToDate("dd/MMM/yy"),
-                SrdNo = application.Srd_No,
-                ChildIdNo = application.ChildId,
-                Isreview = application.TRANS_TYPE == 2 ? "Y" : "N",
-                Lastreviewdate = application.LastReviewDate.ToDate("dd/MMM/yy"),
-                ArchiveYear = application.AppStatus.Contains("ARCHIVE") ? application.ARCHIVE_YEAR : null,
-                Lctype = string.IsNullOrEmpty(application.LcType.Trim('0')) ? null : (Decimal?)Decimal.Parse(application.LcType),
-                TdwBoxno = application.TDW_BOXNO,
-                MiniBoxno = application.MiniBox,
-                FileComment = reason,
-                UpdatedByAd = application.BrmUserName,
-                TdwBatch = 0
-            };
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error creating BRM: " + ex.Message);
-            }
-            _context.ChangeTracker.Clear();
-            _context.DcFiles.Add(file);
-            try
-            {
+            try {
+                file = new DcFile()
+                    {
+                        UnqFileNo = "",
+                        ApplicantNo = application.Id,
+                        BrmBarcode = application.Brm_BarCode,
+                        BatchAddDate = DateTime.Now,
+                        TransType = application.TRANS_TYPE,
+                        BatchNo = application.BatchNo,
+                        GrantType = application.GrantType,
+                        OfficeId = application.OfficeId,
+                        RegionId = application.RegionId,
+                        FspId = application.FspId,
+                        DocsPresent = application.DocsPresent,
+                        UpdatedDate = DateTime.Now,
+                        UserFirstname = application.Name,
+                        UserLastname = application.SurName,
+                        ApplicationStatus = application.AppStatus,
+                        TransDate = application.AppDate.ToDate("dd/MMM/yy"),
+                        SrdNo = application.Srd_No,
+                        ChildIdNo = application.ChildId,
+                        Isreview = application.TRANS_TYPE == 2 ? "Y" : "N",
+                        Lastreviewdate = application.LastReviewDate.ToDate("dd/MMM/yy"),
+                        ArchiveYear = application.AppStatus.Contains("ARCHIVE") ? application.ARCHIVE_YEAR : null,
+                        Lctype = string.IsNullOrEmpty(application.LcType.Trim('0')) ? null : (Decimal?)Decimal.Parse(application.LcType),
+                        TdwBoxno = application.TDW_BOXNO,
+                        MiniBoxno = application.MiniBox,
+                        FileComment = reason,
+                        UpdatedByAd = application.BrmUserName,
+                        TdwBatch = 0
+                    };
+                _context.DcFiles.Add(file);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                SaveActivity("Capture", file.SrdNo, file.Lctype, "Error:" + ex.Message.Substring(0, 200), file.RegionId, decimal.Parse(file.OfficeId), file.UpdatedByAd, file.UnqFileNo);
                 throw;
             }
             file = _context.DcFiles.Where(k => k.BrmBarcode == application.Brm_BarCode).FirstOrDefault()!;
@@ -171,8 +162,6 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 dc_socpen.RegionId = file.RegionId;
                 dc_socpen.LocalofficeId = file.RegionId;
                 dc_socpen.Documents = file.DocsPresent;
-
-
                 _context.DcSocpens.Add(dc_socpen);
             }
             try
@@ -181,7 +170,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             }
             catch (Exception ex)
             {
-                SaveActivity("Capture", file.SrdNo, file.Lctype, "Error:" + ex.Message.Substring(0, 200), file.RegionId, decimal.Parse(file.OfficeId), file.UpdatedByAd, file.UnqFileNo);
+                //SaveActivity("Capture", file.SrdNo, file.Lctype, "Error:" + ex.Message.Substring(0, 200), file.RegionId, decimal.Parse(file.OfficeId), file.UpdatedByAd, file.UnqFileNo);
                 //throw;
             }
         }
@@ -198,9 +187,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             {
                 var dcfile = files.First();
                 dcfile.FileComment = reason;
-                await BackupDcFileEntry(dcfile);
-                _context.DcFiles.RemoveRange(files);
-                SaveActivity("Delete", dcfile.SrdNo, dcfile.Lctype, "Delete BRM Record", dcfile.RegionId, decimal.Parse(dcfile.OfficeId), dcfile.UpdatedByAd, dcfile.UnqFileNo);
+                await BackupDcFileEntry(dcfile.BrmBarcode);
             }
             var merges = await _context.DcMerges.Where(m => m.BrmBarcode == brmNo || m.ParentBrmBarcode == brmNo).ToListAsync();
             if(merges.Any())
@@ -209,39 +196,48 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             }
             if (files.Any() || merges.Any())
             {
+                _context.DcFiles.RemoveRange(files);
                 await _context.SaveChangesAsync();
             }
+            
         }
     }
 
+    #endregion
     /// <summary>
     /// Backup DcFile entry for removal
     /// </summary>
     /// <param name="file">Original File</param>
-    public async Task BackupDcFileEntry(DcFile file)
+    public async Task BackupDcFileEntry(string BrmBarcode)
     {
         using (var _context = dbContextFactory.CreateDbContext())
         {
+            var files = await _context.DcFiles.Where(k => k.BrmBarcode == BrmBarcode).ToListAsync();
             DcFileDeleted removed = new DcFileDeleted();
-            file.UpdatedByAd = file.UpdatedByAd;
-            file.UpdatedDate = System.DateTime.Now;
-            removed.FromDCFile(file);
-            try
+            foreach (var file in files)
             {
-                var interim = await _context.DcFileDeleteds.Where(d => d.UnqFileNo == file.UnqFileNo).ToListAsync();
-                if (!interim.Any())
+                file.UpdatedByAd = file.UpdatedByAd;
+                file.UpdatedDate = System.DateTime.Now;
+                try
                 {
-                    _context.DcFileDeleteds.Add(removed);
-                    await _context.SaveChangesAsync();
+                    removed.FromDCFile(file);
+                    var interim = await _context.DcFileDeleteds.Where(d => d.UnqFileNo == file.UnqFileNo).ToListAsync();
+                    if (!interim.Any())
+                    {
+                        _context.DcFileDeleteds.Add(removed);
+                        await _context.SaveChangesAsync();
+                    }
+                    SaveActivity("Delete", file.SrdNo, file.Lctype, "Delete BRM Record", file.RegionId, decimal.Parse(file.OfficeId), file.UpdatedByAd, file.UnqFileNo);
+                }
+                catch
+                {
+                    //throw new Exception("Error backing up file: " + ex.Message);
                 }
             }
-            catch
-            {
-                //throw new Exception("Error backing up file: " + ex.Message);
-            }
+            
         }
     }
-
+    #region ActivityUpdate
     public void SaveActivity(string action, string srdNo, decimal? lcType, string Activity, string regionId, decimal officeId, string samName, string UniqueFileNo = "")
     {
         try

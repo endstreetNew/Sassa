@@ -13,16 +13,16 @@
     </FluentRadioGroup>
     @if (Content.ApplicationType == ApplicationType.LooseCorrespondence)
     {
-        <FluentSelect TOption="KeyValue"
+        <FluentSelect TOption="KeyValuePair<decimal,string>"
                     Label="Select a LcType"
-                    Items="@LcTypes"
+                    Items="@StaticDataService.LcTypes.ToList()"
                     Id="lctype-listbox"
                     Width="200px"
                     Height="250px"
                     Placeholder="Make a selection..."
-                    OptionValue="@(p => p.Id)"
-                    OptionText="@(p => p.Name)"
-                    @bind-Value="@selectedLcType"/>
+                    OptionValue="@(p => p.Key.ToString())"
+                    OptionText="@(p => p.Value)"
+                    @bind-Value="@Content.LcType"/>
     }
     @if(Content.IsGrantTypeEdit())
     {
@@ -99,7 +99,7 @@
     [CascadingParameter]
     public FluentDialog? Dialog { get; set; }
 
-    protected List<KeyValue> LcTypes = new();
+    //protected List<KeyValue> LcTypes = new();
     protected string selectedLcType = string.Empty;
     protected List<KeyValue> grantTypes = new();
     protected List<KeyValue> appStatus = new();
@@ -109,7 +109,7 @@
 
     protected override void OnInitialized()
     {
-        LcTypes = staticservice.GetLcTypes().ToKeyValueList();
+        //LcTypes = staticservice.GetLcTypes().ToKeyValueList();
         if (Content.GrantType == "0") //Old Age Grant : •	Be able to capture GIA where the system only reflects OA.
         {
             grantTypes = staticservice.GetGrantTypes().Where(i => "08".Contains(i.Key)).ToDictionary(i => i.Key, i => i.Value).ToKeyValueList();

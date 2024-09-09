@@ -138,17 +138,11 @@
             //Searching on SRD
             if (!string.IsNullOrEmpty(txtSearchSRD))
             {
+                txtSearchId = await db.GetSocpenSearchId(txtSearchSRD);
                 srdNo = long.Parse(txtSearchSRD);
-                try
-                {
-                    txtSearchId = await db.GetSocpenSearchId(txtSearchSRD);
-                }
-                catch
-                {
-                    toast.ShowInfo("No Socpen results");
-                }
                 if (string.IsNullOrEmpty(txtSearchId))
                 {
+                    toast.ShowError("Srd No was not found.");
                     txtSearchId = $"S{txtSearchSRD.PadLeft(12, '0')}";
                     srdWithNoId = true;
                 }
@@ -174,10 +168,9 @@
         }
         catch (Exception ex)
         {
-            DTSocPen.Clear();
-            DTBrm.Clear();
-            DTBrmParents.Clear();
-            DTMerged.Clear();
+            //reset invalid searcCriteria;
+            txtSearchSRD = "";
+            txtSearchId = "";
             toast.ShowError(ex.Message);
 
         }

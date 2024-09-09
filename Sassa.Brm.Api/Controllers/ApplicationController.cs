@@ -41,7 +41,7 @@ namespace Sassa.BRM.Controller
         [AllowAnonymous]
         public async Task<ActionResult<DcFile>> PostApplication(Application app)
         {
-            DcFile result;
+            DcFile result = new DcFile();
 
             if (string.IsNullOrEmpty(app.BrmUserName))
             {

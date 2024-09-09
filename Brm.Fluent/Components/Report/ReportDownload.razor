@@ -50,13 +50,11 @@
                         @foreach (var propa in props.Where(p => p.Name == "FileName"))
                         {
                             <td>
-                             <button class="btn btn-primary btn-sm active" @onclick="async () => await DownloadFileFromStream(propa,u)">
-                                    Download
-                            </button>
+                                <FluentButton Icon="Download" OnClick="@(async () => await DownloadFileFromStream(propa,u))" >DownLoad</FluentButton>
 @*                                <a class="btn btn-primary btn-sm active" href="../brmfiles/@propa.GetValue(u)?.ToString()" download="@propa.GetValue(u)" target="_top">Download</a> *@
                             </td>
                             <td>
-                                <button class="btn btn-danger btn-sm active" @onclick="@(() => btnDelete_Click(propa.GetValue(u)!.ToString()!))">Delete</button>
+                                <FluentButton BackgroundColor="Red" Color="White" IconEnd="@(new Icons.Regular.Size12.Delete())" OnClick="@(() => btnDelete_Click(propa.GetValue(u)!.ToString()!))"/>
                             </td>
                         }
                     </tr>

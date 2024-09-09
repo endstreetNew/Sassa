@@ -145,8 +145,8 @@
                 }
                 catch (IOException fe)
                 {
-                    Console.WriteLine("The file could not be read:");
-                    Console.WriteLine(fe.Message);
+                    await sessionservice.LogToConsole("The file could not be read:");
+                    await sessionservice.LogToConsole(fe.Message);
                 }
 
             }

@@ -27,8 +27,9 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
         catch (Exception ex)
         {
+            await _sessionService.LogToConsole($"Error checking for duplicate: {ex.Message}");
             return true;
-            //throw new Exception($"Error checking for duplicate: {ex.Message}");
+            
         }
     }
     public async Task EditBarCode(Application brm, string barCode)
@@ -524,10 +525,10 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             }
             catch (Exception ex)
             {
+                await _sessionService.LogToConsole(ex.Message);
                 throw;
             }
         }
-
     }
  
     private async Task AddRequestFromTDW(ModelContext context,TdwFileLocation tdw, DcFileRequest req)
@@ -989,12 +990,9 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         using (var _context = _contextFactory.CreateDbContext())
         {
             if (!srdNo.IsNumeric()) throw new Exception("SRD is Invalid.");
-
             long srd = long.Parse(srdNo);
             var result = await _context.DcSocpens.Where(s => s.SrdNo == srd).ToListAsync();
-
-            if (!result.Any()) throw new Exception("SRD not found.");
-
+            if (!result.Any()) return "none";
             return result.First().BeneficiaryId;
         }
     }
@@ -1425,7 +1423,6 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     }
     public async Task RemoveFileFromBatch(string brmBarCode,decimal? batchNo)
     {
-        DcFile file;
         using (var _context = _contextFactory.CreateDbContext())
         {
             _context.ChangeTracker.Clear();
