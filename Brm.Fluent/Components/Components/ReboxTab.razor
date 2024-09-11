@@ -63,7 +63,7 @@
         </FluentStack>
 
     </FluentStack>
-    <FluentDivider Orientation="Orientation.Horizontal"/>
+    <FluentDivider Orientation="Orientation.Horizontal" />
     <FluentStack Orientation="Orientation.Vertical">
         @*Right Side*@
         @if (boxfiles.Any())
@@ -76,24 +76,26 @@
                 <FluentButton Appearance="Appearance.Accent" @onclick="@(() => btnOpenClose_Click())" Disabled="@(!rebox.IsLCSelected && !boxfiles.Any() || BoxLocked)">@(BoxOpen ? "Close" : "Open") Box</FluentButton>
             </FluentStack>
             <FluentStack Orientation="Orientation.Horizontal">
-                
                 <FluentTextField @bind-Value="@searchText" Placeholder="<Id/BRMBarcode>" Disabled="@(!loaded)" />
                 <FluentButton IconEnd="@(new Icons.Regular.Size12.Search())" @onclick="@(() => btnSearch_Click())" Disabled="@(!loaded)">Search</FluentButton>
                 <FluentButton IconEnd="@(new Icons.Regular.Size12.Search())" @onclick="@(() => btnClearSearch_Click())" Disabled="@(!loaded)">Clear</FluentButton>
             </FluentStack>
             <FluentDataGrid Items="@boxfiles.AsQueryable()" TGridItem="ReboxListItem" Pagination="@paginationState">
                 <PropertyColumn Property="@(p => p.BrmNo)" Sortable="true" />
-                <TemplateColumn Title="Actions">
-                    <span class="@(context.Scanned ? new Icons.Regular.Size12.Checkmark() : new Icons.Regular.Size12.CheckboxUnchecked())"></span>
-                    <span class="@(context.BoxLocked ? new Icons.Regular.Size12.Checkmark() : new Icons.Regular.Size12.CheckboxUnchecked())"></span>
-                    <FluentNavLink Target="_blank" Href="@($"{NavigationM.BaseUri}coversheet/{context.BrmNo}")">View Cover</FluentNavLink>
-                </TemplateColumn>
                 <PropertyColumn Property="@(p => p.RegType)" Sortable="true" />
                 <PropertyColumn Property="@(p => p.MiniBox)" Sortable="true" />
-                <PropertyColumn Property="@(p => p.IdNo)" Sortable="true" />
+                <PropertyColumn Width="130px" Property="@(p => p.IdNo)" Sortable="true" />
                 <PropertyColumn Property="@(p => p.FullName)" Sortable="true" />
-                <PropertyColumn Property="@(p => p.ClmNo)" Sortable="true" />
-
+                <PropertyColumn Width="130px" Property="@(p => p.ClmNo)" Sortable="true" />
+                <TemplateColumn Title="Actions">
+                    <FluentButton Style="Width:30px;" IconEnd="@(new Icons.Regular.Size12.Eye())" Target="_blank" @onclick="@(() => ShowCover(context.BrmNo))"></FluentButton>
+                </TemplateColumn>
+                <TemplateColumn Title="Scanned">
+                    <FluentCheckbox Style="Width:30px;"  @bind-Value="context.Scanned" />
+                </TemplateColumn>
+                <TemplateColumn Title="Locked">
+                    <FluentCheckbox Style="Width:30px;" @bind-Value="context.BoxLocked"></FluentCheckbox>
+                </TemplateColumn>
             </FluentDataGrid>
             <FluentPaginator State="@paginationState" />
         }
@@ -107,7 +109,7 @@
     [Parameter]
     public string boxNo { get; set; } = "";
 
-    PaginationState paginationState = new PaginationState(){ItemsPerPage = 10};
+    PaginationState paginationState = new PaginationState() { ItemsPerPage = 10 };
 
     protected bool BoxLocked;
     protected bool BoxOpen;
@@ -371,11 +373,17 @@
         }
     }
 
-    protected void btnPrint_Click()
+    protected async Task btnPrint_Click()
     {
 
-        Navigate.NavigateTo($"reboxcover/{rebox.BoxNo}/{rebox.AltBoxNo}");
+        // Navigate.NavigateTo($"reboxcover/{rebox.BoxNo}/{rebox.AltBoxNo}");
+        await Js.InvokeVoidAsync("open", System.Threading.CancellationToken.None, $"reboxcover/{rebox.BoxNo}/{rebox.AltBoxNo}", "_blank");
 
+    }
+
+    protected async Task ShowCover(string barCode)
+    {
+        await Js.InvokeVoidAsync("open", System.Threading.CancellationToken.None, $"coversheet/{barCode}", "_blank");
     }
 
 

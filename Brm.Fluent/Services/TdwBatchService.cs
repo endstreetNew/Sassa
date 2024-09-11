@@ -10,7 +10,7 @@ using Sassa.BRM.ViewModels;
 using System.Diagnostics;
 
 
-public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, SessionService session, RawSqlService _raw, MailMessages _mail)
+public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, SessionService session, RawSqlService _raw, MailMessages _mail,LoggingService logger)
 {
 
     UserSession _session = session.session!;//SessionService must be loaded before this service
@@ -58,12 +58,8 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         {
             using (var _context = _contextFactory.CreateDbContext())
             {
-                List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.TdwBatch == 0 && bn.RegionId == _session.Office.RegionId && bn.Lctype > 0 && !string.IsNullOrEmpty(bn.TdwBoxno) && (bn.UpdatedDate <= period.ToDate && bn.UpdatedDate >= period.FromDate)).ToListAsync();
+                var allFiles = await _context.DcFiles.Where(bn => bn.TdwBatch == 0 && bn.RegionId == _session.Office.RegionId && bn.Lctype > 0 && !string.IsNullOrEmpty(bn.TdwBoxno) && (bn.UpdatedDate <= period.ToDate && bn.UpdatedDate >= period.FromDate)).ToListAsync();
                 List<TdwBatchViewModel> result = new();
-
-                if (!allFiles.Any()) return result;
-
-
                 foreach (var box in allFiles.Select(f => f.TdwBoxno).Distinct().ToList())
                 {
                     var dcFiles = allFiles.Where(f => f.TdwBoxno == box).ToList();
@@ -84,6 +80,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         }
         catch (Exception ex)
         {
+            await logger.LogToConsole(ex.Message);
             throw new Exception(ex.Message);
         }
 

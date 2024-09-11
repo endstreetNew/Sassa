@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop;
 using razor.Components.Models;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
@@ -11,7 +12,7 @@ using System.Linq;
 using System.Text;
 
 
-public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, RawSqlService _raw, MailMessages _mail, SessionService _sessionService, BrmApiService brmApiService)
+public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, RawSqlService _raw, MailMessages _mail, SessionService _sessionService, BrmApiService brmApiService,LoggingService logger)
 {
     private UserSession _userSession = _sessionService.session;
 
@@ -27,7 +28,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
         catch (Exception ex)
         {
-            await _sessionService.LogToConsole($"Error checking for duplicate: {ex.Message}");
+            await  logger.LogToConsole($"Error checking for duplicate: {ex.Message}");
             return true;
             
         }
@@ -525,7 +526,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             }
             catch (Exception ex)
             {
-                await _sessionService.LogToConsole(ex.Message);
+                await logger.LogToConsole(ex.Message);
                 throw;
             }
         }

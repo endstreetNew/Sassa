@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Sassa.Brm.Common.Services;
 
-public class SessionService(StaticService _staticservice,AuthenticationStateProvider auth, IJSRuntime jsRuntime)
+public class SessionService(StaticService _staticservice,AuthenticationStateProvider auth)
 {
 
     private UserSession _session = new UserSession("", "", "", ""); 
@@ -43,9 +43,6 @@ public class SessionService(StaticService _staticservice,AuthenticationStateProv
         UserOfficeChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public async Task LogToConsole(string message)
-    {
-        await jsRuntime.InvokeVoidAsync("console.log", message);
-    }
+
 
 }

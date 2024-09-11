@@ -6,6 +6,7 @@
 @inject IToastService toast
 @inject IWebHostEnvironment environment
 @inject DestructionService dProcess
+@inject LoggingService logger
 
 <br />
 <h5>Create TDW Destruction list</h5>
@@ -145,8 +146,8 @@
                 }
                 catch (IOException fe)
                 {
-                    await sessionservice.LogToConsole("The file could not be read:");
-                    await sessionservice.LogToConsole(fe.Message);
+                    await logger.LogToConsole("The file could not be read:");
+                    await logger.LogToConsole(fe.Message);
                 }
 
             }

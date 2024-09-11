@@ -80,6 +80,7 @@ namespace Brm.Fluent
             builder.Services.AddHttpClient();
             //Chat
             //builder.Services.AddChatService();
+            builder.Services.AddScoped<LoggingService>();
             // UI 
             builder.Services.AddRazorComponents().AddInteractiveServerComponents();
             builder.Services.AddFluentUIComponents();

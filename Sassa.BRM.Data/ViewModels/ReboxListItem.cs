@@ -17,6 +17,10 @@
             {
                 return TdwBatch > 1;
             }
+            set
+            {
+                return;
+            }
         }
         public bool BoxOpen
         {

@@ -99,17 +99,28 @@
     //Loader boxes for batching tab
     protected async Task btnLoadBoxes_Click()
     {
-        loading = true;
-        boxSearch = boxSearch.ToUpper();
-        if (!string.IsNullOrEmpty(boxSearch))
-        {
-            boxfiles = await db.GetBox(boxSearch);
+        try{
+            loading = true;
+            boxSearch = boxSearch.ToUpper();
+            if (!string.IsNullOrEmpty(boxSearch))
+            {
+                boxfiles = await db.GetBox(boxSearch);
+            }
+            else
+            {
+                boxfiles = await db.GetAllBoxes(period);
+            }
+            
         }
-        else
+        catch
         {
-            boxfiles = await db.GetAllBoxes(period);
+            toast.ShowError("Error loading data");
         }
-        loading = false;
+        finally
+        {
+            loading = false;
+        }
+
     }
 
     protected async Task btnLoadBatches_Click()

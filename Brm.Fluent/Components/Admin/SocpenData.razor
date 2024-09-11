@@ -1,18 +1,18 @@
-﻿@page  "/duplicates"
+﻿@page "/socpendata"
 @using Microsoft.EntityFrameworkCore
 @inject IDbContextFactory<ModelContext> _contextFactory
 @inject SessionService sessionservice
 @inject LoggingService logger
 @implements IDisposable
 
-<h3>DuplicateFix @skip.ToString()</h3>
-
-@* <FluentDataGrid Items="@files.AsQueryable()" TGridItem="DcFile" Pagination="fPaginator">
-    <PropertyColumn Property="@(p => p.UnqFileNo)" Sortable="true" />
+<BrmPageTitle Title="Socpen Data" />
+@* 
+<FluentDataGrid Items="@files.AsQueryable()" TGridItem="DcSocpen" Pagination="fPaginator">
+    <PropertyColumn Property="@(p => p.CaptureReference)" Sortable="true" />
     <PropertyColumn Property="@(p => p.BrmBarcode)" Sortable="true" />
     <PropertyColumn Property="@(p => p.GrantType)" Sortable="true" />
         <TemplateColumn>
-            <FluentButton OnClick="@(() => FilterSocpen(context.UnqFileNo))">Remove</FluentButton>    
+            <FluentButton OnClick="@(() => FilterSocpen(context.CaptureReference))">Remove</FluentButton>
         </TemplateColumn>
 </FluentDataGrid>
 <FluentPaginator State="@fPaginator" />
@@ -59,7 +59,7 @@
                 {
 
                     var unqFileNos = _context.DcSocpens.Where(s => s.CaptureReference != null).OrderBy(s => s.CaptureReference).Select(s => s.CaptureReference).Skip(skip).Take(1000000);
-                    var socpenfiles = await _context.DcFiles.Where(f => unqFileNos.Contains(f.UnqFileNo)).Select(x => new { x.UnqFileNo, x.BrmBarcode}).ToListAsync();
+                    var socpenfiles = await _context.DcFiles.Where(f => unqFileNos.Contains(f.UnqFileNo)).Select(x => new { x.UnqFileNo, x.BrmBarcode }).ToListAsync();
                     var barcodes = socpenfiles.GroupBy(x => x.BrmBarcode).Where(g => g.Count() > 1).Select(x => x.Key).ToList();
                     // var barcodes = _context.DcFiles.GroupBy(x => x.BrmBarcode).Where(g => g.Count() > 1).Select(x => x.Key).ToList();
                     var files = await _context.DcFiles.Where(f => barcodes.Contains(f.BrmBarcode)).Select(x => new { x.UnqFileNo, x.BrmBarcode }).ToListAsync();
@@ -75,7 +75,7 @@
             }
             catch (Exception ex)
             {
-               await logger.LogToConsole(ex.Message);
+                await logger.LogToConsole(ex.Message);
                 //Console.WriteLine(ex.Message);
             }
         }
