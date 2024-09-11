@@ -66,33 +66,24 @@ namespace Sassa.Brm.Common.Helpers
         }
 
 
-        public static IEnumerable<string> GetColumnNames(string filePath)
-        {
-            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filePath, false))
-            {
-                WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart!;
-                var sheet = workbookPart!.Workbook.Descendants<Sheet>().First();
-                var worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id!);
-
-                // Get the first row (assumed to contain column headers)
-                var firstRow = worksheetPart.Worksheet.Descendants<Row>().FirstOrDefault();
-                if (firstRow != null)
-                {
-                    return firstRow.Elements<Cell>().Select(cell => GetCellValue(workbookPart, cell));
-                }
-
-                return Enumerable.Empty<string>();
-            }
-        }
-
-        //private static string GetCellValue(WorkbookPart workbookPart, Cell cell)
+        //public static IEnumerable<string> GetColumnNames(string filePath)
         //{
-        //    // Your logic to handle cell values (e.g., shared strings, numeric values, etc.)
-        //    // Implement this method based on your specific requirements
-        //    // ...
-        //    return cell.InnerText;
-        //}
+        //    using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filePath, false))
+        //    {
+        //        WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart!;
+        //        var sheet = workbookPart!.Workbook.Descendants<Sheet>().First();
+        //        var worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id!);
 
+        //        // Get the first row (assumed to contain column headers)
+        //        var firstRow = worksheetPart.Worksheet.Descendants<Row>().FirstOrDefault();
+        //        if (firstRow != null)
+        //        {
+        //            return firstRow.Elements<Cell>().Select(cell => GetCellValue(workbookPart, cell));
+        //        }
+
+        //        return Enumerable.Empty<string>();
+        //    }
+        //}
 
     }
 }

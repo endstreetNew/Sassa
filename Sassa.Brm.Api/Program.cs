@@ -12,6 +12,7 @@ string BrmConnectionString = builder.Configuration.GetConnectionString("BrmConne
 //Factory pattern
 builder.Services.AddDbContextFactory<ModelContext>(options =>
 options.UseOracle(BrmConnectionString));
+builder.Services.AddScoped<ActivityService>();
 builder.Services.AddScoped<ApplicationService>();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<StaticService>();

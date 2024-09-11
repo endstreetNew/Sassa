@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sassa.Brm.Common.Helpers
 {
-    public static class DependencyInjectionExtentions
+    public static class ServiceInstaller
     {
         public static IServiceCollection AddSharedServices(this IServiceCollection services)
         {

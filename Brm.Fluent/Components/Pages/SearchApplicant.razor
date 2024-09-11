@@ -258,19 +258,19 @@
         try
         {
             SelectedApplication = new Application
-                {
-                    Id = txtSearchId,
-                    Srd_No = txtSearchSRD,
-                    TRANS_TYPE = 0,
-                    TDW_BOXNO = rebox.BoxNo,
-                    MiniBox = rebox.MiniBox,
-                    GrantType = manualGrantType,
-                    RegionId = sessionservice.session.Office.RegionId,
-                    LcType = "0",
-                    AppDate = DateTime.Now.ToStandardDateString(),
-                    AppStatus = "MAIN",
-                    DocsPresent = ""
-                };
+            {
+                Id = txtSearchId,
+                Srd_No = txtSearchSRD,
+                TRANS_TYPE = 0,
+                TDW_BOXNO = rebox.BoxNo,
+                MiniBox = rebox.MiniBox,
+                GrantType = manualGrantType,
+                RegionId = sessionservice.session.Office.RegionId,
+                LcType = "0",
+                AppDate = DateTime.Now.ToStandardDateString(),
+                AppStatus = "MAIN",
+                DocsPresent = ""
+            };
             if (!await IsValid()) return;
             BrmCaptureModel br = new BrmCaptureModel
                 {

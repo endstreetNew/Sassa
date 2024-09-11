@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Compile Remove="Helpers\Security.cs" />
-    <Compile Remove="Services\ActivityService.cs" />
   </ItemGroup>
 
   <ItemGroup>

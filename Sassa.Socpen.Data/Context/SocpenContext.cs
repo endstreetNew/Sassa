@@ -18,8 +18,7 @@ namespace Sassa.Socpen.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseOracle("DATA SOURCE=10.124.154.143:1523/socpen;PERSIST SECURITY INFO=True;USER ID=Sassa;Password=sassa;");
+                throw new Exception("Please configure the database connection string in the appsettings.json file");
             }
         }
 
