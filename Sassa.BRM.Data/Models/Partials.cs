@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net.NetworkInformation;
 
 namespace Sassa.BRM.Models
 {
@@ -72,6 +73,24 @@ namespace Sassa.BRM.Models
     }
     public partial class DcFile
     {
+        private bool _IsManualCapture;
+        private Reboxing _Reboxing;
+        private string _MergeStatus;
+
+        public DcFile()
+        {
+            _IsManualCapture = false;
+            _Reboxing = new Reboxing();
+        }
+        public DcFile(Reboxing rebox,bool IsManualCapture)
+        {
+            _IsManualCapture = IsManualCapture;
+            _Reboxing = rebox;
+        }
+        public void SetMergeStatus(string status)
+        {
+            _MergeStatus = status;
+        }
         [NotMapped]
         public string RegType
         {
@@ -94,13 +113,13 @@ namespace Sassa.BRM.Models
                 }
             }
         }
-        [NotMapped]
-        public bool IsPreservedType
+        public bool IsPreservedType()
         {
-            get
-            {
                 return "MAIN|LC-MAIN|ARCHIVE|LC-ARCHIVE".Contains(ApplicationStatus);
-            }
+        }
+        public bool IsLc()
+        {
+            return (Lctype??0) > 0;
         }
         [NotMapped]
         public string FullName
@@ -111,24 +130,7 @@ namespace Sassa.BRM.Models
             }
         }
         [NotMapped]
-        public string MergeStatus { get; set; }
-
-        //[NotMapped]
-        //public string TdwBoxNo
-        //{
-        //    get
-        //    {
-        //        return TdwBoxno;
-        //    }
-        //    set
-        //    {
-        //        if(!IsLocked)
-        //        {
-        //            TdwBoxno = value;
-        //        }
-        //    }
-        //}
-
+        public string MergeStatus { get { return _MergeStatus; }  }
         [NotMapped]
         public bool IsLocked
         {
@@ -136,6 +138,30 @@ namespace Sassa.BRM.Models
             {
                 return BoxLocked == 1;
             }
+        }
+        [NotMapped]
+        public Reboxing Reboxing
+        {
+            get
+            {
+                return _Reboxing;
+            }
+        }
+        [NotMapped]
+        public bool IsManualCapture
+        {
+            get
+            { 
+                return _IsManualCapture; 
+            }
+        }
+        public bool IsGrantTypeEdit()
+        {
+            return "06C59".Contains(GrantType);
+        }
+        public bool IsChildIdEdit()
+        {
+            return "6C59".Contains(GrantType) && (ChildIdNo == null || ChildIdNo.Trim().Length != 13);
         }
     }
     public partial class DcFileRequest

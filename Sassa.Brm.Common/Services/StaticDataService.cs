@@ -17,6 +17,8 @@ public static class StaticDataService
     public static string ReportFolder { get; set; } = "";
     public static string DocumentFolder { get; set; } = "";
     public static Dictionary<int, string> TransactionTypes { get; set; } = new();
+    public static List<string> ApplicationStatus { get; set; } = new List<string> { "MAIN", "ARCHIVE", "DESTROY" };
+
     public static List<DcRegion> Regions { get; set; } = new();
     public static string RegionCode(string RegionId)
     {

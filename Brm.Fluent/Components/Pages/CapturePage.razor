@@ -1,5 +1,4 @@
-﻿@page "/searchapplicant"
-@page "/searchapplicant/{Id}"
+﻿@page "/capturepage"
 
 @inject SessionService sessionservice
 @inject BRMDbService db
@@ -231,141 +230,117 @@
         {
             SelectedApplication = a;
             if (!await IsValid()) return;
-
-            DcFile file = new DcFile(rebox, false)
+            ///Modal Model
+            BrmCaptureModel br = new BrmCaptureModel
                 {
-                    UnqFileNo = "",
-                    ApplicantNo = SelectedApplication.Id,
+                    ApplicantId = SelectedApplication.Id,
                     SrdNo = SelectedApplication.Srd_No,
                     GrantType = SelectedApplication.GrantType,
-                    ChildIdNo = SelectedApplication.ChildId,
-                    UserFirstname = SelectedApplication.Name,
-                    UserLastname = SelectedApplication.SurName,
+                    ChildId = SelectedApplication.ChildId,      
+                    LcType = SelectedApplication.LcType,
+                    AppDate = SelectedApplication.AppDate ?? DateTime.Now.ToString("dd/MMM/yy"),
+                    AppStatus = SelectedApplication.AppStatus,
+                    Documents = SelectedApplication.DocsPresent,
                     TdwBoxno = SelectedApplication.TDW_BOXNO,
-                    MiniBoxno = rebox.MiniBox,
-                    TransDate = SelectedApplication.AppDate.ToDate("dd/MMM/yy"),
-                    ApplicationStatus = SelectedApplication.AppStatus,
-                    DocsPresent = SelectedApplication.DocsPresent,
-                    ArchiveYear = SelectedApplication.ARCHIVE_YEAR
+                    Reboxing = rebox
                 };
-            await DcFileCapture(file);
+            await ModalCapture(br);
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
         }
     }
-    private async Task DcFileCapture(DcFile br)
+
+    private async Task btnManualCapture_Click()
+    {
+        try
+        {
+            SelectedApplication = new Application
+            {
+                Id = txtSearchId,
+                Srd_No = txtSearchSRD,
+                TRANS_TYPE = 0,
+                TDW_BOXNO = rebox.BoxNo,
+                MiniBox = rebox.MiniBox,
+                GrantType = manualGrantType,
+                RegionId = sessionservice.session.Office.RegionId,
+                LcType = "0",
+                AppDate = DateTime.Now.ToStandardDateString(),
+                AppStatus = "MAIN",
+                DocsPresent = ""
+            };
+            if (!await IsValid()) return;
+            BrmCaptureModel br = new BrmCaptureModel
+                {
+                    ApplicantId = SelectedApplication.Id,
+                    SrdNo = SelectedApplication.Srd_No,
+                    GrantType = SelectedApplication.GrantType,
+                    LcType = SelectedApplication.LcType,
+                    AppDate = SelectedApplication.AppDate ?? DateTime.Now.ToString("dd/MMM/yy"),
+                    AppStatus = SelectedApplication.AppStatus,
+                    Documents = SelectedApplication.DocsPresent,
+                    TdwBoxno = SelectedApplication.TDW_BOXNO,
+                    Reboxing = rebox,
+                    IsManualCapture = true
+                };
+
+            await ModalCapture(br);
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.Message);
+        }
+    }
+
+    private async Task ModalCapture(BrmCaptureModel br)
     {
         DialogParameters parameters = new()
             {
                 Title = $"Capture New Brm Record",
+                PrimaryAction = "Ok",
+                PrimaryActionEnabled = false,
+                // SecondaryAction = "No",
+                // Height = "55%",
                 Width = br.IsManualCapture ? "60%" : "30%",
                 TrapFocus = true,
                 Modal = true,
                 PreventScroll = true
             };
-        IDialogReference dialog = await dialogService.ShowDialogAsync<DcFileContent>(br, parameters);
+        IDialogReference dialog = await dialogService.ShowDialogAsync<NewBRMContent>(br, parameters);
         var result = await dialog.Result;
         if (result.Cancelled || result.Data is null) return;
-        DcFile? capturedBrm = result.Data as DcFile;
+        BrmCaptureModel? capturedBrm = result.Data as BrmCaptureModel;
         if (capturedBrm == null) return; //huh?
 
-        capturedBrm.OfficeId = sessionservice.session.Office.OfficeId;
-        capturedBrm.RegionId = sessionservice.session.Office.RegionId;
-        capturedBrm.FspId = sessionservice.session.Office.FspId;
-        capturedBrm.UpdatedByAd = sessionservice.session.SamName;
-
-        // var validationResult = SelectedApplication.IsValid();
-        // if (validationResult != "Valid")
-        // {
-        //     toast.ShowError(validationResult);
-        //     return;
-        // }
-        DcFile file = await db.CreateBRM(capturedBrm, "Brm.Fluent file Capture");
+        SelectedApplication.Brm_BarCode = capturedBrm.BrmBarcode;
+        SelectedApplication.TRANS_TYPE = (int)capturedBrm.ApplicationType;
+        SelectedApplication.ChildId = capturedBrm.ChildId;
+        SelectedApplication.GrantType = capturedBrm.GrantType;
+        SelectedApplication.LcType = capturedBrm.LcType;
+        SelectedApplication.AppStatus = capturedBrm.AppStatus;
+        SelectedApplication.OfficeId = sessionservice.session.Office.OfficeId;
+        SelectedApplication.RegionId = sessionservice.session.Office.RegionId;
+        SelectedApplication.FspId = sessionservice.session.Office.FspId;
+        SelectedApplication.BrmUserName = sessionservice.session.SamName;
+        SelectedApplication.Source = "Capture";
+        if (capturedBrm.IsManualCapture)
+        {
+            SelectedApplication.Name = capturedBrm.Name;
+            SelectedApplication.SurName = capturedBrm.Surname;
+            SelectedApplication.DocsPresent = capturedBrm.Documents;
+            SelectedApplication.Source = "ManualCapture";
+        }
+        var validationResult = SelectedApplication.IsValid();
+        if (validationResult != "Valid")
+        {
+            toast.ShowError(validationResult);
+            return;
+        }
+        DcFile file = await db.CreateBRM(SelectedApplication, "Brm.Fluent file Capture");
         await js.InvokeVoidAsync("open", System.Threading.CancellationToken.None, $"coversheet/{SelectedApplication.Brm_BarCode}", "_blank");
         await Search();
     }
-    private async Task btnManualCapture_Click()
-    {
-        try
-        {
-            if (!await IsValid()) return;
-            DcFile file = new DcFile(rebox, true)
-                {
-                    UnqFileNo = "",
-                    ApplicantNo = txtSearchId,
-                    SrdNo = txtSearchSRD,
-                    TransType = 0,
-                    GrantType = manualGrantType,
-                    TdwBoxno = rebox.BoxNo,
-                    MiniBoxno = rebox.MiniBox,
-                    TransDate = DateTime.Now,
-                    ApplicationStatus = "MAIN",
-                    DocsPresent = "",
-                    ArchiveYear = "",
-                    RegionId = sessionservice.session.Office.RegionId,
-                    OfficeId = sessionservice.session.Office.OfficeId,
-                    FspId = sessionservice.session.Office.FspId,
-                    UpdatedByAd = sessionservice.session.SamName
-
-                };
-            await DcFileCapture(file);
-        }
-        catch (Exception ex)
-        {
-            toast.ShowError(ex.Message);
-        }
-    }
-
-    // private async Task ModalCapture(BrmCaptureModel br)
-    // {
-    //     DialogParameters parameters = new()
-    //         {
-    //             Title = $"Capture New Brm Record",
-    //             PrimaryAction = "Ok",
-    //             PrimaryActionEnabled = false,
-    //             // SecondaryAction = "No",
-    //             // Height = "55%",
-    //             Width = br.IsManualCapture ? "60%" : "30%",
-    //             TrapFocus = true,
-    //             Modal = true,
-    //             PreventScroll = true
-    //         };
-    //     IDialogReference dialog = await dialogService.ShowDialogAsync<NewBRMContent>(br, parameters);
-    //     var result = await dialog.Result;
-    //     if (result.Cancelled || result.Data is null) return;
-    //     BrmCaptureModel? capturedBrm = result.Data as BrmCaptureModel;
-    //     if (capturedBrm == null) return; //huh?
-
-    //     SelectedApplication.Brm_BarCode = capturedBrm.BrmBarcode;
-    //     SelectedApplication.TRANS_TYPE = (int)capturedBrm.ApplicationType;
-    //     SelectedApplication.ChildId = capturedBrm.ChildId;
-    //     SelectedApplication.GrantType = capturedBrm.GrantType;
-    //     SelectedApplication.LcType = capturedBrm.LcType;
-    //     SelectedApplication.AppStatus = capturedBrm.AppStatus;
-    //     SelectedApplication.OfficeId = sessionservice.session.Office.OfficeId;
-    //     SelectedApplication.RegionId = sessionservice.session.Office.RegionId;
-    //     SelectedApplication.FspId = sessionservice.session.Office.FspId;
-    //     SelectedApplication.BrmUserName = sessionservice.session.SamName;
-    //     SelectedApplication.Source = "Capture";
-    //     if (capturedBrm.IsManualCapture)
-    //     {
-    //         SelectedApplication.Name = capturedBrm.Name;
-    //         SelectedApplication.SurName = capturedBrm.Surname;
-    //         SelectedApplication.DocsPresent = capturedBrm.Documents;
-    //         SelectedApplication.Source = "ManualCapture";
-    //     }
-    //     var validationResult = SelectedApplication.IsValid();
-    //     if (validationResult != "Valid")
-    //     {
-    //         toast.ShowError(validationResult);
-    //         return;
-    //     }
-    //     DcFile file = await db.CreateBRM(SelectedApplication, "Brm.Fluent file Capture");
-    //     await js.InvokeVoidAsync("open", System.Threading.CancellationToken.None, $"coversheet/{SelectedApplication.Brm_BarCode}", "_blank");
-    //     await Search();
-    // }
 
     private async Task<bool> IsValid()
     {
@@ -386,6 +361,9 @@
                 toast.ShowError("Only 5 Miniboxes allowed.");
                 return false;
             }
+
+            SelectedApplication.TDW_BOXNO = rebox.BoxNo;
+            SelectedApplication.MiniBox = rebox.MiniBox;
         }
         //Check valid office
         if (SelectedApplication.RegionId != sessionservice.session.Office.RegionId)

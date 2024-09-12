@@ -94,7 +94,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
             {
                 var merge = await _context.DcMerges.FirstOrDefaultAsync(m => m.BrmBarcode == file.BrmBarcode);
                 if (merge == null) continue;
-                file.MergeStatus = merge.BrmBarcode == merge.ParentBrmBarcode ? "Parent" : "Merged";
+                file.SetMergeStatus(merge.BrmBarcode == merge.ParentBrmBarcode ? "Parent" : "Merged");
             }
         }
         return result;

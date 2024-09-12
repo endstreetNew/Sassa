@@ -437,7 +437,7 @@
 
             if (boxfiles.Any())
             {
-                if (file.IsPreservedType)
+                if (file.IsPreservedType())
                 {
                     if ((rebox.IsLCSelected && !file.ApplicationStatus.Contains("LC")) || (!rebox.IsLCSelected && file.ApplicationStatus.Contains("LC")))
                     {

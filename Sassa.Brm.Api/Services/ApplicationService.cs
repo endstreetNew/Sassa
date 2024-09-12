@@ -30,10 +30,16 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 {
                     throw new Exception("Invalid Barcode.");
                 }
-                application.ChildId = application.ChildId.Trim();
-                if (application.ChildId.Length != 13)
+                if ("C569".Contains(application.GrantType))
                 {
-                    throw new Exception("Child ID Invalid.");
+                    if(string.IsNullOrEmpty(application.ChildId))
+                    {
+                        throw new Exception("A Child ID is required for this application.");
+                    }
+                    if (application.ChildId.Length != 13)
+                    {
+                        throw new Exception("Child ID Invalid.");
+                    }
                 }
                 var office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
                 application.RegionId = office.RegionId;
@@ -176,6 +182,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         }
         return file;
     }
+    #endregion
     public async Task RemoveBRM(string brmNo, string reason)
     {
         using (var _context = dbContextFactory.CreateDbContext())
@@ -202,8 +209,6 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             
         }
     }
-
-    #endregion
     /// <summary>
     /// Backup DcFile entry for removal
     /// </summary>

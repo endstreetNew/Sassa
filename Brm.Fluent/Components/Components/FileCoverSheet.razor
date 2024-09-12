@@ -83,7 +83,7 @@
     [Parameter]
     public string BrmBarCode { get; set; } = "";
 
-    protected DcFile file = new();
+    protected DcFile file = default!;
 
     protected string QrCode = "";
     protected string IdBarCode = "";

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.JSInterop;
 using razor.Components.Models;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
@@ -8,7 +7,6 @@ using Sassa.BRM.Models;
 using Sassa.BRM.ViewModels;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 
 
@@ -42,6 +40,23 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             CreateActivity("Update ", brm.Srd_No, (string.IsNullOrEmpty(brm.LcType)? 0:decimal.Parse(brm.LcType)), "Update BRM Barcode");
         }
 
+    }
+
+    public async Task<DcFile> CreateBRM(DcFile application, string reason)
+    {
+        decimal batch = 0;
+        var office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
+        if (office.ManualBatch != "A")
+        {
+            string batchType = application.ApplicantNo.StartsWith("S") ? "SrdNoId" : application.ApplicationStatus;
+            batch = string.IsNullOrEmpty(application.TdwBoxno) ? await CreateBatchForUser(batchType) : 0;
+        }
+        application.BatchNo = batch;
+
+        DcFile? file = await brmApiService.PostDcFile(application);
+
+        if (file == null || string.IsNullOrEmpty(file.UnqFileNo)) throw new Exception("Error creating BRM record");
+        return file;
     }
     public async Task<DcFile> CreateBRM(Application application, string reason)
     {
@@ -392,8 +407,11 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                     _context.ChangeTracker.Clear();
                     var misfiledata = miss.First();
                     if (string.IsNullOrEmpty(misfiledata.ApplicantNo)) throw new Exception("No suitable MIS record found to create BRM record, please recapture.");
+
                     _context.DcFiles.Add(misfiledata);
                     await _context.SaveChangesAsync();
+
+
                     candidates = await _context.DcFiles.Where(f => f.BrmBarcode == rebox.NewBarcode).ToListAsync();
                     // }
                 }
@@ -1493,7 +1511,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             {
                 var merge = await _context.DcMerges.FirstOrDefaultAsync(m => m.BrmBarcode == file.BrmBarcode);
                 if (merge == null) continue;
-                file.MergeStatus = merge.BrmBarcode == merge.ParentBrmBarcode ? "Parent" : "Merged";
+                file.SetMergeStatus(merge.BrmBarcode == merge.ParentBrmBarcode ? "Parent" : "Merged");
             }
             return result;
         }
@@ -1517,7 +1535,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             {
                 var merge = await _context.DcMerges.FirstOrDefaultAsync(m => m.BrmBarcode == file.BrmBarcode);
                 if (merge == null) continue;
-                file.MergeStatus = merge.BrmBarcode == merge.ParentBrmBarcode ? "Parent" : "Merged";
+                file.SetMergeStatus(merge.BrmBarcode == merge.ParentBrmBarcode ? "Parent" : "Merged");
                 if (merge.BrmBarcode != merge.ParentBrmBarcode)
                 {
                     file.BatchNo = 0;

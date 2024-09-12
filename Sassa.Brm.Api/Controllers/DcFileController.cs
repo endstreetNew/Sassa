@@ -23,14 +23,13 @@ public class DcFileController(IDbContextFactory<ModelContext> dbContextFactory, 
     // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
     [HttpPost]
     [AllowAnonymous]
-    public async Task<ActionResult<DcFile>> PostApplication(DcFile app)
+    public async Task<ActionResult<DcFile>> PostDcFile(DcFile app)
     {
-        DcFile result = new DcFile();
 
         ApiResponse<DcFile> response = new ApiResponse<DcFile>();
         try
         {
-            response.Data = await CreateDcFile(app);
+            return await CreateDcFile(app);
         }
         catch (Exception ex)
         {
@@ -43,17 +42,16 @@ public class DcFileController(IDbContextFactory<ModelContext> dbContextFactory, 
 
     }
 
-    public async Task<DcFile> CreateDcFile(DcFile file)
+    private async Task<DcFile> CreateDcFile(DcFile file)
     {
         using (var _context = dbContextFactory.CreateDbContext())
         {
             try
             {
+                await RemoveBRM(file.BrmBarcode, "OverWrite selected");
                 _context.DcFiles.Add(file);
-                var addedFile = _context.ChangeTracker.Entries<DcFile>().FirstOrDefault(x => x.State == EntityState.Added);
                 await _context.SaveChangesAsync();
-                if (addedFile == null) throw new Exception("Eror Saving DcFile record");
-                file.UnqFileNo = addedFile.CurrentValues.GetValue<string>("UnqFileNo");
+                file = _context.DcFiles.Where(k => k.BrmBarcode == file.BrmBarcode).AsNoTracking().FirstOrDefault()!;
             }
             catch (Exception ex)
             {
@@ -109,7 +107,7 @@ public class DcFileController(IDbContextFactory<ModelContext> dbContextFactory, 
                 dc_socpen.BrmBarcode = file.BrmBarcode;
                 dc_socpen.CaptureDate = DateTime.Now;
                 dc_socpen.RegionId = file.RegionId;
-                dc_socpen.LocalofficeId = file.RegionId;
+                dc_socpen.LocalofficeId = file.OfficeId;
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
@@ -118,5 +116,65 @@ public class DcFileController(IDbContextFactory<ModelContext> dbContextFactory, 
             }
         }
         return file;
+    }
+
+    private async Task RemoveBRM(string brmNo, string reason)
+    {
+        using (var _context = dbContextFactory.CreateDbContext())
+        {
+
+            var files = await _context.DcFiles.Where(k => k.BrmBarcode == brmNo).ToListAsync();
+            //int fileCount = files.Count();
+            if (files.Any())
+            {
+                var dcfile = files.First();
+                dcfile.FileComment = reason;
+                await BackupDcFileEntry(dcfile.BrmBarcode);
+            }
+            var merges = await _context.DcMerges.Where(m => m.BrmBarcode == brmNo || m.ParentBrmBarcode == brmNo).ToListAsync();
+            if (merges.Any())
+            {
+                _context.DcMerges.RemoveRange(merges);
+            }
+            if (files.Any() || merges.Any())
+            {
+                _context.DcFiles.RemoveRange(files);
+                await _context.SaveChangesAsync();
+            }
+
+        }
+    }
+    /// <summary>
+    /// Backup DcFile entry for removal
+    /// </summary>
+    /// <param name="file">Original File</param>
+    private async Task BackupDcFileEntry(string BrmBarcode)
+    {
+        using (var _context = dbContextFactory.CreateDbContext())
+        {
+            var files = await _context.DcFiles.Where(k => k.BrmBarcode == BrmBarcode).ToListAsync();
+            DcFileDeleted removed = new DcFileDeleted();
+            foreach (var file in files)
+            {
+                file.UpdatedByAd = file.UpdatedByAd;
+                file.UpdatedDate = System.DateTime.Now;
+                try
+                {
+                    removed.FromDCFile(file);
+                    var interim = await _context.DcFileDeleteds.Where(d => d.UnqFileNo == file.UnqFileNo).ToListAsync();
+                    if (!interim.Any())
+                    {
+                        _context.DcFileDeleteds.Add(removed);
+                        await _context.SaveChangesAsync();
+                    }
+                    activity.SaveActivity("Delete", file.SrdNo, file.Lctype, "Delete BRM Record", file.RegionId, decimal.Parse(file.OfficeId), file.UpdatedByAd, file.UnqFileNo);
+                }
+                catch
+                {
+                    //throw new Exception("Error backing up file: " + ex.Message);
+                }
+            }
+
+        }
     }
 }

@@ -1,0 +1,222 @@
+﻿@inject SessionService sessionservice
+@inject StaticService staticservice
+@inject BRMDbService db
+
+@implements IDialogContentComponent<DcFile>
+<FluentDialogHeader ShowDismiss="true">
+    <FluentStack VerticalAlignment="VerticalAlignment.Center">
+        <FluentIcon Value="@(new Icons.Regular.Size24.WindowApps())" />
+        <FluentLabel Typo="Typography.PaneHeader">
+            @Dialog.Instance.Parameters.Title
+        </FluentLabel>
+    </FluentStack>
+</FluentDialogHeader>
+<FluentDialogBody>
+<FluentStack Orientation="Orientation.Horizontal">
+    <FluentStack Width="30%" Orientation="Orientation.Vertical">
+        <FluentRadioGroup Name="ApplicationType" @bind-Value=@selectedAppType Label="Application Type">
+            <FluentRadio Value="0">Application</FluentRadio>
+            <FluentRadio Value="1">LooseCorrespondence</FluentRadio>
+            <FluentRadio Value="2">Review</FluentRadio>
+        </FluentRadioGroup>
+        @if (selectedAppType == ApplicationType.LooseCorrespondence)
+        {
+            <FluentSelect TOption="KeyValuePair<decimal,string>"
+                          Label="Select a LcType"
+                          Items="@StaticDataService.LcTypes.ToList()"
+                          Id="lctype-listbox"
+                          Width="200px"
+                          Height="250px"
+                          Placeholder="Make a selection..."
+                          OptionValue="@(p => p.Key.ToString())"
+                          OptionText="@(p => p.Value)"
+                          @bind-Value="@selectedLcType" />
+        }
+        @if (Content.IsGrantTypeEdit())
+        {
+            <FluentSelect TOption="KeyValue"
+                          Label="Select a grant type"
+                          Items="@grantTypes"
+                          Id="granttype-listbox"
+                          Width="200px"
+                          Height="250px"
+                          Placeholder="Make a selection..."
+                          OptionValue="@(p => p.Id)"
+                          OptionText="@(p => p.Name)"
+                          @bind-Value="@Content.GrantType" />
+        }
+        @if (Content.IsChildIdEdit())
+        {
+            <FluentTextField @bind-Value=@Content.ChildIdNo Label="ChildId" />
+        }
+        <FluentSelect TOption="string"
+                      Label="Status"
+                      Items="@StaticDataService.ApplicationStatus"
+                      Id="appstatus-listbox"
+                      Width="200px"
+                      Height="250px"
+                      Placeholder="Make a selection..."
+                      OptionValue="@(p => p)"
+                      OptionText="@(p => p)"
+                      @bind-Value="@Content.ApplicationStatus" />
+        <hr />
+
+        @if (Content.IsManualCapture)
+        {
+            <FluentTextField @bind-Value=@Content.UserFirstname Label="Name" />
+            <FluentTextField @bind-Value=@Content.UserLastname Label="Surname" />
+            <hr />
+        }
+        <FluentTextField @bind-Value=@Content.BrmBarcode Label="Please scan a new TDW sticker to put onto the file." />
+
+    </FluentStack>
+
+    @if (Content.IsManualCapture)
+    {
+        <FluentDivider />
+        <FluentStack Width="70%" Orientation="Orientation.Vertical">
+
+            <CriticalDocuments GrantType="@Content.GrantType" DocsPresent="@Content.DocsPresent" DocsChanged="OnDocsChanged"></CriticalDocuments>
+
+        </FluentStack>
+    }
+</FluentStack>
+</FluentDialogBody>
+<FluentDialogFooter>
+    <FluentStack Orientation="Orientation.Horizontal">
+        <strong>@message</strong>
+        <FluentSpacer />
+        @if (!duplicate)
+        {
+            <FluentButton Appearance="Appearance.Accent" OnClick="@(async () => await btnSave(false))">Save</FluentButton>
+        }
+        else
+        {
+            @if (sessionservice.session!.IsInRole("GRP_BRM_Monitoring"))
+            {
+                <FluentButton Appearance="Appearance.Accent" OnClick="@(async () => await btnOverwrite_Click())">OverWrite</FluentButton>
+            }
+            else
+            {
+                <p>Only members of the BRM_Monitoring group can overwrite this record.</p>
+            }
+        }
+
+    </FluentStack>
+    <FluentButton Appearance="Appearance.Neutral" OnClick="@CancelAsync">Cancel</FluentButton> 
+</FluentDialogFooter>
+
+@code {
+    [Parameter]
+    public DcFile Content { get; set; } = default!;
+    [CascadingParameter]
+    public FluentDialog? Dialog { get; set; }
+
+    protected ApplicationType selectedAppType = ApplicationType.Application;
+    protected string? selectedLcType;
+    protected List<KeyValue> grantTypes = new();
+
+    protected bool duplicate;
+    protected string message = "";
+
+    protected override void OnInitialized()
+    {
+        if (Content.GrantType == "0") //Old Age Grant : •	Be able to capture GIA where the system only reflects OA.
+        {
+            grantTypes = staticservice.GetGrantTypes().Where(i => "08".Contains(i.Key)).ToDictionary(i => i.Key, i => i.Value).ToKeyValueList();
+        }
+        if ("6C59".Contains(Content.GrantType))//•	Any child grant can change to CSG, FCG and CDG - •	When you see CSG and you want to capture FCG
+        {
+            grantTypes = staticservice.GetGrantTypes().Where(i => "6C59".Contains(i.Key)).ToDictionary(i => i.Key, i => i.Value).ToKeyValueList();
+        }
+
+    }
+    private void OnDocsChanged(string docspresent)
+    {
+        Content.DocsPresent = docspresent;
+    }
+    protected async Task btnOverwrite_Click()
+    {
+        await btnSave(true);
+    }
+    private async Task btnSave(bool overWrite)
+    {
+
+        try
+        {
+            message = "";
+            
+            if (string.IsNullOrEmpty(Content.BrmBarcode) || Content.BrmBarcode.Trim().Length != 8)
+            {
+                message = "Invalid Brm Barcode.";
+                return;
+            }
+            Content.TransType = (decimal)selectedAppType;
+            Content.BrmBarcode = Content.BrmBarcode.ToUpper();
+            if (!overWrite)//Check for brm duplicate if we are not overwriting
+            {
+                if (await db.checkBRMExists(Content.BrmBarcode))
+                {
+                    message = "Duplicate Barcode!";
+                    duplicate = true;
+                    return;
+                }
+            }
+            if (selectedAppType == ApplicationType.LooseCorrespondence)
+            {
+                if (string.IsNullOrEmpty(selectedLcType) || selectedLcType.Trim() == "0")
+                {
+                    message = "Invalid Loose Correspondence type.";
+                    return;
+                }
+                else
+                {
+                    Content.Lctype = decimal.Parse(selectedLcType);
+
+                }
+            }
+            if ("6C59".Contains(Content.GrantType) && Content.IsChildIdEdit())
+            {
+                if (string.IsNullOrEmpty(Content.ChildIdNo) || Content.ChildIdNo.Trim().Length != 13)
+                {
+                    message = "Child Id is invalid.";
+                }
+            }
+            if (!string.IsNullOrEmpty(Content.Reboxing.RegType))
+            {
+                if (Content.IsPreservedType() && !string.IsNullOrEmpty(Content.TdwBoxno))
+                {
+                    bool targetIsLC = Content.Reboxing.RegType.Contains("LC");
+                    if (targetIsLC != Content.IsLc())
+                    {
+                        message = $"Filetype / Boxtype mismatch expecting {Content.Reboxing.RegType} file.";
+                        return;
+                    }
+                }
+            }
+            if (string.IsNullOrEmpty(Content.UserFirstname) || string.IsNullOrEmpty(Content.UserLastname))
+            {
+                message = "Apllicant name and surname is required.";
+                return;
+            }
+            if (string.IsNullOrEmpty(Content.DocsPresent))
+            {
+                message = "Critical Documents are required";
+                return;
+            }
+            message = "Saved SuccessFully";
+            // Dialog!.TogglePrimaryActionButton(true);
+            await Dialog!.CloseAsync(Content);
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+        }
+
+    }
+
+    protected async Task CancelAsync()
+    {
+        await Dialog!.CancelAsync();
+    }
+}
