@@ -81,7 +81,6 @@ namespace Sassa.Brm.Common.Services
             lo => lo.OfficeId,
             link => link.OfficeId,
             (lo, link) => new UserOffice(lo, link.FspId)).FirstOrDefault();
-
             if (office is null)
             {
                 //Add new users to Gauteng office by default
@@ -93,6 +92,8 @@ namespace Sassa.Brm.Common.Services
             return office;
 
         }
+
+
         public DcLocalOffice GetLocalOffice(string officeId)
         {
             return StaticDataService.LocalOffices!.Where(lo => lo.OfficeId == officeId).FirstOrDefault()!;

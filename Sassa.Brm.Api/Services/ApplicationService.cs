@@ -26,6 +26,10 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         {
             try
             {
+                if (application.Clm_No != "" && application.Clm_No.Length != 12)
+                {
+                    throw new Exception("Invalid Clm_no.");
+                }
                 if (application.Brm_BarCode.Length !=8)
                 {
                     throw new Exception("Invalid Barcode.");
@@ -80,7 +84,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             try {
                 file = new DcFile()
                     {
-                        UnqFileNo = "",
+                        UnqFileNo = application.Clm_No,
                         ApplicantNo = application.Id,
                         BrmBarcode = application.Brm_BarCode,
                         BatchAddDate = DateTime.Now,

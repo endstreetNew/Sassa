@@ -235,7 +235,6 @@ else
             DcFile file = await db.GetReboxCandidate(rebox);
             if (string.IsNullOrEmpty(file.TdwBoxno) || force)
             {
-
                 await db.Rebox(rebox, file);
             }
             rebox.BrmBarcode = string.Empty;

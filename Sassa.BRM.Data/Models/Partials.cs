@@ -6,7 +6,15 @@ namespace Sassa.BRM.Models
 {
     public partial class ModelContext
     {
-        public virtual DbSet<Application> Applications { get; set; }
+        //public virtual DbSet<Application> Applications { get; set; }
+        //public DbQuery<Application> Applications
+        //{
+        //    get
+        //    {
+        //        // Don't track changes to query results
+        //        return Set<Application>().AsNoTracking();
+        //    }
+        //}
 
         public virtual DbSet<IdResult> IdResults { get; set; }
 

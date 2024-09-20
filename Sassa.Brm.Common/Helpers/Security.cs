@@ -71,7 +71,7 @@ namespace Sassa.Brm.Common.Helpers
                 try
                 {
                     var group = new System.Security.Principal.SecurityIdentifier(role).Translate(typeof(System.Security.Principal.NTAccount)).ToString();
-                    if (!group.Contains("SASSA")) continue;
+                    if (!group.Contains("SASSA")) continue; 
 
                     result.Add(group.Substring(6));
                 }

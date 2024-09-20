@@ -16,7 +16,10 @@ namespace Sassa.BRM.Models
                 if (!"6C59".Contains(GrantType)) return null;
                 return child_id;
             }
-            set { child_id = value == null ? null : value.Trim().PadLeft(13, '0'); }
+            set 
+            { 
+                child_id = value == null ? null : value.Trim().PadLeft(13, '0'); 
+            }
         }
         //-----------------------------------------------
         public string Name { get; set; }
@@ -42,7 +45,6 @@ namespace Sassa.BRM.Models
         public string Srd_No { get; set; }
         public string Brm_Parent { get; set; }
         public string Brm_BarCode { get; set; }
-        [JsonIgnore]
         public string Clm_No { get; set; }
         public string TDW_BOXNO { get; set; }
         public int MiniBox { get; set; }
@@ -103,7 +105,6 @@ namespace Sassa.BRM.Models
                 return "MAIN|LC-MAIN|ARCHIVE|LC-ARCHIVE".Contains(AppStatus);
             }
         }
-
         public string IsValid()
         {
             if (string.IsNullOrEmpty(Name))

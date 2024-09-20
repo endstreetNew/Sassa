@@ -51,7 +51,6 @@
                         <TemplateColumn Title="Actions" Align="@Align.End">
                             <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Add())" Title="New" OnClick="@((p) => btnNewCover_Click(context))"></FluentButton>
                         </TemplateColumn>
-                        <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />
                         <PropertyColumn Property="@(p => p.GrantName)" Sortable="true" />
                         <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />
                         <PropertyColumn Property="@(p => p.Srd_No)" Sortable="true" />
@@ -276,14 +275,9 @@
         capturedBrm.FspId = sessionservice.session.Office.FspId;
         capturedBrm.UpdatedByAd = sessionservice.session.SamName;
 
-        // var validationResult = SelectedApplication.IsValid();
-        // if (validationResult != "Valid")
-        // {
-        //     toast.ShowError(validationResult);
-        //     return;
-        // }
         DcFile file = await db.CreateBRM(capturedBrm, "Brm.Fluent file Capture");
-        await js.InvokeVoidAsync("open", System.Threading.CancellationToken.None, $"coversheet/{SelectedApplication.Brm_BarCode}", "_blank");
+        await js.InvokeVoidAsync("open", System.Threading.CancellationToken.None, $"coversheet/{file.BrmBarcode}", "_blank");
+        if (txtSearchId.StartsWith('S')) txtSearchId = "";
         await Search();
     }
     private async Task btnManualCapture_Click()

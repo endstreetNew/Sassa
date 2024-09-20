@@ -94,7 +94,7 @@ public class DcFileController(IDbContextFactory<ModelContext> dbContextFactory, 
                     dc_socpen.BeneficiaryId = file.ApplicantNo;
                     dc_socpen.SrdNo = srd;
                     dc_socpen.GrantType = file.GrantType;
-                    dc_socpen.ChildId = file.ChildIdNo;
+                    dc_socpen.ChildId = file.ChildIdNo ?? "";
                     dc_socpen.Name = file.UserFirstname;
                     dc_socpen.Surname = file.UserLastname;
                     dc_socpen.Documents = file.DocsPresent;

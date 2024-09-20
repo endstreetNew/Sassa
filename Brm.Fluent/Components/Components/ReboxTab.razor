@@ -54,6 +54,7 @@
             <FluentButton IconEnd="@(new Icons.Regular.Size12.Add())" @onclick="btnRemoveFile_Click" Disabled="@(!loaded)">Remove file</FluentButton>
         </FluentStack>
         <FluentStack Orientation="Orientation.Horizontal">
+            <FluentTextField @bind-Value="@rebox.NewBarcode" Placeholder="<Scan new Barcode>" Disabled="@(!loaded)" />
             <FluentTextField @bind-Value="@rebox.MisFileNo" Placeholder="<Scan MIS File>" Disabled="@(!loaded)" />
             <FluentButton IconEnd="@(new Icons.Regular.Size12.Add())" @onclick="btnAddMISFile_Click" Disabled="@(!loaded)">Add MIS file</FluentButton>
         </FluentStack>
@@ -322,6 +323,7 @@
 
     protected async Task<DcFile> AddFile()
     {
+
         try
         {
             // if (boxfiles.count > 149) throw new Exception($"Too many files, Maximun allowed: 150.");
@@ -331,10 +333,8 @@
         }
         catch (Exception ex)
         {
-            toast.ShowError(ex.Message);
             throw;
         }
-
     }
 
     protected async Task AddBatch()
@@ -369,23 +369,19 @@
         archiveHidden = !(staticservice.GetBoxTypes()[rebox.SelectedType]).Contains("Archive");
         if (!string.IsNullOrEmpty(rebox.RegType))
         {
-            toast.ShowInfo($"Box only accepts {(rebox.RegType.Contains("LC") ? "LC" : rebox.RegType)}");
+            toast.ShowInfo($"Box only accepts {(rebox.IsLCSelected ? "LC" : rebox.RegType)}");
         }
     }
 
     protected async Task btnPrint_Click()
     {
-
-        // Navigate.NavigateTo($"reboxcover/{rebox.BoxNo}/{rebox.AltBoxNo}");
         await Js.InvokeVoidAsync("open", System.Threading.CancellationToken.None, $"reboxcover/{rebox.BoxNo}/{rebox.AltBoxNo}", "_blank");
-
     }
 
     protected async Task ShowCover(string barCode)
     {
         await Js.InvokeVoidAsync("open", System.Threading.CancellationToken.None, $"coversheet/{barCode}", "_blank");
     }
-
 
     protected async Task btnPrintCovers_Click(bool NotScanned)
     {
@@ -421,25 +417,20 @@
         catch (Exception ex)
         {
             toast.ShowError($"Box :{rebox.BoxNo} Coversheets error. {ex.Message}");
-
-
         }
-        //await Js.InvokeAsync<object>("open", $"{NavigationM.BaseUri}coversheets/{rebox.BoxNo}", "_blank");
     }
 
-
-    public async Task<DcFile> Rebox(Reboxing rebox)
+    protected async Task<DcFile> Rebox(Reboxing rebox)
     {
+
         try
         {
-
             DcFile file = await db.GetReboxCandidate(rebox);
-
             if (boxfiles.Any())
             {
                 if (file.IsPreservedType())
                 {
-                    if ((rebox.IsLCSelected && !file.ApplicationStatus.Contains("LC")) || (!rebox.IsLCSelected && file.ApplicationStatus.Contains("LC")))
+                    if ((rebox.IsLCSelected && !file.IsLc()) || (!rebox.IsLCSelected && file.IsLc()))
                     {
                         throw new Exception($"Filetype / Boxtype mismatch expecting {rebox.RegType} file.");
                     }
@@ -465,10 +456,10 @@
             rebox.NewBarcode = string.Empty;
             await OnPaged();
             return file;
+
         }
         catch (Exception ex)
         {
-            toast.ShowError(ex.Message);
             throw;
         }
     }

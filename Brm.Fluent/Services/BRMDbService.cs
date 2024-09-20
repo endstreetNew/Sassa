@@ -408,9 +408,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                     var misfiledata = miss.First();
                     if (string.IsNullOrEmpty(misfiledata.ApplicantNo)) throw new Exception("No suitable MIS record found to create BRM record, please recapture.");
 
-                    _context.DcFiles.Add(misfiledata);
-                    await _context.SaveChangesAsync();
-
+                    await brmApiService.PostDcFile(misfiledata);
 
                     candidates = await _context.DcFiles.Where(f => f.BrmBarcode == rebox.NewBarcode).ToListAsync();
                     // }
@@ -427,18 +425,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
 
             if (candidates.Count() > 1)
             {
-                ////Try Repair
-                //if (candidates.Where(c => string.IsNullOrEmpty(c.ApplicantNo) && c.BrmBarcode == rebox.BrmBarcode).Any())
-                //{
-                //    DcFile corrupt = _context.DcFiles.Where(c => string.IsNullOrEmpty(c.ApplicantNo) && c.BrmBarcode == rebox.BrmBarcode).First();
-                //    _context.DcFiles.Remove(corrupt);
-                //    await _context.SaveChangesAsync();
-                //    candidates = await _context.DcFiles.Where(f => f.BrmBarcode == rebox.BrmBarcode).ToListAsync();
-                //}
-                //if (candidates.Count() > 1)
-                //{
                 throw new Exception($"Duplicate BRM No {rebox.BrmBarcode} please delete/recapture this file.");
-                //}
             }
             if (candidates.Where(f => f.BrmBarcode == rebox.BrmBarcode && f.TdwBoxno == rebox.BoxNo).Any())
             {
@@ -1011,7 +998,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             if (!srdNo.IsNumeric()) throw new Exception("SRD is Invalid.");
             long srd = long.Parse(srdNo);
             var result = await _context.DcSocpens.Where(s => s.SrdNo == srd).ToListAsync();
-            if (!result.Any()) return "none";
+            if (!result.Any()) return "";
             return result.First().BeneficiaryId;
         }
     }
