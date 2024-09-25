@@ -10,27 +10,16 @@ namespace Sassa.BRM.Controller
     [Route("[controller]")]
     [ApiController]
 
-    public class ApplicationController : ControllerBase
+    public class ScanController : ControllerBase
     {
 
         private readonly ApplicationService _brmService;
         IConfiguration _config;
 
-        public ApplicationController(ApplicationService context, IConfiguration config)
+        public ScanController(ApplicationService context, IConfiguration config)
         {
             _brmService = context;
             _config = config;
-            //try
-            //{
-            //    context.GetUserSession((WindowsIdentity)ctx.HttpContext.User.Identity);
-            //    //if (!StaticD.Users.Contains(_session.SamName)) StaticD.Users.Add(_session.SamName);
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw;
-            //    //WriteEvent($"{ctx.HttpContext.User.Identity.Name} : {ex.Message}");
-            //}
-
         }
 
         //private string? lastError;
@@ -39,7 +28,7 @@ namespace Sassa.BRM.Controller
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<DcFile>> PostApplication(Application app)
+        public async Task<ActionResult<DcFile>> PostScan(Application app)
         {
             DcFile result = new DcFile();
 
@@ -57,7 +46,6 @@ namespace Sassa.BRM.Controller
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(app.Clm_No))app.Clm_No = "";
                     result = await _brmService.CreateBRM(app, "Inserted via BRM Capture.");
                 }
                 return result;
