@@ -386,6 +386,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
             return !IsOpen;
         }
     }
+    //Only used for resending existing files to TDW
     public void SendFile(string fileName)
     {
 

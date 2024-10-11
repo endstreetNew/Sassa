@@ -1,0 +1,59 @@
+﻿@using Microsoft.Extensions.Configuration
+
+@inject SessionService sessionservice
+@inject StaticService staticservice
+@inject IConfiguration config
+
+
+
+<FluentToolbar id="toolbar-fluent-components-two" style="width:100%">
+    <FluentButton Appearance="Appearance.Accent">Refresh</FluentButton>
+    <FluentNavLink Href="/" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
+    <FluentNavLink Href="searchapplicant" Icon="@(new Icons.Regular.Size20.ChannelAdd())" IconColor="Color.Accent">File Capture</FluentNavLink>
+    <FluentNavLink Href="enquirypage" Icon="@(new Icons.Regular.Size20.Search())" IconColor="Color.Accent">Enquiry</FluentNavLink>
+    <FluentNavLink Href="http://10.124.154.88/sassaongoing/ValidationLogin.aspx" Target="_blank" Icon="@(new Icons.Regular.Size20.BarcodeScanner())" IconColor="Color.Accent">Scan</FluentNavLink>
+    <FluentNavLink Href="@RsWeb" Target="_blank" Icon="@(new Icons.Regular.Size20.BuildingSwap())" IconColor="Color.Accent">RSWeb</FluentNavLink>
+    <FluentNavLink Href="misfiles" Icon="@(new Icons.Regular.Size20.DocumentTableSearch())" IconColor="Color.Accent">MIS Files</FluentNavLink>
+    <FluentNavLink Href="boxing" Icon="@(new Icons.Regular.Size20.Box())" IconColor="Color.Accent">@(sessionservice.session.IsRmc() ? "Re-boxing" : "Batching")</FluentNavLink>
+    <FluentNavLink Href="reportpage" Icon="@(new Icons.Regular.Size20.DocumentPrint())" IconColor="Color.Accent">Reports</FluentNavLink>
+    @if (sessionservice.session.IsRmc())
+    {
+        <FluentNavLink Href="destruction" Icon="@(new Icons.Regular.Size20.DeleteLines())" IconColor="Color.Accent">Destruction</FluentNavLink>
+        @if (sessionservice.session.IsInRole("GRP_BRM_Office_Name_Change"))
+        {
+            <FluentNavLink Href="officeadmin" Icon="@(new Icons.Regular.Size20.CheckboxPerson())" IconColor="Color.Accent">Office Admin</FluentNavLink>
+        }
+    }
+    
+    <FluentBadge>21 items</FluentBadge>
+    <FluentIcon Value="@(new Icons.Filled.Size16.Globe())" Slot="end" Color="Color.Accent" />
+</FluentToolbar>
+
+@code {
+    //private PostMessage _message = new PostMessage();
+    //private User? user;
+    string RsWeb = "";
+    bool expanded = true;
+    protected override void OnInitialized()
+    {
+        RsWeb = config.GetValue<string>("Url:RsWeb")!;
+        sessionservice.UserOfficeChanged += new EventHandler(OnUserOfficeChanged);
+        // if(sessionservice.session.IsLoggedIn())
+        // {
+        //     user = new User(sessionservice.session.SamName);
+        //     autoLoginService.Login(user);
+        //     StateHasChanged();
+        // }
+
+    }
+    private void OnUserOfficeChanged(object? sender, EventArgs args)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        sessionservice.UserOfficeChanged -= new EventHandler(OnUserOfficeChanged);
+    }
+
+}

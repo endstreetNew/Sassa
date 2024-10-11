@@ -9,7 +9,7 @@
 @inject Navigation Navigation
 
 
-@if (!string.IsNullOrEmpty(file.UnqFileNo))
+@if (file is not null)
 {
     <div>
         <button class="btn btn-primary active" @onclick="btnBack_Click">Back</button>
