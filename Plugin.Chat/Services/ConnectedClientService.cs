@@ -2,7 +2,7 @@ using Plugin.Chat.Models;
 
 public interface IConnectedClientService
 {
-    ConnectedClient Client { get; }
+    ConnectedClient? Client { get; }
 
     void Connect(string id);
     void Disconnect();

@@ -1,0 +1,136 @@
+﻿@page "/tdwdata"
+
+@inject MisFileService db
+@inject IToastService toast
+
+@using Microsoft.EntityFrameworkCore
+@using Sassa.BRM.Data.ViewModels
+
+@inject Helper helper
+@* @inject SessionService sessionservice *@
+@inject BRMDbService db
+@inject StaticService sservice
+@inject ReportDataService rs
+@inject IToastService toast
+@inject IDbContextFactory<ModelContext> _contextFactory
+
+@implements IDisposable
+
+<BrmPageTitle Title="TDW Data" Loading="@loading"></BrmPageTitle>
+<FluentStack Orientation="Orientation.Vertical">
+    <WidgetTitle Title="Filter Options" />
+    <FluentStack Orientation="Orientation.Horizontal">
+        <FluentSelect TOption="string" Items="@tdwRegions" Placeholder="<Region>" OptionValue="@(p => p)" OptionText="@(p => p)" @bind-Value="@selectedRegion" />
+        <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@grantType" />
+        <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
+    </FluentStack>
+    <WidgetTitle Title="Search" />
+    <FluentStack>
+        <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => Search())"></FluentButton>
+    </FluentStack>
+    <hr />
+    <FluentDataGrid Items="@files" TGridItem="TdwFileLocation" Pagination="@pagination">
+        <PropertyColumn Width="130px" Property="@(p => p.Description)" Title="Id number" />
+        <PropertyColumn Width="100px" Property="@(p => p.Name)" Title="Name" Sortable="true" />
+        <PropertyColumn Width="200px" Property="@(p => p.GrantType)" Sortable="true" />
+        <PropertyColumn Width="200px" Property="@(p => p.Region)" Sortable="true" />
+        <PropertyColumn Width="130px" Property="@(p => p.FilefolderCode)" Sortable="true" />
+        <PropertyColumn Width="200px" Property="@(p => p.ContainerCode)" />
+    </FluentDataGrid>
+    <FluentPaginator State="@pagination" />
+</FluentStack>
+
+
+
+@code {
+    protected PaginationState pagination = new PaginationState { ItemsPerPage = 15 };
+
+    protected ReportDefinition report = new();
+    protected IQueryable<TdwFileLocation>? files;
+
+    protected ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddYears(-10), ToDate = DateTime.Now };
+
+    string grantType = "";
+    string searchId = "";
+
+    protected bool loading = true;
+
+    protected ModelContext? _context;
+
+    protected List<string> tdwRegions = new();
+    protected string selectedRegion = "";
+
+    protected override void OnInitialized()
+    {
+        _context = _contextFactory.CreateDbContext();
+        tdwRegions = db.GetTdwRegions(_context);
+        report = new ReportDefinition { ReportIndex = "1", ReportName = "Tdw Data", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "GrantType" } };
+        files = db.GetTdwFiles(period, selectedRegion, grantType, searchId, _context);
+        loading = false;
+    }
+
+    protected void Search()
+    {
+        // if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
+        // {
+        //     toast.ShowError("Please enter a valid applicant id.");
+        //     return;
+        // }
+        loading = true;
+        files = db.GetTdwFiles(period, selectedRegion, grantType, searchId, _context);
+        loading = false;
+    }
+
+    private void ValidateReportFilter()
+    {
+        try
+        {
+            loading = true;
+            StateHasChanged();
+            foreach (var option in report.FilterOptions)
+            {
+                switch (option)
+                {
+                    case "From Date":
+                    case "To Date":
+                        break;
+                    case "Region":
+                        if (string.IsNullOrEmpty(selectedRegion))
+                        {
+                            toast.ShowError($"Please select a Region.");
+                            loading = false;
+                            return;
+                        }
+                        break;
+                    case "GrantType":
+                        break;
+
+                }
+            }
+            string FileName = helper.GetAuditFileName(report.ReportName.Replace(" ", "_"), selectedRegion.Replace(" ", "_"));
+            toast.ShowInfo($"{report.ReportName} queued.");
+
+            ReportHeader header = new ReportHeader();
+            header.FromDate = period.FromDate.ToShortDateString();
+            header.ToDate = period.ToDate.ToShortDateString();
+            int usernameIndex = FileName.IndexOf('-') + 1;
+            header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
+            header.Region = selectedRegion;
+            List<TdwFileLocation> result = db.GetTdwFiles(period, selectedRegion, grantType, searchId, _context).ToList();
+            result.ToCsv<TdwFileLocation>(FileName, header, StaticDataService.ReportFolder);
+            loading = false;
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.Message);
+            loading = false;
+        }
+
+    }
+
+    public void Dispose()
+    {
+        if (_context != null) _context.Dispose();
+    }
+}

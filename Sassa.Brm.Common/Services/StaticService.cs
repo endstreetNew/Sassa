@@ -75,12 +75,20 @@ namespace Sassa.Brm.Common.Services
         /// <returns></returns>
         public UserOffice GetUserLocalOffice(string userName)
         {
-
-            var office = StaticDataService.LocalOffices!
-            .Join(StaticDataService.DcOfficeKuafLinks!.Where(l => l.Username == userName),
-            lo => lo.OfficeId,
-            link => link.OfficeId,
-            (lo, link) => new UserOffice(lo, link.FspId)).FirstOrDefault();
+            UserOffice? office = null;
+            try
+            {
+                office = StaticDataService.LocalOffices!
+                .Join(StaticDataService.DcOfficeKuafLinks!.Where(l => l.Username == userName),
+                lo => lo.OfficeId,
+                link => link.OfficeId,
+                (lo, link) => new UserOffice(lo, link.FspId)).FirstOrDefault();
+            }
+            catch(Exception ex)
+            {
+                DcLocalOffice defaultOffice = GetOffices("7").FirstOrDefault()!;
+                office = new UserOffice(defaultOffice, null);
+            }
             if (office is null)
             {
                 //Add new users to Gauteng office by default

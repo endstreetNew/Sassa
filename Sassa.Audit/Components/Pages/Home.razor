@@ -1,0 +1,28 @@
+﻿@page "/"
+@using Microsoft.EntityFrameworkCore
+
+@inject BRMDbService db
+@inject IDbContextFactory<ModelContext> _contextFactory
+
+<BrmPageTitle Title="Home"></BrmPageTitle>
+<WidgetTitle Title="Data summary"></WidgetTitle>
+
+<FluentDataGrid Items="@auditSummaries" TGridItem="AuditSummary">
+    <PropertyColumn Width="150px" Property="@(p => p.Datasource)" />
+    <PropertyColumn Width="130px" Property="@(p => p.StartDate)" Sortable="true" />
+    <PropertyColumn Width="130px" Property="@(p => p.EndDate)" Sortable="true" />
+    <PropertyColumn Width="200px" Property="@(p => p.Count)" Align="Align.End" />
+</FluentDataGrid>
+
+@code
+{
+    protected IQueryable<AuditSummary> auditSummaries;
+    protected ModelContext? _context;
+
+    protected override void OnInitialized()
+    {
+        _context = _contextFactory.CreateDbContext();
+        auditSummaries = db.GetSummary(_context).AsQueryable();
+    }
+
+}

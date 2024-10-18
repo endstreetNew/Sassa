@@ -1,0 +1,125 @@
+﻿@page "/download"
+
+@using System.Reflection
+@inject IJSRuntime JS
+@inject ReportDataService rs
+@* @inject SessionService sessionservice *@
+
+
+<WidgetTitle Title="Download Reports" />
+
+@if (props != null)
+{
+    <div style="min-height:400px;">
+        <table class="table table-sm" style="font-size: small; ">
+            <thead>
+                <tr>
+                    @foreach (var prop in props)
+                    {
+                        <th scope="col">@prop.Name</th>
+                    }
+                    @foreach (var propa in props.Where(p => p.Name == "FileName"))
+                    {
+                        <th>Action</th>
+                        <th></th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var u in pagedResult)
+                {
+                    <tr>
+                        @foreach (var prop in props)
+                        {
+                        <td scope="col">
+                            @if (prop.PropertyType == typeof(bool))
+                            {
+                                @if (prop.GetValue(u) == null || (bool)(prop.GetValue(u) ?? false) == false)
+                                {
+                                    <span class="oi oi-x" aria-hidden="true"></span>
+                                }
+                                else
+                                {
+                                    <span class="oi oi-check" aria-hidden="true"></span>
+                                }
+                            }
+                            else
+                            {
+                                @prop.GetValue(u);
+                            }
+                        </td>
+                        }
+                        @foreach (var propa in props.Where(p => p.Name == "FileName"))
+                        {
+                            <td>
+                                <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size20.ArrowDown())" OnClick="@(async () => await DownloadFileFromStream(propa,u))">DownLoad</FluentButton>
+@*                                <a class="btn btn-primary btn-sm active" href="../brmfiles/@propa.GetValue(u)?.ToString()" download="@propa.GetValue(u)" target="_top">Download</a> *@
+                            </td>
+                            <td>
+                                <FluentButton BackgroundColor="Red" Color="White" IconEnd="@(new Icons.Regular.Size12.Delete())" OnClick="@(() => btnDelete_Click(propa.GetValue(u)!.ToString()!))"/>
+                            </td>
+                        }
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No Data.</p>
+}
+
+@code {
+    [Parameter]
+    public string? Title { get; set; }
+
+    List<CsvListItem> pagedResult = new();
+
+    List<PropertyInfo> props = new List<PropertyInfo>();
+
+    protected override void OnInitialized()
+    {
+        pagedResult = rs.GetFiles("Audit");
+        if (!pagedResult.Any())
+        {
+            return;
+        }
+        Type? myType = pagedResult.First()?.GetType();
+        if (myType == null) return;
+        props = new List<PropertyInfo>(myType.GetProperties());
+    }
+    protected override void OnParametersSet()
+    {
+        if (!pagedResult.Any()) return;
+        Type? myType = pagedResult.First()?.GetType();
+        if (myType == null) return;
+        props = new List<PropertyInfo>(myType.GetProperties());
+    }
+
+    protected void btnDelete_Click(string fileName)
+    {
+        rs.DeleteReport(fileName);
+        pagedResult = rs.GetFiles("Audit");
+    }
+
+    private Stream GetFileStream(string path)
+    {
+        return File.OpenRead(path);
+    }
+
+    private async Task DownloadFileFromStream(PropertyInfo pi,CsvListItem u)
+    {
+        try
+        {
+            var fileName = @pi.GetValue(u)?.ToString();
+            await JS.InvokeVoidAsync("triggerFileDownload", fileName, $"/brmFiles/{fileName}");
+        }
+        catch(Exception ex)
+        {
+            var s = ex.Message;
+        }
+    }
+}

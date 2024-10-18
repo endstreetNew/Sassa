@@ -7,6 +7,7 @@ public partial class ModelContext : DbContext
 {
     public ModelContext()
     {
+
     }
 
     public ModelContext(DbContextOptions<ModelContext> options)
@@ -76,6 +77,7 @@ public partial class ModelContext : DbContext
     //public virtual DbSet<MisLivelinkTbl> MisLivelinkTbls { get; set; }
     public virtual IQueryable<TdwFileLocation> TdwFileLocations => Set<TdwFileLocation>().AsNoTracking();
     //public virtual DbSet<TdwFileLocation> TdwFileLocations { get; set; }
+
 
     //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -1967,6 +1969,10 @@ public partial class ModelContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("SURNAME");
+            entity.Property(e => e.GrantDate)
+                .HasColumnType("DATE")
+                .IsUnicode(false)
+                .HasColumnName("GRANT_DATE");
         });
 
         modelBuilder.Entity<TdwFileLocation>(entity =>

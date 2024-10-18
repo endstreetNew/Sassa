@@ -1,0 +1,194 @@
+﻿@page "/reportpage"
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using Sassa.BRM.Data.ViewModels 
+@inject Navigation Navigate
+@inject Helper helper
+@inject SessionService sessionservice
+@inject BRMDbService db
+@inject StaticService sservice
+@inject ReportDataService rs
+@inject IToastService toast
+
+<BrmPageTitle Title="Reports"></BrmPageTitle>
+<FluentTabs>
+    <FluentTab Label="Download reports" Id="reportTab-1">
+        <FluentStack Orientation="Orientation.Vertical">
+            <FluentStack Orientation="Orientation.Horizontal">
+                <FluentSelect Placeholder="Select report" @bind-SelectedOption="@report" Items="rs.reportList" TOption="ReportDefinition" OptionValue="@(p => p.ReportIndex)" OptionText="@(p => p.ReportName)" />
+                <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
+            </FluentStack>
+            <WidgetTitle Title="Filter Options" />
+            <FluentStack Orientation="Orientation.Horizontal">
+                @foreach (var option in report.FilterOptions)
+                {
+                    switch (option)
+                    {
+                        case "FromDate":
+                            <FluentDatePicker Placeholder="<From Date>" @bind-Value="period.FromNullDate" />
+                            break;
+                        case "ToDate":
+                            <FluentDatePicker Placeholder="<To Date>" @bind-Value="period.ToNullDate" />
+                            break;
+@*                         case "FromQuarter":
+                            <FluentSelect TOption="KeyValuePair<string,ReportPeriod>" Items="StaticDataService.QuarterList().ToList()" @bind-Value="@fromQuarter" OptionValue="@(p => p.Key)" OptionText="@(p => p.Key)" Placeholder="From Quarter" />
+                            break;
+                        case "ToQuarter":
+                            <FluentSelect TOption="KeyValuePair<string,ReportPeriod>" Items="StaticDataService.QuarterList().ToList()" @bind-Value="@toQuarter" OptionValue="@(p => p.Key)" OptionText="@(p => p.Key)" Placeholder="To Quarter" />
+                            break;
+                        case "ForMonth":
+                            <FluentSelect TOption="KeyValuePair<string,string>" Items="StaticDataService.MonthList().ToList()" @bind-Value="@forMonth" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" Placeholder="For Month" />
+                            break; *@
+                        case "Region":
+                            <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
+                            break;
+@*                         case "Office":
+                            <FluentSelect Height="300px" TOption="KeyValuePair<string,string>" Items="@(sservice.GetReportOffices(office.RegionId).ToList())" Placeholder="<Office>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.OfficeId" />
+                            break; *@
+                        case "GrantType":
+                            <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@grantType" />
+                            break;
+                    }
+                }
+            </FluentStack>
+        </FluentStack>
+    </FluentTab>
+    <FluentTab Label="Download reports" Id="reportTab-2">
+        <ReportDownload Title="Report List"></ReportDownload>
+    </FluentTab>
+</FluentTabs>
+
+@code
+{
+    protected UserOffice office = new();
+    ReportDefinition report = new();
+    string fromQuarter = "";
+    string toQuarter = "";
+    string forMonth = "";
+
+    protected bool IsDashboardLoaded;
+    protected bool IsMissingDashboardLoaded;
+
+    ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddMonths(-1), ToDate = DateTime.Now };
+
+    Dictionary<string, ReportPeriod> quarterList = new();
+
+    List<CsvListItem> files = new();
+    List<DcSocpen> missingFiles = new();
+
+    string grantType = "All";
+
+    protected override void OnInitialized()
+    {
+        report = rs.reportList.First();
+        office = sessionservice.session!.Office!;
+        IsMissingDashboardLoaded = false;
+        IsDashboardLoaded = false;
+        quarterList = StaticDataService.QuarterList();
+        period = StaticDataService.AfterLastQuarter;
+    }
+
+    protected void SelectRegion(ChangeEventArgs e)
+    {
+        if (e.Value == null) return;
+        office.RegionId = (string)e.Value;
+        office.OfficeId = sservice.GetOffices(office.RegionId).First().OfficeId;
+    }
+
+
+    private async Task ValidateReportFilter()
+    {
+        try
+        {
+            string FileName = helper.GetFileName(report.ReportName.Replace(" ", "_"), sessionservice.session);
+            foreach (var option in report.FilterOptions)
+            {
+                switch (option)
+                {
+                    case "From Date":
+                    case "To Date":
+                        break;
+                    case "From Quarter":
+                        if (string.IsNullOrEmpty(fromQuarter))
+                        {
+                            throw new Exception("Please select From Quarter");
+                        }
+                        break;
+                    case "ToQuarter":
+                        if (string.IsNullOrEmpty(toQuarter))
+                        {
+                            throw new Exception("Please select To Quarter.");
+                        }
+                        break;
+                    case "ForMonth":
+                        if (string.IsNullOrEmpty(forMonth))
+                        {
+                            throw new Exception("Please select For Month.");
+                        }
+                        break;
+                    case "Region":
+                        if (string.IsNullOrEmpty(office.RegionId))
+                        {
+                            throw new Exception("Please select Region.");
+                        }
+                        break;
+                    case "Office":
+                        if (string.IsNullOrEmpty(office.OfficeId))
+                        {
+                            throw new Exception("Please select Office.");
+                        }
+                        break;
+                    case "GrantType":
+                        if (string.IsNullOrEmpty(grantType))
+                        {
+                            throw new Exception("Please select Grant Type.");
+                        }
+                        break;
+
+                }
+            }
+            if (report.ReportIndex == "3" || report.ReportIndex == "12")
+            {
+                period.FromDate = quarterList[fromQuarter].FromDate;
+                period.ToDate = quarterList[toQuarter].ToDate;
+            }
+            if (report.ReportIndex == "11" && !(sessionservice.session.IsRmc() && sessionservice.session.IsInRole("GRP_BRM_Supervisors")))
+            {
+                throw new Exception("Reserved function.");
+            }
+            toast.ShowInfo($"{report.ReportName} queued.");
+
+            // if (report.ReportIndex == "8")
+            // {
+            //     await rs.SaveReport(report.ReportIndex, quarterList[fromQuarter], quarterList[toQuarter], office.RegionId, FileName);
+            //     return;
+            // }
+            await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), report.ReportIndex, office.OfficeId, office.OfficeType, office.RegionId, grantType, FileName);
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.Message);
+        }
+    }
+
+    protected void btnResetProgress_Click()
+    {
+        IsDashboardLoaded = false;
+    }
+
+    protected async Task btnSaveReport(string quarterName)
+    {
+        try
+        {
+            period.FromDate = quarterList[quarterName].FromDate;
+            period.ToDate = quarterList[quarterName].ToDate;
+            toast.ShowInfo($"{report.ReportName} queued.");
+            string FileName = helper.GetFileName(report.ReportName.Replace(" ", "_"), sessionservice.session);
+            await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), "3", office.OfficeId, "RMC", office.RegionId, grantType, FileName);
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.Message);
+        }
+    }
+
+}

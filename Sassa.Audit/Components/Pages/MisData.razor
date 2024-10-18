@@ -1,0 +1,130 @@
+﻿@page "/misdata"
+
+@inject MisFileService db
+@inject IToastService toast
+
+@using Microsoft.EntityFrameworkCore
+@using Sassa.BRM.Data.ViewModels 
+
+@inject Helper helper
+@* @inject SessionService sessionservice *@
+@inject BRMDbService db
+@inject StaticService sservice
+@inject ReportDataService rs
+@inject IToastService toast
+@inject IDbContextFactory<ModelContext> _contextFactory
+
+@implements IDisposable
+
+<BrmPageTitle Title="MIS Data" Loading="@loading"></BrmPageTitle>
+<FluentStack Orientation="Orientation.Vertical">
+    <WidgetTitle Title="Filter Options" />
+    <FluentStack Orientation="Orientation.Horizontal">
+        <FluentDatePicker Placeholder="<From Date>" @bind-Value="period.FromNullDate" />
+        <FluentDatePicker Placeholder="<To Date>" @bind-Value="period.ToNullDate" />
+        <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
+        <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@grantType" />
+        <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
+    </FluentStack>
+    <WidgetTitle Title="Search" />
+    <FluentStack>
+        <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => SearchMis())"></FluentButton>
+    </FluentStack>
+    <hr />
+    <FluentDataGrid Items="@misFiles" TGridItem="MisLivelinkTbl" Pagination="@pagination">
+        <PropertyColumn Width="130px" Property="@(p => p.IdNumber)" />
+        <PropertyColumn Width="100px" Property="@(p => p.Name)" Sortable="true" />
+        <PropertyColumn Width="130px" Property="@(p => p.Surname)" Sortable="true" />
+        <PropertyColumn Width="200px" Property="@(p => p.GrantType)" Sortable="true" />
+        <PropertyColumn Width="130px" Property="@(p => p.GrantDate)" Sortable="true" />
+        <PropertyColumn Width="200px" Property="@(p => p.FileNumber)" />
+        <PropertyColumn Width="100px" Property="@(p => p.RegionId)" Sortable="true" />
+        <PropertyColumn Width="100px" Property="@(p => p.RegistryType)" Sortable="true" />
+    </FluentDataGrid>
+    <FluentPaginator State="@pagination" />
+</FluentStack>
+
+
+
+@code {
+    protected PaginationState pagination = new PaginationState { ItemsPerPage = 15 };
+
+    protected ReportDefinition report = new();
+    protected UserOffice office = new();
+    protected IQueryable<MisLivelinkTbl>? misFiles;
+
+    protected ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddYears(-10), ToDate = DateTime.Now };
+
+    string grantType = "";
+    string searchId = "";
+
+    protected bool loading = true;
+
+    protected ModelContext? _context;
+
+    protected override void OnInitialized()
+    {
+        _context = _contextFactory.CreateDbContext();
+        report = new ReportDefinition { ReportIndex = "1", ReportName = "Mis Data", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "GrantType" } };
+        misFiles = db.GetMisFiles(period,office.RegionId,grantType,searchId,_context);
+        loading = false;
+    }
+
+    protected void SearchMis()
+    {
+        // if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
+        // {
+        //     toast.ShowError("Please enter a valid applicant id.");
+        //     return;
+        // }
+        loading = true;
+        misFiles = db.GetMisFiles(period,office.RegionId,grantType,searchId,_context);
+        loading = false;
+    }
+
+    private void ValidateReportFilter()
+    {
+        try
+        {
+            foreach (var option in report.FilterOptions)
+            {
+                switch (option)
+                {
+                    case "From Date":
+                    case "To Date":
+                        break;
+                    case "Region":
+                        if (string.IsNullOrEmpty(office.RegionId))
+                        {
+                            toast.ShowError($"Please select a Region.");
+                            return;
+                        }
+                        break;
+                    case "GrantType":
+                        break;
+
+                }
+            }
+            string FileName = helper.GetAuditFileName(report.ReportName.Replace(" ", "_"), StaticDataService.RegionCode(office.RegionId));
+            toast.ShowInfo($"{report.ReportName} queued.");
+
+            ReportHeader header = new ReportHeader();
+            header.FromDate = period.FromDate.ToShortDateString();
+            header.ToDate = period.ToDate.ToShortDateString();
+            int usernameIndex = FileName.IndexOf('-') + 1;
+            header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
+            header.Region = StaticDataService.RegionName(office.RegionId);
+            List<MisLivelinkTbl> result = db.GetMisFiles(period, office.RegionId, grantType, searchId, _context).ToList();
+            result.ToCsv<MisLivelinkTbl>(FileName, header, StaticDataService.ReportFolder);
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.Message);
+        }
+    }
+    public void Dispose()
+    {
+        if (_context != null) _context.Dispose();
+    }
+}

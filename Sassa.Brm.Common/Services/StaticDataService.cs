@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Sassa.BRM.Data.ViewModels;
 using Sassa.BRM.Models;
 using Sassa.BRM.ViewModels;
 using System;
@@ -273,4 +274,8 @@ public static class StaticDataService
             eventLog.WriteEntry(eventLogEntry, EventLogEntryType.Error, 101, 1);
         }
     }
+
+    /// <summary>   
+    public static List<AuditSummary> AuditSummaryList = new List<AuditSummary>();
+
 }

@@ -1,4 +1,6 @@
-﻿namespace Sassa.BRM.Models;
+﻿using System;
+
+namespace Sassa.BRM.Models;
 
 public partial class MisLivelinkTbl
 {
@@ -33,4 +35,6 @@ public partial class MisLivelinkTbl
     public string SubRegistryType { get; set; }
 
     public string MisStatus { get; set; }
+
+    public DateTime GrantDate { get; set; }
 }

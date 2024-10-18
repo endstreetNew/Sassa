@@ -32,8 +32,10 @@ public class Program
         string CsConnection = builder.Configuration.GetConnectionString("CsConnection")!;
         //Factory pattern
         builder.Services.AddDbContextFactory<ModelContext>(options =>
-        options.UseOracle(BrmConnection));
-        builder.Services.AddDbContextFactory<SocpenContext>(options =>
+        {
+            options.UseOracle(BrmConnection, opt => opt.CommandTimeout(180));
+        });
+        builder.Services.AddDbContextFactory<SocpenContext>(options => 
         options.UseOracle(BrmConnection));
         //Services 
         builder.Services.AddScoped<BRMDbService>();
