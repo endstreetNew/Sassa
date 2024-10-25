@@ -8,7 +8,7 @@ COMMIT;
 --2. Set new Active grants from In-Payment Table
 UPDATE DC_SOCPEN
 SET STATUS_CODE = 'ACTIVE'
-WHERE (beneficiary_id,GRANT_TYPE) in (SELECT ID_NUMBER, GRANT_TYPE FROM cust_mv_latestpayments)
+WHERE (beneficiary_id,GRANT_TYPE) in (SELECT ID_NUMBER, GRANT_TYPE FROM CUST_PAYMENT)
 and APPLICATION_DATE < to_date('01/JUL/2023');
 COMMIT;
 

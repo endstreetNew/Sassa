@@ -129,7 +129,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            return await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo.Contains(searchText) || bn.BrmBarcode.Contains(searchText))).AsNoTracking()
+            return await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo == searchText) || (bn.BrmBarcode == searchText)).AsNoTracking()
                         .Select(f => new ReboxListItem
                         {
                             ClmNo = f.UnqFileNo,

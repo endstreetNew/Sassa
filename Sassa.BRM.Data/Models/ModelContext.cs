@@ -468,6 +468,7 @@ public partial class ModelContext : DbContext
 
             entity.HasIndex(e => e.ApplicantNo, "INDEX7");
 
+
             entity.Property(e => e.UnqFileNo)
                 .HasMaxLength(20)
                 .IsUnicode(false)

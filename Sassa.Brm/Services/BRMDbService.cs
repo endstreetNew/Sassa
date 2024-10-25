@@ -168,10 +168,10 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         using (var _context = _contextFactory.CreateDbContext())
         {
             PagedResult<ReboxListItem> result = new PagedResult<ReboxListItem>();
-            searchText = searchText.ToUpper();
-            result.count = _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo.Contains(searchText) || bn.BrmBarcode.Contains(searchText))).Count();
+            searchText = searchText.Trim().ToUpper();
+            result.count = _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo == searchText) || (bn.BrmBarcode == searchText)).Count();
             if (result.count == 0) throw new Exception("No result!");
-            result.result = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo.Contains(searchText) || bn.BrmBarcode.Contains(searchText))).OrderByDescending(f => f.UpdatedDate).Skip((page - 1) * 20).Take(20).OrderBy(f => f.UnqFileNo).AsNoTracking()
+            result.result = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo == searchText) || (bn.BrmBarcode == searchText)).OrderByDescending(f => f.UpdatedDate).Skip((page - 1) * 20).Take(20).OrderBy(f => f.UnqFileNo).AsNoTracking()
                         .Select(f => new ReboxListItem
                         {
                             ClmNo = f.UnqFileNo,
