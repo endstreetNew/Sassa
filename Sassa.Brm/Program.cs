@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using razor.Components;
 using Sassa.Brm.Common.Helpers;
@@ -109,8 +110,20 @@ public class Program
             options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
             options.SlidingExpiration = true;
         });
-        builder.Services.AddRazorPages();
-        //builder.Services.AddServerSideBlazor();
+        builder.Services.AddRazorPages().AddRazorPagesOptions(options =>
+        {
+            options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
+        });
+        builder.Services.AddAntiforgery(options =>
+        {
+            options.SuppressXFrameOptionsHeader = true;
+            options.Cookie.Expiration = TimeSpan.Zero;
+        });
+
+        builder.Services.Configure<CookiePolicyOptions>(options =>
+        {
+            options.MinimumSameSitePolicy = SameSiteMode.None;
+        });
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(
@@ -137,9 +150,11 @@ public class Program
         app.UseHttpsRedirection();
 
         app.UseStaticFiles();
-        app.UseAntiforgery();
+        //app.UseAntiforgery();
 
-        app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
+        app.MapRazorComponents<App>()
+            .DisableAntiforgery()
+            .AddInteractiveServerRenderMode();
 
         app.Run();
     }

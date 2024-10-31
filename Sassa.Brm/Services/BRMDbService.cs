@@ -1186,43 +1186,43 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 Source = "Socpen"
             }).ToList();
 
-            if (FullSearch)
-            {
-                var pselect1 = await _context.DcSocpens.Where(d => d.IdHistory.Contains(SearchId)).AsNoTracking().ToListAsync();
-                oldidquery = pselect1.Select(d => new Application
-                {
-                    SocpenIsn = (long)d.Id,
-                    Id = d.BeneficiaryId,
-                    Srd_No = d.SrdNo > 0 ? d.SrdNo.ToString() : "",
-                    Name = d.Name,
-                    SurName = d.Surname,
-                    GrantType = d.GrantType,
-                    GrantName = StaticDataService.GrantTypes[d.GrantType],
-                    AppDate = d.ApplicationDate == null ? DateTime.Now.ToStandardDateString() : ((DateTime)d.ApplicationDate).ToStandardDateString(),
-                    OfficeId = _userSession.Office.OfficeId,
-                    RegionId = d.RegionId,
-                    RegionCode = StaticDataService.RegionCode(d.RegionId),
-                    RegionName = StaticDataService.RegionName(d.RegionId),
-                    AppStatus = d.StatusCode.ToUpper() == "ACTIVE" ? "MAIN" : "ARCHIVE",
-                    ARCHIVE_YEAR = StaticDataService.GetArchiveYear(d.ApplicationDate, d.StatusCode.ToUpper()),
-                    ChildId = d.ChildId,
-                    LcType = "0",
-                    FspId = _userSession.Office.FspId,
-                    IsRMC = _userSession.IsRmc(),
-                    DocsPresent = d.Documents,
-                    IdHistory = d.IdHistory,
-                    Source = "Socpen"
-                }).ToList();
-            }
-            var result = idquery.Union(oldidquery).ToList();
+            //if (FullSearch)
+            //{
+            //    var pselect1 = await _context.DcSocpens.Where(d => d.IdHistory.Contains(SearchId)).AsNoTracking().ToListAsync();
+            //    oldidquery = pselect1.Select(d => new Application
+            //    {
+            //        SocpenIsn = (long)d.Id,
+            //        Id = d.BeneficiaryId,
+            //        Srd_No = d.SrdNo > 0 ? d.SrdNo.ToString() : "",
+            //        Name = d.Name,
+            //        SurName = d.Surname,
+            //        GrantType = d.GrantType,
+            //        GrantName = StaticDataService.GrantTypes[d.GrantType],
+            //        AppDate = d.ApplicationDate == null ? DateTime.Now.ToStandardDateString() : ((DateTime)d.ApplicationDate).ToStandardDateString(),
+            //        OfficeId = _userSession.Office.OfficeId,
+            //        RegionId = d.RegionId,
+            //        RegionCode = StaticDataService.RegionCode(d.RegionId),
+            //        RegionName = StaticDataService.RegionName(d.RegionId),
+            //        AppStatus = d.StatusCode.ToUpper() == "ACTIVE" ? "MAIN" : "ARCHIVE",
+            //        ARCHIVE_YEAR = StaticDataService.GetArchiveYear(d.ApplicationDate, d.StatusCode.ToUpper()),
+            //        ChildId = d.ChildId,
+            //        LcType = "0",
+            //        FspId = _userSession.Office.FspId,
+            //        IsRMC = _userSession.IsRmc(),
+            //        DocsPresent = d.Documents,
+            //        IdHistory = d.IdHistory,
+            //        Source = "Socpen"
+            //    }).ToList();
+            //}
+            //var result = idquery.Union(oldidquery).ToList();
 
-            foreach (var item in result)
+            foreach (var item in idquery)
             {
-                item.IsMergeCandidate = result.Where(s => s.AppDate == item.AppDate).Count() > 1;
+                item.IsMergeCandidate = idquery.Where(s => s.AppDate == item.AppDate).Count() > 1;
                 var docs = await GetDocsPresent(item.Id, item.GrantType, item.AppDate);
                 item.DocsPresent = string.IsNullOrEmpty(docs) ? item.DocsPresent : docs;
             }
-            return result;
+            return idquery;
         }
     }
 
