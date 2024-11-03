@@ -9,7 +9,7 @@ using Sassa.BRM.ViewModels;
 
 namespace Sassa.Audit.Services
 {
-    public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, RawSqlService _raw)
+    public class BRMDbService(RawSqlService _raw)
     {
         public IQueryable<MisLivelinkTbl> GetMisFiles(ReportPeriod period, string region, string granttype, string idNumber, ModelContext _context)
         {

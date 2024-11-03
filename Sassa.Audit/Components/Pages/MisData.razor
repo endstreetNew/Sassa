@@ -79,7 +79,7 @@
         //     return;
         // }
         loading = true;
-        misFiles = db.GetMisFiles(period,office.RegionId,grantType,searchId,_context);
+        misFiles = db.GetMisFiles(period,office.RegionId,grantType,searchId,_context!);
         loading = false;
     }
 
@@ -115,7 +115,7 @@
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = StaticDataService.RegionName(office.RegionId);
-            List<MisLivelinkTbl> result = db.GetMisFiles(period, office.RegionId, grantType, searchId, _context).ToList();
+            List<MisLivelinkTbl> result = db.GetMisFiles(period, office.RegionId, grantType, searchId, _context!).ToList();
             result.ToCsv<MisLivelinkTbl>(FileName, header, StaticDataService.ReportFolder);
         }
         catch (Exception ex)

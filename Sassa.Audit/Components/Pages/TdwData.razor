@@ -78,7 +78,7 @@
         //     return;
         // }
         loading = true;
-        files = db.GetTdwFiles(period, selectedRegion, grantType, searchId, _context);
+        files = db.GetTdwFiles(period, selectedRegion, grantType, searchId, _context!);
         loading = false;
     }
 
@@ -117,7 +117,7 @@
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = selectedRegion;
-            List<TdwFileLocation> result = db.GetTdwFiles(period, selectedRegion, grantType, searchId, _context).ToList();
+            List<TdwFileLocation> result = db.GetTdwFiles(period, selectedRegion, grantType, searchId, _context!).ToList();
             result.ToCsv<TdwFileLocation>(FileName, header, StaticDataService.ReportFolder);
             loading = false;
         }

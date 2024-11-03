@@ -105,11 +105,11 @@ public class Program
         // UI Services
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-        builder.Services.ConfigureApplicationCookie(options =>
-        {
-            options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
-            options.SlidingExpiration = true;
-        });
+        //builder.Services.ConfigureApplicationCookie(options =>
+        //{
+        //    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
+        //    options.SlidingExpiration = true;
+        //});
         builder.Services.AddRazorPages().AddRazorPagesOptions(options =>
         {
             options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
