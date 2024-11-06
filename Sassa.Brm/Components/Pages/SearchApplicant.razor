@@ -52,14 +52,11 @@
         </div>
     </div>
     <div class="col">
-        @if (!DTSocPen.Any() && !string.IsNullOrEmpty(manualGrantType))//a search has been done and a grantype selected
+        @if (!DTSocPen.Where(a => a.GrantType == manualGrantType).Any() && !string.IsNullOrEmpty(manualGrantType))//a search has been done and a grantype selected
         {
-            @if (!DTSocPen.Where(a => a.GrantType == manualGrantType).Any())
-            {
-                <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-                <button class="btn btn-primary btn-sm active" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnManualCapture_Click())">Manual Capture</button>
-                </div>
-            }
+            <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
+            <button class="btn btn-primary btn-sm active" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnManualCapture_Click())">Manual Capture</button>
+            </div>
         }
     </div>
     @if (sessionservice.session!.IsRmc())

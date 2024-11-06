@@ -72,6 +72,23 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             return file;
         }
     }
+
+    public async Task<DcFile> CreateBRM(DcFile application, string reason)
+    {
+        decimal batch = 0;
+        var office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
+        if (office.ManualBatch != "A")
+        {
+            string batchType = application.ApplicantNo.StartsWith("S") ? "SrdNoId" : application.ApplicationStatus;
+            batch = string.IsNullOrEmpty(application.TdwBoxno) ? await CreateBatchForUser(batchType) : 0;
+        }
+        application.BatchNo = batch;
+
+        DcFile? file = await brmApiService.PostDcFile(application);
+
+        if (file == null || string.IsNullOrEmpty(file.UnqFileNo)) throw new Exception("Error creating BRM record");
+        return file;
+    }
     public async Task<DcFile> GetBRMRecord(string barcode)
     {
         using (var _context = _contextFactory.CreateDbContext())
@@ -2006,7 +2023,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         List<Enquiry> resultlist = new List<Enquiry>();
         using (var _context = _contextFactory.CreateDbContext())
         {
-            var dcfiles = await _context.DcFiles.Where(f => f.ApplicantNo.Contains(idNumber.Trim())).ToListAsync();
+            var dcfiles = await _context.DcFiles.Where(f => f.ApplicantNo == idNumber.Trim()).ToListAsync();
             if (!dcfiles.Any()) throw new Exception("Applicant Id not found");
             var brmBarcodeList = dcfiles.Select(f => f.BrmBarcode).ToList();
             var merges = await _context.DcMerges.Where(m => brmBarcodeList.Contains(m.BrmBarcode)).ToListAsync();
@@ -2089,7 +2106,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         List<Enquiry> resultlist = new List<Enquiry>();
         using (var _context = _contextFactory.CreateDbContext())
         {
-            var dcfiles = await _context.DcFiles.Where(f => f.SrdNo.Contains(idNumber.Trim())).ToListAsync();
+            var dcfiles = await _context.DcFiles.Where(f => f.SrdNo == idNumber.Trim()).ToListAsync();
             if (!dcfiles.Any()) throw new Exception("SRD not found");
             var brmBarcodeList = dcfiles.Select(f => f.BrmBarcode).ToList();
             var socpen = await _context.DcSocpens.Where(f => f.BeneficiaryId == idNumber || f.SrdNo.ToString() == idNumber.Trim()).ToListAsync();

@@ -60,6 +60,7 @@
                 if (!_ConnectedUserList.Users.Contains(_ConnectedUser))
                 {
                     _ConnectedUserList.Users.Add(_ConnectedUser);
+                    _ConnectedUserList.RemoveDuplicates();
                 }
             }
             else

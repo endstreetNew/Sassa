@@ -262,8 +262,7 @@ using System.Data;
                                                 INNER join DC_REGION r ON b.REGION_ID = r.REGION_ID
                                                 INNER JOIN DC_GRANT_TYPE g ON b.GRANT_TYPE = g.TYPE_ID AND b.Grant_TYPE <> 'S'
                                                 Where b.status_code = 'ACTIVE'
-                                                AND b.CAPTURE_REFERENCE is null AND b.TDW_REC IS NULL and b.Mis_file is null and b.ECMIS_FILE is null and b.OGA_DATE is null  
-                                                and (BENEFICIARY_ID, Grant_Type) not in (select beneficiary_id, Grant_Type from dc_socpen s Where b.beneficiary_id = s.beneficiary_id and b.Grant_TYPE = s.Grant_Type AND instr('C59', b.Grant_TYPE) > 0 AND (s.CAPTURE_REFERENCE is not null or s.TDW_REC IS not NULL or s.Mis_file is not null or s.ECMIS_FILE is not null or s.OGA_DATE is not null) )" +
+                                                AND b.CAPTURE_REFERENCE is null AND b.Scan_date is null and cs_date is null and b.TDW_REC IS NULL and b.Mis_file is null and b.ECMIS_FILE is null and b.OGA_DATE is null" +
                                                 $" AND b.Application_date >= to_date('{dateFrom}', 'dd/mm/YYYY')" +
                                                 $" and b.Application_date <= to_date('{dateTo}', 'dd/mm/YYYY')" +
                                             (string.IsNullOrEmpty(grant_type) ? "" : $" AND b.GRANT_TYPE = '{grant_type}'") +

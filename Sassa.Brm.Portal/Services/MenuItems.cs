@@ -6,7 +6,7 @@ namespace Sassa.Brm.Portal.Services
     {
         public  MenuItems()
         {
-            Add(new MenuItem(1, "Local Office", "Http://ssvsprbrphc01.sassa.local", "images/sassaicon.png"));
+            Add(new MenuItem(1, "Local Office", "Http://ssvsprbrphc02.sassa.local:81", "images/sassaicon.png"));
             Add(new MenuItem(2, "RMC Office", "Http://ssvsprbrphc02.sassa.local:81", "images/sassaicon.png"));
             //Add(new MenuItem(3, "Reports", "Http://ssvsqabrshc02.sassa.local:81", "images/sassaicon.png"));
             Add(new MenuItem(3, "Brm.Fluent", "Http://ssvsqabrshc02.sassa.local:85", "images/sassaicon.png"));

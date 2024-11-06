@@ -98,8 +98,10 @@ namespace Sassa.Brm.Common.Helpers
                 sb.Append($"<div>{RegionName}</div>");
                 sb.Append($"<div>Transaction Date: </div>");
                 sb.Append($"<div>Date Last Reviewed: {(file.Lastreviewdate == null ? "" : ((DateTime)file.Lastreviewdate).ToString("yyyy/MM/dd"))}</div>");
-                //if lctype is not null
-                sb.Append($"<div>LC Type: {LcType}</div>");
+                if (!string.IsNullOrEmpty(LcType))
+                {
+                    sb.Append($"<div>LC Type: {LcType}</div>");
+                }
                 sb.Append("</div>");
 
                 sb.Append("<div class=\"col-5\">");

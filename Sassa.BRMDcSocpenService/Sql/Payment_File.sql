@@ -14,13 +14,8 @@ COMMIT;
 
 --3. Migrate “INACTIVE” DG capture/scan data for each existing  OAG
 
---4. Remove migrated Inactive DG records.
-
-update dc_socpen s
-set s.grant_type = '0'
---select * from dc_socpen s
-where s.grant_type ='3'
+delete from dc_socpen p
+where p.grant_type ='3'
 and status_code = 'INACTIVE'
-and exists(
-Select * from cust_payment p 
-where not exists(SELECT * from dc_socpen where p.id_number = s.beneficiary_id and status_code = 'ACTIVE' and Grant_Type = '0'))
+and p.beneficiary_id in(SELECT beneficiary_id from dc_socpen where beneficiary_id = p.beneficiary_id and status_code = 'ACTIVE' and Grant_Type = '0');
+commit;

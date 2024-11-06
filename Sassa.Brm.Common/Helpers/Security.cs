@@ -56,7 +56,7 @@ namespace Sassa.Brm.Common.Helpers
         public static UserSession GetSession(this ClaimsPrincipal cp)
         {
             //Get user details
-            string? userName = cp.Identity!.Name!.TrimStart(@"SASSA\\".ToCharArray());//"Andilec";// 
+            string? userName = cp.Identity!.Name!.Replace("SASSA\\","");//"Andilec";// 
             if (string.IsNullOrEmpty(userName)) throw new Exception("Authentication failed.");
             PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
             UserPrincipal user = UserPrincipal.FindByIdentity(ctx, IdentityType.SamAccountName, userName);

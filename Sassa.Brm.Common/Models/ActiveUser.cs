@@ -13,6 +13,9 @@ public class ActiveUserList
 {
     public List<ActiveUser> Users { get; set; } = new();
 
-
+    public void RemoveDuplicates()
+    {
+        Users = Users.Distinct().ToList();
+    }   
 
 }
