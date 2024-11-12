@@ -1,0 +1,149 @@
+﻿@inject SessionService sessionservice
+@* @inject BRMDbService db *@
+@inject StaticService staticservice
+@inject SocpenService ss
+
+
+@* @layout NoLayout *@
+@inject IToastService toast
+@inject IDialogService dialogService
+
+<h5>BRM Fixed Service Point Admin</h5>
+
+<div class="row">
+
+    <div class="col">
+        <div class="input-group mb-1">
+            <span class="input-group-text">Region</span>
+            <select class="form-select" @bind="regionId">
+                <option value="" selected></option>
+                @foreach (var region in staticservice.GetRegions())
+                {
+                    <option value="@region.Key">@region.Value</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class ="col">
+        <button class="btn btn-primary active" @onclick="btnLoad_Click">Load</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col" style="float:right;">
+        <button class="btn btn-primary active" @onclick="@(() => AddServicePoint())">Add Service point</button>
+    </div>
+</div>
+
+<div class="whiteArea">
+
+    @if (IsLoaded)
+    {
+        <div class="row">
+            <div class="col-12">
+                <table style="font-size:x-small;width:100%;">
+                    <thead>
+                        <tr>
+                            <th scope="col">ServicePoint Id</th>
+                            <th scope="col">Service Point</th>
+                            <th scope="col">Office</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var u in regionServicePoints)
+                        {
+                            <tr>
+                                <td>@u.Id</td>
+                                <td>
+                                    <div class="input-group input-group-sm">
+                                   <input class="form-control form-control-sm" type="text" @bind="u.ServicePointName">
+                                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnUpdate_Click(u))">Rename</button>
+                                   </div>
+                                </td>
+                                <td>
+                                  <div class="input-group input-group-sm">
+                                    <span class="input-group-text input-group-sm">Brm Office</span>
+                                            <select class="form-select" value="@u.OfficeId" @onchange="@(e => OnValueChanged(e,u))">
+                                    @foreach (var bOffice in regionOffices)
+                                    {
+                                    <option value="@bOffice.OfficeId">@bOffice.OfficeName</option>
+                                    }
+                                    </select>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                    </table>
+                </div>
+                <br/>
+            </div>
+            }
+
+</div>
+
+@code {
+    protected List<RegionOffice> regionOffices = new();
+    protected List<DcFixedServicePoint> regionServicePoints = new();
+    protected string regionId = "";
+    protected bool IsLoaded = false;
+    protected bool IsAdding = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        regionId = sessionservice.session!.Office.RegionId;
+        await GetRegionOffices();
+    }
+
+    protected async Task btnLoad_Click()
+    {
+        await GetRegionOffices();
+
+    }
+
+    protected async Task GetRegionOffices()
+    {
+        List<CustRescode> ResCodes = await ss.GetResCodes(regionId);
+        regionOffices = staticservice.GetRegionOffices(regionId);
+        regionOffices = regionOffices.OrderBy(o => o.OfficeName).ToList();
+        regionServicePoints = staticservice.GetServicePoints(regionId);
+        IsLoaded = true;
+    }
+
+    protected async Task AddServicePoint()
+    {
+        DcFixedServicePoint request = new();
+
+        DialogParameters parameters = new()
+            {
+                Title = $"Service Point for {sessionservice.session.Office.RegionName}.",
+                SecondaryAction = "Cancel",
+                TrapFocus = true,
+                Modal = true,
+                PreventScroll = true
+            };
+        IDialogReference dialog = await dialogService.ShowDialogAsync<AddServicePointDialog>(request, parameters);
+        var result = await dialog.Result;
+        if (result.Cancelled || result.Data is null) return;
+        DcFixedServicePoint capturedWb = (result.Data as DcFixedServicePoint)!;
+        if (capturedWb == null) return; //huh?
+        await staticservice.CreateServicePoint(capturedWb);
+        toast.ShowSuccess("Service Point added");
+    }
+
+    private void OnValueChanged(ChangeEventArgs e, DcFixedServicePoint u)
+    {
+        u.OfficeId = e.Value?.ToString() ?? u.OfficeId;
+        btnUpdate_Click(u);
+    }
+
+    protected async void  btnUpdate_Click(DcFixedServicePoint u)
+    {
+        
+        await staticservice.UpdateServicePoint(u);
+        IsLoaded = false;
+        await GetRegionOffices();
+    }
+
+}

@@ -1,6 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
+using Sassa.BRM.Models;
+using Sassa.Socpen.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +15,21 @@ namespace Sassa.Brm.Common.Helpers
 {
     public static class ServiceInstaller
     {
+        public static IServiceCollection AddAuthenticationServices(this IServiceCollection services)
+        {
+            services.AddCascadingAuthenticationState();
+            services.AddHttpContextAccessor();
+            services.AddScoped<AuthenticationStateProvider, WindowsAuthenticationStateProvider>();
+            return services;
+        }
+
+        public static IServiceCollection AddPooledContextServices(this IServiceCollection services, string connection)
+        {
+            services.AddPooledDbContextFactory<ModelContext>(options => options.UseOracle(connection));
+            services.AddPooledDbContextFactory<SocpenContext>(options => options.UseOracle(connection));
+            return services;
+        }
+
         public static IServiceCollection AddSharedServices(this IServiceCollection services)
         {
             services.AddSessionServices();

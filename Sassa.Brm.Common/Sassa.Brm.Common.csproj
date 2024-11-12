@@ -14,7 +14,7 @@
 	</ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="3.1.0" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.1.1" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.10" />
     <PackageReference Include="SvgLib" Version="1.0.0.3" />
   </ItemGroup>
@@ -23,6 +23,7 @@
     <ProjectReference Include="..\Sassa.Barcoder\Sassa.Barcoder.csproj" />
     <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
     <ProjectReference Include="..\Sassa.QrCoder\Sassa.QrCoder.csproj" />
+    <ProjectReference Include="..\Sassa.Socpen.Data\Sassa.Socpen.Data.csproj" />
   </ItemGroup>
 
 </Project>

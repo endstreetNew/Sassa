@@ -1,0 +1,88 @@
+﻿@page  "/duplicates"
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<ModelContext> _contextFactory
+@inject SessionService sessionservice
+@inject LoggingService logger
+@implements IDisposable
+
+<h3>DuplicateFix @skip.ToString()</h3>
+
+@* <FluentDataGrid Items="@files.AsQueryable()" TGridItem="DcFile" Pagination="fPaginator">
+    <PropertyColumn Property="@(p => p.UnqFileNo)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.BrmBarcode)" Sortable="true" />
+    <PropertyColumn Property="@(p => p.GrantType)" Sortable="true" />
+        <TemplateColumn>
+            <FluentButton OnClick="@(() => FilterSocpen(context.UnqFileNo))">Remove</FluentButton>    
+        </TemplateColumn>
+</FluentDataGrid>
+<FluentPaginator State="@fPaginator" />
+
+<FluentDataGrid Items="@(_sContext!.DcSocpens.Where(s => s.CaptureReference == unqfileNo))" TGridItem="DcSocpen" Pagination="sPaginator">
+    <PropertyColumn Property="@(p => p.CaptureReference)" Sortable="true"  />
+    <PropertyColumn Property="@(p => p.BrmBarcode)" Sortable="true"  />
+    <PropertyColumn Property="@(p => p.GrantType)" Sortable="true" />
+    <TemplateColumn>
+        <FluentButton OnClick="@(() => RemoveDuplicates(context.CaptureReference))">Remove</FluentButton>
+    </TemplateColumn>
+</FluentDataGrid>
+<FluentPaginator State="@sPaginator" /> *@
+
+@code {
+    protected IQueryable<DcSocpen>? socpens;
+    protected List<DcFile>? files = new();
+    // protected ModelContext? _fContext;
+    // protected ModelContext? _sContext;
+    protected PaginationState fPaginator = new PaginationState() { ItemsPerPage = 15 };
+    protected PaginationState sPaginator = new PaginationState() { ItemsPerPage = 15 };
+
+    protected string unqfileNo = "";
+    int skip = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        // _fContext = _contextFactory.CreateDbContext();
+        // _sContext = _contextFactory.CreateDbContext();
+        await Fixtwothousand();
+    }
+    public void FilterSocpen(string unqFileNo)
+    {
+        unqfileNo = unqFileNo;
+    }
+    public async Task Fixtwothousand()
+    {
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+            //List<string> fileNos = new();
+            skip = 0;
+            try
+            {
+                while (skip < 13253470)
+                {
+
+                    var unqFileNos = _context.DcSocpens.Where(s => s.CaptureReference != null).OrderBy(s => s.CaptureReference).Select(s => s.CaptureReference).Skip(skip).Take(1000000);
+                    var socpenfiles = await _context.DcFiles.Where(f => unqFileNos.Contains(f.UnqFileNo)).Select(x => new { x.UnqFileNo, x.BrmBarcode}).ToListAsync();
+                    var barcodes = socpenfiles.GroupBy(x => x.BrmBarcode).Where(g => g.Count() > 1).Select(x => x.Key).ToList();
+                    // var barcodes = _context.DcFiles.GroupBy(x => x.BrmBarcode).Where(g => g.Count() > 1).Select(x => x.Key).ToList();
+                    var files = await _context.DcFiles.Where(f => barcodes.Contains(f.BrmBarcode)).Select(x => new { x.UnqFileNo, x.BrmBarcode }).ToListAsync();
+                    foreach (var file in files)
+                    {
+                        _context.DcFiles.RemoveRange(_context.DcFiles.Where(k => k.BrmBarcode == file.BrmBarcode && k.UnqFileNo != file.UnqFileNo));
+                        await _context.SaveChangesAsync();
+                    }
+                    skip += 1000000;
+
+                    StateHasChanged();
+                }
+            }
+            catch (Exception ex)
+            {
+               await logger.LogToConsole(ex.Message);
+                //Console.WriteLine(ex.Message);
+            }
+        }
+    }
+    public void Dispose()
+    {
+        // if (_fContext != null) _fContext.Dispose();
+        // if (_sContext != null) _sContext.Dispose();
+    }
+}

@@ -94,18 +94,20 @@
 
     protected override async Task OnInitializedAsync()
     {
-        file = await db.GetBRMRecord(BrmBarCode);
+        
 
         try
         {
+            file = await db.GetBRMRecord(BrmBarCode);
             QrCode = bcService.GetQrSvg(BrmBarCode, file.UnqFileNo, file.GrantType == "S" ? file.SrdNo : file.ApplicantNo, file.FullName, sservice.GetGrantType(file.GrantType));
-
             IdBarCode = bcService.GetBarCode(file.GrantType == "S" ? file.SrdNo : file.ApplicantNo);
             ClmBarCode = bcService.GetBarCode(file.UnqFileNo);
             BarCode = bcService.GetBarCode(file.BrmBarcode);
         }
         catch
-        { }
+        {
+            //supress errors for bulk printing
+        }
 
     }
     private void OnDocsChanged(string docspresent)

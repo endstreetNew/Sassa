@@ -93,7 +93,15 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            return await _context.DcFiles.Where(f => f.BrmBarcode == barcode).FirstAsync();
+            var results = await _context.DcFiles.Where(f => f.BrmBarcode == barcode).ToListAsync();
+            if (results.Any())
+            {
+                return results.First();
+            }
+            else
+            {
+                throw new Exception("BRM record not found.");
+            }
         }
     }
     public async Task AutoMerge(Application app, List<Application> parents)

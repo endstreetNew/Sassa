@@ -7,21 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\brmFiles\**" />
-    <Content Remove="wwwroot\brmFiles\**" />
-    <EmbeddedResource Remove="wwwroot\brmFiles\**" />
-    <None Remove="wwwroot\brmFiles\**" />
-  </ItemGroup>
-
-  <ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="8.0.10" />
 	  <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.*-* " />
-	  <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.DataGrid.EntityFrameworkAdapter" Version="4.10.3" />
     <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.*-* " />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Sassa.Brm.Common\Sassa.Brm.Common.csproj" />
     <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
+    <ProjectReference Include="..\Sassa.Socpen.Data\Sassa.Socpen.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
