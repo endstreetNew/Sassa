@@ -438,6 +438,8 @@ public partial class ModelContext : DbContext
 
             entity.HasIndex(e => e.BatchNo, "DC_FILE_BATCH_NO_INDEX");
 
+            entity.HasIndex(e => e.SrdNo, "DC_FILE_SRD");
+
             entity.HasIndex(e => e.TdwBatch, "DC_FILE_TDW_BATCH");
 
             entity.HasIndex(e => e.MisBoxno, "INDEX23");
@@ -453,8 +455,6 @@ public partial class ModelContext : DbContext
             entity.HasIndex(e => e.MisBoxStatus, "INDEX28");
 
             entity.HasIndex(e => e.TdwBoxno, "INDEX29");
-
-            entity.HasIndex(e => e.Missing, "INDEX30");
 
             entity.HasIndex(e => e.NonCompliant, "INDEX31");
 

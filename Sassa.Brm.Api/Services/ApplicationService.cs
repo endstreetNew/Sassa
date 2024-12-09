@@ -22,6 +22,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
     public async Task<DcFile> ValidateApiAndInsert(Application application, string reason)
     {
         while (!staticService.IsInitialized) { };
+        if (application.Clm_No is null) application.Clm_No = "";
         using (var _context = dbContextFactory.CreateDbContext())
         {
             try
@@ -29,6 +30,12 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 if (application.Clm_No != "" && application.Clm_No.Length != 12)
                 {
                     throw new Exception("Invalid Clm_no.");
+                }
+                if (application.Clm_No.Length == 12)
+                {
+                    application.RegionCode = application.Clm_No.Substring(0,3);
+                    application.RegionId = StaticDataService.Regions.Where(r => r.RegionCode == application.RegionCode).First().RegionId;
+                    application.OfficeId = StaticDataService.LocalOffices.Where(o => o.RegionId == application.RegionId && o.OfficeType == "RMC").First().OfficeId;
                 }
                 if (application.Brm_BarCode.Length !=8)
                 {
@@ -47,7 +54,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 }
                 var office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
                 application.RegionId = office.RegionId;
-                if (office.ManualBatch == "A")
+                if (office.ManualBatch == "A" || application.Clm_No.Length == 12)
                 {
                     application.BatchNo = 0;
                 }
@@ -264,14 +271,27 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
     /// <returns></returns>
     public async Task<DcFile> ScanBRM(Application application, string reason)
     {
-
-        await RemoveBRM(application.Brm_BarCode, reason);
-
         DcFile? file = null;
+
         using (var _context = dbContextFactory.CreateDbContext())
         {
             try
             {
+                //Get SocpenRecord
+                var sprecords = await _context.DcSocpens.Where(d => d.BeneficiaryId == application.Id).ToListAsync();
+                if(!sprecords.Any())
+                {
+                    throw new Exception("Could not lookup Beneficiary detail.");
+                }
+                DcSocpen sp = sprecords.First();
+                //Replace previos record with this one
+                await RemoveBRM(application.Brm_BarCode, reason);
+
+                application.DocsPresent = "1";
+                application.GrantType = staticService.GetGrantId(application.GrantName);
+                application.Name = sp.Name;
+                application.SurName = sp.Surname;
+
                 file = _context.DcFiles.Find(application.Clm_No);
                 if (file is null)
                 {
@@ -299,7 +319,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 file.Isreview = application.TRANS_TYPE == 2 ? "Y" : "N";
                 file.Lastreviewdate = application.LastReviewDate.ToDate("dd/MMM/yy");
                 file.ArchiveYear = application.AppStatus.Contains("ARCHIVE") ? application.ARCHIVE_YEAR : null;
-                file.Lctype = string.IsNullOrEmpty(application.LcType.Trim('0')) ? null : (Decimal?)Decimal.Parse(application.LcType);
+                file.Lctype = string.IsNullOrEmpty(application.LcType) || string.IsNullOrEmpty(application.LcType.Trim('0')) ? null : (Decimal?)Decimal.Parse(application.LcType);
                 file.TdwBoxno = application.TDW_BOXNO;
                 file.MiniBoxno = application.MiniBox;
                 file.FileComment = reason;

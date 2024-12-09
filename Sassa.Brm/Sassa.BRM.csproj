@@ -24,6 +24,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Services\SocpenService.cs" />
+	  <Compile Remove="Services\WindowsAuthenticationStateProvider.cs" />
 	  <Compile Remove="Startup.cs" />
 	</ItemGroup>
 

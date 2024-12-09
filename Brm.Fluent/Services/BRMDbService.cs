@@ -2119,9 +2119,9 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             {
                 int batchId = await GetExclusionBatch(destructionYear);
 
-                var exlusions = _context.DcExclusions.Where(e => e.RegionId == decimal.Parse(_userSession.Office.RegionId) && e.ExclusionBatchId == 0);
+                var exlusions = await _context.DcExclusions.Where(e => e.RegionId == decimal.Parse(_userSession.Office.RegionId) && e.ExclusionBatchId == 0).ToListAsync();
                 if (!exlusions.Any()) return;
-                foreach (var excl in exlusions.ToList())
+                foreach (var excl in exlusions)
                 {
                     DcDestruction? dd = _context.DcDestructions.Where(d => d.PensionNo == excl.IdNo).FirstOrDefault();
                     if (dd != null)
