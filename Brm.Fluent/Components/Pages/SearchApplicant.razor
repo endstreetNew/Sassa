@@ -14,7 +14,7 @@
 <FluentStack>
     <FluentTextField @bind-Value="@txtSearchId" Placeholder="Enter Id here..." />
     <FluentTextField @bind-Value="@txtSearchSRD" Placeholder="Enter SRD here..." />
-    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())"></FluentButton>
+    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())"></FluentButton>
     <FluentSelect TOption="KeyValue"
                   Items="@GrantTypes"
                   Id="grant-type-listbox"
@@ -27,7 +27,7 @@
 
     @if (!string.IsNullOrEmpty(manualGrantType) && !DTSocPen.Where(a => a.GrantType == manualGrantType).Any())//a grantype is selected AND NO MATCHING sOCPEN rECORD
     {
-        <FluentButton Appearance="Appearance.Accent" IconStart="@(new Icons.Regular.Size16.Edit())" Title="Manual Capture" OnClick="@(() => btnManualCapture_Click())">Manual Capture</FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconStart="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Edit())" Title="Manual Capture" OnClick="@(() => btnManualCapture_Click())">Manual Capture</FluentButton>
     }
     @if (sessionservice.session.IsRmc())
     {
@@ -49,7 +49,7 @@
                     <FluentDataGrid Style="min-width: max-content;" Items="@DTSocPen.AsQueryable()" TGridItem="Application" Pagination="@pagination">
                         <PropertyColumn Property="@(p => p.Id)" />
                         <TemplateColumn Title="Actions" Align="@Align.End">
-                            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Add())" Title="New" OnClick="@((p) => btnNewCover_Click(context))"></FluentButton>
+                            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Add())" Title="New" OnClick="@((p) => btnNewCover_Click(context))"></FluentButton>
                         </TemplateColumn>
                         <PropertyColumn Property="@(p => p.GrantName)" Sortable="true" />
                         <PropertyColumn Property="@(p => p.ChildId)" Sortable="true" />

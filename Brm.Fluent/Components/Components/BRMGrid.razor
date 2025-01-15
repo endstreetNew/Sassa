@@ -12,11 +12,11 @@
         <FluentDataGrid Style="min-width: max-content;" Items="@DTBrm.AsQueryable()" TGridItem="Application" Pagination="@pagination">
     <PropertyColumn Width="130px" Property="@(p => p.Id)" />
     <TemplateColumn Title="Actions" >
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Cube())" Title="Batch" OnClick="@(() => btnBatch_Click(context))" Disabled="@(context.BatchNo > 0)"/>
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Eye())" Title="View" OnClick="@(() => btnView_Click(context))"/>
-        <FluentButton BackgroundColor="Red" Color="White" IconEnd="@(new Icons.Regular.Size12.Delete())" Title="Delete" OnClick="@(() => btnDelete_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))"/>
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Edit())" Title="Edit Barcode" OnClick="@(() => btnEditBarcode_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))"/>
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.ArrowDown())" Title="Merged Records" Disabled="@(!DTMerges.Where(b => b.Brm_Parent == context.Brm_Parent).Any())" OnClick="@(() => ShowChildren(context.Brm_BarCode))" />
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Cube())" Title="Batch" OnClick="@(() => btnBatch_Click(context))" Disabled="@(context.BatchNo > 0)"/>
+                <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Eye())" Title="View" OnClick="@(() => btnView_Click(context))" />
+                <FluentButton BackgroundColor="Red" Color="White" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Delete())" Title="Delete" OnClick="@(() => btnDelete_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))" />
+                <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Edit())" Title="Edit Barcode" OnClick="@(() => btnEditBarcode_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))" />
+                <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.ArrowDown())" Title="Merged Records" Disabled="@(!DTMerges.Where(b => b.Brm_Parent == context.Brm_Parent).Any())" OnClick="@(() => ShowChildren(context.Brm_BarCode))" />
     </TemplateColumn>
     <PropertyColumn Width="100px" Property="@(p => p.Brm_BarCode)" Sortable="true" />
     <PropertyColumn Width="130px" Property="@(p => p.ChildId)" Sortable="true" />
@@ -42,8 +42,8 @@
         <FluentDataGrid Items="@DTMerges.Where(b => b.Brm_Parent == parentBrm).AsQueryable()" TGridItem="Application">
         <PropertyColumn Width="130px" Property="@(p => p.Id)" />
         <TemplateColumn Title="Actions" Align="@Align.End">
-            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Eye())" Title="View" OnClick="@(() => btnView_Click(context))" />
-            <FluentButton BackgroundColor="Red" Color="White" IconEnd="@(new Icons.Regular.Size12.Delete())" Title="Delete" OnClick="@(() => btnDelete_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))" />
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Eye())" Title="View" OnClick="@(() => btnView_Click(context))" />
+            <FluentButton BackgroundColor="Red" Color="White" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Delete())" Title="Delete" OnClick="@(() => btnDelete_Click(context))" Disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))" />
         </TemplateColumn>
         <PropertyColumn Width="100px" Property="@(p => p.Brm_BarCode)" Sortable="true" />
         <PropertyColumn Width="130px" Property="@(p => p.ChildId)" Sortable="true" />

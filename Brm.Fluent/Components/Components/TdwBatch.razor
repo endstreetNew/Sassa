@@ -26,7 +26,7 @@
             <TemplateColumn Title="Actions">
                 <FluentStack Orientation="Orientation.Horizontal" HorizontalAlignment="HorizontalAlignment.Center">
                 <FluentCheckbox @bind-Value="context.IsSelected"></FluentCheckbox>
-                <FluentButton IconEnd="@(new Icons.Regular.Size12.LockOpen())" OnClick="@(() => btnUnlock_Click(context.BoxNo))" Title="Unlock box" Disabled="@(!(sessionservice.session.IsRmc() && sessionservice.session.IsInRole("GRP_BRM_Monitoring")) || context.IsLocked)"/>
+                    <FluentButton IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.LockOpen())" OnClick="@(() => btnUnlock_Click(context.BoxNo))" Title="Unlock box" Disabled="@(!(sessionservice.session.IsRmc() && sessionservice.session.IsInRole("GRP_BRM_Monitoring")) || context.IsLocked)" />
          </FluentStack>
             </TemplateColumn>
            
@@ -47,7 +47,7 @@
         <FluentDataGrid Items="@batchedfiles.AsQueryable()" TGridItem="TdwBatchViewModel" Pagination="@batchPagination">
             <PropertyColumn Property="@(p => p.TdwBatchNo)" Sortable="true" />
             <TemplateColumn Title="Actions">
-                <FluentButton IconEnd="@(new Icons.Regular.Size12.Eye())" @onclick="() => btnPrintBatch_Click(context.TdwBatchNo)"/>
+                <FluentButton IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Eye())" @onclick="() => btnPrintBatch_Click(context.TdwBatchNo)" />
             </TemplateColumn>
             <PropertyColumn Property="@(p => p.User)" Sortable="true" />
             <PropertyColumn Property="@(p => p.Boxes)" Sortable="true" />
@@ -63,7 +63,7 @@
 
         <FluentDataGrid Items="@files.AsQueryable()" TGridItem="CsvListItem" Pagination="@filePagination">
             <TemplateColumn Title="Actions">
-                <FluentButton IconEnd="@(new Icons.Regular.Size12.Mail())" OnClick="@(() => btnResend_Click(context.FileName))" Title="Resend batch" />
+                <FluentButton IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Mail())" OnClick="@(() => btnResend_Click(context.FileName))" Title="Resend batch" />
             </TemplateColumn>
             <PropertyColumn Property="@(p => p.ReportName)" Sortable="true" />
             <PropertyColumn Property="@(p => p.UserName)" Sortable="true" />

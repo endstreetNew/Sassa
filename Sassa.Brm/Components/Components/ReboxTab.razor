@@ -388,7 +388,7 @@
         try
         {
             rebox.NewBarcode = rebox.NewBarcode.ToUpper().Trim();
-            if (string.IsNullOrEmpty(rebox.MisFileNo.Trim()) || rebox.MisFileNo.Trim().Length > 11 || rebox.MisFileNo.Trim().Length < 9) throw new Exception("Invalid MIS File Number");
+            if (string.IsNullOrEmpty(rebox.MisFileNo.Trim()) || rebox.MisFileNo.Trim().Length > 11 || rebox.MisFileNo.Trim().Length < 4) throw new Exception("Invalid MIS File Number");
             if (string.IsNullOrEmpty(rebox.NewBarcode.Trim()) || rebox.NewBarcode.Trim().Length != 8) throw new Exception("Invalid Barcode");
             if (string.IsNullOrEmpty(rebox.SelectedType)) throw new Exception("Please select a boxtype.");
             if (rebox.MiniBox > 5) throw new Exception("Only 5 Miniboxes allowed.");

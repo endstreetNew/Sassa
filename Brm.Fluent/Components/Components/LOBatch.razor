@@ -26,7 +26,7 @@
         <PropertyColumn Width="130px" Property="@(p => p.UnqFileNo)" />
         <PropertyColumn Width="100px" Property="@(p => p.BrmBarcode)" Sortable="true" />
         <TemplateColumn Title="Actions">
-            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Delete())" OnClick="@(() => btnRemoveItem(context.BrmBarcode,context.BatchNo))" Title="Remove" Disabled="@(selectedBatch.BatchStatus != "Open")" />
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Delete())" OnClick="@(() => btnRemoveItem(context.BrmBarcode,context.BatchNo))" Title="Remove" Disabled="@(selectedBatch.BatchStatus != "Open")" />
         </TemplateColumn>
         <PropertyColumn Width="130px" Property="@(p => p.ApplicantNo)" Sortable="true" />
         <PropertyColumn Width="130px" Property="@(p => p.FullName)" Sortable="true" />
@@ -54,7 +54,7 @@ else
                       @onchange="FilterStatus"/>
 
         <FluentTextField @bind-Value="@searchBatch" Placeholder="Batch number" />
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Search())" OnClick="@(() => FindBatch())" Title="Find batch" />
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Search())" OnClick="@(() => FindBatch())" Title="Find batch" />
 
         <FluentCheckbox @bind-Value="@showMybatches" Label="Show my batches" CheckStateChanged="(e) => FilterUser(e)" />
         <FluentTextField @bind-Value="@BrmBarCode" Placeholder="<Scan Barcode>" />
@@ -73,9 +73,9 @@ else
             <FluentCheckbox @bind-Value="@context.IsSelected"  />
         </TemplateColumn>
         <TemplateColumn Title="Actions">
-            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Checkmark())" OnClick="@(() => btnCloseBatch(context))" Title="Verify/Close" Disabled="@(context.BatchStatus != "Open")" />
-            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Edit())" OnClick="@(() => btnEditBatch(context))" Title="Edit" Disabled="@(context.BatchStatus != "Open")" />
-            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Clipboard())" OnClick="@(() => btnPrintBatch(context))" Title="View/Print" Disabled="@(context.BatchStatus == "Open")" />
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Checkmark())" OnClick="@(() => btnCloseBatch(context))" Title="Verify/Close" Disabled="@(context.BatchStatus != "Open")" />
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Edit())" OnClick="@(() => btnEditBatch(context))" Title="Edit" Disabled="@(context.BatchStatus != "Open")" />
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Clipboard())" OnClick="@(() => btnPrintBatch(context))" Title="View/Print" Disabled="@(context.BatchStatus == "Open")" />
         </TemplateColumn>
         <PropertyColumn  Property="@(p => p.RegType)" Sortable="true" />
         <PropertyColumn  Property="@(p => p.UpdatedByAd)" Sortable="true" />

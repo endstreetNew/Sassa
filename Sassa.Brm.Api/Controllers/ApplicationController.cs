@@ -51,7 +51,11 @@ namespace Sassa.BRM.Controller
             ApiResponse<string> response = new ApiResponse<string>();
             try
             {
-                if(app.BrmUserName == "SVC_BRM_LO")
+                if (app.Id.Length != 13)
+                {
+                    throw new Exception("Invalid ID.");
+                }
+                if (app.BrmUserName == "SVC_BRM_LO")
                 {
                     result = await _brmService.ValidateApiAndInsert(app, "Inserted via API.");
                 }

@@ -20,8 +20,8 @@
             <PropertyColumn Property="@(p => p.RequestedByAd)" Sortable="true" />
             <PropertyColumn Property="@(p => p.Status)" Sortable="true" />
             <TemplateColumn Title="Actions">
-                <FluentButton Title="@context.nextStatus" Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Status())" OnClick="@(() => btnNextStatus_Click(context))" Disabled="@(context.Status == "Returned")"></FluentButton>
-                <FluentButton Title="Items" Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Link())" OnClick="@(() => ItemClicked(context))" Disabled="@(context.Status == "Returned")"></FluentButton>
+                <FluentButton Title="@context.nextStatus" Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Status())" OnClick="@(() => btnNextStatus_Click(context))" Disabled="@(context.Status == "Returned")"></FluentButton>
+                <FluentButton Title="Items" Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Link())" OnClick="@(() => ItemClicked(context))" Disabled="@(context.Status == "Returned")"></FluentButton>
             </TemplateColumn>
         </FluentDataGrid>
         <FluentPaginator State="@picklistPaginator" />
@@ -30,7 +30,7 @@
         <WidgetTitle Title="Picklist items" />
         <FluentStack Orientation="Orientation.Horizontal">
             <FluentTextField Placeholder="<Scan barcode>" Value="@BrmBarCode" />
-            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Status())" Title="Receive item" OnClick="@(() => ItemReceived_Click(BrmBarCode))"></FluentButton>
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Status())" Title="Receive item" OnClick="@(() => ItemReceived_Click(BrmBarCode))"></FluentButton>
         </FluentStack>
         <FluentDataGrid Items="@items.AsQueryable()" TGridItem="DcPicklistItem" Pagination="@itemsPaginator">
             <PropertyColumn Property="@(p => p.UnqPicklist)" />
@@ -40,7 +40,7 @@
             <PropertyColumn Property="@(p => p.GrantType)" />
             <PropertyColumn Property="@(p => p.Status)" />
             <TemplateColumn Title="Action">
-                <FluentButton Title="@context.nextStatus" IconEnd="@(new Icons.Regular.Size12.Status())" Appearance="Appearance.Accent" OnClick="@(() => btnItemStatus_Click(context.PicklistItemId))"></FluentButton>
+                <FluentButton Title="@context.nextStatus" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Status())" Appearance="Appearance.Accent" OnClick="@(() => btnItemStatus_Click(context.PicklistItemId))"></FluentButton>
             </TemplateColumn>
         </FluentDataGrid>
         <FluentPaginator State="@itemsPaginator" />

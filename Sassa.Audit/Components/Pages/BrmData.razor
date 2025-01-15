@@ -31,7 +31,7 @@
     <WidgetTitle Title="Search" />
     <FluentStack>
         <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => Search())"></FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => Search())"></FluentButton>
     </FluentStack>
     <hr />
     <FluentDataGrid @ref="grid" Items="@files" TGridItem="DcFileMini" Pagination="@pagination">

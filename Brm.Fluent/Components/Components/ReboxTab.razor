@@ -47,20 +47,20 @@
                       @onchange="@(e => RegTypeChange(e))" />
         <FluentStack Orientation="Orientation.Horizontal">
             <FluentTextField Id="brmInput" @onkeyup="@AddEnter" @bind-Value="@rebox.BrmBarcode" Placeholder="<Scan Barcode>" Disabled="@(!loaded)" />
-            <FluentButton IconEnd="@(new Icons.Regular.Size12.Add())" @onclick="btnAddFile_Click" Disabled="@(!loaded)">Add file</FluentButton>
+            <FluentButton IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Add())" @onclick="btnAddFile_Click" Disabled="@(!loaded)">Add file</FluentButton>
         </FluentStack>
         <FluentStack Orientation="Orientation.Horizontal">
             <FluentTextField @bind-Value="@RemoveBarcode" Placeholder="<Scan Barcode>" Disabled="@(!loaded)" />
-            <FluentButton IconEnd="@(new Icons.Regular.Size12.Add())" @onclick="btnRemoveFile_Click" Disabled="@(!loaded)">Remove file</FluentButton>
+            <FluentButton IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Add())" @onclick="btnRemoveFile_Click" Disabled="@(!loaded)">Remove file</FluentButton>
         </FluentStack>
         <FluentStack Orientation="Orientation.Horizontal">
             <FluentTextField @bind-Value="@rebox.NewBarcode" Placeholder="<Scan new Barcode>" Disabled="@(!loaded)" />
             <FluentTextField @bind-Value="@rebox.MisFileNo" Placeholder="<Scan MIS File>" Disabled="@(!loaded)" />
-            <FluentButton IconEnd="@(new Icons.Regular.Size12.Add())" @onclick="btnAddMISFile_Click" Disabled="@(!loaded)">Add MIS file</FluentButton>
+            <FluentButton IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Add())" @onclick="btnAddMISFile_Click" Disabled="@(!loaded)">Add MIS file</FluentButton>
         </FluentStack>
         <FluentStack Orientation="Orientation.Horizontal">
             <FluentNumberField @bind-Value="@rebox.BatchNo" Placeholder="<Enter Batch no>" Disabled="@(!loaded)" />
-            <FluentButton IconEnd="@(new Icons.Regular.Size12.Add())" @onclick="btnAddBatch_Click" Disabled="@(!loaded)">Add Batch</FluentButton>
+            <FluentButton IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Add())" @onclick="btnAddBatch_Click" Disabled="@(!loaded)">Add Batch</FluentButton>
         </FluentStack>
 
     </FluentStack>
@@ -78,8 +78,8 @@
             </FluentStack>
             <FluentStack Orientation="Orientation.Horizontal">
                 <FluentTextField @bind-Value="@searchText" Placeholder="<Id/BRMBarcode>" Disabled="@(!loaded)" />
-                <FluentButton IconEnd="@(new Icons.Regular.Size12.Search())" @onclick="@(() => btnSearch_Click())" Disabled="@(!loaded)">Search</FluentButton>
-                <FluentButton IconEnd="@(new Icons.Regular.Size12.Search())" @onclick="@(() => btnClearSearch_Click())" Disabled="@(!loaded)">Clear</FluentButton>
+                <FluentButton IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Search())" @onclick="@(() => btnSearch_Click())" Disabled="@(!loaded)">Search</FluentButton>
+                <FluentButton IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Search())" @onclick="@(() => btnClearSearch_Click())" Disabled="@(!loaded)">Clear</FluentButton>
             </FluentStack>
             <FluentDataGrid Items="@boxfiles.AsQueryable()" TGridItem="ReboxListItem" Pagination="@paginationState">
                 <PropertyColumn Property="@(p => p.BrmNo)" Sortable="true" />
@@ -89,7 +89,7 @@
                 <PropertyColumn Property="@(p => p.FullName)" Sortable="true" />
                 <PropertyColumn Width="130px" Property="@(p => p.ClmNo)" Sortable="true" />
                 <TemplateColumn Title="Actions">
-                    <FluentButton Style="Width:30px;" IconEnd="@(new Icons.Regular.Size12.Eye())" Target="_blank" @onclick="@(() => ShowCover(context.BrmNo))"></FluentButton>
+                    <FluentButton Style="Width:30px;" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Eye())" Target="_blank" @onclick="@(() => ShowCover(context.BrmNo))"></FluentButton>
                 </TemplateColumn>
                 <TemplateColumn Title="Scanned">
                     <FluentCheckbox Style="Width:30px;"  @bind-Value="context.Scanned" />
@@ -289,7 +289,7 @@
         try
         {
             rebox.NewBarcode = rebox.NewBarcode.ToUpper().Trim();
-            if (string.IsNullOrEmpty(rebox.MisFileNo.Trim()) || rebox.MisFileNo.Trim().Length > 11 || rebox.MisFileNo.Trim().Length < 9) throw new Exception("Invalid MIS File Number");
+            if (string.IsNullOrEmpty(rebox.MisFileNo.Trim()) || rebox.MisFileNo.Trim().Length > 11 || rebox.MisFileNo.Trim().Length < 4) throw new Exception("Invalid MIS File Number");
             if (string.IsNullOrEmpty(rebox.NewBarcode.Trim()) || rebox.NewBarcode.Trim().Length != 8) throw new Exception("Invalid Barcode");
             if (string.IsNullOrEmpty(rebox.SelectedType)) throw new Exception("Please select a boxtype.");
             if (rebox.MiniBox > 5) throw new Exception("Only 5 Miniboxes allowed.");

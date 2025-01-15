@@ -11,7 +11,7 @@
     <FluentTextField @bind-Value="sm.BrmNo" Placeholder="<Enter Brm Barcode>" />
     <FluentTextField @bind-Value="sm.SrdNo" Placeholder="<Enter Srd No>" />
     <FluentTextField @bind-Value="sm.ClmNo" Placeholder="<Enter Claim No>" />
-    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await btnSearch_Click())"></FluentButton>
+    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await btnSearch_Click())"></FluentButton>
 </FluentStack>
 
 @if (showpreview)
@@ -20,10 +20,10 @@
     <FluentStack Orientation="Orientation.Vertical">
         <FluentStack Orientation="Orientation.Horizontal">
             <FluentButton Appearance="Appearance.Outline" OnClick="@(() => { showpreview = false; })">Back</FluentButton>
-            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Icons.Regular.Size16.ArrowLeft())" OnClick="FirstPage"></FluentButton>
-            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Icons.Regular.Size16.ArrowPrevious())" OnClick="PreviousPage"></FluentButton>
-            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Icons.Regular.Size16.ArrowNext())" OnClick="NextPage"></FluentButton>
-            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Icons.Regular.Size16.ArrowRight())" OnClick="LastPage"></FluentButton>
+            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.ArrowLeft())" OnClick="FirstPage"></FluentButton>
+            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.ArrowPrevious())" OnClick="PreviousPage"></FluentButton>
+            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.ArrowNext())" OnClick="NextPage"></FluentButton>
+            <FluentButton Appearance="Appearance.Outline" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.ArrowRight())" OnClick="LastPage"></FluentButton>
             <FluentSpacer/>
         </FluentStack>
         <hr />

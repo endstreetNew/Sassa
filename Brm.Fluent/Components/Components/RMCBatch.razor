@@ -24,7 +24,7 @@
         <PropertyColumn Width="130px" Property="@(p => p.UnqFileNo)" />
         <PropertyColumn Width="100px" Property="@(p => p.BrmBarcode)" Sortable="true" />
         <TemplateColumn Title="Actions">
-            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Delete())" OnClick="@(() => btnRemoveItem(context.BrmBarcode,context.BatchNo))" Title="Remove" Disabled="@(selectedBatch.BatchStatus != "Open")" />
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Delete())" OnClick="@(() => btnRemoveItem(context.BrmBarcode,context.BatchNo))" Title="Remove" Disabled="@(selectedBatch.BatchStatus != "Open")" />
         </TemplateColumn>
         <PropertyColumn Width="130px" Property="@(p => p.ApplicantNo)" Sortable="true" />
         <PropertyColumn Width="130px" Property="@(p => p.FullName)" Sortable="true" />
@@ -57,11 +57,11 @@ else
             <PropertyColumn Width="130px" Property="@(p => p.BatchNo)" />
             <TemplateColumn Width="350px" Title="Actions">
                 <FluentStack Orientation="Orientation.Horizontal" VerticalAlignment="VerticalAlignment.Center">
-                <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Edit())" OnClick="@(() => btnEditBatch(context))" Title="Edit" Disabled="@(!"RMCBatch|Received".Contains(context.BatchStatus))" />
-                <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Clipboard())" OnClick="@(() => btnPrintBatch(context))" Title="View/Print" Disabled="@(context.BatchStatus == "Open")" />
+                    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Edit())" OnClick="@(() => btnEditBatch(context))" Title="Edit" Disabled="@(!"RMCBatch|Received".Contains(context.BatchStatus))" />
+                    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Clipboard())" OnClick="@(() => btnPrintBatch(context))" Title="View/Print" Disabled="@(context.BatchStatus == "Open")" />
                 <FluentTextField @bind-Value="@context.BoxNo" Placeholder="<Tdw Box No>" Disabled="@(!"RMCBatch|Received".Contains(context.BatchStatus))" />
                 <FluentNumberField @bind-Value="@context.MiniBox" Size="5" Placeholder="<Minibox No>" Disabled="@(!"RMCBatch|Received".Contains(context.BatchStatus))" />
-                <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Add())" OnClick="@(() => btnAddBatchToBox(context))" Title="Add to Box" Disabled="@(!"RMCBatch|Received".Contains(context.BatchStatus))" />
+                    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Add())" OnClick="@(() => btnAddBatchToBox(context))" Title="Add to Box" Disabled="@(!"RMCBatch|Received".Contains(context.BatchStatus))" />
                  </FluentStack>
             </TemplateColumn>
             <PropertyColumn Property="@(p => p.RegType)" Sortable="true" />

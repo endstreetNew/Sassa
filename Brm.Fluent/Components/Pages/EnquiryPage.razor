@@ -10,7 +10,7 @@
 <BrmPageTitle Title="Enquiry" Loading="loading"/>
 <FluentStack>
     <FluentTextField @bind-Value="@txtSearchBrm" Placeholder="Brm barcode or Id..." />
-    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())"></FluentButton>
+    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await Search())"></FluentButton>
 </FluentStack>
 
 <strong>Results</strong>
@@ -19,8 +19,8 @@
     <PropertyColumn Width="100px" Property="@(p => p.CaptureDate)" />
     <PropertyColumn Width="200px" Property="@(p => p.GrantType)" />
     <TemplateColumn>
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.PreviewLink())" Title="View cover" OnClick="@(() => btnViewCover(context.BrmBarCode))"></FluentButton>
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Document())" Title="Detail" OnClick="@(async () => await btnShowDetail(context))"></FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.PreviewLink())" Title="View cover" OnClick="@(() => btnViewCover(context.BrmBarCode))"></FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Document())" Title="Detail" OnClick="@(async () => await btnShowDetail(context))"></FluentButton>
     </TemplateColumn>
 </FluentDataGrid>
 <FluentPaginator State="@EnquiryPagination" />

@@ -25,8 +25,8 @@
     <PropertyColumn Property="@(p => p.WaybillNo)" Sortable="true" />
 
     <TemplateColumn Title="Actions">
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Eye())" OnClick="@(() => btnDispatch_Click(context))" Title="@(context.Status == "Closed" ? "Dispatch" : "Reprint")" Disabled="@(sessionservice.session.IsRmc() && "Closed|Completed".Contains(context.Status??""))" />
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Checkmark())" OnClick="@(() => btnReceive_Click(context))" Title="Receive" Disabled="@(!sessionservice.session.IsRmc())"/>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Eye())" OnClick="@(() => btnDispatch_Click(context))" Title="@(context.Status == "Closed" ? "Dispatch" : "Reprint")" Disabled="@(sessionservice.session.IsRmc() && "Closed|Completed".Contains(context.Status??""))" />
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Checkmark())" OnClick="@(() => btnReceive_Click(context))" Title="Receive" Disabled="@(!sessionservice.session.IsRmc())" />
     </TemplateColumn>
     
     <PropertyColumn Property="@(p => p.UpdatedByAd)" Sortable="true" />

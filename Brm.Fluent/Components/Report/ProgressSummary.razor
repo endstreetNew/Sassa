@@ -39,7 +39,7 @@ else
         <PropertyColumn Property="@(p => p.CsLoaded)" Title="ContentServer"  Sortable="true" />
         <PropertyColumn Property="@(p => p.TdwSent)" Title="TDW" />
          <TemplateColumn>
-            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size12.Eye())" Title="Save Missing files" OnClick="@(() => btnSaveReport(context.Quarter.FinancialQuarter))"></FluentButton>
+            <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Eye())" Title="Save Missing files" OnClick="@(() => btnSaveReport(context.Quarter.FinancialQuarter))"></FluentButton>
         </TemplateColumn>
     </FluentDataGrid>
 

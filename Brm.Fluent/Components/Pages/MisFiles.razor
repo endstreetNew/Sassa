@@ -6,7 +6,7 @@
 <BrmPageTitle Title="MIS file search" Loading ="loading"/>
 <FluentStack>
 <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
-<FluentButton Appearance="Appearance.Accent" IconEnd="@(new Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await SearchMis())"></FluentButton>
+    <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await SearchMis())"></FluentButton>
 </FluentStack>
 
 <FluentDataGrid Items="@misFiles.AsQueryable()" TGridItem="MisLivelinkTbl">
