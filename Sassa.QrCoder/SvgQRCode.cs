@@ -1,4 +1,4 @@
-#if NETFRAMEWORK || NETSTANDARD2_0 || NET6_0 || NET8_0 || NET6_0_WINDOWS
+
 using QRCoder.Extensions;
 using System;
 using System.Collections;
@@ -392,4 +392,4 @@ namespace QRCoder
     }
 }
 
-#endif
+
