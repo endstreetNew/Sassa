@@ -117,6 +117,7 @@ namespace Sassa.BRM.Services
                 SaveFolder(node.Name, node.ID);
                 var result = await docClient.GetNodesInContainerAsync(ota, node.ID, new GetNodesInContainerOptions() { MaxDepth = 1, MaxResults = 10 });
                 Node[] subnodes = result.GetNodesInContainerResult;
+                if(subnodes == null) return;    
                 foreach (Node snode in subnodes)
                 {
                     await AddRecursive(snode, node.ID);
