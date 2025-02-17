@@ -25,23 +25,7 @@ using System.Data;
             sservice = Sservice;
             //reportFolder = config.GetSection("Folders").GetChildren().GetValue("Reports");
             //reportFolder = Path.Combine(env.ContentRootPath, $@"\wwwroot\{config["Folders:Reports"]}");
-            if (!Directory.Exists(StaticDataService.ReportFolder))
-            {
-                Directory.CreateDirectory(StaticDataService.ReportFolder);
-            }
-            else
-            {
-                string[] files = Directory.GetFiles($@"wwwroot\brmfiles\");
 
-                foreach (string file in files)
-                {
-                    FileInfo fi = new FileInfo(file);
-                    if (fi.LastAccessTime < DateTime.Now.AddMonths(-1))
-                    {
-                        fi.Delete();
-                    }
-                }
-            }
             //var rr = .Bind(folders);
             reportList = new Dictionary<string, string>();
             //reportList.Add("1", "Destruction List");

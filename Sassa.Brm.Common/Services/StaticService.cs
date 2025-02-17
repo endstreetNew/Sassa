@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 using Sassa.BRM.Models;
 using System.Diagnostics;
@@ -17,7 +18,10 @@ namespace Sassa.Brm.Common.Services
             _contextFactory = contextFactory;
             StaticDataService.ReportFolder = Path.Combine(env.ContentRootPath, @$"wwwroot\{config["Folders:Reports"]!}\");
             StaticDataService.DocumentFolder = $"{env.WebRootPath}\\{config.GetValue<string>("Folders:CS")}\\";
+            Folders.CleanFolderHistory(StaticDataService.ReportFolder);
+            Folders.CleanFolderHistory(StaticDataService.DocumentFolder);
             Initialize();
+
         }
 
         #region Static Data access

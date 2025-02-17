@@ -266,4 +266,28 @@ namespace Sassa.Brm.Common.Helpers
         }
 
     }
+
+    public static class Folders
+    {
+        public static void CleanFolderHistory(string folder)
+        {
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+            else
+            {
+                string[] files = Directory.GetFiles(folder);
+
+                foreach (string file in files)
+                {
+                    FileInfo fi = new FileInfo(file);
+                    if (fi.LastAccessTime < DateTime.Now.AddMonths(-1))
+                    {
+                        fi.Delete();
+                    }
+                }
+            }
+        }
+    }
 }
