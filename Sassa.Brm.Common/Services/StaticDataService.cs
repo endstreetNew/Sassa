@@ -248,8 +248,11 @@ public static class StaticDataService
         get
         {
             List<string> years = new List<string>();
-            years.Add((DateTime.Now.Year - 1).ToString());
-            years.Add(DateTime.Now.Year.ToString());
+            foreach (int year in new List<int> { 4,3, 2, 1 })
+            {
+                years.Add((DateTime.Now.Year - year).ToString());
+                //years.Add(DateTime.Now.Year.ToString());
+            }
             return years;
         }
     }

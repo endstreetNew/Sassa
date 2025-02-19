@@ -303,7 +303,7 @@ using System.Data;
             string[] files = new string[0];
             try
             {
-                files = Directory.GetFiles(StaticDataService.ReportFolder, $"{regionCode}-{username.ToUpper()}*");
+                files = Directory.GetFiles(StaticDataService.ReportFolder, $"*-{username.ToUpper()}*");
             }
             catch //(Exception ex)
             {
