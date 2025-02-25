@@ -15,6 +15,7 @@ namespace Sassa.Brm.Common.Services
         IDbContextFactory<ModelContext> _contextFactory;
         public StaticService(IDbContextFactory<ModelContext> contextFactory, IConfiguration config, IWebHostEnvironment env)
         {
+            StaticDataService.SupportUsers = config.GetRequiredSection("SupportUsers").GetChildren().Select(c => c.Value!.ToLower()).ToList()!;
             _contextFactory = contextFactory;
             StaticDataService.ReportFolder = Path.Combine(env.ContentRootPath, @$"wwwroot\{config["Folders:Reports"]!}\");
             StaticDataService.DocumentFolder = $"{env.WebRootPath}\\{config.GetValue<string>("Folders:CS")}\\";

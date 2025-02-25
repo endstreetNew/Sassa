@@ -14,6 +14,7 @@ namespace Sassa.Brm.Common.Services;
 
 public static class StaticDataService
 {
+    public static List<string> SupportUsers = new List<string>();
     public static string RsWeb { get; set; } = "";
     public static string ReportFolder { get; set; } = "";
     public static string DocumentFolder { get; set; } = "";
@@ -137,7 +138,7 @@ public static class StaticDataService
             _tdwregions = new Dictionary<string, string>();
             _tdwregions.Add("7", "GAUTENG");
             _tdwregions.Add("4", "FREE STATE");
-            _tdwregions.Add("5", "KWA-ZULU NATAL");
+            _tdwregions.Add("5", "KWAZULU NATAL");
             _tdwregions.Add("6", "NORTH WEST");
             _tdwregions.Add("8", "MPUMALANGA");
             _tdwregions.Add("2", "EASTERN CAPE");
@@ -248,7 +249,7 @@ public static class StaticDataService
         get
         {
             List<string> years = new List<string>();
-            foreach (int year in new List<int> { 4,3, 2, 1 })
+            foreach (int year in new List<int> {5, 4,3, 2, 1 })
             {
                 years.Add((DateTime.Now.Year - year).ToString());
                 //years.Add(DateTime.Now.Year.ToString());

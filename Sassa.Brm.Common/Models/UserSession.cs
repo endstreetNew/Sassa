@@ -1,4 +1,6 @@
-﻿namespace Sassa.Brm.Common.Models
+﻿using Sassa.Brm.Common.Services;
+
+namespace Sassa.Brm.Common.Models
 {
     public class UserSession
     {
@@ -40,6 +42,10 @@
         public bool IsLoggedIn()
         {
             return !string.IsNullOrEmpty(SamName);
+        }
+        public bool IsSupport()
+        {
+            return StaticDataService.SupportUsers.Contains(SamName.ToLower());
         }
     }
 }
