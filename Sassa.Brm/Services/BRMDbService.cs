@@ -1169,6 +1169,8 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             return result.First().BeneficiaryId;
         }
     }
+
+
     #endregion
 
     #region SearchData
@@ -1204,6 +1206,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 ARCHIVE_YEAR = StaticDataService.GetArchiveYear(d.ApplicationDate ?? DateTime.Now, d.StatusCode.ToUpper()),
                 ChildId = d.ChildId,
                 LcType = "0",
+                Clm_No = d.CaptureReference,
                 FspId = _userSession.Office.FspId,
                 IsRMC = _userSession.IsRmc(),
                 DocsPresent = d.Documents,
@@ -1243,6 +1246,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 ARCHIVE_YEAR = d.StatusCode.ToUpper() == "ACTIVE" ? null : ((DateTime)(d.ApplicationDate ?? DateTime.Now)).ToString("yyyy"),
                 ChildId = d.ChildId,
                 LcType = "0",
+                Clm_No=d.CaptureReference,
                 IsRMC = _userSession.IsRmc(),
                 DocsPresent = d.Documents,
                 IdHistory = d.IdHistory,
@@ -1420,6 +1424,19 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             {
                 //throw new Exception("Error backing up file: " + ex.Message);
             }
+        }
+    }
+
+    public async Task DeleteSocpenRecord(Application a)
+    {
+        if (string.IsNullOrEmpty(a.Clm_No)) return;
+        using (var _context = _contextFactory.CreateDbContext())
+        {
+
+            var socpen = await _context.DcSocpens.FirstAsync(s => s.CaptureReference == a.Clm_No);
+            if (socpen == null) return;
+            _context.DcSocpens.Remove(socpen);
+            await _context.SaveChangesAsync();
         }
     }
     #endregion
@@ -2135,7 +2152,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
     #endregion
-
+      
     #region Audit
     /// <summary>
     /// Gets PieData on File requests

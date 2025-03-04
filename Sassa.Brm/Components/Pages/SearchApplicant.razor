@@ -105,7 +105,13 @@
                         <tr style="@(!string.IsNullOrEmpty(u.Brm_Parent)? "background-color:limegreen;": u.IsMergeCandidate  ? "background-color:gold;":"")">
                             <td>@u.Id</td>
                             <td>@u.IdHistory</td>
-                            <td><button class="btn btn-primary btn-sm active" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnNewCover_Click(u))">New Cover</button></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm active" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnNewCover_Click(u))">New Cover</button>
+                                @if (sessionservice.session.IsSupport())
+                                {
+                                    <button class="btn btn-danger btn-sm active" @onclick="@(() => btnDelete_Click(u))">Delete</button>
+                                }
+                            </td>
                             <td>@u.ChildId</td>
                             <td>@u.GrantName</td>
                             <td>@u.Srd_No</td>
@@ -240,7 +246,10 @@
 
         }
     }
-
+    private async Task btnDelete_Click(Application a)
+    {
+        await db.DeleteSocpenRecord(a);
+    }
     protected async Task OnChanged()
     {
         DTBrmParents.Clear();
