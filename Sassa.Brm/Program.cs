@@ -104,6 +104,7 @@ public class Program
         //});
         // UI Services
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
+        builder.Services.AddQuickGridEntityFrameworkAdapter();
 
         //builder.Services.ConfigureApplicationCookie(options =>
         //{

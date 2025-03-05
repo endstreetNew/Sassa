@@ -1,4 +1,4 @@
-﻿@page "/misfiles"
+﻿@page "/misfilesec"
 
 @inject IAlertService toast
 @inject IDbContextFactory<ModelContext> dbContextFactory
@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<QuickGrid Items="@misFiles.AsQueryable()" TGridItem="MisLivelinkTbl" Pagination="@paginationState">
+<QuickGrid Items="@misFiles.AsQueryable()" TGridItem="EcMisTbl" Pagination="@paginationState">
     <PropertyColumn Title="ID No" Property="f => f.IdNumber" />
     <PropertyColumn Title="Name" Property="f => f.Name" />
     <PropertyColumn Title="Surname" Property="f => f.Surname" />
@@ -31,7 +31,7 @@
 
 
 @code {
-    protected IQueryable<MisLivelinkTbl> misFiles = Enumerable.Empty<MisLivelinkTbl>().AsQueryable();
+    protected IQueryable<EcMisTbl> misFiles = Enumerable.Empty<EcMisTbl>().AsQueryable();
     protected string searchId = "";
     PaginationState paginationState = new PaginationState { ItemsPerPage =20 };
 
@@ -42,7 +42,18 @@
             toast.Error("Please enter a valid applicant id.");
             return;
         }
-        misFiles = context.MisLivelinkTbls.Where(x => x.IdNumber == searchId);
+        misFiles = context.SsApplications.Where(x => x.IdNumber == searchId).Select(r => new EcMisTbl()
+        {
+                IdNumber = r.IdNumber,
+                Name = r.Name,
+                Surname = r.Surname,
+                GrantType = r.GrantType,
+                AppDate = r.ActionDate,
+                FileNumber = r.FormType + r.FormNumber,
+                RegionId = "2",
+                RegistryType = r.BoxType
+
+        });
     }
     private ModelContext context = default!;
 
