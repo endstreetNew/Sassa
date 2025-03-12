@@ -22,7 +22,7 @@
     protected override void OnInitialized()
     {
         _context = _contextFactory.CreateDbContext();
-        auditSummaries = db.GetSummary(_context).AsQueryable();
+       // auditSummaries = db.GetSummary(_context).AsQueryable();
     }
 
 }

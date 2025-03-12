@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
+using razor.Components;
 using Sassa.Audit.Components;
 using Sassa.Audit.Services;
 using Sassa.Brm.Common.Helpers;
@@ -18,6 +19,7 @@ builder.Services.AddScoped<BRMDbService>();
 builder.Services.AddScoped<MisFileService>();
 builder.Services.AddScoped<ReportDataService>();
 builder.Services.AddSingleton<FileService>();
+builder.Services.AddScoped<IAlertService, AlertService>();
 //Common Services
 builder.Services.AddSingleton<StaticService>();
 //builder.Services.AddScoped<SessionService>();
@@ -26,6 +28,7 @@ builder.Services.AddScoped<Helper>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 builder.Services.AddFluentUIComponents();
+builder.Services.AddDataGridEntityFrameworkAdapter();
 
 var app = builder.Build();
 

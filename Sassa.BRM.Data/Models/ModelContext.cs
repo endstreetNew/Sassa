@@ -2368,14 +2368,10 @@ public partial class ModelContext : DbContext
         });
         modelBuilder.Entity<Inpayment>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("SYS_C0035819");
+            entity
+                .HasNoKey()
+                .ToTable("INPAYMENT");
 
-            entity.ToTable("INPAYMENT");
-
-            entity.Property(e => e.Id)
-                .HasPrecision(19)
-                .ValueGeneratedNever()
-                .HasColumnName("ID");
             entity.Property(e => e.ApplicantNo)
                 .IsRequired()
                 .HasMaxLength(13)
@@ -2399,6 +2395,10 @@ public partial class ModelContext : DbContext
                 .IsRequired()
                 .HasMaxLength(2)
                 .HasColumnName("GRANT_TYPE");
+            entity.Property(e => e.Id)
+                .HasPrecision(19)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("ID");
             entity.Property(e => e.MisFileNo)
                 .HasMaxLength(20)
                 .HasColumnName("MIS_FILE_NO");
