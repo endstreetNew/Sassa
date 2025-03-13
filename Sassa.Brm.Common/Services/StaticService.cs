@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Sassa.Brm.Common.Helpers;
@@ -182,6 +183,21 @@ namespace Sassa.Brm.Common.Services
         public Dictionary<string, string> GetRegions()
         {
             return StaticDataService.Regions!.ToDictionary(key => key.RegionId, value => value.RegionName);
+        }
+        /// <summary>
+        /// Include 0 region for audit Report
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> GetAuditRegions()
+
+        { 
+            Dictionary<string, string> auditRegions = new Dictionary<string, string> { { "0", "No Region" } };
+            var source = StaticDataService.Regions!.ToDictionary(key => key.RegionId, value => value.RegionName);
+            foreach (var element in source)
+            {
+                auditRegions.Add(element.Key,element.Value);
+            }
+            return auditRegions;
         }
         //Includes All
         public Dictionary<string, string> GetReportOffices(string regionId)

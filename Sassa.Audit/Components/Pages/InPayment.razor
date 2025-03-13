@@ -12,7 +12,7 @@
     <FluentStack Orientation="Orientation.Horizontal">
         <FluentDatePicker Placeholder="<From Date>" @bind-Value="period.FromNullDate" />
         <FluentDatePicker Placeholder="<To Date>" @bind-Value="period.ToNullDate" />
-        <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
+        <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetAuditRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
         @* <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@grantType" />  *@
         <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
     </FluentStack>
@@ -102,7 +102,19 @@
 
                 }
             }
-            string FileName = helper.GetAuditFileName(report.ReportName.Replace(" ", "_"), StaticDataService.RegionCode(office.RegionId));
+            string RegionName;
+            if (office.RegionId != "0")
+            {
+               RegionName = StaticDataService.RegionCode(office.RegionId);
+            }
+            else
+            {
+                RegionName = "NO REGION";
+
+            }
+
+            string FileName = helper.GetAuditFileName(report.ReportName.Replace(" ", "_"), RegionName);
+
             toast.ShowInfo($"{report.ReportName} queued.");
 
             ReportHeader header = new ReportHeader();
@@ -110,7 +122,7 @@
             header.ToDate = period.ToDate.ToShortDateString();
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
-            header.Region = StaticDataService.RegionName(office.RegionId);
+            header.Region = RegionName;
             List<Inpayment> result = context.Inpayments.Where(m => m.TransDate >= period.FromDate && m.TransDate <= period.ToDate && m.RegionId == office.RegionId).ToList();
             result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
         }
