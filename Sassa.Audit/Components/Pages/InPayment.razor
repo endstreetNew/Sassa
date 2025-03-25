@@ -13,8 +13,8 @@
         @*         <FluentDatePicker Placeholder="<From Date>" @bind-Value="period.FromNullDate" />
         <FluentDatePicker Placeholder="<To Date>" @bind-Value="period.ToNullDate" /> *@
         <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetAuditRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
-        <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@regType" />
-        <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@ogaStatus" />
+        <FluentSelect TOption="KeyValuePair<string,string>" Items="@ogaStatusOptions" Placeholder="<Oge Status>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@ogaStatus" />
+        <FluentSelect TOption="KeyValuePair<string,string>" Items="@regTypeOptions" Placeholder="<Reg Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@regType" />
         <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
     </FluentStack>
     <WidgetTitle Title="Search" />
@@ -88,6 +88,7 @@
 
     private void ValidateReportFilter()
     {
+        misFiles = context.Inpayments.AsQueryable();
         try
         {
             foreach (var option in report.FilterOptions)
@@ -100,10 +101,33 @@
                             toast.ShowError($"Please select a Region.");
                             return;
                         }
+                        misFiles = misFiles.Where(m => m.RegionId == office.RegionId);
                         break;
                     case "OgaStatus":
                         break;
                     case "RegType":
+                        switch(regType)
+                        {
+                            case "All":
+                                break;
+                            case "LC":
+                                misFiles = misFiles.Where(m => m.RegType.ToLower().Contains("lc"));
+                                break;
+                            case "MAIN":
+                                misFiles = misFiles.Where(m => !m.RegType.ToLower().Contains("lc"));
+                                break;
+                            case "LCNOMAIN":
+                                var regTypeFilter = "lc";
+                                var lc = misFiles.Where(m => m.RegType.ToLower().Contains("lc"));
+                                var nolc = misFiles.Where(m => !m.RegType.ToLower().Contains("lc"));
+
+                                misFiles = lc.Where(i => !nolc.Any(n =>
+                                n.ApplicantNo == i.ApplicantNo &&
+                                n.GrantType == i.GrantType));
+
+                                // misFiles = result;
+                                break;
+                        }
                         break;
 
                 }
@@ -111,7 +135,7 @@
             string RegionName;
             if (office.RegionId != "0")
             {
-               RegionName = StaticDataService.RegionCode(office.RegionId);
+                RegionName = StaticDataService.RegionCode(office.RegionId);
             }
             else
             {
@@ -129,7 +153,7 @@
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = RegionName;
-            List<Inpayment> result = context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
+            List<Inpayment> result = misFiles.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
             result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
         }
         catch (Exception ex)
@@ -146,6 +170,7 @@
         regTypeOptions.Add( new KeyValuePair<string, string> ("All", "All"));
         regTypeOptions.Add(new KeyValuePair<string, string>("LC", "LC"));
         regTypeOptions.Add(new KeyValuePair<string, string>("MAIN", "MAIN"));
+        regTypeOptions.Add(new KeyValuePair<string, string>("LCNOMAIN", "LC NO MAIN"));
     }
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
 }
