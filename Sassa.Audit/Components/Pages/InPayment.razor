@@ -10,10 +10,11 @@
 <FluentStack Orientation="Orientation.Vertical">
     <WidgetTitle Title="Filter Options" />
     <FluentStack Orientation="Orientation.Horizontal">
-        <FluentDatePicker Placeholder="<From Date>" @bind-Value="period.FromNullDate" />
-        <FluentDatePicker Placeholder="<To Date>" @bind-Value="period.ToNullDate" />
+        @*         <FluentDatePicker Placeholder="<From Date>" @bind-Value="period.FromNullDate" />
+        <FluentDatePicker Placeholder="<To Date>" @bind-Value="period.ToNullDate" /> *@
         <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetAuditRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
-        @* <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@grantType" />  *@
+        <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@regType" />
+        <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@ogaStatus" />
         <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
     </FluentStack>
     <WidgetTitle Title="Search" />
@@ -46,18 +47,24 @@
     protected IQueryable<Inpayment> misFiles = Enumerable.Empty<Inpayment>().AsQueryable();
     protected string searchId = "";
     PaginationState paginationState = new PaginationState { ItemsPerPage = 15 };
-    protected ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddYears(-10), ToDate = DateTime.Now };
+
+    //FilterOptions
     protected UserOffice office = new();
-    protected string grantType = "";
+    protected List<KeyValuePair<string, string>> ogaStatusOptions = new();
+    protected List<KeyValuePair<string, string>> regTypeOptions = new();
+    protected string regType = "";
+    protected string ogaStatus  = "";
     protected bool loading = true;
 
     protected ReportDefinition report = new();
 
     protected override void OnInitialized()
     {
+
         context = dbContextFactory.CreateDbContext();
-        report = new ReportDefinition { ReportIndex = "1", ReportName = "In Payment Files", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "GrantType" } };
+        report = new ReportDefinition { ReportIndex = "1", ReportName = "In Payment Files", FilterOptions = new FilterOptions() { "Region", "OgaStatus", "RegType", } };
         misFiles = context.Inpayments.AsQueryable();
+        InitializeFilterData();
         loading = false;
     }
 
@@ -87,9 +94,6 @@
             {
                 switch (option)
                 {
-                    case "From Date":
-                    case "To Date":
-                        break;
                     case "Region":
                         if (string.IsNullOrEmpty(office.RegionId))
                         {
@@ -97,7 +101,9 @@
                             return;
                         }
                         break;
-                    case "GrantType":
+                    case "OgaStatus":
+                        break;
+                    case "RegType":
                         break;
 
                 }
@@ -118,12 +124,12 @@
             toast.ShowInfo($"{report.ReportName} queued.");
 
             ReportHeader header = new ReportHeader();
-            header.FromDate = period.FromDate.ToShortDateString();
-            header.ToDate = period.ToDate.ToShortDateString();
+            // header.FromDate = period.FromDate.ToShortDateString();
+            // header.ToDate = period.ToDate.ToShortDateString();
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = RegionName;
-            List<Inpayment> result = context.Inpayments.Where(m => m.TransDate >= period.FromDate && m.TransDate <= period.ToDate && m.RegionId == office.RegionId).ToList();
+            List<Inpayment> result = context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
             result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
         }
         catch (Exception ex)
@@ -131,6 +137,15 @@
             toast.ShowError(ex.Message);
         }
     }
-
+    protected void InitializeFilterData()
+    {
+        ogaStatusOptions = new List<KeyValuePair<string, string>>();
+        ogaStatusOptions.Add(new KeyValuePair<string, string>("All", "All"));
+        //Todo: Get OgaStatus from Alicia
+        regTypeOptions = new List<KeyValuePair<string, string>>(); 
+        regTypeOptions.Add( new KeyValuePair<string, string> ("All", "All"));
+        regTypeOptions.Add(new KeyValuePair<string, string>("LC", "LC"));
+        regTypeOptions.Add(new KeyValuePair<string, string>("MAIN", "MAIN"));
+    }
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
 }

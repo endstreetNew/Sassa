@@ -256,11 +256,12 @@
     {
         try //Catch from validation errors in thistry
         {
+            if (br.AppStatus == "select...") throw new Exception("Please select a status.");
             if (string.IsNullOrEmpty(br.Brm_BarCode) || br.Brm_BarCode.Trim().Length != 8) throw new Exception("Invalid Brm Barcode.");
             br.Brm_BarCode = br.Brm_BarCode.ToUpper();
             if (grantTypeVisible)
             {
-                if (string.IsNullOrEmpty(br.GrantType))
+                if (string.IsNullOrEmpty(br.GrantType) || br.GrantType == "select...")
                 {
                     throw new Exception("Invalid GrantType.");
                 }

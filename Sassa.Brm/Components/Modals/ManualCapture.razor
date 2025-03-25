@@ -282,6 +282,7 @@
         try //Catch from validation errors in thistry
         {
             if (br.Id.Length != 13) throw new Exception("Invalid Id Number.");
+            if (br.AppStatus == "select...") throw new Exception("Please select a status.");
             if (string.IsNullOrEmpty(br.Name) || string.IsNullOrEmpty(br.SurName)) throw new Exception("Beneficiary name and surname is required.");
             if (string.IsNullOrEmpty(br.Brm_BarCode) || br.Brm_BarCode.Trim().Length != 8) throw new Exception("Invalid Brm Barcode.");
             if (string.IsNullOrEmpty(br.DocsPresent)) throw new Exception("No documents present.");

@@ -65,6 +65,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             application.FspId = _userSession.Office!.FspId;
             application.BrmUserName = _userSession.SamName;
             application.BatchNo = batch;
+            application.Clm_No = "";
 
             DcFile? file = await brmApiService.PostApplication(application);
 
