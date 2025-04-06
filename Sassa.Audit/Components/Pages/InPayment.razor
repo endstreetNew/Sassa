@@ -13,7 +13,7 @@
         @*         <FluentDatePicker Placeholder="<From Date>" @bind-Value="period.FromNullDate" />
         <FluentDatePicker Placeholder="<To Date>" @bind-Value="period.ToNullDate" /> *@
         <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetAuditRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
-        <FluentSelect TOption="KeyValuePair<string,string>" Items="@ogaStatusOptions" Placeholder="<Oge Status>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@ogaStatus" />
+        <FluentSelect TOption="KeyValuePair<string,string>" Items="@ogaStatusOptions" Placeholder="<Oga Status>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@ogaStatus" />
         <FluentSelect TOption="KeyValuePair<string,string>" Items="@regTypeOptions" Placeholder="<Reg Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@regType" />
         <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
     </FluentStack>
@@ -117,15 +117,17 @@
                                 misFiles = misFiles.Where(m => !m.RegType.ToLower().Contains("lc"));
                                 break;
                             case "LCNOMAIN":
-                                var regTypeFilter = "lc";
-                                var lc = misFiles.Where(m => m.RegType.ToLower().Contains("lc"));
-                                var nolc = misFiles.Where(m => !m.RegType.ToLower().Contains("lc"));
 
-                                misFiles = lc.Where(i => !nolc.Any(n =>
+                                var lc = misFiles.Where(m => m.RegType.ToLower().Contains("lc"));
+                                var main = misFiles.Where(m => !m.RegType.ToLower().Contains("lc"));
+
+                                misFiles = lc.Where(i => !main.Any(n =>
                                 n.ApplicantNo == i.ApplicantNo &&
                                 n.GrantType == i.GrantType));
 
-                                // misFiles = result;
+                                break;
+                            case "None":
+                                misFiles = misFiles.Where(m => m.RegType == "None");
                                 break;
                         }
                         break;
@@ -171,6 +173,7 @@
         regTypeOptions.Add(new KeyValuePair<string, string>("LC", "LC"));
         regTypeOptions.Add(new KeyValuePair<string, string>("MAIN", "MAIN"));
         regTypeOptions.Add(new KeyValuePair<string, string>("LCNOMAIN", "LC NO MAIN"));
+        regTypeOptions.Add(new KeyValuePair<string, string>("None", "None"));
     }
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
 }
