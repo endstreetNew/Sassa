@@ -114,12 +114,12 @@
                                 misFiles = misFiles.Where(m => m.RegType.ToLower().Contains("lc"));
                                 break;
                             case "MAIN":
-                                misFiles = misFiles.Where(m => !m.RegType.ToLower().Contains("lc"));
+                                misFiles = misFiles.Where(m => !m.RegType.ToLower().Contains("lc") && !m.RegType.Contains("None"));
                                 break;
                             case "LCNOMAIN":
 
                                 var lc = misFiles.Where(m => m.RegType.ToLower().Contains("lc"));
-                                var main = misFiles.Where(m => !m.RegType.ToLower().Contains("lc"));
+                                var main = misFiles.Where(m => !m.RegType.ToLower().Contains("lc") && !m.RegType.Contains("None"));
 
                                 misFiles = lc.Where(i => !main.Any(n =>
                                 n.ApplicantNo == i.ApplicantNo &&
