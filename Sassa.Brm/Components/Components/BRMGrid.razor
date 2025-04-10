@@ -1,4 +1,7 @@
-﻿@inject Navigation Navigate
+﻿@using Sassa.PdfServices
+@inject Helper helper
+@inject CoverSheetService coverSheetService
+@inject Navigation Navigate
 @inject NavigationManager Navigation
 @inject IAlertService toast
 @inject SessionService sessionservice
@@ -77,6 +80,14 @@
                             <button class="btn btn-primary btn-sm active" @onclick="@(() => btnBatch_Click(u))">Batch</button>
                         }
                         </td>
+                        
+                            @if (sessionservice.session!.IsSupport())
+                            {
+                            <td>
+                                <button ID="btnFileDetail" @onclick="() => btnPdf_Click(u)" class="btn btn-primary active">Export Pdf</button>
+                            </td>
+                            }
+                        
                         <td><button class="btn btn-primary btn-sm active" @onclick="@(() => btnView_Click(u))">View Cover</button></td>
                         <td><button class="btn btn-danger btn-sm active" @onclick="@(() => btnDelete_Click(u))" disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Delete</button></td>
                         <td><button class="btn btn-danger btn-sm active" @onclick="@(() => btnEditBarcode_Click(u))" disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Edit Barcode</button></td>
@@ -234,6 +245,11 @@
             selectedApp = app;
             showConfirmation = true;
         }
+    }
+    protected void btnPdf_Click(Application app)
+    {
+        string html = coverSheetService.getCoverHtml(app.Clm_No);
+        Converters.ToReportFolder(html, helper.GetFileName("Cover", sessionservice.session), StaticDataService.ReportFolder);
     }
 
     protected void btnEditBarcode_Click(Application app)

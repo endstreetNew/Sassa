@@ -46,6 +46,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sassa.Audit", "Sassa.Audit\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.OfficeAdmin", "Sassa.OfficeAdmin\Sassa.OfficeAdmin.csproj", "{8AFA23A6-C580-4E59-8D58-C76FB5272F1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.PdfServices", "Sassa.PdfServices\Sassa.PdfServices.csproj", "{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -380,6 +382,26 @@ Global
 		{8AFA23A6-C580-4E59-8D58-C76FB5272F1B}.Release|x64.Build.0 = Release|Any CPU
 		{8AFA23A6-C580-4E59-8D58-C76FB5272F1B}.Release|x86.ActiveCfg = Release|Any CPU
 		{8AFA23A6-C580-4E59-8D58-C76FB5272F1B}.Release|x86.Build.0 = Release|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Debug|ARM.Build.0 = Debug|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Debug|x64.Build.0 = Debug|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Debug|x86.Build.0 = Debug|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Release|ARM.ActiveCfg = Release|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Release|ARM.Build.0 = Release|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Release|ARM64.Build.0 = Release|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Release|x64.ActiveCfg = Release|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Release|x64.Build.0 = Release|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Release|x86.ActiveCfg = Release|Any CPU
+		{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,6 +9,7 @@ using Sassa.Brm.Common.Services;
 using Sassa.BRM.Components;
 using Sassa.BRM.Models;
 using Sassa.BRM.Services;
+using Sassa.PdfServices;
 using Sassa.Socpen.Data;
 
 namespace Sassa.BRM;
@@ -48,9 +49,12 @@ public class Program
         builder.Services.AddScoped<DestructionService>();
         builder.Services.AddScoped<SocpenService>();
         builder.Services.AddScoped<TdwBatchService>();
+        builder.Services.AddScoped<CoverSheetService>();
         builder.Services.AddSingleton<BarCodeService>();
         builder.Services.AddSingleton<RawSqlService>();
         builder.Services.AddSingleton<FileService>();
+        builder.Services.AddSingleton<FileService>(); 
+        
 
         builder.Services.AddSingleton<IEmailSettings, EmailSettings>(c =>
         {
@@ -148,7 +152,7 @@ public class Program
             app.UseHsts();
         }
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
 
         app.UseStaticFiles();
         //app.UseAntiforgery();

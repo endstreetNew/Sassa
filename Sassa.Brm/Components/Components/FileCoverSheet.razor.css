@@ -19,7 +19,7 @@
 
 @media print {
     div.printme {
-        break-after: always;
+        page-break-after: always;
     }
     p {
         page-break-after: always;

@@ -1,7 +1,10 @@
-﻿@inject SessionService sessionservice
+﻿@using Sassa.PdfServices
+@inject Helper helper
+@inject CoverSheetService coverSheetService
+@inject SessionService sessionservice
 @inject BRMDbService db
 @inject StaticService sservice
-@inject Navigation Navigate
+
 @inject IAlertService toast
 @inject IJSRuntime JSRuntime
 
@@ -104,7 +107,11 @@
                     }
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @onclick="btnCancel_Click">Close</button>
-                        <button ID="btnFileDetail" @onclick="btnOk_Click" class="btn btn-primary active">Save and print Cover</button>
+                        <button ID="btnFileDetail" @onclick="() => btnOk_Click()" class="btn btn-primary active">Save and print Cover</button>
+                        @if (sessionservice.session!.IsSupport())
+                        {
+                            <button ID="btnFileDetail" @onclick="() => btnOk_Click(true)" class="btn btn-primary active">Export Pdf</button>
+                        }
                     </div>
                 </div>
             </div>
@@ -129,6 +136,7 @@
     bool childIdVisible;
     bool ready = false;
     bool showOverWrite = false;
+    bool savePdf = false;
     DateTime SelectedAppDate;
 
     protected override void OnInitialized()
@@ -170,8 +178,9 @@
         if (!IsValid()) return;
         await Save($"Overwrite selected by : {sessionservice.session!.SamName}");
     }
-    private async Task btnOk_Click()
+    private async Task btnOk_Click(bool SavePdf = false)
     {
+        savePdf = SavePdf;
         string socpenDate = br.AppDate;
         string reason = $"New record created by : {sessionservice.session!.SamName}";
         br.AppDate = SelectedAppDate.ToStandardDateString();
@@ -215,7 +224,7 @@
                     //}
                 }
             }
-            if(br.ChildId != null)
+            if (br.ChildId != null)
             {
                 br.ChildId = br.ChildId.Trim();
                 if (br.ChildId.Length > 13)
@@ -223,15 +232,23 @@
                     throw new Exception("Child ID too long");
                 }
             }
-            DcFile file = await db.CreateBRM(br,reason);
+            DcFile file = await db.CreateBRM(br, reason);
             br.BatchNo = (decimal)(file.BatchNo ?? 0);
             br.Clm_No = file.UnqFileNo;
 
             await BrmSave.InvokeAsync(br.IsMergeCandidate);
             //Run sync on purpose
             await db.SetBatchCount(br.BatchNo);
-            await JSRuntime.InvokeVoidAsync("open",System.Threading.CancellationToken.None, $"coversheet/{br.Brm_BarCode}", "_blank");
-            //Navigate.NavigateTo($"coversheet/{br.Brm_BarCode}");
+
+            if (savePdf)
+            {
+                string html = coverSheetService.getCoverHtml(br.Clm_No);
+                Converters.ToReportFolder(html, helper.GetFileName("Cover", sessionservice.session), StaticDataService.ReportFolder);
+            }
+            else 
+            { 
+                await JSRuntime.InvokeVoidAsync("open", System.Threading.CancellationToken.None, $"coversheet/{br.Brm_BarCode}", "_blank");
+            }//Navigate.NavigateTo($"coversheet/{br.Brm_BarCode}");
         }
         catch (TaskCanceledException ex)
         {
@@ -291,6 +308,47 @@
             return false;
         }
     }
+
+    // protected async Task btnPrintCovers_Click(bool NotScanned)
+    // {
+    //     try
+    //     {
+    //         List<RequiredDocsView> docs;
+
+    //         StringBuilder sb = new StringBuilder();
+
+    //         sb.Append(BulkPrint.Header());
+
+    //         List<ReboxListItem> sheets = await db.GetAllFilesByBoxNo(rebox.BoxNo, NotScanned);
+
+    //         foreach (var rebox in sheets)
+    //         {
+    //             DcFile file = await db.GetBRMRecord(rebox.BrmNo);
+
+    //             docs = sservice.GetGrantDocuments(file.GrantType);
+    //             string lcType = "";
+    //             if (file.Lctype != null && file.Lctype > 0)
+    //             {
+    //                 lcType = sservice.GetLcType((decimal)file.Lctype);
+    //             }
+    //             sb.Append(BulkPrint.CreateFileCover(file, sservice.GetGrantType(file.GrantType), sservice.GetRegion(file.RegionId), NavigationM.BaseUri, lcType, docs));
+    //         }
+
+    //         sb.Append(BulkPrint.Footer());
+    //         toast.Success($"Box :{rebox.BoxNo} Coversheets queued.");
+
+    //         await rd.SaveHtmlReport(sb.ToString(), helper.GetFileName($"Box_{rebox.BoxNo}", sessionservice.session));
+    //         sheets = new();
+
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         toast.Error($"Box :{rebox.BoxNo} Coversheets error. {ex.Message}");
+
+
+    //     }
+    //     //await Js.InvokeAsync<object>("open", $"{NavigationM.BaseUri}coversheets/{rebox.BoxNo}", "_blank");
+    // }
 
     public void Dispose()
     {

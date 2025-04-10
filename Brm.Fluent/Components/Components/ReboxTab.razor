@@ -403,7 +403,7 @@
                 if (file.Lctype != null && file.Lctype > 0)
                 {
                     string lcType = staticservice.GetLcType((decimal)file.Lctype);
-                    sb.Append(BulkPrint.CreateFileCover(file, staticservice.GetGrantType(file.GrantType), staticservice.GetRegion(file.RegionId), NavigationM.BaseUri, lcType, docs));
+                    sb.Append(BulkPrint.CreateFileCover(file, staticservice.GetGrantType(file.GrantType), staticservice.GetRegion(file.RegionId), lcType, docs));
                 }
             }
 
