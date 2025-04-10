@@ -104,6 +104,17 @@
                         misFiles = misFiles.Where(m => m.RegionId == office.RegionId);
                         break;
                     case "OgaStatus":
+                        switch (ogaStatus)
+                        {
+                            case "All":
+                                break;
+                            case "CS":
+                                misFiles = misFiles.Where(m => m.OgaStatus == "CS");
+                                break;
+                            case "AW":
+                                misFiles = misFiles.Where(m => m.OgaStatus == "CS");
+                                break;
+                        }
                         break;
                     case "RegType":
                         switch(regType)
@@ -167,6 +178,8 @@
     {
         ogaStatusOptions = new List<KeyValuePair<string, string>>();
         ogaStatusOptions.Add(new KeyValuePair<string, string>("All", "All"));
+        ogaStatusOptions.Add(new KeyValuePair<string, string>("CS", "ContentServer"));
+        ogaStatusOptions.Add(new KeyValuePair<string, string>("AW", "AppWorks"));
         //Todo: Get OgaStatus from Alicia
         regTypeOptions = new List<KeyValuePair<string, string>>(); 
         regTypeOptions.Add( new KeyValuePair<string, string> ("All", "All"));
