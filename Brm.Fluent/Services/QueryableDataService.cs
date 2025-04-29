@@ -118,7 +118,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
                             GrantType = StaticDataService.GrantTypes[f.GrantType],
                             BoxNo = boxNo,
                             AltBoxNo = f.AltBoxNo,
-                            Scanned = f.ScanDatetime != null,
+                            ScanDate= f.ScanDatetime,
                             MiniBox = (int?)f.MiniBoxno,
                             RegType = f.ApplicationStatus,
                             TdwBatch = (int)f.TdwBatch
@@ -139,7 +139,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
                             GrantType = StaticDataService.GrantTypes[f.GrantType],
                             BoxNo = boxNo,
                             AltBoxNo = f.AltBoxNo,
-                            Scanned = f.ScanDatetime != null,
+                            ScanDate = f.ScanDatetime,
                             MiniBox = (int?)f.MiniBoxno,
                             TdwBatch = (int)f.TdwBatch
                         }).ToListAsync();

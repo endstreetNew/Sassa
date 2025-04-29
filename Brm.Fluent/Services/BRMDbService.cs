@@ -192,7 +192,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                     GrantType = StaticDataService.GrantTypes![f.GrantType],
                     BoxNo = boxNo,
                     AltBoxNo = f.AltBoxNo,
-                    Scanned = f.ScanDatetime != null
+                    ScanDate = f.ScanDatetime
                 }).ToList();
             }
             var interim = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).AsNoTracking().ToListAsync();
@@ -205,7 +205,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 GrantType = StaticDataService.GrantTypes![f.GrantType],
                 BoxNo = boxNo,
                 AltBoxNo = f.AltBoxNo,
-                Scanned = f.ScanDatetime != null
+                ScanDate = f.ScanDatetime
             }).ToList();
         }
     }

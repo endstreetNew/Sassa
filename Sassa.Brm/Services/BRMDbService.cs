@@ -181,7 +181,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                             GrantType = StaticDataService.GrantTypes[f.GrantType],
                             BoxNo = boxNo,
                             AltBoxNo = f.AltBoxNo,
-                            Scanned = f.ScanDatetime != null,
+                            ScanDate = f.ScanDatetime,
                             MiniBox = (int?)f.MiniBoxno,
                             RegType = f.ApplicationStatus,
                             TdwBatch = (int)f.TdwBatch
@@ -195,9 +195,11 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         {
             PagedResult<ReboxListItem> result = new PagedResult<ReboxListItem>();
             searchText = searchText.Trim().ToUpper();
-            result.count = _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo == searchText) || (bn.BrmBarcode == searchText)).Count();
+            result.count = _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && ((bn.ApplicantNo == searchText) || (bn.BrmBarcode == searchText))).Count();
             if (result.count == 0) throw new Exception("No result!");
-            result.result = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo == searchText) || (bn.BrmBarcode == searchText)).OrderByDescending(f => f.UpdatedDate).Skip((page - 1) * 20).Take(20).OrderBy(f => f.UnqFileNo).AsNoTracking()
+
+            //var test = _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && (bn.ApplicantNo == searchText) || (bn.BrmBarcode == searchText)).OrderByDescending(f => f.UpdatedDate).Skip((page - 1) * 20).Take(20).AsNoTracking().ToList();
+            result.result = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo && ((bn.ApplicantNo == searchText) || (bn.BrmBarcode == searchText))).OrderByDescending(f => f.UpdatedDate).Skip((page - 1) * 20).Take(20).AsNoTracking()
                         .Select(f => new ReboxListItem
                         {
                             ClmNo = f.UnqFileNo,
@@ -207,7 +209,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                             GrantType = StaticDataService.GrantTypes[f.GrantType],
                             BoxNo = boxNo,
                             AltBoxNo = f.AltBoxNo,
-                            Scanned = f.ScanDatetime != null,
+                            ScanDate = f.ScanDatetime,
                             MiniBox = (int?)f.MiniBoxno,
                             TdwBatch = (int)f.TdwBatch
                         }).ToListAsync();
@@ -284,7 +286,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                     GrantType = StaticDataService.GrantTypes![f.GrantType],
                     BoxNo = boxNo,
                     AltBoxNo = f.AltBoxNo,
-                    Scanned = f.ScanDatetime != null
+                    ScanDate = f.ScanDatetime
                 }).ToList();
             }
             var interim = await _context.DcFiles.Where(bn => bn.TdwBoxno == boxNo).OrderBy(f => f.UnqFileNo).AsNoTracking().ToListAsync();
@@ -297,7 +299,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 GrantType = StaticDataService.GrantTypes![f.GrantType],
                 BoxNo = boxNo,
                 AltBoxNo = f.AltBoxNo,
-                Scanned = f.ScanDatetime != null
+                ScanDate = f.ScanDatetime
             }).ToList();
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace Sassa.BRM.ViewModels
+﻿using System;
+
+namespace Sassa.BRM.ViewModels
 {
     public class ReboxListItem
     {
@@ -10,7 +12,11 @@
         public string IdNo { get; set; }
         public string FullName { get; set; }
         public string GrantType { get; set; }
-        public bool Scanned { get; set; }
+        public bool Scanned
+        {
+            get { return ScanDate is not null; }
+        }
+
         public bool BoxLocked
         {
             get
@@ -31,6 +37,8 @@
         }
         public string RegType { get; set; }
         public int TdwBatch { get; set; }
+
+        public DateTime? ScanDate { get; set; }  
 
     }
 }
