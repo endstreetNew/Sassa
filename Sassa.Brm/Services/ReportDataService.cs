@@ -368,7 +368,14 @@ using System.Data;
 
         public void DeleteReport(string fileName)
         {
-            File.Delete($"{StaticDataService.ReportFolder}\\{fileName}");
+            try
+            {
+                File.Delete($"{StaticDataService.ReportFolder}\\{fileName}");
+            }
+            catch
+            {
+                //Ignore double clicks.
+            }
         }
 
         public async Task SaveHtmlReport(string data, string fileName)

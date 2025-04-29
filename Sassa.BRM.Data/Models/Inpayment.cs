@@ -34,4 +34,6 @@ public partial class Inpayment
     public string OgaStatus { get; set; }
 
     public string Paypoint { get; set; }
+
+    public string FileExists { get; set; }
 }

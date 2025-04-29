@@ -503,7 +503,7 @@
                 {
                     lcType = sservice.GetLcType((decimal)file.Lctype);
                 }
-                sb.Append(BulkPrint.CreateFileCover(file, sservice.GetGrantType(file.GrantType), sservice.GetRegion(file.RegionId), lcType, docs));
+                sb.Append(BulkPrint.Body(file, sservice.GetGrantType(file.GrantType), sservice.GetRegion(file.RegionId), lcType, docs));
             }
 
             sb.Append(BulkPrint.Footer());

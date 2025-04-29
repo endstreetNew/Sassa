@@ -23,9 +23,11 @@ namespace Sassa.BRM.Services
                 lcType = _staticService.GetLcType((decimal)file.Lctype);
             }
             StringBuilder sb = new StringBuilder();
+            
             sb.Append(BulkPrint.Header());
-            sb.Append(BulkPrint.CreateFileCover(file, _staticService.GetGrantType(file.GrantType), _staticService.GetRegion(file.RegionId), lcType, docs));
+            sb.Append(BulkPrint.Body(file, _staticService.GetGrantType(file.GrantType), _staticService.GetRegion(file.RegionId), lcType, docs));
             sb.Append(BulkPrint.Footer());
+            
             return sb.ToString();
         }
     }

@@ -244,6 +244,8 @@
             {
                 string html = coverSheetService.getCoverHtml(br.Clm_No);
                 Converters.ToReportFolder(html, helper.GetFileName("Cover", sessionservice.session), StaticDataService.ReportFolder);
+                //Converters.SelectPdf(html, helper.GetFileName("Cover", sessionservice.session), StaticDataService.ReportFolder);
+
             }
             else 
             { 

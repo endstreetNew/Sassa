@@ -16,6 +16,7 @@
         <FluentSelect TOption="KeyValuePair<string,string>" Items="@ogaStatusOptions" Placeholder="<Oga Status>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@ogaStatus" />
         <FluentSelect TOption="KeyValuePair<string,string>" Items="@regTypeOptions" Placeholder="<Reg Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@regType" />
         <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
+        <FluentButton Appearance="Appearance.Accent" @onclick="AllMissing">All Missing</FluentButton>
     </FluentStack>
     <WidgetTitle Title="Search" />
     <FluentStack>
@@ -29,7 +30,7 @@
         <PropertyColumn Title="Name" Property="f => f.FirstName" />
         <PropertyColumn Title="Surname" Property="f => f.Surname" />
         <PropertyColumn Title="Grant Type" Property="f => f.GrantType" />
-        <PropertyColumn Title="Child Id No" Property="f => f.ChildIdNo" />
+@*         <PropertyColumn Title="Child Id No" Property="f => f.ChildIdNo" /> *@
         <PropertyColumn Title="App Date" Property="f => f.TransDate" />
         <PropertyColumn Title="Clm No" Property="f => f.ClmNo" />
         <PropertyColumn Title="Brm Barcode" Property="f => f.BrmBarcode" />
@@ -38,6 +39,7 @@
         <PropertyColumn Title="OGA satus" Property="f => f.OgaStatus" />
         <PropertyColumn Title="Region Id" Property="f => f.RegionId" />
         <PropertyColumn Title="Registry Type" Property="f => f.RegType" />
+        <PropertyColumn Title="File Exists" Property="f => f.FileExists" />
     </FluentDataGrid>
     <FluentPaginator State="@paginationState" />
 </FluentStack>
@@ -171,6 +173,51 @@
             header.Region = RegionName;
             List<Inpayment> result = misFiles.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
             result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
+            misFiles = context.Inpayments.AsQueryable();
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError(ex.Message);
+        }
+    }
+
+    private void AllMissing()
+    {
+        try
+        {
+
+            if (string.IsNullOrEmpty(office.RegionId))
+            {
+                toast.ShowError($"Please select a Region.");
+                return;
+            }
+            misFiles = misFiles.Where(m => m.RegionId == office.RegionId);
+            //misFiles = misFiles.Where(m => m.BrmBarcode == null && m.ClmNo == null && m.MisFileNo == null && m.EcMisFile == null && m.OgaStatus == "None" && m.RegionId == office.RegionId);
+            misFiles = misFiles.Where(m => m.FileExists == null);
+            string RegionName;
+            if (office.RegionId != "0")
+            {
+                RegionName = StaticDataService.RegionCode(office.RegionId);
+            }
+            else
+            {
+                RegionName = "NO REGION";
+
+            }
+
+            string FileName = helper.GetAuditFileName(report.ReportName.Replace(" ", "_"), RegionName);
+
+            toast.ShowInfo($"{report.ReportName} queued.");
+
+            ReportHeader header = new ReportHeader();
+            // header.FromDate = period.FromDate.ToShortDateString();
+            // header.ToDate = period.ToDate.ToShortDateString();
+            int usernameIndex = FileName.IndexOf('-') + 1;
+            header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
+            header.Region = RegionName;
+            List<Inpayment> result = misFiles.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
+            result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
+            misFiles = context.Inpayments.AsQueryable();
         }
         catch (Exception ex)
         {

@@ -2422,6 +2422,9 @@ public partial class ModelContext : DbContext
             entity.Property(e => e.TransDate)
                 .HasColumnType("DATE")
                 .HasColumnName("TRANS_DATE");
+            entity.Property(e => e.FileExists)
+                .HasMaxLength(30)
+                .HasColumnName("FILE_EXISTS");
         });
         modelBuilder.HasSequence("ACTIVEVIEWOVERRIDESSEQUENCE");
         modelBuilder.HasSequence("AGENTSEQUENCE");
