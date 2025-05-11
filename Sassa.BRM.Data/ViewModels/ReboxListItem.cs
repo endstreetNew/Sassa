@@ -15,6 +15,7 @@ namespace Sassa.BRM.ViewModels
         public bool Scanned
         {
             get { return ScanDate is not null; }
+            set { Scanned = value; }
         }
 
         public bool BoxLocked

@@ -31,19 +31,13 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 {
                     throw new Exception("Invalid Clm_no.");
                 }
-                if (application.Clm_No.Length == 12)
-                {
-                    application.RegionCode = application.Clm_No.Substring(0,3);
-                    application.RegionId = StaticDataService.Regions.Where(r => r.RegionCode == application.RegionCode).First().RegionId;
-                    application.OfficeId = StaticDataService.LocalOffices.Where(o => o.RegionId == application.RegionId && o.OfficeType == "RMC").First().OfficeId;
-                }
-                if (application.Brm_BarCode.Length !=8)
+                if (application.Brm_BarCode.Length != 8)
                 {
                     throw new Exception("Invalid Barcode.");
                 }
                 if ("C569".Contains(application.GrantType))
                 {
-                    if(string.IsNullOrEmpty(application.ChildId))
+                    if (string.IsNullOrEmpty(application.ChildId))
                     {
                         throw new Exception("A Child ID is required for this application.");
                     }
@@ -52,8 +46,23 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                         throw new Exception("Child ID Invalid.");
                     }
                 }
-                var office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
-                application.RegionId = office.RegionId;
+                DcLocalOffice office = new DcLocalOffice();
+                try
+                {
+                    if (application.Clm_No.Length == 12)
+                    {
+                        application.RegionCode = application.Clm_No.Substring(0, 3);
+                        application.RegionId = StaticDataService.Regions.Where(r => r.RegionCode == application.RegionCode).First().RegionId;
+                        application.OfficeId = StaticDataService.LocalOffices.Where(o => o.RegionId == application.RegionId && o.OfficeType == "RMC").First().OfficeId;
+                    }
+                    office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
+                    application.RegionId = office.RegionId;
+
+                }
+                catch 
+                {
+                    throw new Exception("Invalid Office.");
+                }
                 if (office.ManualBatch == "A" || application.Clm_No.Length == 12)
                 {
                     application.BatchNo = 0;
@@ -63,18 +72,17 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                     throw new Exception("Manual batch not set for this office.");
                 }
 
+                if (application.Clm_No.Length == 12)
+                {
+                    //BrmRecord Exists
+                    return await ScanBRM(application, reason);
+                }
+
                 if (await _context.DcFiles.Where(f => f.BrmBarcode == application.Brm_BarCode).CountAsync() > 0)
                 {
                     throw new Exception("Duplicate Barcode.");
                 }
-                if (application.Clm_No.Length == 12)
-                {
-                    return await ScanBRM(application, reason);
-                }
-                else
-                {
-                    return await CreateBRM(application, reason);
-                }
+                 return await CreateBRM(application, reason);
             }
             catch (Exception ex)
             {
