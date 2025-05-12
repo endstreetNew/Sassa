@@ -75,18 +75,17 @@
                     <tr style="background-color:@(u.AppStatus == "DESTROY" ? "orange":"white");">
                         <td>@u.Id</td>
                         <td>
-                        @if ( u.BatchNo == 0 )
-                        {
-                            <button class="btn btn-primary btn-sm active" @onclick="@(() => btnBatch_Click(u))">Batch</button>
-                        }
-                        </td>
-                        
+                            @if ( u.BatchNo == 0 )
+                            {
+                                <button class="btn btn-primary btn-sm active" @onclick="@(() => btnBatch_Click(u))">Batch</button>
+                            }
                             @if (sessionservice.session!.IsSupport())
                             {
-                            <td>
-                                <button class="btn btn-primary btn-sm active" @onclick="() => btnPdf_Click(u)" >Export Pdf</button>
-                            </td>
+                                <button class="btn btn-primary btn-sm active" @onclick="() => btnPdf_Click(u)">Export Pdf</button>
                             }
+                        </td>
+                        
+
                         
                         <td><button class="btn btn-primary btn-sm active" @onclick="@(() => btnView_Click(u))">View Cover</button></td>
                         <td><button class="btn btn-danger btn-sm active" @onclick="@(() => btnDelete_Click(u))" disabled="@(!sessionservice.session.IsInRole("GRP_BRM_Monitoring"))">Delete</button></td>
