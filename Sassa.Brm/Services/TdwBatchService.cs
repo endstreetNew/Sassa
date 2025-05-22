@@ -30,7 +30,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
                 Files = g.Count(),
                 User = _session.SamName,
                 TdwSendDate = g.First().TdwBatchDate,
-                IsLocked = g.First().BoxLocked == 1
+                IsLocked = g.First().IsLocked
             }).ToList();
     }
     public List<TdwBatchViewModel> GetAllBoxes(ReportPeriod period)

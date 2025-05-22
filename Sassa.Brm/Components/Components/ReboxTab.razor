@@ -144,10 +144,10 @@
                             ))</button>
                                 <button type="button" class="btn btn-primary btn-sm active" style="width: 160px; margin: 5px 0 5px;" @onclick="@(() => btnPrintCovers_Click(false))" disabled="@(boxfiles.count<1)">Print All Covers</button>
                                 <button type="button" class="btn btn-primary btn-sm active" style="width: 160px; margin: 5px 0 5px;" @onclick:stopPropagation=true @onclick ="@(() => btnPrintCovers_Click(true))" disabled="@(boxfiles.count<1)">Print Unscanned Covers</button>
-                                @if(rebox.IsLCSelected)
-                                {
+@*                                 @if(rebox.IsLCSelected)
+                                { *@
                                 <button type="button" class="btn btn-warning btn-sm active" style="width: 160px; margin: 5px 0 5px;" @onclick="@(() => btnOpenClose_Click())" disabled="@(boxfiles.count<1 || BoxLocked)"> @(BoxOpen ? "Close" : "Open") Box</button>
-                                }
+                                @* } *@
                             </div>
                         </div>
                     </div>
