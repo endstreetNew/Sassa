@@ -1,0 +1,74 @@
+﻿@using Sassa.BRM.Data.ViewModels;
+
+@inject Navigation Navigate
+@inject TdwBatchService db
+@inject IAlertService toast
+@inject SessionService sessionservice
+
+<div class="whiteArea col">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-1">
+                        <span class="input-group-text">From Date</span>
+                        <input class="form-control" type="date" @bind="period.FromDate">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-1">
+                        <span class="input-group-text">To Date</span>
+                        <input class="form-control" type="date" @bind="period.ToDate">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-primary active float-right" Text="Load" @onclick="btnLoadBatches_Click">Load </button>
+        </div>
+    </div>
+</div>
+<div class="whiteArea col">
+        <QuickGrid Items="@batchedfiles.AsQueryable()" TGridItem="TdwBatchViewModel" Pagination="@batchPagination">
+            <PropertyColumn Property="@(p => p.TdwBatchNo)" Sortable="true" />
+            <TemplateColumn Title="Actions">
+            <button type="button" class="btn btn-primary btn-sm" style=" width: 100px; margin: 5px 0 5px;" @onclick="() => btnPrint_Click(context.TdwBatchNo)"> Print Cover </button>
+            </TemplateColumn>
+            <PropertyColumn Property="@(p => p.User)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Boxes)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Files)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Region)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.TdwSendDate)" Sortable="true" />
+        </QuickGrid>
+        <Paginator State="@batchPagination" />
+</div>
+@code {
+
+    protected List<TdwBatchViewModel> batchedfiles = new();
+    PaginationState batchPagination = new PaginationState() { ItemsPerPage = 12 };
+
+    ReportPeriod period = new ReportPeriod() { FromDate = DateTime.Now.AddDays(-180), ToDate = DateTime.Now };
+
+    protected override void OnInitialized()
+    {
+        btnLoadBatches_Click();
+    }
+
+    protected void btnLoadBatches_Click()
+    {
+        try
+        {
+            batchedfiles = db.GetTdwBatches(period);
+        }
+        catch
+        {
+            toast.Error("Error loading Batch History");
+        }
+
+    }
+
+    protected void btnPrint_Click(int tdwBatch)
+    {
+        Navigate.NavigateTo($"tdwbatchcover/{tdwBatch}");
+    }
+}

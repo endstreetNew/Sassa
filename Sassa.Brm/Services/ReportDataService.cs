@@ -18,8 +18,9 @@ using System.Data;
         ProgressService _ogs;
         //BRMDbService db;
         StaticService sservice;
+    
 
-        public ReportDataService(IConfiguration config, IWebHostEnvironment env, ProgressService ogs, StaticService Sservice)
+    public ReportDataService(IConfiguration config, IWebHostEnvironment env, ProgressService ogs, StaticService Sservice)
         {
             connectionString = config.GetConnectionString("BrmConnection")!;
             sservice = Sservice;
@@ -124,7 +125,7 @@ using System.Data;
                                     "INNER join DC_REGION r ON b.REGION_ID = r.REGION_ID " +
                                     "INNER JOIN DC_GRANT_TYPE g ON b.GRANT_TYPE = g.TYPE_ID " +
                                     "Where b.status_code = 'ACTIVE'  AND b.CAPTURE_REFERENCE is null " +
-                                    "AND b.TDW_REC IS NULL and b.Mis_file is null and b.ECMIS_FILE is null and b.OGA_date is null" +
+                                    "AND b.TDW_REC IS NULL and b.Mis_file is null and b.ECMIS_FILE is null and b.OGA_date is null and CS_DATE is null" +
                                 $" AND b.Application_date >= to_date('{dateFrom}', 'dd/mm/YYYY')" +
                                 $" and b.Application_date <= to_date('{dateTo}', 'dd/mm/YYYY')" +
                                 (string.IsNullOrEmpty(grant_type) ? "" : $" AND b.GRANT_TYPE = '{grant_type}'") +
@@ -320,51 +321,71 @@ using System.Data;
             return result;
         }
 
-        public PagedResult<CsvListItem> GetTdwFiles(string regionCode, string username, int page)
+        //public PagedResult<CsvListItem> RedundantGetTdwFiles(string regionCode, string username, int page)
+        //{
+        //    PagedResult<CsvListItem> result = new PagedResult<CsvListItem>();
+        //    string[] files = new string[0];
+        //    try
+        //    {
+        //        files = Directory.GetFiles(StaticDataService.ReportFolder, $"{regionCode}-{username.ToUpper()}-TDW*");
+        //    }
+        //    catch //(Exception ex)
+        //    {
+
+        //    }
+
+        //    result.count = files.Count();
+        //    foreach (string filePath in files)
+        //    {
+        //        result.result.Add(new CsvListItem(Path.GetFileName(filePath)));
+        //    }
+        //    //Page the result..
+        //    result.result = result.result.OrderByDescending(r => r.ReportDate).Skip((page - 1) * 12).Take(12).ToList();
+        //    return result;
+        //}
+
+    public IQueryable<CsvListItem> GetTdwFiles(string regionCode, string username)
+    {
+        var result = new List<CsvListItem>(); // Use List<CsvListItem> instead of IQueryable<CsvListItem>
+        string[] files = new string[0];
+        try
         {
-            PagedResult<CsvListItem> result = new PagedResult<CsvListItem>();
-            string[] files = new string[0];
-            try
-            {
-                files = Directory.GetFiles(StaticDataService.ReportFolder, $"{regionCode}-{username.ToUpper()}-TDW*");
-            }
-            catch //(Exception ex)
-            {
-
-            }
-
-            result.count = files.Count();
-            foreach (string filePath in files)
-            {
-                result.result.Add(new CsvListItem(Path.GetFileName(filePath)));
-            }
-            //Page the result..
-            result.result = result.result.OrderByDescending(r => r.ReportDate).Skip((page - 1) * 12).Take(12).ToList();
-            return result;
+            files = Directory.GetFiles(StaticDataService.ReportFolder, $"{regionCode}-{username.ToUpper()}-TDW*");
+        }
+        catch //(Exception ex)
+        {
+            // Handle exceptions if necessary
         }
 
-        public PagedResult<CsvListItem> GetBoxHisTory(string regionCode, string username, int page)
+        foreach (string filePath in files)
         {
-            PagedResult<CsvListItem> result = new PagedResult<CsvListItem>();
-            string[] files = new string[0];
-            try
-            {
-                files = Directory.GetFiles(StaticDataService.ReportFolder, $"{regionCode}-{username.ToUpper()}*");
-            }
-            catch //(Exception ex)
-            {
-
-            }
-
-            result.count = files.Count();
-            foreach (string filePath in files)
-            {
-                result.result.Add(new CsvListItem(Path.GetFileName(filePath)));
-            }
-            //Page the result..
-            result.result = result.result.OrderByDescending(r => r.ReportDate).Skip((page - 1) * 12).Take(12).ToList();
-            return result;
+            result.Add(new CsvListItem(Path.GetFileName(filePath)));
         }
+        return result.AsQueryable().OrderByDescending(r => r.ReportDate); // Convert List to IQueryable
+    }
+
+    //public PagedResult<CsvListItem> RedundantGetBoxHisTory(string regionCode, string username, int page)
+    //    {
+    //        PagedResult<CsvListItem> result = new PagedResult<CsvListItem>();
+    //        string[] files = new string[0];
+    //        try
+    //        {
+    //            files = Directory.GetFiles(StaticDataService.ReportFolder, $"{regionCode}-{username.ToUpper()}*");
+    //        }
+    //        catch //(Exception ex)
+    //        {
+
+    //        }
+
+    //        result.count = files.Count();
+    //        foreach (string filePath in files)
+    //        {
+    //            result.result.Add(new CsvListItem(Path.GetFileName(filePath)));
+    //        }
+    //        //Page the result..
+    //        result.result = result.result.OrderByDescending(r => r.ReportDate).Skip((page - 1) * 12).Take(12).ToList();
+    //        return result;
+    //    }
 
         public void DeleteReport(string fileName)
         {

@@ -11,19 +11,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="wwwroot\brmFiles\**" />
-	  <Compile Remove="wwwroot\CSImages\**" />
-	  <Content Remove="wwwroot\brmFiles\**" />
-	  <Content Remove="wwwroot\CSImages\**" />
-	  <EmbeddedResource Remove="wwwroot\brmFiles\**" />
-	  <EmbeddedResource Remove="wwwroot\CSImages\**" />
-	  <None Remove="wwwroot\brmFiles\**" />
-	  <None Remove="wwwroot\CSImages\**" />
-	  <Watch Remove="wwwroot\brmFiles\**" />
-	  <Watch Remove="wwwroot\CSImages\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Remove="Services\SocpenService.cs" />
 	  <Compile Remove="Services\WindowsAuthenticationStateProvider.cs" />
 	  <Compile Remove="Startup.cs" />
@@ -35,6 +22,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\brmFiles\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

@@ -1,0 +1,38 @@
+﻿@inject SessionService sessionservice
+@inject ReportDataService rs
+@inject TdwBatchService db
+
+@using Sassa.BRM.Data.ViewModels;
+
+<div class="whiteArea col">
+<QuickGrid Items="files.AsQueryable()" Class="table table-sm" Style="font-size:small;">
+    <PropertyColumn Title="ReportName" Property="@(p => p.ReportName)" />
+    <PropertyColumn Title="User" Property="@(p => p.UserName)" />
+    <PropertyColumn Title="Type" Property="@(p => p.FileName)" />
+    <PropertyColumn Title="Region" Property="@(p => p.RegionCode)" />
+    <PropertyColumn Title="Date" Property="@(p => p.ReportDate)" />
+    <TemplateColumn Title="Actions">
+        <button type="button" class="btn btn-primary btn-sm" style="width: 160px; margin: 5px 0 5px;" @onclick="@(() => btnResend_Click(context.FileName))">Resend batch</button>
+    </TemplateColumn>
+</QuickGrid>
+    <Paginator State="@batchPagination" />
+</div>
+
+@code {
+
+    IQueryable<CsvListItem> files = new List<CsvListItem>().AsQueryable();
+    PaginationState batchPagination = new PaginationState() { ItemsPerPage = 12 };
+
+    protected override void OnInitialized()
+    {
+        OnDispatchHistoryPaged();
+    }
+    protected void OnDispatchHistoryPaged()
+    {
+        files = rs.GetTdwFiles(sessionservice.session.Office.RegionCode, sessionservice.session.SamName);
+    }
+    protected void btnResend_Click(string fileName)
+    {
+        db.SendFile(fileName);
+    }
+}

@@ -48,12 +48,13 @@ public class Program
         builder.Services.AddScoped<MisFileService>();
         builder.Services.AddScoped<DestructionService>();
         builder.Services.AddScoped<SocpenService>();
+        //builder.Services.AddScoped<DeprecatedTdwBatchService>();
+        builder.Services.AddScoped<LoggingService>();
         builder.Services.AddScoped<TdwBatchService>();
         builder.Services.AddScoped<CoverSheetService>();
         builder.Services.AddSingleton<BarCodeService>();
         builder.Services.AddSingleton<RawSqlService>();
         builder.Services.AddSingleton<FileService>();
-        builder.Services.AddSingleton<FileService>(); 
         
 
         builder.Services.AddSingleton<IEmailSettings, EmailSettings>(c =>

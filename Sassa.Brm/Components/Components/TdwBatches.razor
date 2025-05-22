@@ -1,0 +1,149 @@
+﻿@using Sassa.BRM.Data.ViewModels;
+
+@inject Navigation Navigate
+@inject TdwBatchService db
+@inject IAlertService toast
+@inject SessionService sessionservice
+
+
+<div class="whiteArea col">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <div class="input-group mb-1">
+                        <span class="input-group-text">From Date</span>
+                        <input class="form-control" type="date" @bind="period.FromDate">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-1">
+                        <span class="input-group-text">To Date</span>
+                        <input class="form-control" type="date" @bind="period.ToDate">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group mb-1">
+                        <span class="input-group-text">BoxNo</span>
+                        <input class="form-control" type="text" @bind="boxSearch">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <button class="btn btn-primary active float-right" Text="Load" @onclick="btnLoadBoxes_Click">Load </button>
+        </div>
+    </div>
+</div>
+<div class="whiteArea col">
+                <div class="row">
+                    <div>
+                        <div class="input-group mb-3">
+                            <button type="button" class="btn btn-warning btn-sm active" style="width: 160px; margin: 5px 0 5px;" @onclick="@(() => btnPrint_Click())" disabled="@(!boxes.Where(b => b.IsSelected).Any())">Dispatch</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="whiteArea col">
+                        <div class="alert alert-danger" role="alert">
+                            Dispatching boxes to TDW will permanently lock the selected boxes!
+                        </div>
+                    </div>
+                </div>
+    </div>
+<div class="whiteArea col">
+    @if (loading)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <QuickGrid Items="@boxes.AsQueryable()" TGridItem="TdwBatchViewModel" Pagination="@boxPagination">
+            <TemplateColumn Title="Select">
+            <input type="checkbox"
+            checked="@context.IsSelected"
+            @onchange="e => HandleSelect(context, (bool)e.Value!)"
+            style="cursor: pointer;" />
+        </TemplateColumn>
+        <PropertyColumn Property="@(p => p.BoxNo)" Sortable="true" />
+        <TemplateColumn Title="Actions">
+            <button type="button" class="btn btn-primary btn-sm" style="width: 160px; margin: 5px 0 5px;" @onclick="@(() => btnUnlock_Click(@context.BoxNo))" disabled="@(!(sessionservice.session.IsRmc() && sessionservice.session.IsInRole("GRP_BRM_Monitoring")) || context.IsLocked)">Unlock box </button>
+            @*                             <FluentButton IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.LockOpen())" OnClick="@(() => btnUnlock_Click(context.BoxNo))" Title="Unlock box" Disabled="@(!(sessionservice.session.IsRmc() && sessionservice.session.IsInRole("GRP_BRM_Monitoring")) || context.IsLocked)" /> *@
+        </TemplateColumn>
+
+        <PropertyColumn Property="@(p => p.MiniBoxes)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Files)" Sortable="true" />
+        <PropertyColumn Property="@(p => p.Region)" Sortable="true" />
+    </QuickGrid>
+    <Paginator State="@boxPagination" />
+    }
+</div>
+
+@code {
+
+    protected List<TdwBatchViewModel> boxes = new();
+    PaginationState boxPagination = new PaginationState() { ItemsPerPage = 12 };
+
+    ReportPeriod period = new ReportPeriod() { FromDate = DateTime.Now.AddDays(-180), ToDate = DateTime.Now };
+    protected string boxSearch = "";
+
+    bool loading = true;
+    protected override async Task OnInitializedAsync()
+    {
+        await btnLoadBoxes_Click();
+    }
+    //Loader boxes for batching tab
+    protected async Task btnLoadBoxes_Click()
+    {
+        loading = true;
+        await Task.Delay(1);
+        try
+        {
+            boxSearch = boxSearch.ToUpper();
+            if (!string.IsNullOrEmpty(boxSearch))
+            {
+                boxes = db.GetBox(boxSearch);
+            }
+            else
+            {
+                boxes = db.GetAllBoxes(period);
+            }
+
+        }
+        catch
+        {
+            toast.Error("Error loading data");
+        }
+        finally
+        {
+            loading = false;
+            await Task.Delay(1);
+        }
+        
+    }
+
+    protected async Task btnUnlock_Click(string boxNo)
+    {
+        await db.OpenCloseBox(boxNo, false);
+        boxSearch = "";
+        btnLoadBoxes_Click();
+    }
+
+
+    protected async Task btnPrint_Click()
+    {
+        //crate batch and send tdwBatch data to TDW
+        int tdwBatch = await db.CreateTdwBatch(boxes.Where(b => b.IsSelected).ToList());
+        Navigate.NavigateTo($"tdwbatchcover/{tdwBatch}");
+
+    }
+    /// <summary>
+    /// required to enable the dispatch button.
+    /// </summary>
+    /// <param name="task"></param>
+    /// <param name="isChecked"></param>
+    private void HandleSelect(TdwBatchViewModel box, bool isChecked)
+    {
+        box.IsSelected = isChecked;
+    }
+}

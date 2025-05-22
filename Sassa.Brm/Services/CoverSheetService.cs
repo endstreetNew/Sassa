@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Sassa.BRM.Services
 {
-    public class CoverSheetService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, RawSqlService _raw, MailMessages _mail, SessionService _sessionService, BrmApiService brmApiService)
+    public class CoverSheetService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService,  SessionService _sessionService)
     {
         private UserSession _userSession = _sessionService.session;
 
