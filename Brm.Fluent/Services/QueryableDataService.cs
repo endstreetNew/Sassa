@@ -169,7 +169,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
                        Files = dcFiles.Count(),
                        User = _sessionService.session.SamName,
                        TdwSendDate = dcFiles.First().TdwBatchDate,
-                       IsLocked = dcFiles.First().BoxLocked == 1 ? true : false
+                       IsLocked = dcFiles.First().IsLocked
                    });
                 }
                 return result;
@@ -208,7 +208,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
                        Files = dcFiles.Count(),
                        User = _sessionService.session.SamName,
                        TdwSendDate = dcFiles.First().TdwBatchDate,
-                       IsLocked = dcFiles.First().BoxLocked == 1 ? true : false
+                       IsLocked = dcFiles.First().IsLocked
                    });
                 }
                 return result;

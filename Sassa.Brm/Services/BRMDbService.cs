@@ -251,7 +251,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            var interim = await _context.DcFiles.Where(b => b.TdwBoxno == boxNo && b.BoxLocked == 1).ToListAsync();
+            var interim = await _context.DcFiles.Where(b => b.TdwBoxno == boxNo && b.IsLocked).ToListAsync();
             return interim.Any();
         }
     }

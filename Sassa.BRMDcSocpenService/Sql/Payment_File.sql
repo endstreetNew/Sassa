@@ -1,15 +1,24 @@
 --1. Invalidate Active grants.
-UPDATE DC_SOCPEN
-SET STATUS_CODE = 'INACTIVE'
-WHERE STATUS_CODE = 'ACTIVE';
+DECLARE
+    CURSOR c1 IS SELECT ROWID FROM DC_SOCPEN WHERE STATUS_CODE = 'ACTIVE' AND Grant_type <> 'S';
+BEGIN
+    FOR rec IN c1 LOOP
+        UPDATE DC_SOCPEN 
+        SET STATUS_CODE = 'INACTIVE' 
+        WHERE ROWID = rec.ROWID;
+    END LOOP;
+END;
 
 COMMIT;
 
 --2. Set new Active grants from In-Payment Table
-UPDATE DC_SOCPEN
+UPDATE DC_SOCPEN s
 SET STATUS_CODE = 'ACTIVE'
-WHERE (beneficiary_id,GRANT_TYPE) in (SELECT ID_NUMBER, GRANT_TYPE FROM CUST_PAYMENT);
---and APPLICATION_DATE < to_date('01/JUL/2023');
+WHERE EXISTS (
+    SELECT 1 FROM DC_PAYMENT p 
+    WHERE p.ID_NUMBER = s.beneficiary_id
+    AND p.GRANT_TYPE = s.GRANT_TYPE
+);
 COMMIT;
 
 --3. Migrate “INACTIVE” DG capture/scan data for each existing  OAG
