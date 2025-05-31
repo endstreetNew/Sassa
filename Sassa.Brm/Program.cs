@@ -155,6 +155,10 @@ public class Program
 
         //app.UseHttpsRedirection();
 
+        //Enable re-authentication for windows authentication
+        app.UseAuthentication();
+        app.UseAuthorization();
+
         app.UseStaticFiles();
         //app.UseAntiforgery();
 

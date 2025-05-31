@@ -29,7 +29,7 @@ namespace Sassa.Brm.Common.Helpers
             sb.Append("<meta charset=\"utf-8\" />");
             sb.Append("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />");
             sb.Append("<title> Sassa.BRM </title>");
-            sb.Append(" <style> @page { size: A4 portrait; } page[size=\"A4\"] { background: white; width: 21cm; height: 29.7cm; display: block; margin: 0.5cm; } .parent { display: grid; grid-template-columns: repeat(2, 20fr) 7fr; grid-template-rows: 2fr 5fr; grid-column-gap: 2px; grid-row-gap: 2px; } .topsection { grid-area: 1 / 1 / 2 / 4; min-height: 6cm; } .middlesection { margin-top: 0.5cm; grid-area: 2 / 1 / 3 / 3; } .barcodesection { grid-area: 2 / 3 / 3 / 4; /* float: left;*/ text-align: right; } .barcode { width: 60px; height: 210px; display: block; margin: 0 auto; } .column2 { float: left; width: 50%; } .column3 { float: left; width: 33.33%; } .small { font: 10px verdana; } .centered { text-align: center; } .right { text-align: right; } .qrcode { width: 100px; height: 100px; display:block; margin: 0 auto; } .topchkboxLabel { display: inline; padding-left: 5px; font-size: 16px; font-weight: 400; padding-right: 10px; } .chkboxLabel { display: inline; padding-left: 5px; font-size: 10px; font-weight: 400; padding-right: 10px; } h2, .h2 { font-size: calc(1.325rem + 0.9vw); } </style>");
+            sb.Append(" <style> @page { size: A4 portrait; } page[size=\"A4\"] { background: white; width: 21cm; height: 29.7cm; display: block; margin: 0.5cm; } .parent { display: grid; grid-template-columns: repeat(2, 20fr) 7fr; grid-template-rows: 2fr 5fr; grid-column-gap: 2px; grid-row-gap: 2px; } .topsection { grid-area: 1 / 1 / 2 / 4; min-height: 6cm; } .middlesection { margin-top: 0.5cm; grid-area: 2 / 1 / 3 / 3; } .barcodesection { grid-area: 2 / 3 / 3 / 4; /* float: left;*/ text-align: right; } .barcode { width: 60px; height: 210px; display: block; margin: 0 auto; } .column2 { float: left; width: 50%; } .column3 { float: left; width: 33.33%; } .small { font: 10px verdana; } .centered { text-align: center; } .right { text-align: right; } .qrcode { width: 100px; height: 100px; display:block; margin: 0 auto; } .topchkboxLabel { display: inline; padding-left: 5px; font-size: 16px; font-weight: 400; padding-right: 10px; } .chkboxLabel { display: inline; padding-left: 5px; font-size: 10px; font-weight: 400; padding-right: 10px; } h2, .h2 { font-size: calc(1.325rem + 0.9vw); } @media print { .page, .page-break { break-after: page; }}</style>");
             sb.Append("</head> ");
             sb.Append("<body> ");
 
@@ -178,6 +178,8 @@ namespace Sassa.Brm.Common.Helpers
                 sb.Append("</div>");
                 sb.Append("</div>");
                 sb.Append("</page>");
+                //Page break
+                sb.Append("<div class=\"page-break\"></div>");
                 return sb.ToString();
 
             }

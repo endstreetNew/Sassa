@@ -18,5 +18,6 @@ public class WindowsAuthenticationStateProvider : AuthenticationStateProvider
         //return Task.FromResult(new AuthenticationState(new WindowsIdentity(_httpContextAccessor.HttpContext!.User.Identity.Name)));
 
     }
+
 }
 

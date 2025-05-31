@@ -5,6 +5,8 @@
 @inject IAlertService toast
 @inject SessionService sessionservice
 
+@attribute [StreamRendering]
+
 <div class="whiteArea col">
     <div class="row">
         <div class="col">
@@ -49,16 +51,19 @@
 
     ReportPeriod period = new ReportPeriod() { FromDate = DateTime.Now.AddDays(-180), ToDate = DateTime.Now };
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        btnLoadBatches_Click();
+        
+        await btnLoadBatches_Click();
     }
 
-    protected void btnLoadBatches_Click()
+    protected async Task btnLoadBatches_Click()
     {
         try
         {
-            batchedfiles = db.GetTdwBatches(period);
+            StateHasChanged();
+            batchedfiles = await db.GetTdwBatches(period);
+            StateHasChanged();
         }
         catch
         {

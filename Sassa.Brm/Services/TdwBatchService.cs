@@ -59,9 +59,9 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
     }
 
 
-    public List<TdwBatchViewModel> GetTdwBatches(ReportPeriod period)
+    public async Task<List<TdwBatchViewModel>> GetTdwBatches(ReportPeriod period)
     {
-        return _contextFactory.CreateDbContext().DcFiles
+        return await _contextFactory.CreateDbContext().DcFiles
             .Where(bn => bn.RegionId == _session.Office.RegionId
                          && !string.IsNullOrEmpty(bn.TdwBoxno)
                          && bn.TdwBatch != 0
@@ -77,40 +77,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
                 Files = g.Count(),
                 User = g.First().UpdatedByAd,
                 TdwSendDate = g.First().TdwBatchDate
-            }).ToList();
-    }
-    public async Task<List<TdwBatchViewModel>> RedundantGetTdwBatches(ReportPeriod period)
-    {
-        try
-        {
-            using (var _context = _contextFactory.CreateDbContext())
-            {
-                List<DcFile> allFiles = await _context.DcFiles.Where(bn => bn.RegionId == _session.Office.RegionId && !string.IsNullOrEmpty(bn.TdwBoxno) && bn.TdwBatch != 0 && (bn.UpdatedDate < period.ToDate && bn.UpdatedDate > period.FromDate)).AsNoTracking().ToListAsync();
-                List<TdwBatchViewModel> result = new();
-                List<DcFile> batchFiles = new List<DcFile>();
-                foreach (var batch in allFiles.Select(f => f.TdwBatch).Distinct().ToList())
-                {
-                    var dcFiles = allFiles.Where(f => f.TdwBatch == batch).ToList();
-                    result.Add(
-                   new TdwBatchViewModel
-                   {
-                       TdwBatchNo = (int)batch,
-                       Region = _staticService.GetRegion(_session.Office!.RegionId!),
-                       Boxes = dcFiles.Select(a => a.TdwBoxno).Distinct().Count(),
-                       Files = dcFiles.Count(),
-                       User = dcFiles.First().UpdatedByAd,
-                       TdwSendDate = dcFiles.First().TdwBatchDate
-                   });
-                }
-                return result;
-            }
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-
-
+            }).ToListAsync();
     }
 
     /// Get TDW batch and send mail
