@@ -46,6 +46,14 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                         throw new Exception("Child ID Invalid.");
                     }
                 }
+                if(application.GrantType == "S" && string.IsNullOrEmpty(application.Srd_No))
+                {
+                    throw new Exception("A Srd No is required for this application.");
+                }
+                if (application.GrantType != "S" && application.Srd_No is not null)
+                {
+                    throw new Exception("Only Srd Can have Srd No.");
+                }
                 DcLocalOffice office = new DcLocalOffice();
                 try
                 {
