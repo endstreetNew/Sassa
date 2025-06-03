@@ -20,17 +20,6 @@ namespace Sassa.BRM.Controller
         {
             _brmService = context;
             _config = config;
-            //try
-            //{
-            //    context.GetUserSession((WindowsIdentity)ctx.HttpContext.User.Identity);
-            //    //if (!StaticD.Users.Contains(_session.SamName)) StaticD.Users.Add(_session.SamName);
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw;
-            //    //WriteEvent($"{ctx.HttpContext.User.Identity.Name} : {ex.Message}");
-            //}
-
         }
 
         //private string? lastError;
@@ -51,17 +40,15 @@ namespace Sassa.BRM.Controller
             ApiResponse<string> response = new ApiResponse<string>();
             try
             {
-                if (app.Id.Length != 13)
-                {
-                    throw new Exception("Invalid ID.");
-                }
+                var ValidApplcation = _brmService.ValidateApplcation(app);
+                if (ValidApplcation != "") throw new Exception(ValidApplcation);
+
                 if (app.BrmUserName == "SVC_BRM_LO")
                 {
                     result = await _brmService.ValidateApiAndInsert(app, "Inserted via API.");
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(app.Clm_No))app.Clm_No = "";
                     result = await _brmService.CreateBRM(app, "Inserted via BRM Capture.");
                 }
                 return result;
@@ -76,29 +63,5 @@ namespace Sassa.BRM.Controller
             return Ok(response);
 
         }
-
-        //[HttpPost]
-        //[AllowAnonymous]
-        //public async Task<ActionResult<DcFile>> PostBrmApplication(Application app)
-        //{
-        //    DcFile result;
-        //    ApiResponse<string> response = new ApiResponse<string>();
-        //    try
-        //    {
-        //        result = await _brmService.CreateBRM(app, "Captured via BRM.");
-        //        return result;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Handle both ValidationException and InternalServerErrorException here
-        //        response.Success = false;
-        //        response.ErrorMessage = ex.Message;
-        //    }
-
-        //    return Ok(response);
-
-        //}
-
-
     }
 }

@@ -18,42 +18,86 @@ namespace Sassa.BRM.Api.Services;
 public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory,StaticService staticService)
 {
 
+    public string ValidateApplcation(Application app)
+    {
+        if (app.Id.Length != 13)
+        {
+            return "Invalid ID.";
+        }
+        //Ensure insert and update is possible
+        if (string.IsNullOrEmpty(app.Clm_No))
+        {
+            app.Clm_No = "";
+        }
+        else
+        {
+            if (app.Clm_No.Length != 12)
+            {
+                return "Invalid Clm No.";
+            }
+        }
+        if (string.IsNullOrEmpty(app.Brm_BarCode) || app.Brm_BarCode.Length != 8)
+        {
+            return "Invalid Barcode.";
+        }
+        //Grant specific validations
+        switch (app.GrantType)
+        {
+            case "C":
+            case "9":
+            case "5":
+            case "6":
+                if (string.IsNullOrEmpty(app.ChildId))
+                {
+                    return "A Child ID is required for this application.";
+                }
+                if (app.ChildId.Length != 13)
+                {
+                    return "Invalid Child ID.";
+                }
+                if (!string.IsNullOrEmpty(app.Srd_No))
+                {
+                    return "Only Srd Can have Srd No.";
+                }
+                break;
+            case "S":
+                if (string.IsNullOrEmpty(app.Srd_No))
+                {
+                    return "A Srd No is required for this application.";
+                }
+                if (!app.Srd_No.Substring(1).IsNumeric())
+                {
+                    return "Invalid Srd No.";
+                }
+                if (app.ChildId != null)
+                {
+                    return "Only a child grant can have a child Id.";
+                }
+                break;
+            default:
+                if (app.Srd_No != null)
+                {
+                    return "Only Srd Can have Srd No.";
+                }
+                if (app.ChildId != null)
+                {
+                    return "Only a child grant can have a child Id.";
+                }
+                break;
+        }
+        return "";
+    }
     #region BRM Records
     public async Task<DcFile> ValidateApiAndInsert(Application application, string reason)
     {
         while (!staticService.IsInitialized) { };
-        if (application.Clm_No is null) application.Clm_No = "";
         using (var _context = dbContextFactory.CreateDbContext())
         {
             try
             {
-                if (application.Clm_No != "" && application.Clm_No.Length != 12)
-                {
-                    throw new Exception("Invalid Clm_no.");
-                }
-                if (application.Brm_BarCode.Length != 8)
-                {
-                    throw new Exception("Invalid Barcode.");
-                }
-                if ("C569".Contains(application.GrantType))
-                {
-                    if (string.IsNullOrEmpty(application.ChildId))
-                    {
-                        throw new Exception("A Child ID is required for this application.");
-                    }
-                    if (application.ChildId.Length != 13)
-                    {
-                        throw new Exception("Child ID Invalid.");
-                    }
-                }
-                if(application.GrantType == "S" && string.IsNullOrEmpty(application.Srd_No))
-                {
-                    throw new Exception("A Srd No is required for this application.");
-                }
-                if (application.GrantType != "S" && application.Srd_No is not null)
-                {
-                    throw new Exception("Only Srd Can have Srd No.");
-                }
+
+
+                //Kofax/LO specific validations
                 DcLocalOffice office = new DcLocalOffice();
                 try
                 {
@@ -77,7 +121,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 }
                 else
                 {
-                    throw new Exception("Manual batch not set for this office.");
+                    throw new Exception("Manual batching not set for this office.");
                 }
 
                 if (application.Clm_No.Length == 12)
@@ -280,7 +324,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
     }
 
     /// <summary>
-    /// The regionID is required 
+    /// A brm Record exists, update it with the new details.
     /// </summary>
     /// <param name="application"></param>
     /// <param name="reason"></param>
