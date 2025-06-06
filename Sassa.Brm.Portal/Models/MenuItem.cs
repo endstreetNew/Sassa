@@ -2,7 +2,8 @@
 {
     public class MenuItem
     {
-        public MenuItem(int position,string name, string url,string icon) {
+        public MenuItem(int position, string name, string url, string icon)
+        {
             Position = position;
             Name = name;
             Url = url;
@@ -10,8 +11,8 @@
         }
         public int Position { get; set; }
         public string Name { get; set; }
-        public string Url { get; set; } 
-        public string Icon { get; set; }    
+        public string Url { get; set; }
+        public string Icon { get; set; }
 
     }
 }

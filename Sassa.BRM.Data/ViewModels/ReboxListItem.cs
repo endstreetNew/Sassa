@@ -39,7 +39,7 @@ namespace Sassa.BRM.ViewModels
         public string RegType { get; set; }
         public int TdwBatch { get; set; }
 
-        public DateTime? ScanDate { get; set; }  
+        public DateTime? ScanDate { get; set; }
 
     }
 }

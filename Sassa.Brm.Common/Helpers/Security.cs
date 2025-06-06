@@ -1,9 +1,7 @@
 ﻿using Sassa.Brm.Common.Models;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 
@@ -24,7 +22,7 @@ namespace Sassa.Brm.Common.Helpers
 
                     result.Add(group.Substring(6));
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex.Message);
                 }
@@ -56,11 +54,11 @@ namespace Sassa.Brm.Common.Helpers
         public static UserSession GetSession(this ClaimsPrincipal cp)
         {
             //Get user details
-            string? userName = cp.Identity!.Name!.Replace("SASSA\\","");//"Andilec";// 
+            string? userName = cp.Identity!.Name!.Replace("SASSA\\", "");//"Andilec";// 
             if (string.IsNullOrEmpty(userName)) throw new Exception("Authentication failed.");
             PrincipalContext ctx = new PrincipalContext(ContextType.Domain);
             UserPrincipal user = UserPrincipal.FindByIdentity(ctx, IdentityType.SamAccountName, userName);
-            if(user is null) throw new Exception("Access to this server was denied.");
+            if (user is null) throw new Exception("Access to this server was denied.");
             UserSession _session = new UserSession(user.Name, user.Surname, user.SamAccountName, user.EmailAddress);
 
             //Get user Roles
@@ -71,7 +69,7 @@ namespace Sassa.Brm.Common.Helpers
                 try
                 {
                     var group = new System.Security.Principal.SecurityIdentifier(role).Translate(typeof(System.Security.Principal.NTAccount)).ToString();
-                    if (!group.Contains("SASSA")) continue; 
+                    if (!group.Contains("SASSA")) continue;
 
                     result.Add(group.Substring(6));
                 }
@@ -81,7 +79,7 @@ namespace Sassa.Brm.Common.Helpers
                 }
             }
             _session.Roles = result;
-           
+
             return _session;
         }
 

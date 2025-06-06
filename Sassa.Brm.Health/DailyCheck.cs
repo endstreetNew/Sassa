@@ -1,6 +1,4 @@
-﻿using System.Net.Mail;
-
-namespace Sassa.Brm.Health
+﻿namespace Sassa.Brm.Health
 {
     public class DailyCheck
     {

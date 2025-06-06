@@ -2,9 +2,9 @@
 
 namespace Sassa.Brm.Portal.Services
 {
-    public class MenuItems:List<MenuItem>
+    public class MenuItems : List<MenuItem>
     {
-        public  MenuItems()
+        public MenuItems()
         {
             Add(new MenuItem(1, "Local Office", "Http://ssvsprbrphc02.sassa.local:81", "images/sassaicon.png"));
             Add(new MenuItem(2, "RMC Office", "Http://ssvsprbrphc02.sassa.local:81", "images/sassaicon.png"));

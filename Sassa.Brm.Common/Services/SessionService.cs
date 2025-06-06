@@ -1,28 +1,28 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 using System.Security.Claims;
 
 namespace Sassa.Brm.Common.Services;
 
-public class SessionService(StaticService _staticservice,AuthenticationStateProvider auth)
+public class SessionService(StaticService _staticservice, AuthenticationStateProvider auth)
 {
 
-    private UserSession _session = new UserSession("", "", "", ""); 
-    public UserSession session {
+    private UserSession _session = new UserSession("", "", "", "");
+    public UserSession session
+    {
         get
         {
             if (!_session.IsLoggedIn())
             {
                 try { GetUserSession().Wait(); }
-                catch 
+                catch
                 {
-                //Login Failed
+                    //Login Failed
                 }
             }
             return _session;
-        } 
+        }
     }
     public event EventHandler? UserOfficeChanged;
 

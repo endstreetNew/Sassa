@@ -1,7 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Sassa.Socpen.Data;
-
-//public class SocpenService(IDbContextFactory<SocpenContext> dbContextFactory)
+﻿//public class SocpenService(IDbContextFactory<SocpenContext> dbContextFactory)
 //{
 //    public async Task<List<CustRescode>> GetResCodes(string RegionId)
 //    {

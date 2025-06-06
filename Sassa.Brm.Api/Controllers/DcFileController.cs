@@ -1,9 +1,6 @@
-﻿using DocumentFormat.OpenXml.InkML;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Sassa.Brm.Api.Helpers;
 using Sassa.Brm.Common.Helpers;
 using Sassa.BRM.Api.Services;
 using Sassa.BRM.Models;

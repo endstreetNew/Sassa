@@ -1,8 +1,5 @@
 using Barcoder;
 using SvgLib;
-using System;
-using System.IO;
-using System.Linq;
 
 namespace Sassa.Renderer.Svg
 {

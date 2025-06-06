@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Sassa.Brm.Api.Helpers;
 using Sassa.BRM.Api.Services;
 using Sassa.BRM.Models;
 using Sassa.BRM.ViewModels;
@@ -41,7 +40,7 @@ namespace Sassa.BRM.Controller
             ApiResponse<string> response = new ApiResponse<string>();
             try
             {
-                if(app.BrmUserName == "SVC_BRM_LO")
+                if (app.BrmUserName == "SVC_BRM_LO")
                 {
                     result = await _brmService.ValidateApiAndInsert(app, "Inserted via API.");
                 }

@@ -1,5 +1,4 @@
 ﻿using Sassa.BRM.Models;
-using System.Drawing;
 
 namespace Sassa.Brm.Common.Models
 {
@@ -16,7 +15,7 @@ namespace Sassa.Brm.Common.Models
             RegionName = "";
             FspId = null;
         }
-        public UserOffice(DcLocalOffice lo,decimal? fspId)
+        public UserOffice(DcLocalOffice lo, decimal? fspId)
         {
             OfficeId = lo.OfficeId;
             OfficeName = lo.OfficeName;

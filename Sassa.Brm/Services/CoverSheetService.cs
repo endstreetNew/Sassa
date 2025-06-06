@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Sassa.BRM.Services
 {
-    public class CoverSheetService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService,  SessionService _sessionService)
+    public class CoverSheetService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, SessionService _sessionService)
     {
         private UserSession _userSession = _sessionService.session;
 
@@ -23,11 +23,11 @@ namespace Sassa.BRM.Services
                 lcType = _staticService.GetLcType((decimal)file.Lctype);
             }
             StringBuilder sb = new StringBuilder();
-            
+
             sb.Append(BulkPrint.Header());
             sb.Append(BulkPrint.Body(file, _staticService.GetGrantType(file.GrantType), _staticService.GetRegion(file.RegionId), lcType, docs));
             sb.Append(BulkPrint.Footer());
-            
+
             return sb.ToString();
         }
     }

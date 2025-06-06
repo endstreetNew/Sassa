@@ -1,6 +1,4 @@
-﻿using Sassa.Sites.Models;
-
-namespace Sassa.Sites.Models
+﻿namespace Sassa.Sites.Models
 {
     public class DatabaseStatus
     {

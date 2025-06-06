@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Sassa.Brm.Common.Helpers;
-using Sassa.Brm.Common.Models;
-using Sassa.Brm.Common.Services;
+﻿using Sassa.Brm.Common.Services;
 using Sassa.BRM.Data.ViewModels;
 using Sassa.BRM.Models;
 using Sassa.BRM.ViewModels;
@@ -81,7 +77,7 @@ namespace Sassa.Audit.Services
             {
                 query = query.Where(x => x.ApplicantNo == idNumber);
             }
-            return query.Select(p => new DcFileMini { Id = p.ApplicantNo, Name = p.UserFirstname, Surname = p.UserLastname, GrantType = p.GrantType, Region = p.RegionId, RegType = p.RegType, GrantDate = p.UpdatedDate }); 
+            return query.Select(p => new DcFileMini { Id = p.ApplicantNo, Name = p.UserFirstname, Surname = p.UserLastname, GrantType = p.GrantType, Region = p.RegionId, RegType = p.RegType, GrantDate = p.UpdatedDate });
         }
 
         public List<string> GetTdwRegions(ModelContext _context)
@@ -111,7 +107,7 @@ namespace Sassa.Audit.Services
 
         public List<AuditSummary> GetSummary(ModelContext _context)
         {
-            if(StaticDataService.AuditSummaryList.Count > 0) return StaticDataService.AuditSummaryList;
+            if (StaticDataService.AuditSummaryList.Count > 0) return StaticDataService.AuditSummaryList;
             StaticDataService.AuditSummaryList.Add(new AuditSummary()
             {
                 Datasource = "MIS Records",
@@ -147,4 +143,4 @@ namespace Sassa.Audit.Services
     }
 }
 
- 
+

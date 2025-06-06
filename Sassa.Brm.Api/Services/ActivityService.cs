@@ -1,12 +1,6 @@
-﻿using System.Diagnostics;
-using System;
-using System.Net.Http;
-using System.Net.Http.Json;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Configuration;
-using Sassa.Brm.Common.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using Sassa.BRM.Models;
-using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace Sassa.BRM.Api.Services;
 

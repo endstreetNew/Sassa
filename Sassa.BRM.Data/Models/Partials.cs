@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Net.NetworkInformation;
 
 namespace Sassa.BRM.Models
 {
@@ -90,7 +89,7 @@ namespace Sassa.BRM.Models
             _IsManualCapture = false;
             _Reboxing = new Reboxing();
         }
-        public DcFile(Reboxing rebox,bool IsManualCapture)
+        public DcFile(Reboxing rebox, bool IsManualCapture)
         {
             _IsManualCapture = IsManualCapture;
             _Reboxing = rebox;
@@ -123,11 +122,11 @@ namespace Sassa.BRM.Models
         }
         public bool IsPreservedType()
         {
-                return "MAIN|LC-MAIN|ARCHIVE|LC-ARCHIVE".Contains(ApplicationStatus);
+            return "MAIN|LC-MAIN|ARCHIVE|LC-ARCHIVE".Contains(ApplicationStatus);
         }
         public bool IsLc()
         {
-            return (Lctype??0) > 0;
+            return (Lctype ?? 0) > 0;
         }
         [NotMapped]
         public string FullName
@@ -138,7 +137,7 @@ namespace Sassa.BRM.Models
             }
         }
         [NotMapped]
-        public string MergeStatus { get { return _MergeStatus; }  }
+        public string MergeStatus { get { return _MergeStatus; } }
         [NotMapped]
         public bool IsLocked
         {
@@ -159,8 +158,8 @@ namespace Sassa.BRM.Models
         public bool IsManualCapture
         {
             get
-            { 
-                return _IsManualCapture; 
+            {
+                return _IsManualCapture;
             }
         }
         public bool IsGrantTypeEdit()

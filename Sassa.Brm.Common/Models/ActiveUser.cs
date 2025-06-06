@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Sassa.Brm.Common.Helpers;
-
-namespace Sassa.Brm.Common.Models;
+﻿namespace Sassa.Brm.Common.Models;
 
 
 public class ActiveUser
@@ -16,6 +12,6 @@ public class ActiveUserList
     public void RemoveDuplicates()
     {
         Users = Users.Distinct().ToList();
-    }   
+    }
 
 }

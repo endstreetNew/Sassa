@@ -3,7 +3,6 @@ using Barcoder.Qr;
 using QRCoder;
 using Sassa.Renderer.Svg;
 using System.Drawing;
-using System.IO;
 using Encoding = Barcoder.Qr.Encoding;
 //using static QRCoder.QRCodeGenerator;
 //using static QRCoder.SvgQRCode;

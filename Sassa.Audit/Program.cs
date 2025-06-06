@@ -4,7 +4,6 @@ using razor.Components;
 using Sassa.Audit.Components;
 using Sassa.Audit.Services;
 using Sassa.Brm.Common.Helpers;
-using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
 using Sassa.BRM.Models;
 

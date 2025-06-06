@@ -9,7 +9,7 @@ public class MailMessages
 
     IEmailSettings _addresses;
     EmailClient client;
-    public MailMessages(IEmailSettings addresses,EmailClient emailClient)
+    public MailMessages(IEmailSettings addresses, EmailClient emailClient)
     {
         client = emailClient;
         _addresses = addresses;
@@ -33,7 +33,7 @@ public class MailMessages
 
     public void SendTDWReceipt(UserSession session, string tdwOfficemail, string PickListNo, List<string> files)
     {
-        if(session.Email == null)throw new Exception("User email in AD is null");
+        if (session.Email == null) throw new Exception("User email in AD is null");
         //send mail to TDW
         string body = $"Thank you,<br/><br/>Piclist no: {PickListNo} has been received by our office.<br/><br/>Kind Regards<br/><br/>{session.Name}<br/><br/><br/><br/>";
         client.SendMail($"no-reply@sassa.gov.za", tdwOfficemail, @"SASSA Picklist receipt.", body, files);
@@ -54,7 +54,7 @@ public class MailMessages
     }
 
     //Returned box detail
-    public void SendTDWIncoming(UserSession session, string Boxno, List<string>? files,string? file = null)
+    public void SendTDWIncoming(UserSession session, string Boxno, List<string>? files, string? file = null)
     {
         if (file != null)
         {

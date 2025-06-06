@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Text;
 
 
-public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, RawSqlService _raw, MailMessages _mail, SessionService _sessionService, BrmApiService brmApiService,LoggingService logger)
+public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, RawSqlService _raw, MailMessages _mail, SessionService _sessionService, BrmApiService brmApiService, LoggingService logger)
 {
     private UserSession _userSession = _sessionService.session;
 
@@ -26,9 +26,9 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
         catch (Exception ex)
         {
-            await  logger.LogToConsole($"Error checking for duplicate: {ex.Message}");
+            await logger.LogToConsole($"Error checking for duplicate: {ex.Message}");
             return true;
-            
+
         }
     }
     public async Task EditBarCode(Application brm, string barCode)
@@ -37,7 +37,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         {
             await _context.DcFiles.Where(d => d.BrmBarcode == brm.Brm_BarCode).ForEachAsync(f => { f.BrmBarcode = barCode; });
             await _context.SaveChangesAsync();
-            CreateActivity("Update ", brm.Srd_No, (string.IsNullOrEmpty(brm.LcType)? 0:decimal.Parse(brm.LcType)), "Update BRM Barcode");
+            CreateActivity("Update ", brm.Srd_No, (string.IsNullOrEmpty(brm.LcType) ? 0 : decimal.Parse(brm.LcType)), "Update BRM Barcode");
         }
 
     }
@@ -60,19 +60,19 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     }
     public async Task<DcFile> CreateBRM(Application application, string reason)
     {
-            decimal batch = 0;
-            var office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
-            if (office.ManualBatch != "A")
-            {
-                string batchType = application.Id.StartsWith("S") ? "SrdNoId" : application.AppStatus;
-                batch = string.IsNullOrEmpty(application.TDW_BOXNO) ? await CreateBatchForUser(batchType) : 0;
-            }
-            application.BatchNo = batch;
+        decimal batch = 0;
+        var office = StaticDataService.LocalOffices.Where(o => o.OfficeId == application.OfficeId).First();
+        if (office.ManualBatch != "A")
+        {
+            string batchType = application.Id.StartsWith("S") ? "SrdNoId" : application.AppStatus;
+            batch = string.IsNullOrEmpty(application.TDW_BOXNO) ? await CreateBatchForUser(batchType) : 0;
+        }
+        application.BatchNo = batch;
 
-            DcFile? file = await brmApiService.PostApplication(application);
+        DcFile? file = await brmApiService.PostApplication(application);
 
-            if (file?.UnqFileNo == null) throw new Exception("Error creating BRM record");
-            return file;
+        if (file?.UnqFileNo == null) throw new Exception("Error creating BRM record");
+        return file;
     }
     public async Task<DcFile> GetBRMRecord(string barcode)
     {
@@ -481,7 +481,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            DcFileRequest req; 
+            DcFileRequest req;
             try
             {
                 //Get all the tdw Grants
@@ -494,7 +494,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 if (string.IsNullOrEmpty(fr.GrantType))
                 {
                     //All Grant types
-                    foreach (var tdw in tdws) 
+                    foreach (var tdw in tdws)
                     {
                         fr.GrantType = tdw.GrantType;
                         if (requests.Where(r => r.GrantType == fr.GrantType).Any())
@@ -502,11 +502,11 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                             req = requests.Where(r => r.GrantType == fr.GrantType).First();
                         }
                         else
-                        { 
+                        {
                             req = new DcFileRequest() { IdNo = fr.IdNo, GrantType = fr.GrantType, ReqCategoryDetail = fr.Description, ReqCategory = fr.Category, ReqCategoryType = fr.CategoryType, Stakeholder = fr.StakeHolder };
                             _context.DcFileRequests.Add(req);
                         }
-                        await AddRequestFromTDW(_context,tdw, req);
+                        await AddRequestFromTDW(_context, tdw, req);
                         count++;
                     }
                     return count;
@@ -514,18 +514,18 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 if (tdws.Where(t => t.GrantType == fr.GrantType).Any())
                 {
                     var tdw = tdws.Where(t => t.GrantType == fr.GrantType).First();
-                        if (requests.Where(r => r.GrantType == fr.GrantType).Any())
-                        {
-                            req = requests.Where(r => r.GrantType == fr.GrantType).First();
-                        }
-                        else
-                        { 
-                            req = new DcFileRequest() { IdNo = fr.IdNo, GrantType = fr.GrantType, ReqCategoryDetail = fr.Description, ReqCategory = fr.Category, ReqCategoryType = fr.CategoryType, Stakeholder = fr.StakeHolder };
-                            _context.DcFileRequests.Add(req);
-                        }
-                        await AddRequestFromTDW(_context,tdw, req);
+                    if (requests.Where(r => r.GrantType == fr.GrantType).Any())
+                    {
+                        req = requests.Where(r => r.GrantType == fr.GrantType).First();
+                    }
+                    else
+                    {
+                        req = new DcFileRequest() { IdNo = fr.IdNo, GrantType = fr.GrantType, ReqCategoryDetail = fr.Description, ReqCategory = fr.Category, ReqCategoryType = fr.CategoryType, Stakeholder = fr.StakeHolder };
+                        _context.DcFileRequests.Add(req);
+                    }
+                    await AddRequestFromTDW(_context, tdw, req);
                     count++;
-                    
+
                 }
                 return count;
             }
@@ -536,25 +536,25 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             }
         }
     }
- 
-    private async Task AddRequestFromTDW(ModelContext context,TdwFileLocation tdw, DcFileRequest req)
+
+    private async Task AddRequestFromTDW(ModelContext context, TdwFileLocation tdw, DcFileRequest req)
     {
 
-            if (!string.IsNullOrEmpty(tdw.FilefolderAltcode))
-            {
-                req.MisFileNo = tdw.FilefolderAltcode.Length == 12 ? "" : tdw.FilefolderAltcode;
-                req.UnqFileNo = tdw.FilefolderAltcode.Length == 12 ? tdw.FilefolderAltcode : "" ;
-            }
-            req.BrmBarcode = tdw.FilefolderCode;
-            req.GrantType = tdw.GrantType;
-            req.TdwBoxno = tdw.ContainerCode;
-            req.RequestedByAd = _userSession.SamName;
-            req.RequestedOfficeId = _userSession.Office.OfficeId;
-            req.RequestedDate = DateTime.Now;
-            req.RegionId = _userSession.Office.RegionId;
-            req.Name = tdw.Name;//Could query Socpen for the name and surname
-            req.Status = "TDWPicklist";
-            await context.SaveChangesAsync();
+        if (!string.IsNullOrEmpty(tdw.FilefolderAltcode))
+        {
+            req.MisFileNo = tdw.FilefolderAltcode.Length == 12 ? "" : tdw.FilefolderAltcode;
+            req.UnqFileNo = tdw.FilefolderAltcode.Length == 12 ? tdw.FilefolderAltcode : "";
+        }
+        req.BrmBarcode = tdw.FilefolderCode;
+        req.GrantType = tdw.GrantType;
+        req.TdwBoxno = tdw.ContainerCode;
+        req.RequestedByAd = _userSession.SamName;
+        req.RequestedOfficeId = _userSession.Office.OfficeId;
+        req.RequestedDate = DateTime.Now;
+        req.RegionId = _userSession.Office.RegionId;
+        req.Name = tdw.Name;//Could query Socpen for the name and surname
+        req.Status = "TDWPicklist";
+        await context.SaveChangesAsync();
     }
     public async Task<string> GetSearchId(SearchModel sm)
     {
@@ -659,7 +659,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             //If there are any row limiting operation used before 'Distinct' and after ordering then ordering will be used for it.
             //Ordering(s) will be erased after 'Distinct' and results afterwards would be unordered.
             //Orderby => Distinct
-      result.count = query.Where(r => r.RegionId == _userSession.Office.RegionId).Count();
+            result.count = query.Where(r => r.RegionId == _userSession.Office.RegionId).Count();
             result.result = await query.Where(r => r.RegionId == _userSession.Office.RegionId).Skip((page - 1) * 12).Take(12).AsNoTracking().ToListAsync();
             return result;
         }
@@ -1061,7 +1061,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         using (var _context = _contextFactory.CreateDbContext())
         {
             var result = await _context.DcSocpens.Where(d => d.SrdNo == srd).AsNoTracking().ToListAsync();
-            List<Application> srdsquery =  result.Select(d => new Application
+            List<Application> srdsquery = result.Select(d => new Application
             {
                 SocpenIsn = (long)d.Id,
                 Id = d.BeneficiaryId,
@@ -1099,37 +1099,37 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 .GroupJoin(_context.DcMerges, fgm => fgm.BrmBarcode, merge => merge.BrmBarcode, (fgm, merge) => new { file = fgm, merge = merge }).AsNoTracking().ToListAsync();
 
             return pselect.SelectMany(x => x.merge.DefaultIfEmpty(), (f, merge) => new Application
-                {
-                    Id = f.file.ApplicantNo,
-                    Name = f.file.UserFirstname,
-                    SurName = f.file.UserLastname,
-                    GrantType = f.file.GrantType,
-                    GrantName = StaticDataService.GrantTypes![f.file.GrantType],
-                    AppDate = f.file.TransDate == null ? DateTime.Now.ToStandardDateString() : ((DateTime)f.file.TransDate).ToStandardDateString(),
-                    OfficeId = f.file.OfficeId,
-                    RegionId = f.file.RegionId,
-                    DocsPresent = f.file.DocsPresent,
-                    AppStatus = f.file.ApplicationStatus,
-                    StatusDate = null,
-                    TDW_BOXNO = f.file.TdwBoxno,
-                    MiniBox = (int)(f.file.MiniBoxno ?? 0),
-                    BatchNo = (decimal)(f.file.BatchNo ?? 0),
-                    Srd_No = f.file.SrdNo,
-                    ChildId = f.file.ChildIdNo,
-                    Brm_Parent = merge == null ? "" : merge.ParentBrmBarcode,
-                    Brm_BarCode = f.file.BrmBarcode,
-                    Clm_No = f.file.UnqFileNo,
-                    LcType = f.file.Lctype.ToString(),
-                    LastReviewDate = f.file.Lastreviewdate == null ? "" : ((DateTime)f.file.Lastreviewdate).ToStandardDateString(),
-                    IsCombinationCandidate = false,
-                    IsMergeCandidate = false,
-                    IsNew = false,
-                    IsRMC = _userSession.IsRmc(),
-                    SocpenIsn = 0,
-                    RowType = "",
-                    ARCHIVE_YEAR = f.file.ArchiveYear,
-                    DateApproved = null
-                }).ToList();
+            {
+                Id = f.file.ApplicantNo,
+                Name = f.file.UserFirstname,
+                SurName = f.file.UserLastname,
+                GrantType = f.file.GrantType,
+                GrantName = StaticDataService.GrantTypes![f.file.GrantType],
+                AppDate = f.file.TransDate == null ? DateTime.Now.ToStandardDateString() : ((DateTime)f.file.TransDate).ToStandardDateString(),
+                OfficeId = f.file.OfficeId,
+                RegionId = f.file.RegionId,
+                DocsPresent = f.file.DocsPresent,
+                AppStatus = f.file.ApplicationStatus,
+                StatusDate = null,
+                TDW_BOXNO = f.file.TdwBoxno,
+                MiniBox = (int)(f.file.MiniBoxno ?? 0),
+                BatchNo = (decimal)(f.file.BatchNo ?? 0),
+                Srd_No = f.file.SrdNo,
+                ChildId = f.file.ChildIdNo,
+                Brm_Parent = merge == null ? "" : merge.ParentBrmBarcode,
+                Brm_BarCode = f.file.BrmBarcode,
+                Clm_No = f.file.UnqFileNo,
+                LcType = f.file.Lctype.ToString(),
+                LastReviewDate = f.file.Lastreviewdate == null ? "" : ((DateTime)f.file.Lastreviewdate).ToStandardDateString(),
+                IsCombinationCandidate = false,
+                IsMergeCandidate = false,
+                IsNew = false,
+                IsRMC = _userSession.IsRmc(),
+                SocpenIsn = 0,
+                RowType = "",
+                ARCHIVE_YEAR = f.file.ArchiveYear,
+                DateApproved = null
+            }).ToList();
         }
     }
 
@@ -1230,7 +1230,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 {
                     await _context.SaveChangesAsync();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex.Message);
                 }
@@ -1399,7 +1399,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             }
         }
     }
-    public async Task RemoveFileFromBatch(string brmBarCode,decimal? batchNo)
+    public async Task RemoveFileFromBatch(string brmBarCode, decimal? batchNo)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {

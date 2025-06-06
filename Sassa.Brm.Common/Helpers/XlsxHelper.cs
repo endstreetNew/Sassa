@@ -1,7 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Sassa.Brm.Common.Helpers
 {

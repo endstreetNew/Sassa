@@ -1,12 +1,8 @@
 ﻿//using DocumentFormat.OpenXml.VariantTypes;
-using DocumentFormat.OpenXml.InkML;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
 using Sassa.BRM.Helpers;
 using Sassa.BRM.Models;
-using System;
 
 //using Sassa.BRM.Pages.Components;
 using System.Data;
@@ -15,7 +11,7 @@ using System.Diagnostics;
 namespace Sassa.BRM.Api.Services;
 
 
-public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory,StaticService staticService)
+public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
 {
 
     public string ValidateApplcation(Application app)
@@ -24,7 +20,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         {
             return "Invalid ID.";
         }
-        if(string.IsNullOrEmpty(app.LcType.Trim('0')) && app.AppStatus.ToLower().Contains("lc"))
+        if (string.IsNullOrEmpty(app.LcType.Trim('0')) && app.AppStatus.ToLower().Contains("lc"))
         {
             return "LC status without LcType.";
         }
@@ -83,7 +79,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 }
                 break;
             default:
-                if(!"0|1|3|7|8|4".Contains(app.GrantType))
+                if (!"0|1|3|7|8|4".Contains(app.GrantType))
                 {
                     return "Invalid Grant Type.";
                 }
@@ -103,7 +99,8 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
     #region BRM Records
     public async Task<DcFile> ValidateApiAndInsert(Application application, string reason)
     {
-        while (!staticService.IsInitialized) { };
+        while (!staticService.IsInitialized) { }
+        ;
         using (var _context = dbContextFactory.CreateDbContext())
         {
             try
@@ -124,7 +121,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                     application.RegionId = office.RegionId;
 
                 }
-                catch 
+                catch
                 {
                     throw new Exception("Invalid Office.");
                 }
@@ -147,7 +144,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 {
                     throw new Exception("Duplicate Barcode.");
                 }
-                 return await CreateBRM(application, reason);
+                return await CreateBRM(application, reason);
             }
             catch (Exception ex)
             {
@@ -169,7 +166,8 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         DcFile file;
         using (var _context = dbContextFactory.CreateDbContext())
         {
-            try {
+            try
+            {
 
                 file = new DcFile()
                 {
@@ -290,7 +288,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 await BackupDcFileEntry(dcfile.BrmBarcode);
             }
             var merges = await _context.DcMerges.Where(m => m.BrmBarcode == brmNo || m.ParentBrmBarcode == brmNo).ToListAsync();
-            if(merges.Any())
+            if (merges.Any())
             {
                 _context.DcMerges.RemoveRange(merges);
             }
@@ -299,7 +297,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 _context.DcFiles.RemoveRange(files);
                 await _context.SaveChangesAsync();
             }
-            
+
         }
     }
     /// <summary>
@@ -332,7 +330,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                     //throw new Exception("Error backing up file: " + ex.Message);
                 }
             }
-            
+
         }
     }
 
@@ -352,7 +350,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             {
                 //Get SocpenRecord
                 var sprecords = await _context.DcSocpens.Where(d => d.BeneficiaryId == application.Id).ToListAsync();
-                if(!sprecords.Any())
+                if (!sprecords.Any())
                 {
                     throw new Exception("Could not lookup Beneficiary detail.");
                 }
@@ -495,7 +493,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
     }
     public string GetFileArea(string srdNo, decimal? lcType)
     {
-        if (!string.IsNullOrEmpty(srdNo))return "-SRD";
+        if (!string.IsNullOrEmpty(srdNo)) return "-SRD";
         if (lcType != null) return "-LC";
         return "-File";
     }

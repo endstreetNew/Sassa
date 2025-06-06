@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Sassa.BRM.Data.ViewModels
 {
-    public class ReportList:List<ReportDefinition>
+    public class ReportList : List<ReportDefinition>
     {
     }
 

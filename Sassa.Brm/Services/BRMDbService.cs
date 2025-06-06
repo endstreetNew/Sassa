@@ -6,9 +6,7 @@ using Sassa.Brm.Common.Services;
 using Sassa.BRM.Models;
 using Sassa.BRM.Services;
 using Sassa.BRM.ViewModels;
-using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Text;
 
 
@@ -1231,7 +1229,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         using (var _context = _contextFactory.CreateDbContext())
         {
             var result = await _context.DcSocpens.Where(d => d.SrdNo == srd).AsNoTracking().ToListAsync();
-            List<Application> srdsquery =  result.Select(d => new Application
+            List<Application> srdsquery = result.Select(d => new Application
             {
                 SocpenIsn = (long)d.Id,
                 Id = d.BeneficiaryId,
@@ -1249,7 +1247,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 ARCHIVE_YEAR = d.StatusCode.ToUpper() == "ACTIVE" ? null : ((DateTime)(d.ApplicationDate ?? DateTime.Now)).ToString("yyyy"),
                 ChildId = d.ChildId,
                 LcType = "0",
-                Clm_No=d.CaptureReference,
+                Clm_No = d.CaptureReference,
                 IsRMC = _userSession.IsRmc(),
                 DocsPresent = d.Documents,
                 IdHistory = d.IdHistory,
@@ -1270,37 +1268,37 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 .GroupJoin(_context.DcMerges, fgm => fgm.BrmBarcode, merge => merge.BrmBarcode, (fgm, merge) => new { file = fgm, merge = merge }).AsNoTracking().ToListAsync();
 
             return pselect.SelectMany(x => x.merge.DefaultIfEmpty(), (f, merge) => new Application
-                {
-                    Id = f.file.ApplicantNo,
-                    Name = f.file.UserFirstname,
-                    SurName = f.file.UserLastname,
-                    GrantType = f.file.GrantType,
-                    GrantName = StaticDataService.GrantTypes![f.file.GrantType],
-                    AppDate = f.file.TransDate == null ? DateTime.Now.ToStandardDateString() : ((DateTime)f.file.TransDate).ToStandardDateString(),
-                    OfficeId = f.file.OfficeId,
-                    RegionId = f.file.RegionId,
-                    DocsPresent = f.file.DocsPresent,
-                    AppStatus = f.file.ApplicationStatus,
-                    StatusDate = null,
-                    TDW_BOXNO = f.file.TdwBoxno,
-                    MiniBox = (int)(f.file.MiniBoxno ?? 0),
-                    BatchNo = (decimal)(f.file.BatchNo ?? 0),
-                    Srd_No = f.file.SrdNo,
-                    ChildId = f.file.ChildIdNo,
-                    Brm_Parent = merge == null ? "" : merge.ParentBrmBarcode,
-                    Brm_BarCode = f.file.BrmBarcode,
-                    Clm_No = f.file.UnqFileNo,
-                    LcType = f.file.Lctype.ToString(),
-                    LastReviewDate = f.file.Lastreviewdate == null ? "" : ((DateTime)f.file.Lastreviewdate).ToStandardDateString(),
-                    IsCombinationCandidate = false,
-                    IsMergeCandidate = false,
-                    IsNew = false,
-                    IsRMC = _userSession.IsRmc(),
-                    SocpenIsn = 0,
-                    RowType = "",
-                    ARCHIVE_YEAR = f.file.ArchiveYear,
-                    DateApproved = null
-                }).ToList();
+            {
+                Id = f.file.ApplicantNo,
+                Name = f.file.UserFirstname,
+                SurName = f.file.UserLastname,
+                GrantType = f.file.GrantType,
+                GrantName = StaticDataService.GrantTypes![f.file.GrantType],
+                AppDate = f.file.TransDate == null ? DateTime.Now.ToStandardDateString() : ((DateTime)f.file.TransDate).ToStandardDateString(),
+                OfficeId = f.file.OfficeId,
+                RegionId = f.file.RegionId,
+                DocsPresent = f.file.DocsPresent,
+                AppStatus = f.file.ApplicationStatus,
+                StatusDate = null,
+                TDW_BOXNO = f.file.TdwBoxno,
+                MiniBox = (int)(f.file.MiniBoxno ?? 0),
+                BatchNo = (decimal)(f.file.BatchNo ?? 0),
+                Srd_No = f.file.SrdNo,
+                ChildId = f.file.ChildIdNo,
+                Brm_Parent = merge == null ? "" : merge.ParentBrmBarcode,
+                Brm_BarCode = f.file.BrmBarcode,
+                Clm_No = f.file.UnqFileNo,
+                LcType = f.file.Lctype.ToString(),
+                LastReviewDate = f.file.Lastreviewdate == null ? "" : ((DateTime)f.file.Lastreviewdate).ToStandardDateString(),
+                IsCombinationCandidate = false,
+                IsMergeCandidate = false,
+                IsNew = false,
+                IsRMC = _userSession.IsRmc(),
+                SocpenIsn = 0,
+                RowType = "",
+                ARCHIVE_YEAR = f.file.ArchiveYear,
+                DateApproved = null
+            }).ToList();
         }
     }
 
@@ -2155,7 +2153,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
     #endregion
-      
+
     #region Audit
     /// <summary>
     /// Gets PieData on File requests
@@ -2397,7 +2395,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 await _context.SaveChangesAsync();
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw;
         }

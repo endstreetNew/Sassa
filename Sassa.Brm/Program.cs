@@ -10,7 +10,6 @@ using Sassa.Brm.Health;
 using Sassa.BRM.Components;
 using Sassa.BRM.Models;
 using Sassa.BRM.Services;
-using Sassa.PdfServices;
 using Sassa.Socpen.Data;
 
 namespace Sassa.BRM;
@@ -38,7 +37,7 @@ public class Program
         {
             options.UseOracle(BrmConnection, opt => opt.CommandTimeout(180));
         });
-        builder.Services.AddDbContextFactory<SocpenContext>(options => 
+        builder.Services.AddDbContextFactory<SocpenContext>(options =>
         options.UseOracle(BrmConnection));
         //Services 
         builder.Services.AddScoped<BRMDbService>();
@@ -56,7 +55,7 @@ public class Program
         builder.Services.AddSingleton<BarCodeService>();
         builder.Services.AddSingleton<RawSqlService>();
         builder.Services.AddSingleton<FileService>();
-        
+
 
         builder.Services.AddSingleton<IEmailSettings, EmailSettings>(c =>
         {

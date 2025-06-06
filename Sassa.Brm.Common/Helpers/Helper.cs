@@ -1,10 +1,4 @@
 ﻿using Sassa.Brm.Common.Models;
-using Sassa.Brm.Common.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sassa.Brm.Common.Helpers
 {
@@ -15,14 +9,14 @@ namespace Sassa.Brm.Common.Helpers
         /// </summary>
         /// <param name="reportName"></param>
         /// <returns></returns>
-        public string GetFileName(string reportName,UserSession session)
+        public string GetFileName(string reportName, UserSession session)
         {
-             return $"{session.Office.RegionCode}-{session.SamName!.ToUpper()}-{reportName}-{DateTime.Now.ToShortDateString().Replace("/", "-")}-{DateTime.Now.ToString("HH-mm")}";
+            return $"{session.Office.RegionCode}-{session.SamName!.ToUpper()}-{reportName}-{DateTime.Now.ToShortDateString().Replace("/", "-")}-{DateTime.Now.ToString("HH-mm")}";
         }
 
         public string GetAuditFileName(string reportName, string regionCode)
         {
-              return $"{regionCode}-Audit-{reportName}-{DateTime.Now.ToShortDateString().Replace("/", "-")}-{DateTime.Now.ToString("HH-mm")}";
+            return $"{regionCode}-Audit-{reportName}-{DateTime.Now.ToShortDateString().Replace("/", "-")}-{DateTime.Now.ToString("HH-mm")}";
         }
 
 

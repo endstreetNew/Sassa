@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using razor.Components.Models;
-using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Services;
 using Sassa.BRM.Data.ViewModels;
@@ -24,13 +20,13 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
                 if (status == "" || status == "RMCBatch")
                 {
                     //string.IsNullOrEmpty(b.BoxNo) &&
-                    return await _context.DcBatches.Where( b =>  b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _sessionService.session.Office.OfficeId).AsNoTracking().ToListAsync();
+                    return await _context.DcBatches.Where(b => b.BatchStatus == "RMCBatch" && b.NoOfFiles > 0 && b.OfficeId == _sessionService.session.Office.OfficeId).AsNoTracking().ToListAsync();
                 }
                 else
                 {
                     List<string> regionOffices = _staticService.GetOfficeIds(_sessionService.session.Office.RegionId);
                     //string.IsNullOrEmpty(b.BoxNo) &&
-                    return await  _context.DcBatches.Where(b =>  b.BatchStatus == status && b.NoOfFiles > 0 && regionOffices.Contains(b.OfficeId)).AsNoTracking().ToListAsync();
+                    return await _context.DcBatches.Where(b => b.BatchStatus == status && b.NoOfFiles > 0 && regionOffices.Contains(b.OfficeId)).AsNoTracking().ToListAsync();
                 }
             }
             else
@@ -73,7 +69,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
             if (myBatches)
             {
                 // result.count = _context.DcBatches.Where(b => b.UpdatedByAd == _sessionService.session.SamName).Count();
-                return await  _context.DcBatches.Where(b => b.UpdatedByAd == _sessionService.session.SamName).AsNoTracking().ToListAsync();
+                return await _context.DcBatches.Where(b => b.UpdatedByAd == _sessionService.session.SamName).AsNoTracking().ToListAsync();
             }
             else
             {
@@ -118,7 +114,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
                             GrantType = StaticDataService.GrantTypes[f.GrantType],
                             BoxNo = boxNo,
                             AltBoxNo = f.AltBoxNo,
-                            ScanDate= f.ScanDatetime,
+                            ScanDate = f.ScanDatetime,
                             MiniBox = (int?)f.MiniBoxno,
                             RegType = f.ApplicationStatus,
                             TdwBatch = (int)f.TdwBatch
@@ -182,7 +178,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
 
     }
 
-    public async Task<List<TdwBatchViewModel>> GetAllBoxes( ReportPeriod period)
+    public async Task<List<TdwBatchViewModel>> GetAllBoxes(ReportPeriod period)
     {
 
 
@@ -221,7 +217,7 @@ public class QueryableDataService(IDbContextFactory<ModelContext> _contextFactor
 
     }
 
-    public async Task<List<TdwBatchViewModel>> GetTdwBatches( ReportPeriod period)
+    public async Task<List<TdwBatchViewModel>> GetTdwBatches(ReportPeriod period)
     {
         try
         {

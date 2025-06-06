@@ -12,7 +12,7 @@ namespace Sassa.Brm.Common.Models
         public UserOffice Office { get; set; }
         public BookMarks BookMark { get; set; }
 
-        public UserSession(string name,string surName, string samName,string email)
+        public UserSession(string name, string surName, string samName, string email)
         {
             Name = name;
             Surname = surName;
@@ -31,7 +31,7 @@ namespace Sassa.Brm.Common.Models
 
         public bool IsRmc()
         {
-            if(Office == null)return false;
+            if (Office == null) return false;
             return Office.OfficeType == "RMC";
         }
         public bool IsBrmUser()

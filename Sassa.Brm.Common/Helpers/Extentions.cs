@@ -1,16 +1,8 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using Oracle.ManagedDataAccess.Client;
-using Sassa.BRM.Data.ViewModels;
+﻿using Sassa.BRM.Data.ViewModels;
 using Sassa.BRM.Models;
-using System;
-using System.Collections.Generic;
 using System.Data;
 //using System.Data.Entity.Core.Objects;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -49,7 +41,7 @@ namespace Sassa.Brm.Common.Helpers
 
             return grantTypes;
         }
-        public static DcFile FromDcFile(this DcFile toFile,DcFile fromFile)
+        public static DcFile FromDcFile(this DcFile toFile, DcFile fromFile)
         {
             toFile.AltBoxNo = fromFile.AltBoxNo;
             toFile.MisReboxDate = fromFile.MisReboxDate;

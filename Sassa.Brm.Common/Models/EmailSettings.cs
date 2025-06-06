@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sassa.Brm.Common.Models
+﻿namespace Sassa.Brm.Common.Models
 {
-    public class EmailSettings :IEmailSettings
+    public class EmailSettings : IEmailSettings
     {
         public string? ContentRootPath { get; set; }
         public string? WebRootPath { get; set; }

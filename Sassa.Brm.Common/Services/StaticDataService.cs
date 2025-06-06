@@ -1,14 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Sassa.BRM.Data.ViewModels;
-using Sassa.BRM.Models;
+﻿using Sassa.BRM.Models;
 using Sassa.BRM.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 
 namespace Sassa.Brm.Common.Services;
 
@@ -249,7 +242,7 @@ public static class StaticDataService
         get
         {
             List<string> years = new List<string>();
-            foreach (int year in new List<int> {5, 4,3, 2, 1 })
+            foreach (int year in new List<int> { 5, 4, 3, 2, 1 })
             {
                 years.Add((DateTime.Now.Year - year).ToString());
                 //years.Add(DateTime.Now.Year.ToString());
@@ -265,7 +258,7 @@ public static class StaticDataService
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-            if(fvi.FileVersion != null) _version = fvi.FileVersion;
+            if (fvi.FileVersion != null) _version = fvi.FileVersion;
         }
         return _version ?? "Unknown";
     }

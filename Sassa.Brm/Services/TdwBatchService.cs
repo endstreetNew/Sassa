@@ -1,6 +1,4 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using Microsoft.EntityFrameworkCore;
-using razor.Components.Models;
+﻿using Microsoft.EntityFrameworkCore;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
@@ -10,7 +8,7 @@ using Sassa.BRM.ViewModels;
 using System.Diagnostics;
 
 
-public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, SessionService session, RawSqlService _raw, MailMessages _mail,LoggingService logger)
+public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, SessionService session, RawSqlService _raw, MailMessages _mail, LoggingService logger)
 {
 
     UserSession _session = session.session!;//SessionService must be loaded before this service
@@ -194,7 +192,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
             //if (!Environment.MachineName.ToLower().Contains("prod")) return;
             _mail.SendTDWIncoming(_session, tdwBatchNo, files);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             //ignore confirmation errors
         }

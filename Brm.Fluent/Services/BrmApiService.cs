@@ -36,7 +36,7 @@ public class BrmApiService(IHttpClientFactory _httpClientFactory, IConfiguration
         {
             return await result.Content.ReadFromJsonAsync<DcFile>();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw new Exception($"Api error.{ex.Message}");
         }

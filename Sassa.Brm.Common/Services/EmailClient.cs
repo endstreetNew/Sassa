@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
@@ -8,7 +6,7 @@ using System.Text;
 
 namespace Sassa.Brm.Common.Services
 {
-    public class EmailClient 
+    public class EmailClient
     {
         //private bool disposed;
         private NetworkCredential _credential;

@@ -24,7 +24,7 @@ public class WindowsAuthenticationStateProvider : AuthenticationStateProvider
 
     public override Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var user = _httpContextAccessor?.HttpContext?.User ?? new ClaimsPrincipal(); 
+        var user = _httpContextAccessor?.HttpContext?.User ?? new ClaimsPrincipal();
         //var principal = user ?? new ClaimsPrincipal();
         return Task.FromResult(new AuthenticationState(user));
     }

@@ -18,7 +18,7 @@ public class ReportDataService
     //BRMDbService db;
     StaticService sservice;
 
-    public ReportDataService(IConfiguration config, IWebHostEnvironment env,  StaticService Sservice)
+    public ReportDataService(IConfiguration config, IWebHostEnvironment env, StaticService Sservice)
     {
         connectionString = config.GetConnectionString("BrmConnection")!;
         sservice = Sservice;
@@ -45,16 +45,16 @@ public class ReportDataService
 
         reportList = new ReportList();
         //FilterOptions = new FilterOptions() { "FromQuarter", "ToQuarter", "FromDate", "ToDate", "Region", "Office", "AllOfficesInRegion", "GrantType", "ForMonth" }
-        reportList.Add(new ReportDefinition() { ReportIndex = "3", ReportName = "Not Captured Report",FilterOptions = new FilterOptions() { "FromQuarter", "ToQuarter", "Region" } });
-        reportList.Add(new ReportDefinition() { ReportIndex = "4", ReportName = "Active Users", FilterOptions = new FilterOptions() {  "FromDate", "ToDate", "Region", "Office", "GrantType" } });
-        reportList.Add(new ReportDefinition() { ReportIndex = "5", ReportName = "Activity Log", FilterOptions = new FilterOptions() {  "FromDate", "ToDate", "Region", "Office", "GrantType" } });
-        reportList.Add(new ReportDefinition() { ReportIndex = "6", ReportName = "Activity By Action per User", FilterOptions = new FilterOptions() {  "FromDate", "ToDate", "Region", "Office", "GrantType" } });
-        reportList.Add(new ReportDefinition() { ReportIndex = "7", ReportName = "Performance Report", FilterOptions = new FilterOptions() {  "FromDate", "ToDate", "Region", "Office" } });
-        reportList.Add(new ReportDefinition() { ReportIndex = "8", ReportName = "Missing File Summary", FilterOptions = new FilterOptions() {  "FromQuarter", "ToQuarter", "Region", "Office" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "3", ReportName = "Not Captured Report", FilterOptions = new FilterOptions() { "FromQuarter", "ToQuarter", "Region" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "4", ReportName = "Active Users", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "Office", "GrantType" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "5", ReportName = "Activity Log", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "Office", "GrantType" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "6", ReportName = "Activity By Action per User", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "Office", "GrantType" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "7", ReportName = "Performance Report", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "Office" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "8", ReportName = "Missing File Summary", FilterOptions = new FilterOptions() { "FromQuarter", "ToQuarter", "Region", "Office" } });
         reportList.Add(new ReportDefinition() { ReportIndex = "9", ReportName = "Monthly Scanning Report", FilterOptions = new FilterOptions() { "ForMonth", "Region" } });
         reportList.Add(new ReportDefinition() { ReportIndex = "10", ReportName = "Deleted files Report", FilterOptions = new FilterOptions() { "FromDate", "ToDate" } });
         reportList.Add(new ReportDefinition() { ReportIndex = "11", ReportName = "Manual Capture Report", FilterOptions = new FilterOptions() { "Region" } });
-        reportList.Add(new ReportDefinition() { ReportIndex = "12", ReportName = "Missing Files Report" , FilterOptions = new FilterOptions() { "FromQuarter", "ToQuarter", "Region", "Office", "GrantType" } });
+        reportList.Add(new ReportDefinition() { ReportIndex = "12", ReportName = "Missing Files Report", FilterOptions = new FilterOptions() { "FromQuarter", "ToQuarter", "Region", "Office", "GrantType" } });
 
     }
 

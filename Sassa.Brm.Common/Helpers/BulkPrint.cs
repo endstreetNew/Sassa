@@ -1,19 +1,7 @@
-﻿using Sassa.BRM.Models;
-using Sassa.Brm.Common.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Sassa.Brm.Common.Services;
+using Sassa.BRM.Models;
 using System.Diagnostics;
-using Barcoder.Qr;
-using DocumentFormat.OpenXml.Drawing.Charts;
-using DocumentFormat.OpenXml.Drawing.Wordprocessing;
-using DocumentFormat.OpenXml.Office2010.PowerPoint;
-using DocumentFormat.OpenXml.Presentation;
-using DocumentFormat.OpenXml.Spreadsheet;
-using Barcoder;
-using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.Extensions.Primitives;
+using System.Text;
 
 namespace Sassa.Brm.Common.Helpers
 {

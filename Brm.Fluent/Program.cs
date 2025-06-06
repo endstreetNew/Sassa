@@ -1,12 +1,8 @@
 using Brm.Fluent.Components;
-using Microsoft.AspNetCore.Authentication.Negotiate;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
-using Sassa.BRM.Models;
-using Sassa.Socpen.Data;
 
 //using Plugin.Chat.Services;
 

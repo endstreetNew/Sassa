@@ -8,7 +8,7 @@ namespace Sassa.Socpen.Data
         {
         }
 
-        public SocpenContext(DbContextOptions<SocpenContext> options):base(options)
+        public SocpenContext(DbContextOptions<SocpenContext> options) : base(options)
         {
         }
 

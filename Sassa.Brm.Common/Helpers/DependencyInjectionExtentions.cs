@@ -5,11 +5,6 @@ using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
 using Sassa.BRM.Models;
 using Sassa.Socpen.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sassa.Brm.Common.Helpers
 {
@@ -42,7 +37,7 @@ namespace Sassa.Brm.Common.Helpers
         {
             services.AddSingleton<StaticService>();
             services.AddScoped<SessionService>();
-            
+
             return services;
         }
         public static IServiceCollection AddEmailService(this IServiceCollection services)

@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Sassa.Brm.Common.Helpers;
@@ -42,10 +41,10 @@ namespace Sassa.Brm.Common.Services
                 StaticDataService.Regions = context.DcRegions.AsNoTracking().ToList();
                 StaticDataService.LocalOffices = context.DcLocalOffices.AsNoTracking().ToList();
                 StaticDataService.DcOfficeKuafLinks = context.DcOfficeKuafLinks.AsNoTracking().ToList();
-                StaticDataService.GrantTypes =  context.DcGrantTypes.AsNoTracking().ToDictionary(key => key.TypeId, value => value.TypeName);
-                StaticDataService.LcTypes =  context.DcLcTypes.AsNoTracking().ToDictionary(key => key.Pk, value => value.Description);
-                StaticDataService.ServicePoints =  context.DcFixedServicePoints.AsNoTracking().ToList();
-                StaticDataService.DcOfficeKuafLinks =  context.DcOfficeKuafLinks.AsNoTracking().ToList();
+                StaticDataService.GrantTypes = context.DcGrantTypes.AsNoTracking().ToDictionary(key => key.TypeId, value => value.TypeName);
+                StaticDataService.LcTypes = context.DcLcTypes.AsNoTracking().ToDictionary(key => key.Pk, value => value.Description);
+                StaticDataService.ServicePoints = context.DcFixedServicePoints.AsNoTracking().ToList();
+                StaticDataService.DcOfficeKuafLinks = context.DcOfficeKuafLinks.AsNoTracking().ToList();
                 StaticDataService.RequiredDocs = context.DcGrantDocLinks
                     .Join(context.DcDocumentTypes, reqDocGrant => reqDocGrant.DocumentId, reqDoc => reqDoc.TypeId, (reqDocGrant, reqDoc) => new { reqDocGrant, reqDoc })
                     .Where(joinResult => joinResult.reqDocGrant.CriticalFlag == "Y")
@@ -59,11 +58,11 @@ namespace Sassa.Brm.Common.Services
                         DOC_SECTION = joinResult.reqDocGrant.Section,
                         DOC_CRITICAL = joinResult.reqDocGrant.CriticalFlag
                     }).Distinct().AsNoTracking().ToList();
-                StaticDataService.BoxTypes =  context.DcBoxTypes.AsNoTracking().ToList();
-                StaticDataService.RequestCategoryTypeLinks =  context.DcReqCategoryTypeLinks.AsNoTracking().ToList();
-                StaticDataService.RequestCategoryTypes =  context.DcReqCategoryTypes.AsNoTracking().ToList();
-                StaticDataService.RequestCategories =  context.DcReqCategories.OrderBy(e => e.CategoryDescr).AsNoTracking().ToList();
-                StaticDataService.StakeHolders =  context.DcStakeholders.Distinct().AsNoTracking().ToList();
+                StaticDataService.BoxTypes = context.DcBoxTypes.AsNoTracking().ToList();
+                StaticDataService.RequestCategoryTypeLinks = context.DcReqCategoryTypeLinks.AsNoTracking().ToList();
+                StaticDataService.RequestCategoryTypes = context.DcReqCategoryTypes.AsNoTracking().ToList();
+                StaticDataService.RequestCategories = context.DcReqCategories.OrderBy(e => e.CategoryDescr).AsNoTracking().ToList();
+                StaticDataService.StakeHolders = context.DcStakeholders.Distinct().AsNoTracking().ToList();
             }
             IsInitialized = true;
         }
@@ -90,7 +89,7 @@ namespace Sassa.Brm.Common.Services
                 link => link.OfficeId,
                 (lo, link) => new UserOffice(lo, link.FspId)).FirstOrDefault();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 DcLocalOffice defaultOffice = GetOffices("7").FirstOrDefault()!;
                 office = new UserOffice(defaultOffice, null);
@@ -190,12 +189,12 @@ namespace Sassa.Brm.Common.Services
         /// <returns></returns>
         public Dictionary<string, string> GetAuditRegions()
 
-        { 
+        {
             Dictionary<string, string> auditRegions = new Dictionary<string, string> { { "0", "No Region" } };
             var source = StaticDataService.Regions!.ToDictionary(key => key.RegionId, value => value.RegionName);
             foreach (var element in source)
             {
-                auditRegions.Add(element.Key,element.Value);
+                auditRegions.Add(element.Key, element.Value);
             }
             return auditRegions;
         }
@@ -225,7 +224,7 @@ namespace Sassa.Brm.Common.Services
         }
         public async Task ChangeOfficeStatus(string officeId, string status)
         {
-            using(var context = _contextFactory.CreateDbContext())
+            using (var context = _contextFactory.CreateDbContext())
             {
                 DcLocalOffice lo = await context.DcLocalOffices.Where(o => o.OfficeId == officeId).FirstAsync();
                 lo.ActiveStatus = status;
@@ -235,7 +234,7 @@ namespace Sassa.Brm.Common.Services
         }
         public async Task ChangeOfficeName(string officeId, string name)
         {
-            using(var context = _contextFactory.CreateDbContext())
+            using (var context = _contextFactory.CreateDbContext())
             {
                 DcLocalOffice lo = await context.DcLocalOffices.Where(o => o.OfficeId == officeId).FirstAsync();
                 lo.OfficeName = name;
@@ -245,8 +244,8 @@ namespace Sassa.Brm.Common.Services
         }
         public async Task MoveOffice(string fromOfficeId, string toOfficeId)
         {
-            
-            using(var context = _contextFactory.CreateDbContext())
+
+            using (var context = _contextFactory.CreateDbContext())
             {
                 try
                 {
@@ -273,7 +272,7 @@ namespace Sassa.Brm.Common.Services
                     }
                     await context.SaveChangesAsync();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Debug.WriteLine(ex.Message);
                 }
@@ -292,10 +291,10 @@ namespace Sassa.Brm.Common.Services
         }
         public async Task DeleteLocalOffice(string officeId)
         {
-            using(var context = _contextFactory.CreateDbContext())
+            using (var context = _contextFactory.CreateDbContext())
             {
                 var lol = await context.DcLocalOffices.Where(o => o.OfficeId == officeId).ToListAsync();
-                if(lol.Any())
+                if (lol.Any())
                 {
                     context.DcLocalOffices.RemoveRange(lol);
                     await context.SaveChangesAsync();
@@ -415,7 +414,7 @@ namespace Sassa.Brm.Common.Services
         public Dictionary<string, string> GetRequestCategories()
         {
             return StaticDataService.RequestCategories!.ToDictionary(i => i.CategoryId.ToString(), i => i.CategoryDescr);
-         }
+        }
         public Dictionary<string, string> GetRequestCategoryTypes()
         {
             return StaticDataService.RequestCategoryTypes!.ToDictionary(i => i.TypeId.ToString(), i => i.TypeDescr);
@@ -425,10 +424,10 @@ namespace Sassa.Brm.Common.Services
             if (string.IsNullOrEmpty(CategoryId)) return new Dictionary<string, string>();
             decimal.TryParse(CategoryId, out decimal catid);
             return (from r in StaticDataService.RequestCategoryTypes!
-                      join c in StaticDataService.RequestCategoryTypeLinks!
-                             on r.TypeId equals c.TypeId
-                      where c.CategoryId == catid
-                      select r).ToDictionary(i => i.TypeId.ToString(), i => i.TypeDescr);
+                    join c in StaticDataService.RequestCategoryTypeLinks!
+                           on r.TypeId equals c.TypeId
+                    where c.CategoryId == catid
+                    select r).ToDictionary(i => i.TypeId.ToString(), i => i.TypeDescr);
 
         }
         public Dictionary<decimal, string> GetDecimalRequestCategoryTypes(string CategoryId)

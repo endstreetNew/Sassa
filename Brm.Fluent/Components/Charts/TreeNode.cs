@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-public class FileTreeNode : Dictionary<int, FileTreeNode>
+﻿public class FileTreeNode : Dictionary<int, FileTreeNode>
 {
     public int ParentId;
     public int Id;

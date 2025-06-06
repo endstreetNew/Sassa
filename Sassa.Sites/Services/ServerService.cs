@@ -1,6 +1,6 @@
-﻿using System.Management;
+﻿using Sassa.Sites.Models;
+using System.Management;
 using System.Security;
-using Sassa.Sites.Models;
 
 namespace Sassa.Sites.Services;
 public class ServerService(ServerList _servers)
@@ -10,7 +10,7 @@ public class ServerService(ServerList _servers)
 
     public void GetServerStatus()
     {
-        foreach(var server in _servers)
+        foreach (var server in _servers)
         {
             //Todo:Assign results
             GetFreeMemory(server);
@@ -27,7 +27,7 @@ public class ServerService(ServerList _servers)
             securePassword.AppendChar(c);
         }
 
-        var scope = new ManagementScope(scopeString,new ConnectionOptions("MS_409", @"jsmitha", securePassword,
+        var scope = new ManagementScope(scopeString, new ConnectionOptions("MS_409", @"jsmitha", securePassword,
         "ntlmdomain:SASSA",
         System.Management.ImpersonationLevel.Impersonate,
         System.Management.AuthenticationLevel.Default, true,
@@ -41,7 +41,7 @@ public class ServerService(ServerList _servers)
             var memoryCollection = memorySearcher.Get();
             foreach (var memory in memoryCollection)
             {
-                server.TotalMemory = Math.Round(Convert.ToDouble(memory["TotalVisibleMemorySize"]) / 1048576,0);
+                server.TotalMemory = Math.Round(Convert.ToDouble(memory["TotalVisibleMemorySize"]) / 1048576, 0);
                 server.FreeMemory = Math.Round(Convert.ToDouble(memory["FreePhysicalMemory"]) / 1048576, 0);
                 // Output the memory usage information
                 //Console.WriteLine($"Memory occupancy on {server} : Used: {usedMemory} GB, Free: {freeMemory} GB, Total: {totalMemory} GB, Usage: {memoryUsage}%");
@@ -96,7 +96,7 @@ public class ServerService(ServerList _servers)
         scopeString = scopeString.Replace("serverIp", server.Ip);
         //var scope = new ManagementScope(scopeString);
         SecureString securePassword = new SecureString();
-        foreach(char c in "23Savitri".ToCharArray())
+        foreach (char c in "23Savitri".ToCharArray())
         {
             securePassword.AppendChar(c);
         }

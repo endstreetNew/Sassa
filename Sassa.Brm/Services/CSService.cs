@@ -5,7 +5,6 @@ using Sassa.BRM.Models;
 using Sassa.eDocs.CS;
 using Sassa.eDocs.CSDocuments;
 using System.Data;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace Sassa.BRM.Services
 {
@@ -55,7 +54,7 @@ namespace Sassa.BRM.Services
             }
         }
 
-        public async Task Authenticate(string userName,string passWord)
+        public async Task Authenticate(string userName, string passWord)
         {
             username = userName;
             password = passWord;
@@ -123,7 +122,7 @@ namespace Sassa.BRM.Services
                 SaveFolder(node.Name, node.ID);
                 var result = await docClient.GetNodesInContainerAsync(ota, node.ID, new GetNodesInContainerOptions() { MaxDepth = 1, MaxResults = 10 });
                 Node[] subnodes = result.GetNodesInContainerResult;
-                if(subnodes == null) return;    
+                if (subnodes == null) return;
                 foreach (Node snode in subnodes)
                 {
                     await AddRecursive(snode, node.ID);
@@ -222,7 +221,7 @@ namespace Sassa.BRM.Services
             return DocumentList;
         }
 
-        public async Task UploadHealthDoc(string fileName,string html)
+        public async Task UploadHealthDoc(string fileName, string html)
         {
             byte[] content = System.Text.Encoding.UTF8.GetBytes(html);
             Attachment attachment = new eDocs.CSDocuments.Attachment()
@@ -257,7 +256,7 @@ namespace Sassa.BRM.Services
 
                 await docClient.CreateDocumentAsync(ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }

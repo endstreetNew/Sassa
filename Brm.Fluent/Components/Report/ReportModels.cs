@@ -1,5 +1,4 @@
-﻿using razor.Components.Models;
-using Sassa.BRM.ViewModels;
+﻿using Sassa.BRM.ViewModels;
 using System.Globalization;
 
 namespace Brm.Fluent.Components.Report
@@ -60,9 +59,9 @@ namespace Brm.Fluent.Components.Report
     public class MonthDetail
     {
         public MonthDetail()
-        { 
-            RegionId = ""; 
-            OfficeId = ""; 
+        {
+            RegionId = "";
+            OfficeId = "";
             DayDetail = new();
             Quarter = new ReportPeriod();
         }
