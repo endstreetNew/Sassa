@@ -7,6 +7,7 @@ using Sassa.Brm.Api.Helpers;
 using Sassa.Brm.Common.Helpers;
 using Sassa.BRM.Api.Services;
 using Sassa.BRM.Models;
+using Sassa.BRM.ViewModels;
 
 namespace Sassa.BRM.Controller;
 

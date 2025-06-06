@@ -45,6 +45,7 @@
     <ProjectReference Include="..\Sassa.Barcoder\Sassa.Barcoder.csproj" />
     <ProjectReference Include="..\Sassa.Brm.Common\Sassa.Brm.Common.csproj" />
     <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
+    <ProjectReference Include="..\Sassa.Brm.Health\Sassa.Brm.Health.csproj" />
     <ProjectReference Include="..\Sassa.PdfServices\Sassa.PdfServices.csproj" />
     <ProjectReference Include="..\Sassa.QrCoder\Sassa.QrCoder.csproj" />
     <ProjectReference Include="..\Sassa.Socpen.Data\Sassa.Socpen.Data.csproj" />

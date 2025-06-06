@@ -1,4 +1,5 @@
 ﻿using Sassa.BRM.Models;
+using Sassa.BRM.ViewModels;
 using System.Diagnostics;
 using System.Text.Json;
 
@@ -18,8 +19,15 @@ public class BrmApiService(IHttpClientFactory _httpClientFactory, IConfiguration
             IgnoreReadOnlyProperties = true,
             IgnoreReadOnlyFields = true
         };
-        var result = await client.PostAsJsonAsync(_brmApiUrl + "Application", application, serializationOptions);
-        return await result.Content.ReadFromJsonAsync<DcFile>();
+        var result = await client.PostAsJsonAsync(_brmApiUrl + "ApplicationV2", application, serializationOptions);
+
+        var apiResponse = await result.Content.ReadFromJsonAsync<ApiResponse<DcFile>>();
+        if (apiResponse is null) throw new Exception("Fatal APi Error.");
+        if (!result.IsSuccessStatusCode)
+        {
+            throw new Exception(apiResponse.ErrorMessage);
+        }
+        return apiResponse.Data;
     }
 
     #region DcFile

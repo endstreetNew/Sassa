@@ -9,18 +9,18 @@ namespace Sassa.BRM.Models
         public string Id { get; set; }
         //Change to accomodate invalid child ids from socpen
         private string child_id;
-        public string ChildId
-        {
-            get
-            {
-                if (!"6C59".Contains(GrantType)) return null;
-                return child_id;
-            }
-            set 
-            { 
-                child_id = value == null ? null : value.Trim().PadLeft(13, '0'); 
-            }
-        }
+        public string ChildId { get; set; }
+        //{
+        //    get
+        //    {
+        //        if (!"6C59".Contains(GrantType)) return null;
+        //        return child_id;
+        //    }
+        //    set 
+        //    { 
+        //        child_id = value == null ? null : value.Trim().PadLeft(13, '0'); 
+        //    }
+        //}
         //-----------------------------------------------
         public string Name { get; set; }
         public string SurName { get; set; }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sassa.Brm.Api.Helpers;
 using Sassa.BRM.Models;
+using Sassa.BRM.ViewModels;
 
 namespace Sassa.Activity.Api.Controllers;
 

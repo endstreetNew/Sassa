@@ -24,6 +24,14 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         {
             return "Invalid ID.";
         }
+        if(string.IsNullOrEmpty(app.LcType.Trim('0')) && app.AppStatus.ToLower().Contains("lc"))
+        {
+            return "LC status without LcType.";
+        }
+        if (!string.IsNullOrEmpty(app.LcType.Trim('0')) && !app.AppStatus.ToLower().Contains("lc"))
+        {
+            return "LcType specified without LC status.";
+        }
         //Ensure insert and update is possible
         if (string.IsNullOrEmpty(app.Clm_No))
         {
@@ -75,16 +83,21 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 }
                 break;
             default:
-                if (app.Srd_No != null)
+                if(!"0|1|3|7|8|4".Contains(app.GrantType))
+                {
+                    return "Invalid Grant Type.";
+                }
+                if (!string.IsNullOrEmpty(app.Srd_No))
                 {
                     return "Only Srd Can have Srd No.";
                 }
-                if (app.ChildId != null)
+                if (!string.IsNullOrEmpty(app.ChildId))
                 {
                     return "Only a child grant can have a child Id.";
                 }
                 break;
         }
+
         return "";
     }
     #region BRM Records

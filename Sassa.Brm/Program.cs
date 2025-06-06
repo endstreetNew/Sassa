@@ -6,6 +6,7 @@ using razor.Components;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
+using Sassa.Brm.Health;
 using Sassa.BRM.Components;
 using Sassa.BRM.Models;
 using Sassa.BRM.Services;
@@ -98,7 +99,7 @@ public class Program
         builder.Services.AddScoped<ReportDataService>();
         builder.Services.AddScoped<ProgressService>();
         builder.Services.AddScoped<Helper>();
-
+        builder.Services.AddScoped<DailyCheck>();
         builder.Services.AddScoped<ActiveUser>();
         builder.Services.AddSingleton<ActiveUserList>();
 

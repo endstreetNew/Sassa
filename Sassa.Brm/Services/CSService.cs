@@ -5,6 +5,7 @@ using Sassa.BRM.Models;
 using Sassa.eDocs.CS;
 using Sassa.eDocs.CSDocuments;
 using System.Data;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace Sassa.BRM.Services
 {
@@ -22,8 +23,6 @@ namespace Sassa.BRM.Services
 
         private DocumentManagementClient docClient = new DocumentManagementClient();
         string idNumber = "";
-
-
 
         public CSService(IConfiguration config, ModelContext context, IWebHostEnvironment _env)
         {
@@ -54,6 +53,13 @@ namespace Sassa.BRM.Services
             {
                 await authClient.CloseAsync();
             }
+        }
+
+        public async Task Authenticate(string userName,string passWord)
+        {
+            username = userName;
+            password = passWord;
+            await Authenticate();
         }
 
         public async Task GetCSDocuments(string _idNumber)
@@ -145,7 +151,7 @@ namespace Sassa.BRM.Services
             }
             return dt;
         }
-        private void SaveAttachment(Attachment doc, string IdNo, string imagePath, long nodeId, long parentNode)
+        private void SaveAttachment(eDocs.CSDocuments.Attachment doc, string IdNo, string imagePath, long nodeId, long parentNode)
         {
 
             if (!_context.DcDocumentImages.Where(d => d.Filename == doc.FileName).ToList().Any()) //skip if its downloaded already
@@ -215,5 +221,86 @@ namespace Sassa.BRM.Services
 
             return DocumentList;
         }
+
+        public async Task UploadHealthDoc(string fileName,string html)
+        {
+            byte[] content = System.Text.Encoding.UTF8.GetBytes(html);
+            Attachment attachment = new eDocs.CSDocuments.Attachment()
+            {
+                FileName = fileName,
+                Contents = content,
+                CreatedDate = DateTime.Now,
+                FileSize = content.Length
+            };
+            if (ota == null)
+            {
+                await Authenticate();
+            }
+
+            DocumentManagementClient docClient = new DocumentManagementClient();
+
+            docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 3, 0);
+            //https://edrms.sassa.gov.za/otcs/cs.exe?func=ll&objId=20241506&objAction=browse&viewType=1
+            NodeId = 94643845; //Health Checks - BRM node id, this is a static value for now, can be changed later to be dynamic
+            try
+            {
+                //if (NodeId == 0)
+                //{
+                //    //find node
+                //    var response = await docClient.GetNodeByNameAsync(ota, 2000, "Health Checks monitoring");
+                //    response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, "Health Checks - BRM");
+                //    //response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, doc.IdNo);
+                //    //response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, doc.CSNode);
+                //    NodeId = response.GetNodeByNameResult.ID;
+                //}
+
+
+                await docClient.CreateDocumentAsync(ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                await docClient.CloseAsync();
+            }
+        }
+        //        public async Task UploadDoc(Document doc, Attachment attachment)
+        //        { 
+        //            if (ota == null)
+        //			{
+        //				await Authenticate();
+        //			}
+
+        //			DocumentManagementClient docClient = new DocumentManagementClient();
+
+        //            docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 3, 0);
+        //			try
+        //			{
+        //				if(NodeId == 0)
+        //                {
+        //					//find node
+        //					var response = await docClient.GetNodeByNameAsync(ota, 2000, "12. Beneficiaries");
+        //                    response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, doc.IdNo.Substring(0, 4));
+        //					response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, doc.IdNo);
+        //                    response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, doc.CSNode);
+        //                    NodeId = response.GetNodeByNameResult.ID;
+        //				}
+
+
+        //                await docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "eDocs Service", false, new Metadata(), attachment);
+        //                await _dstore.PutDocumentStatus(doc.DocumentId, "Processed");
+
+        //			}
+        //			catch// (Exception ex)
+        //			{
+        //    throw;
+        //}
+        //			finally
+        //			{
+        //    await docClient.CloseAsync();
+        //}
+        //        }
     }
 }

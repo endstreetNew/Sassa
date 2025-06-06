@@ -70,71 +70,34 @@
     <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
         <input type="checkbox" @bind="@chkSearchFull" /><label class="chkboxLabel"> Search Id History.</label>
     </div>
-@*    <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-        <input type="checkbox" @bind="@chkSearchMv" /><label class="chkboxLabel">Search using new dataset.</label>
-    </div>*@
 </div>
 <br />
 <!-- Tabs navs -->
 <TabControl>
     <TabPage Text="Socpen Results" Id="1" Enabled="true">
-        <div id="SocpenGrid">
-            @if (DTSocPen.Any())
-            {
-                <table style="font-size:small;width:100%;">
-                    <thead>
-                        <tr>
-                            <th scope="col">ID No</th>
-                            <th scope="col">ID History</th>
-                            <th scope="col">Action</th>
-                            <th scope="col">Child ID No</th>
-                            <th scope="col">Grant Type</th>
-                            <th scope="col">Srd No</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Surname</th>
-                            <th scope="col">Application Date</th>
-                            <th scope="col">Archive Year</th>
-                            <th scope="col">Transaction Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <QuickGrid Items="DTSocPen.AsQueryable()" Class="table-sm">
 
-                        @foreach (var u in DTSocPen)
-                        {
-                        <tr style="@(!string.IsNullOrEmpty(u.Brm_Parent)? "background-color:limegreen;": u.IsMergeCandidate  ? "background-color:gold;":"")">
-                            <td>@u.Id</td>
-                            <td>@u.IdHistory</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm active" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnNewCover_Click(u))">New Cover</button>
-                                @if (sessionservice.session.IsSupport())
-                                {
-                                    <button class="btn btn-danger btn-sm active" @onclick="@(() => btnDelete_Click(u))">Delete</button>
-                                }
-                            </td>
-                            <td>@u.ChildId</td>
-                            <td>@u.GrantName</td>
-                            <td>@u.Srd_No</td>
-                            <td>@u.Status</td>
-                            <td>@u.Name</td>
-                            <td>@u.SurName</td>
-                            <td>@u.AppDate</td>
-                            <td>@u.ARCHIVE_YEAR</td>
-                            <td>@u.StatusDate</td>
-                        </tr>
-                        }
-
-                    </tbody>
-                </table>
-
-            }
-            else
-            {
-                <div style="padding: 10px 0 5px 0;">
-                    <p>No data. Please search and applicant.</p>
-                </div>
-            }
-        </div>
+                <PropertyColumn Title="ID No" Property="@(u => u.Id)" />
+@*                 <PropertyColumn Title="ID History" Property="@(u => u.IdHistory)" /> *@
+                <TemplateColumn Title="Actions">
+@*                 <button style="width:20px;height:20px;" class="btn btn-sm active @(!string.IsNullOrEmpty(context.Brm_Parent) ? "btn-success" : context.IsMergeCandidate ? "btn-warning" : "btn-primary")">
+                    </button> *@
+                <button class="btn btn-primary btn-sm active @(string.IsNullOrEmpty(context.Brm_Parent) ? "btn-success" : context.IsMergeCandidate ? "btn-warning" : "btn-primary")" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnNewCover_Click(context))">New Cover</button>
+                    @if (sessionservice.session.IsSupport())
+                    {
+                        <button class="btn btn-danger btn-sm active" @onclick="@(() => btnDelete_Click(context))">Delete</button>
+                    }
+                </TemplateColumn>
+                <PropertyColumn Title="Child ID No" Property="@(u => u.ChildId)" />
+                <PropertyColumn Title="Grant Type" Property="@(u => u.GrantName)" />
+                <PropertyColumn Title="Srd No" Property="@(u => u.Srd_No)" />
+                <PropertyColumn Title="Status" Property="@(u => u.Status)" />
+                <PropertyColumn Title="Name" Property="@(u => u.Name)" />
+                <PropertyColumn Title="Surname" Property="@(u => u.SurName)" />
+                <PropertyColumn Title="Application Date" Property="@(u => u.AppDate)"  />
+                <PropertyColumn Title="Archive Year" Property="@(u => u.ARCHIVE_YEAR)" />
+@*                 <PropertyColumn Title="Transaction Date" Property="@(u => u.StatusDate)" /> *@
+            </QuickGrid>
     </TabPage>
     <TabPage Text="BRM Results" Id="2" Enabled="true">
         <BRMGrid Changed="OnChanged" DTBrm="@DTBrmParents" DTMerges="@DTMerged"></BRMGrid>
@@ -246,10 +209,7 @@
 
         }
     }
-    private async Task btnDelete_Click(Application a)
-    {
-        await db.DeleteSocpenRecord(a);
-    }
+
     protected async Task OnChanged()
     {
         DTBrmParents.Clear();
@@ -415,5 +375,10 @@
         };
         rebox.BoxNo = rebox.BoxNo.ToUpper();
         nav.NavigateTo($"boxing/{rebox.BoxNo}");
+    }
+
+    private async Task btnDelete_Click(Application a)
+    {
+        await db.DeleteSocpenRecord(a);
     }
 }

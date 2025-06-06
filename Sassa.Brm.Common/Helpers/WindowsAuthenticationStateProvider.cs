@@ -10,13 +10,23 @@ public class WindowsAuthenticationStateProvider : AuthenticationStateProvider
     {
         this._httpContextAccessor = httpContextAccessor;
     }
+    //public override Task<AuthenticationState> GetAuthenticationStateAsync()
+    //{
+    //    ClaimsPrincipal principal = new ClaimsPrincipal();
+    //    if (_httpContextAccessor is not null)
+    //    {
+    //        var identity = _httpContextAccessor.HttpContext!.User.Identity;
+    //        principal = new ClaimsPrincipal(identity!);
+    //    }
+
+    //    return Task.FromResult(new AuthenticationState(principal));
+    //}
+
     public override Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var identity = _httpContextAccessor.HttpContext!.User.Identity;
-
-        return Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity!)));
-        //return Task.FromResult(new AuthenticationState(new WindowsIdentity(_httpContextAccessor.HttpContext!.User.Identity.Name)));
-
+        var user = _httpContextAccessor?.HttpContext?.User ?? new ClaimsPrincipal(); 
+        //var principal = user ?? new ClaimsPrincipal();
+        return Task.FromResult(new AuthenticationState(user));
     }
 
 }
