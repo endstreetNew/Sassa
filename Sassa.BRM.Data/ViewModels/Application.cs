@@ -7,21 +7,7 @@ namespace Sassa.BRM.Models
         public long SocpenIsn { get; set; }
         public string ARCHIVE_YEAR { get; set; }
         public string Id { get; set; }
-        //Change to accomodate invalid child ids from socpen
-        private string child_id;
         public string ChildId { get; set; }
-        //{
-        //    get
-        //    {
-        //        if (!"6C59".Contains(GrantType)) return null;
-        //        return child_id;
-        //    }
-        //    set 
-        //    { 
-        //        child_id = value == null ? null : value.Trim().PadLeft(13, '0'); 
-        //    }
-        //}
-        //-----------------------------------------------
         public string Name { get; set; }
         public string SurName { get; set; }
         public string OfficeId { get; set; }
@@ -37,10 +23,6 @@ namespace Sassa.BRM.Models
         public string LastReviewDate { get; set; }
         [JsonIgnore]
         public string DateApproved { get; set; }
-        //[JsonIgnore]
-        //public string Prim_Status { get; set; }
-        //[JsonIgnore]
-        //public string Sec_Status { get; set; }
         public string LcType { get; set; }
         public string Srd_No { get; set; }
         public string Brm_Parent { get; set; }

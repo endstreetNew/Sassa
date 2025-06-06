@@ -51,7 +51,7 @@ public class DcFileController(IDbContextFactory<ModelContext> dbContextFactory, 
                 await _context.SaveChangesAsync();
                 file = _context.DcFiles.Where(k => k.BrmBarcode == file.BrmBarcode).AsNoTracking().FirstOrDefault()!;
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 throw;
             }

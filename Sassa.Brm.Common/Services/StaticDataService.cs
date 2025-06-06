@@ -256,7 +256,7 @@ public static class StaticDataService
     {
         if (string.IsNullOrEmpty(_version))
         {
-            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetCallingAssembly();
             System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
             if (fvi.FileVersion != null) _version = fvi.FileVersion;
         }

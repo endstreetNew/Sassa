@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 using Sassa.BRM.Models;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Sassa.Brm.Common.Services
 {
@@ -89,7 +91,7 @@ namespace Sassa.Brm.Common.Services
                 link => link.OfficeId,
                 (lo, link) => new UserOffice(lo, link.FspId)).FirstOrDefault();
             }
-            catch (Exception ex)
+            catch //(Exception ex)
             {
                 DcLocalOffice defaultOffice = GetOffices("7").FirstOrDefault()!;
                 office = new UserOffice(defaultOffice, null);

@@ -70,10 +70,6 @@
         await staticservice.UpdateUserLocalOffice(office.OfficeId, office.FspId, sessionservice.session);
         //Update the User
         sessionservice.UpdateUserOffice();
-        //office = staticservice.GetUserLocalOffice(sessionservice.session!.SamName);
-        
-        //sessionservice.session.Office = office;
-
         await Cancel.InvokeAsync();
     }
     protected void btnCancel_Click()

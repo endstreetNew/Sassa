@@ -194,7 +194,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         }
         catch (Exception ex)
         {
-            //ignore confirmation errors
+            await logger.LogToConsole(ex.Message);
         }
     }
 
