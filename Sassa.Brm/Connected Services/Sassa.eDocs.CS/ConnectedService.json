@@ -1,7 +1,7 @@
 {
   "ExtendedData": {
     "inputs": [
-      "http://ssvsdrcsshc02.sassa.local:8080/cws/services/Authentication"
+      "http://ssvsprcsphc01.sassa.local:8080/cws/services/Authentication"
     ],
     "collectionTypes": [
       "System.Array",

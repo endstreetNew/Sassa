@@ -17,6 +17,7 @@ namespace Sassa.BRM.Services
 
         private string username;
         private string password;
+        private string _wsEndpoint; //= "http://ssvsprdsphc01.sassa.local:18080/cws/services/Authentication"; //wrong endpoint, this is a test endpoint, change to production later
         private Sassa.eDocs.CSDocuments.OTAuthentication? ota; //= new Sassa.eDocs.CSDocuments.OTAuthentication();
         public long NodeId;
 
@@ -30,7 +31,8 @@ namespace Sassa.BRM.Services
             password = config.GetValue<string>("ContentServer:CSServicePass")!;
             connectionString = config.GetConnectionString("CsConnection")!;
             _context = context;
-            //wrong new System.ServiceModel.EndpointAddress("http://ssvsprdsphc01.sassa.local:18080/cws/services/Authentication");
+            _wsEndpoint = config.GetValue<string>("ContentServer:CSWSEndpoint")!;
+            docClient.Endpoint.Address = new System.ServiceModel.EndpointAddress(_wsEndpoint + "DocumentManagement"); ;
         }
         /// <summary>
         /// CS Webservice authentication
@@ -38,13 +40,14 @@ namespace Sassa.BRM.Services
         private async Task Authenticate()
         {
             AuthenticationClient authClient = new AuthenticationClient();
+            var endpointAddress = new System.ServiceModel.EndpointAddress(_wsEndpoint + "Authentication");
+            authClient.Endpoint.Address = endpointAddress; 
             try
             {
                 ota = new Sassa.eDocs.CSDocuments.OTAuthentication();
-                //wrong authClient.Endpoint = new System.ServiceModel.EndpointAddress("http://ssvsprdsphc01.sassa.local:18080/cws/services/Authentication");
                 ota.AuthenticationToken = await authClient.AuthenticateUserAsync(username, password);
             }
-            catch//(Exception ex)
+            catch
             {
                 throw new Exception("Failed to Authenticate Contentserver WS.");
             }
@@ -89,10 +92,9 @@ namespace Sassa.BRM.Services
                 if (tmp.Rows.Count == 0) return;
                 NodeId = long.Parse(tmp.Rows[0].ItemArray[0]!.ToString()!);
             }
-            //docClient = new DocumentManagementClient();
+
             try
             {
-                //docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 1, 30);
                 var result = await docClient.GetNodesInContainerAsync(ota, NodeId, new GetNodesInContainerOptions() { MaxDepth = 1, MaxResults = 10 });
                 Node[] nodes = result.GetNodesInContainerResult;
                 if (nodes == null) return;
@@ -236,24 +238,11 @@ namespace Sassa.BRM.Services
                 await Authenticate();
             }
 
-            DocumentManagementClient docClient = new DocumentManagementClient();
 
-            docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 3, 0);
             //https://edrms.sassa.gov.za/otcs/cs.exe?func=ll&objId=20241506&objAction=browse&viewType=1
             NodeId = 94643845; //Health Checks - BRM node id, this is a static value for now, can be changed later to be dynamic
             try
             {
-                //if (NodeId == 0)
-                //{
-                //    //find node
-                //    var response = await docClient.GetNodeByNameAsync(ota, 2000, "Health Checks monitoring");
-                //    response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, "Health Checks - BRM");
-                //    //response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, doc.IdNo);
-                //    //response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, doc.CSNode);
-                //    NodeId = response.GetNodeByNameResult.ID;
-                //}
-
-
                 await docClient.CreateDocumentAsync(ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);
             }
             catch (Exception ex)

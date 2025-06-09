@@ -11212,7 +11212,7 @@ namespace Sassa.eDocs.CSDocuments
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_DocumentManagement))
             {
-                return new System.ServiceModel.EndpointAddress("http://ssvsdrcsshc02.sassa.local:8080/cws/services/DocumentManagement");
+                return new System.ServiceModel.EndpointAddress("http://ssvsprcsphc01.sassa.local:8080/cws/services/DocumentManagement");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

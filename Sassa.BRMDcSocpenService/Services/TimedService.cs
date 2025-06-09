@@ -20,12 +20,6 @@
         public string fileName;
         private string sqlPath;
 
-        //private PeriodicTimer schedule = null;
-        //private Timer _timerTDW = null!;
-        //private Timer _timerBRM = null!;
-        //private Timer _timerLO = null!;
-        //private Timer _timerProgress = null!;
-
         public TimedService(IWebHostEnvironment env, JsonFileUtils fu, RawSqlService raw)
         {
             fileName = Path.Combine(env.ContentRootPath, "bookmarks") + "\\bookMarks.json";

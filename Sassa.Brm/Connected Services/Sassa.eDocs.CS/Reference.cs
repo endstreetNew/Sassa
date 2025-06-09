@@ -556,7 +556,7 @@ namespace Sassa.eDocs.CS
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_Authentication))
             {
-                return new System.ServiceModel.EndpointAddress("http://ssvsdrcsshc02.sassa.local:8080/cws/services/Authentication");
+                return new System.ServiceModel.EndpointAddress("http://ssvsprcsphc01.sassa.local:8080/cws/services/Authentication");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

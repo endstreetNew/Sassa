@@ -1,7 +1,7 @@
 {
   "ExtendedData": {
     "inputs": [
-      "http://ssvsdrcsshc02.sassa.local:8080/cws/services/DocumentManagement"
+      "http://ssvsprcsphc01.sassa.local:8080/cws/services/DocumentManagement"
     ],
     "collectionTypes": [
       "System.Array",
