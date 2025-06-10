@@ -2,7 +2,6 @@
 @using Sassa.Brm.Health
 @inject DailyCheck check
 @inject SessionService session
-@inject CSService csService
 @inject IAlertService toast
 
 <button class="btn btn-primary btn-sm active" @onclick="() => SaveReport()">Save Health check</button>
@@ -15,10 +14,11 @@
     {
         try
         {
-            await csService.UploadHealthDoc($"AssetStatus-{DateTime.Now.ToShortDateString().Trim()}.html", check.GenerateHealthCheckReport(session.session.Name, 10, DateTime.Now));
+            await check.WriteDailyReport(session.session.Name, 10, DateTime.Now);
+            //await csService.UploadHealthDoc(check.GenerateHealthCheckReport(session.session.Name, 10, DateTime.Now));
             toast.Success("Healthcheck saved.");
         }
-        catch
+        catch(Exception ex)
         {
             toast.Error("Healthcheck already saved.");
         }

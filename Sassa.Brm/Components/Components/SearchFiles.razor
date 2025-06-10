@@ -1,4 +1,5 @@
-﻿@inject BRMDbService db
+﻿@using Sassa.Services
+@inject BRMDbService db
 @inject CSService cs
 @inject IAlertService toast
 @inject IWebHostEnvironment _env
@@ -51,9 +52,7 @@ else
         <hr />
         @if (node != null)
         {
-
             <PdfBrowser Node="node" Preview="OnPreview"></PdfBrowser>
-
         }
     </div>
     <button type="button" class="btn btn-primary btn-sm" @onclick="btnRequest_Click">Request Physical file(s)</button>
@@ -103,7 +102,7 @@ else
             await cs.GetCSDocuments(sm.IdNo);
             folderItems = cs.GetFolderList(sm.IdNo);
             node = await db.GetCSFiles(sm.IdNo);
-            files = node.GetFiles();
+            files = node.GetFiles().OrderBy(e => e.NodeName).ToList();
             if (files.Count == 0)
             {
                 toast.Warn("No document Images found.");

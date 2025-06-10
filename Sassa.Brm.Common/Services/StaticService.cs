@@ -37,7 +37,8 @@ namespace Sassa.Brm.Common.Services
                 { 1, "Loose Correspondence" },
                 { 2, "Review" }
             };
-
+            //First db accass try.
+            //Do a db savitry test here
             using (var context = _contextFactory.CreateDbContext())
             {
                 StaticDataService.Regions = context.DcRegions.AsNoTracking().ToList();

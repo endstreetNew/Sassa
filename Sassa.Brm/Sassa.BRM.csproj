@@ -23,6 +23,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Connected Services\" />
     <Folder Include="wwwroot\brmFiles\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
@@ -34,6 +35,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="9.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.5" />
     <PackageReference Include="PDFsharp" Version="6.2.0" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageReference Include="System.Management" Version="9.0.5" />
     <PackageReference Include="System.ServiceModel.Federation" Version="8.1.2" />
     <PackageReference Include="System.ServiceModel.Http" Version="8.1.2" />
@@ -47,6 +52,7 @@
     <ProjectReference Include="..\Sassa.Brm.Common\Sassa.Brm.Common.csproj" />
     <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
     <ProjectReference Include="..\Sassa.Brm.Health\Sassa.Brm.Health.csproj" />
+    <ProjectReference Include="..\Sassa.CsService\Sassa.CsService.csproj" />
     <ProjectReference Include="..\Sassa.PdfServices\Sassa.PdfServices.csproj" />
     <ProjectReference Include="..\Sassa.QrCoder\Sassa.QrCoder.csproj" />
     <ProjectReference Include="..\Sassa.Socpen.Data\Sassa.Socpen.Data.csproj" />

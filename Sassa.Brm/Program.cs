@@ -10,7 +10,10 @@ using Sassa.Brm.Health;
 using Sassa.BRM.Components;
 using Sassa.BRM.Models;
 using Sassa.BRM.Services;
+using Sassa.Services;
 using Sassa.Socpen.Data;
+using Serilog;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace Sassa.BRM;
 
@@ -92,12 +95,23 @@ public class Program
         });
         builder.Services.AddSingleton<EmailClient>();
         builder.Services.AddSingleton<MailMessages>();
+        builder.Services.AddSingleton<CsServiceSettings>(c =>
+        {
+            CsServiceSettings csServiceSettings = new CsServiceSettings();
+            csServiceSettings.CsConnection = CsConnection;
+            csServiceSettings.CsWSEndpoint = builder.Configuration.GetValue<string>("ContentServer:CSWSEndpoint")!;
+            csServiceSettings.CsServiceUser = builder.Configuration.GetValue<string>("ContentServer:CSServiceUser")!;
+            csServiceSettings.CsServicePass = builder.Configuration.GetValue<string>("ContentServer:CSServicePass")!;
+            csServiceSettings.CsDocFolder = $"{builder.Environment.WebRootPath}\\{builder.Configuration.GetValue<string>("Folders:CS")}\\";
+            return csServiceSettings;
+        });
+        
         builder.Services.AddScoped<IAlertService, AlertService>();
         builder.Services.AddScoped<Navigation>();
-        builder.Services.AddScoped<CSService>();
         builder.Services.AddScoped<ReportDataService>();
         builder.Services.AddScoped<ProgressService>();
         builder.Services.AddScoped<Helper>();
+        builder.Services.AddScoped<CSService>();
         builder.Services.AddScoped<DailyCheck>();
         builder.Services.AddScoped<ActiveUser>();
         builder.Services.AddSingleton<ActiveUserList>();
@@ -142,6 +156,12 @@ public class Program
                 });
         });
 
+        Log.Logger = new LoggerConfiguration()
+        .WriteTo.File("Logs/app-Brm-Error.log", rollingInterval: RollingInterval.Day,restrictedToMinimumLevel:Serilog.Events.LogEventLevel.Error)
+        .CreateLogger();
+
+        builder.Host.UseSerilog();
+
         var app = builder.Build();
 
 
@@ -165,6 +185,7 @@ public class Program
         app.MapRazorComponents<App>()
             .DisableAntiforgery()
             .AddInteractiveServerRenderMode();
+
 
         app.Run();
     }

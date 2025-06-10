@@ -7,12 +7,12 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sassa.eDocs.CSDocuments
+namespace Sassa.Services.CsDocuments
 {
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", ConfigurationName="Sassa.eDocs.CSDocuments.DocumentManagement")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", ConfigurationName="Sassa.Services.CsDocuments.DocumentManagement")]
     public interface DocumentManagement
     {
         
@@ -21,652 +21,652 @@ namespace Sassa.eDocs.CSDocuments
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.PurgeVersionsResponse> PurgeVersionsAsync(Sassa.eDocs.CSDocuments.PurgeVersionsRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.PurgeVersionsResponse> PurgeVersionsAsync(Sassa.Services.CsDocuments.PurgeVersionsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/RearrangeNodes", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/RearrangeNodesRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RearrangeNodesResponse> RearrangeNodesAsync(Sassa.eDocs.CSDocuments.RearrangeNodesRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RearrangeNodesResponse> RearrangeNodesAsync(Sassa.Services.CsDocuments.RearrangeNodesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/RemoveFavorite", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/RemoveFavoriteRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RemoveFavoriteResponse> RemoveFavoriteAsync(Sassa.eDocs.CSDocuments.RemoveFavoriteRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RemoveFavoriteResponse> RemoveFavoriteAsync(Sassa.Services.CsDocuments.RemoveFavoriteRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/RemoveFromCollection", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/RemoveFromCollectionR" +
             "esponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RemoveFromCollectionResponse> RemoveFromCollectionAsync(Sassa.eDocs.CSDocuments.RemoveFromCollectionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RemoveFromCollectionResponse> RemoveFromCollectionAsync(Sassa.Services.CsDocuments.RemoveFromCollectionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/RemoveNodeRight", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/RemoveNodeRightRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RemoveNodeRightResponse> RemoveNodeRightAsync(Sassa.eDocs.CSDocuments.RemoveNodeRightRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RemoveNodeRightResponse> RemoveNodeRightAsync(Sassa.Services.CsDocuments.RemoveNodeRightRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/RenameNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/RenameNodeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RenameNodeResponse> RenameNodeAsync(Sassa.eDocs.CSDocuments.RenameNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RenameNodeResponse> RenameNodeAsync(Sassa.Services.CsDocuments.RenameNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/RepositionNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/RepositionNodeRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RepositionNodeResponse> RepositionNodeAsync(Sassa.eDocs.CSDocuments.RepositionNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RepositionNodeResponse> RepositionNodeAsync(Sassa.Services.CsDocuments.RepositionNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/ReserveNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/ReserveNodeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ReserveNodeResponse> ReserveNodeAsync(Sassa.eDocs.CSDocuments.ReserveNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ReserveNodeResponse> ReserveNodeAsync(Sassa.Services.CsDocuments.ReserveNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/RunReport", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/RunReportResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RunReportResponse> RunReportAsync(Sassa.eDocs.CSDocuments.RunReportRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RunReportResponse> RunReportAsync(Sassa.Services.CsDocuments.RunReportRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/SetCategoryInheritance", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/SetCategoryInheritanc" +
             "eResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.SetCategoryInheritanceResponse> SetCategoryInheritanceAsync(Sassa.eDocs.CSDocuments.SetCategoryInheritanceRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.SetCategoryInheritanceResponse> SetCategoryInheritanceAsync(Sassa.Services.CsDocuments.SetCategoryInheritanceRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/SetNodeMetadata", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/SetNodeMetadataRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.SetNodeMetadataResponse> SetNodeMetadataAsync(Sassa.eDocs.CSDocuments.SetNodeMetadataRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.SetNodeMetadataResponse> SetNodeMetadataAsync(Sassa.Services.CsDocuments.SetNodeMetadataRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/SetNodeRights", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/SetNodeRightsResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.SetNodeRightsResponse> SetNodeRightsAsync(Sassa.eDocs.CSDocuments.SetNodeRightsRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.SetNodeRightsResponse> SetNodeRightsAsync(Sassa.Services.CsDocuments.SetNodeRightsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UnlockRelease", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UnlockReleaseResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UnlockReleaseResponse> UnlockReleaseAsync(Sassa.eDocs.CSDocuments.UnlockReleaseRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UnlockReleaseResponse> UnlockReleaseAsync(Sassa.Services.CsDocuments.UnlockReleaseRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UnlockVersion", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UnlockVersionResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UnlockVersionResponse> UnlockVersionAsync(Sassa.eDocs.CSDocuments.UnlockVersionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UnlockVersionResponse> UnlockVersionAsync(Sassa.Services.CsDocuments.UnlockVersionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UnreserveNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UnreserveNodeResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UnreserveNodeResponse> UnreserveNodeAsync(Sassa.eDocs.CSDocuments.UnreserveNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UnreserveNodeResponse> UnreserveNodeAsync(Sassa.Services.CsDocuments.UnreserveNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UpdateCategory", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UpdateCategoryRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateCategoryResponse> UpdateCategoryAsync(Sassa.eDocs.CSDocuments.UpdateCategoryRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateCategoryResponse> UpdateCategoryAsync(Sassa.Services.CsDocuments.UpdateCategoryRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UpdateMultilingualMetadata", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UpdateMultilingualMet" +
             "adataResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateMultilingualMetadataResponse> UpdateMultilingualMetadataAsync(Sassa.eDocs.CSDocuments.UpdateMultilingualMetadataRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateMultilingualMetadataResponse> UpdateMultilingualMetadataAsync(Sassa.Services.CsDocuments.UpdateMultilingualMetadataRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UpdateNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UpdateNodeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeResponse> UpdateNodeAsync(Sassa.eDocs.CSDocuments.UpdateNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeResponse> UpdateNodeAsync(Sassa.Services.CsDocuments.UpdateNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UpdateNodeRight", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UpdateNodeRightRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeRightResponse> UpdateNodeRightAsync(Sassa.eDocs.CSDocuments.UpdateNodeRightRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeRightResponse> UpdateNodeRightAsync(Sassa.Services.CsDocuments.UpdateNodeRightRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UpdateNodeRights", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UpdateNodeRightsRespo" +
             "nse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeRightsResponse> UpdateNodeRightsAsync(Sassa.eDocs.CSDocuments.UpdateNodeRightsRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeRightsResponse> UpdateNodeRightsAsync(Sassa.Services.CsDocuments.UpdateNodeRightsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UpdateNodeRightsContext", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UpdateNodeRightsConte" +
             "xtResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeRightsContextResponse> UpdateNodeRightsContextAsync(Sassa.eDocs.CSDocuments.UpdateNodeRightsContextRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeRightsContextResponse> UpdateNodeRightsContextAsync(Sassa.Services.CsDocuments.UpdateNodeRightsContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UpdateVersion", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UpdateVersionResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateVersionResponse> UpdateVersionAsync(Sassa.eDocs.CSDocuments.UpdateVersionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateVersionResponse> UpdateVersionAsync(Sassa.Services.CsDocuments.UpdateVersionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UpgradeCategoryItems", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UpgradeCategoryItemsR" +
             "esponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpgradeCategoryItemsResponse> UpgradeCategoryItemsAsync(Sassa.eDocs.CSDocuments.UpgradeCategoryItemsRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpgradeCategoryItemsResponse> UpgradeCategoryItemsAsync(Sassa.Services.CsDocuments.UpgradeCategoryItemsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/UpgradeCategoryItemsContext", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/UpgradeCategoryItemsC" +
             "ontextResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpgradeCategoryItemsContextResponse> UpgradeCategoryItemsContextAsync(Sassa.eDocs.CSDocuments.UpgradeCategoryItemsContextRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpgradeCategoryItemsContextResponse> UpgradeCategoryItemsContextAsync(Sassa.Services.CsDocuments.UpgradeCategoryItemsContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetMultilingualMetadata", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetMultilingualMetada" +
             "taResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetMultilingualMetadataResponse> GetMultilingualMetadataAsync(Sassa.eDocs.CSDocuments.GetMultilingualMetadataRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetMultilingualMetadataResponse> GetMultilingualMetadataAsync(Sassa.Services.CsDocuments.GetMultilingualMetadataRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeResponse> GetNodeAsync(Sassa.eDocs.CSDocuments.GetNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeResponse> GetNodeAsync(Sassa.Services.CsDocuments.GetNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodeAuditRecords", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodeAuditRecordsRe" +
             "sponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeAuditRecordsResponse> GetNodeAuditRecordsAsync(Sassa.eDocs.CSDocuments.GetNodeAuditRecordsRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeAuditRecordsResponse> GetNodeAuditRecordsAsync(Sassa.Services.CsDocuments.GetNodeAuditRecordsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodeByGUID", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodeByGUIDResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByGUIDResponse> GetNodeByGUIDAsync(Sassa.eDocs.CSDocuments.GetNodeByGUIDRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByGUIDResponse> GetNodeByGUIDAsync(Sassa.Services.CsDocuments.GetNodeByGUIDRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodeByName", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodeByNameResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByNameResponse> GetNodeByNameAsync(Sassa.eDocs.CSDocuments.GetNodeByNameRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByNameResponse> GetNodeByNameAsync(Sassa.Services.CsDocuments.GetNodeByNameRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodeByNickname", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodeByNicknameResp" +
             "onse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByNicknameResponse> GetNodeByNicknameAsync(Sassa.eDocs.CSDocuments.GetNodeByNicknameRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByNicknameResponse> GetNodeByNicknameAsync(Sassa.Services.CsDocuments.GetNodeByNicknameRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodeByPath", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodeByPathResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByPathResponse> GetNodeByPathAsync(Sassa.eDocs.CSDocuments.GetNodeByPathRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByPathResponse> GetNodeByPathAsync(Sassa.Services.CsDocuments.GetNodeByPathRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodeGUID", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodeGUIDResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeGUIDResponse> GetNodeGUIDAsync(Sassa.eDocs.CSDocuments.GetNodeGUIDRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeGUIDResponse> GetNodeGUIDAsync(Sassa.Services.CsDocuments.GetNodeGUIDRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodeRights", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodeRightsResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeRightsResponse> GetNodeRightsAsync(Sassa.eDocs.CSDocuments.GetNodeRightsRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeRightsResponse> GetNodeRightsAsync(Sassa.Services.CsDocuments.GetNodeRightsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodes", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodesResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodesResponse> GetNodesAsync(Sassa.eDocs.CSDocuments.GetNodesRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodesResponse> GetNodesAsync(Sassa.Services.CsDocuments.GetNodesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodesByNickname", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodesByNicknameRes" +
             "ponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodesByNicknameResponse> GetNodesByNicknameAsync(Sassa.eDocs.CSDocuments.GetNodesByNicknameRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodesByNicknameResponse> GetNodesByNicknameAsync(Sassa.Services.CsDocuments.GetNodesByNicknameRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodesInContainer", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodesInContainerRe" +
             "sponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodesInContainerResponse> GetNodesInContainerAsync(Sassa.eDocs.CSDocuments.GetNodesInContainerRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodesInContainerResponse> GetNodesInContainerAsync(Sassa.Services.CsDocuments.GetNodesInContainerRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodeTemplate", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodeTemplateRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeTemplateResponse> GetNodeTemplateAsync(Sassa.eDocs.CSDocuments.GetNodeTemplateRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeTemplateResponse> GetNodeTemplateAsync(Sassa.Services.CsDocuments.GetNodeTemplateRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetNodeTypes", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetNodeTypesResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeTypesResponse> GetNodeTypesAsync(Sassa.eDocs.CSDocuments.GetNodeTypesRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeTypesResponse> GetNodeTypesAsync(Sassa.Services.CsDocuments.GetNodeTypesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetPagedNodeAuditData", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetPagedNodeAuditData" +
             "Response")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetPagedNodeAuditDataResponse> GetPagedNodeAuditDataAsync(Sassa.eDocs.CSDocuments.GetPagedNodeAuditDataRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetPagedNodeAuditDataResponse> GetPagedNodeAuditDataAsync(Sassa.Services.CsDocuments.GetPagedNodeAuditDataRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetRelease", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetReleaseResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetReleaseResponse> GetReleaseAsync(Sassa.eDocs.CSDocuments.GetReleaseRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetReleaseResponse> GetReleaseAsync(Sassa.Services.CsDocuments.GetReleaseRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetRenditionContents", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetRenditionContentsR" +
             "esponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRenditionContentsResponse> GetRenditionContentsAsync(Sassa.eDocs.CSDocuments.GetRenditionContentsRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRenditionContentsResponse> GetRenditionContentsAsync(Sassa.Services.CsDocuments.GetRenditionContentsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetRenditionContentsContext", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetRenditionContentsC" +
             "ontextResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRenditionContentsContextResponse> GetRenditionContentsContextAsync(Sassa.eDocs.CSDocuments.GetRenditionContentsContextRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRenditionContentsContextResponse> GetRenditionContentsContextAsync(Sassa.Services.CsDocuments.GetRenditionContentsContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetRootNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetRootNodeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRootNodeResponse> GetRootNodeAsync(Sassa.eDocs.CSDocuments.GetRootNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRootNodeResponse> GetRootNodeAsync(Sassa.Services.CsDocuments.GetRootNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetRootNodeTypes", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetRootNodeTypesRespo" +
             "nse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRootNodeTypesResponse> GetRootNodeTypesAsync(Sassa.eDocs.CSDocuments.GetRootNodeTypesRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRootNodeTypesResponse> GetRootNodeTypesAsync(Sassa.Services.CsDocuments.GetRootNodeTypesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetVersion", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetVersionResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionResponse> GetVersionAsync(Sassa.eDocs.CSDocuments.GetVersionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionResponse> GetVersionAsync(Sassa.Services.CsDocuments.GetVersionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetVersionByGUID", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetVersionByGUIDRespo" +
             "nse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionByGUIDResponse> GetVersionByGUIDAsync(Sassa.eDocs.CSDocuments.GetVersionByGUIDRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionByGUIDResponse> GetVersionByGUIDAsync(Sassa.Services.CsDocuments.GetVersionByGUIDRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetVersionContents", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetVersionContentsRes" +
             "ponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionContentsResponse> GetVersionContentsAsync(Sassa.eDocs.CSDocuments.GetVersionContentsRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionContentsResponse> GetVersionContentsAsync(Sassa.Services.CsDocuments.GetVersionContentsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetVersionContentsContext", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetVersionContentsCon" +
             "textResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionContentsContextResponse> GetVersionContentsContextAsync(Sassa.eDocs.CSDocuments.GetVersionContentsContextRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionContentsContextResponse> GetVersionContentsContextAsync(Sassa.Services.CsDocuments.GetVersionContentsContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetVersionGUID", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetVersionGUIDRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionGUIDResponse> GetVersionGUIDAsync(Sassa.eDocs.CSDocuments.GetVersionGUIDRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionGUIDResponse> GetVersionGUIDAsync(Sassa.Services.CsDocuments.GetVersionGUIDRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/ListNodes", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/ListNodesResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesResponse> ListNodesAsync(Sassa.eDocs.CSDocuments.ListNodesRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesResponse> ListNodesAsync(Sassa.Services.CsDocuments.ListNodesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/ListNodesByName", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/ListNodesByNameRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesByNameResponse> ListNodesByNameAsync(Sassa.eDocs.CSDocuments.ListNodesByNameRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesByNameResponse> ListNodesByNameAsync(Sassa.Services.CsDocuments.ListNodesByNameRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/ListNodesByPage", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/ListNodesByPageRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesByPageResponse> ListNodesByPageAsync(Sassa.eDocs.CSDocuments.ListNodesByPageRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesByPageResponse> ListNodesByPageAsync(Sassa.Services.CsDocuments.ListNodesByPageRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/ListNodesByPageAndName", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/ListNodesByPageAndNam" +
             "eResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesByPageAndNameResponse> ListNodesByPageAndNameAsync(Sassa.eDocs.CSDocuments.ListNodesByPageAndNameRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesByPageAndNameResponse> ListNodesByPageAndNameAsync(Sassa.Services.CsDocuments.ListNodesByPageAndNameRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/ListReferences", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/ListReferencesRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListReferencesResponse> ListReferencesAsync(Sassa.eDocs.CSDocuments.ListReferencesRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListReferencesResponse> ListReferencesAsync(Sassa.Services.CsDocuments.ListReferencesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/ListReleases", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/ListReleasesResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListReleasesResponse> ListReleasesAsync(Sassa.eDocs.CSDocuments.ListReleasesRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListReleasesResponse> ListReleasesAsync(Sassa.Services.CsDocuments.ListReleasesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/ListRenditions", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/ListRenditionsRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListRenditionsResponse> ListRenditionsAsync(Sassa.eDocs.CSDocuments.ListRenditionsRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListRenditionsResponse> ListRenditionsAsync(Sassa.Services.CsDocuments.ListRenditionsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/LockRelease", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/LockReleaseResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.LockReleaseResponse> LockReleaseAsync(Sassa.eDocs.CSDocuments.LockReleaseRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.LockReleaseResponse> LockReleaseAsync(Sassa.Services.CsDocuments.LockReleaseRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/LockVersion", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/LockVersionResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.LockVersionResponse> LockVersionAsync(Sassa.eDocs.CSDocuments.LockVersionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.LockVersionResponse> LockVersionAsync(Sassa.Services.CsDocuments.LockVersionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/MoveNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/MoveNodeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.MoveNodeResponse> MoveNodeAsync(Sassa.eDocs.CSDocuments.MoveNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.MoveNodeResponse> MoveNodeAsync(Sassa.Services.CsDocuments.MoveNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/PromoteVersion", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/PromoteVersionRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.PromoteVersionResponse> PromoteVersionAsync(Sassa.eDocs.CSDocuments.PromoteVersionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.PromoteVersionResponse> PromoteVersionAsync(Sassa.Services.CsDocuments.PromoteVersionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/AddFavorite", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/AddFavoriteResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddFavoriteResponse> AddFavoriteAsync(Sassa.eDocs.CSDocuments.AddFavoriteRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddFavoriteResponse> AddFavoriteAsync(Sassa.Services.CsDocuments.AddFavoriteRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/AddMajorVersion", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/AddMajorVersionRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddMajorVersionResponse> AddMajorVersionAsync(Sassa.eDocs.CSDocuments.AddMajorVersionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddMajorVersionResponse> AddMajorVersionAsync(Sassa.Services.CsDocuments.AddMajorVersionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/AddMajorVersionContext", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/AddMajorVersionContex" +
             "tResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddMajorVersionContextResponse> AddMajorVersionContextAsync(Sassa.eDocs.CSDocuments.AddMajorVersionContextRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddMajorVersionContextResponse> AddMajorVersionContextAsync(Sassa.Services.CsDocuments.AddMajorVersionContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/AddNodeRight", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/AddNodeRightResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddNodeRightResponse> AddNodeRightAsync(Sassa.eDocs.CSDocuments.AddNodeRightRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddNodeRightResponse> AddNodeRightAsync(Sassa.Services.CsDocuments.AddNodeRightRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/AddToCollection", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/AddToCollectionRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddToCollectionResponse> AddToCollectionAsync(Sassa.eDocs.CSDocuments.AddToCollectionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddToCollectionResponse> AddToCollectionAsync(Sassa.Services.CsDocuments.AddToCollectionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/AddVersion", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/AddVersionResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddVersionResponse> AddVersionAsync(Sassa.eDocs.CSDocuments.AddVersionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddVersionResponse> AddVersionAsync(Sassa.Services.CsDocuments.AddVersionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/AddVersionContext", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/AddVersionContextResp" +
             "onse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddVersionContextResponse> AddVersionContextAsync(Sassa.eDocs.CSDocuments.AddVersionContextRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddVersionContextResponse> AddVersionContextAsync(Sassa.Services.CsDocuments.AddVersionContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CopyNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CopyNodeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CopyNodeResponse> CopyNodeAsync(Sassa.eDocs.CSDocuments.CopyNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CopyNodeResponse> CopyNodeAsync(Sassa.Services.CsDocuments.CopyNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateCategory", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateCategoryRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateCategoryResponse> CreateCategoryAsync(Sassa.eDocs.CSDocuments.CreateCategoryRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateCategoryResponse> CreateCategoryAsync(Sassa.Services.CsDocuments.CreateCategoryRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateDocument", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateDocumentRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateDocumentResponse> CreateDocumentAsync(Sassa.eDocs.CSDocuments.CreateDocumentRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateDocumentResponse> CreateDocumentAsync(Sassa.Services.CsDocuments.CreateDocumentRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateDocumentContext", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateDocumentContext" +
             "Response")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateDocumentContextResponse> CreateDocumentContextAsync(Sassa.eDocs.CSDocuments.CreateDocumentContextRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateDocumentContextResponse> CreateDocumentContextAsync(Sassa.Services.CsDocuments.CreateDocumentContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateFolder", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateFolderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateFolderResponse> CreateFolderAsync(Sassa.eDocs.CSDocuments.CreateFolderRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateFolderResponse> CreateFolderAsync(Sassa.Services.CsDocuments.CreateFolderRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateNodeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateNodeResponse> CreateNodeAsync(Sassa.eDocs.CSDocuments.CreateNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateNodeResponse> CreateNodeAsync(Sassa.Services.CsDocuments.CreateNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateNodeAndVersion", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateNodeAndVersionR" +
             "esponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateNodeAndVersionResponse> CreateNodeAndVersionAsync(Sassa.eDocs.CSDocuments.CreateNodeAndVersionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateNodeAndVersionResponse> CreateNodeAndVersionAsync(Sassa.Services.CsDocuments.CreateNodeAndVersionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateNodeAndVersionContext", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateNodeAndVersionC" +
             "ontextResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateNodeAndVersionContextResponse> CreateNodeAndVersionContextAsync(Sassa.eDocs.CSDocuments.CreateNodeAndVersionContextRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateNodeAndVersionContextResponse> CreateNodeAndVersionContextAsync(Sassa.Services.CsDocuments.CreateNodeAndVersionContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateRelease", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateReleaseResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateReleaseResponse> CreateReleaseAsync(Sassa.eDocs.CSDocuments.CreateReleaseRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateReleaseResponse> CreateReleaseAsync(Sassa.Services.CsDocuments.CreateReleaseRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateRendition", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateRenditionRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateRenditionResponse> CreateRenditionAsync(Sassa.eDocs.CSDocuments.CreateRenditionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateRenditionResponse> CreateRenditionAsync(Sassa.Services.CsDocuments.CreateRenditionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateRenditionContext", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateRenditionContex" +
             "tResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateRenditionContextResponse> CreateRenditionContextAsync(Sassa.eDocs.CSDocuments.CreateRenditionContextRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateRenditionContextResponse> CreateRenditionContextAsync(Sassa.Services.CsDocuments.CreateRenditionContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateShortcut", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateShortcutRespons" +
             "e")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateShortcutResponse> CreateShortcutAsync(Sassa.eDocs.CSDocuments.CreateShortcutRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateShortcutResponse> CreateShortcutAsync(Sassa.Services.CsDocuments.CreateShortcutRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateSimpleDocument", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateSimpleDocumentR" +
             "esponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateSimpleDocumentResponse> CreateSimpleDocumentAsync(Sassa.eDocs.CSDocuments.CreateSimpleDocumentRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateSimpleDocumentResponse> CreateSimpleDocumentAsync(Sassa.Services.CsDocuments.CreateSimpleDocumentRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateSimpleDocumentContext", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateSimpleDocumentC" +
             "ontextResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateSimpleDocumentContextResponse> CreateSimpleDocumentContextAsync(Sassa.eDocs.CSDocuments.CreateSimpleDocumentContextRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateSimpleDocumentContextResponse> CreateSimpleDocumentContextAsync(Sassa.Services.CsDocuments.CreateSimpleDocumentContextRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateSimpleFolder", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateSimpleFolderRes" +
             "ponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateSimpleFolderResponse> CreateSimpleFolderAsync(Sassa.eDocs.CSDocuments.CreateSimpleFolderRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateSimpleFolderResponse> CreateSimpleFolderAsync(Sassa.Services.CsDocuments.CreateSimpleFolderRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/CreateURL", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/CreateURLResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateURLResponse> CreateURLAsync(Sassa.eDocs.CSDocuments.CreateURLRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateURLResponse> CreateURLAsync(Sassa.Services.CsDocuments.CreateURLRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/DeleteNode", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/DeleteNodeResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteNodeResponse> DeleteNodeAsync(Sassa.eDocs.CSDocuments.DeleteNodeRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteNodeResponse> DeleteNodeAsync(Sassa.Services.CsDocuments.DeleteNodeRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/DeleteRelease", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/DeleteReleaseResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteReleaseResponse> DeleteReleaseAsync(Sassa.eDocs.CSDocuments.DeleteReleaseRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteReleaseResponse> DeleteReleaseAsync(Sassa.Services.CsDocuments.DeleteReleaseRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/DeleteRendition", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/DeleteRenditionRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteRenditionResponse> DeleteRenditionAsync(Sassa.eDocs.CSDocuments.DeleteRenditionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteRenditionResponse> DeleteRenditionAsync(Sassa.Services.CsDocuments.DeleteRenditionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/DeleteVersion", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/DeleteVersionResponse" +
             "")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteVersionResponse> DeleteVersionAsync(Sassa.eDocs.CSDocuments.DeleteVersionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteVersionResponse> DeleteVersionAsync(Sassa.Services.CsDocuments.DeleteVersionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetAllFavorites", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetAllFavoritesRespon" +
             "se")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAllFavoritesResponse> GetAllFavoritesAsync(Sassa.eDocs.CSDocuments.GetAllFavoritesRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAllFavoritesResponse> GetAllFavoritesAsync(Sassa.Services.CsDocuments.GetAllFavoritesRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetAllMultilingualMetadata", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetAllMultilingualMet" +
             "adataResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAllMultilingualMetadataResponse> GetAllMultilingualMetadataAsync(Sassa.eDocs.CSDocuments.GetAllMultilingualMetadataRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAllMultilingualMetadataResponse> GetAllMultilingualMetadataAsync(Sassa.Services.CsDocuments.GetAllMultilingualMetadataRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetAttributeGroupDefinition", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetAttributeGroupDefi" +
             "nitionResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAttributeGroupDefinitionResponse> GetAttributeGroupDefinitionAsync(Sassa.eDocs.CSDocuments.GetAttributeGroupDefinitionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAttributeGroupDefinitionResponse> GetAttributeGroupDefinitionAsync(Sassa.Services.CsDocuments.GetAttributeGroupDefinitionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetAttributeGroupTemplate", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetAttributeGroupTemp" +
             "lateResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAttributeGroupTemplateResponse> GetAttributeGroupTemplateAsync(Sassa.eDocs.CSDocuments.GetAttributeGroupTemplateRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAttributeGroupTemplateResponse> GetAttributeGroupTemplateAsync(Sassa.Services.CsDocuments.GetAttributeGroupTemplateRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetCategoryDefinition", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetCategoryDefinition" +
             "Response")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryDefinitionResponse> GetCategoryDefinitionAsync(Sassa.eDocs.CSDocuments.GetCategoryDefinitionRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryDefinitionResponse> GetCategoryDefinitionAsync(Sassa.Services.CsDocuments.GetCategoryDefinitionRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetCategoryDefinitions", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetCategoryDefinition" +
             "sResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryDefinitionsResponse> GetCategoryDefinitionsAsync(Sassa.eDocs.CSDocuments.GetCategoryDefinitionsRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryDefinitionsResponse> GetCategoryDefinitionsAsync(Sassa.Services.CsDocuments.GetCategoryDefinitionsRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetCategoryInheritance", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetCategoryInheritanc" +
             "eResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryInheritanceResponse> GetCategoryInheritanceAsync(Sassa.eDocs.CSDocuments.GetCategoryInheritanceRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryInheritanceResponse> GetCategoryInheritanceAsync(Sassa.Services.CsDocuments.GetCategoryInheritanceRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetCategoryTemplate", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetCategoryTemplateRe" +
             "sponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryTemplateResponse> GetCategoryTemplateAsync(Sassa.eDocs.CSDocuments.GetCategoryTemplateRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryTemplateResponse> GetCategoryTemplateAsync(Sassa.Services.CsDocuments.GetCategoryTemplateRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="urn:DocMan.service.livelink.opentext.com/GetMetadataLanguages", ReplyAction="urn:DocMan.service.livelink.opentext.com/DocumentManagement/GetMetadataLanguagesR" +
             "esponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject1))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ServiceDataObject))]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetMetadataLanguagesResponse> GetMetadataLanguagesAsync(Sassa.eDocs.CSDocuments.GetMetadataLanguagesRequest request);
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetMetadataLanguagesResponse> GetMetadataLanguagesAsync(Sassa.Services.CsDocuments.GetMetadataLanguagesRequest request);
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:api.ecm.opentext.com")]
     public partial class OTAuthentication
@@ -690,7 +690,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class Attachment
@@ -790,7 +790,7 @@ namespace Sassa.eDocs.CSDocuments
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StringValue))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(RowValue))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TableValue))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(TypeName="ServiceDataObject", Namespace="urn:Core.service.livelink.opentext.com")]
     public abstract partial class ServiceDataObject1
@@ -798,7 +798,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class PageHandle : ServiceDataObject1
@@ -886,7 +886,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class ChunkedOperationContext : ServiceDataObject1
@@ -942,7 +942,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class BooleanObject : ServiceDataObject1
@@ -974,7 +974,7 @@ namespace Sassa.eDocs.CSDocuments
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StringValue))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(RowValue))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(TableValue))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class DataValue : ServiceDataObject1
@@ -1019,7 +1019,7 @@ namespace Sassa.eDocs.CSDocuments
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(IntegerValue))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(RealValue))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StringValue))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class PrimitiveValue : DataValue
@@ -1027,7 +1027,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class BooleanValue : PrimitiveValue
@@ -1051,7 +1051,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class DateValue : PrimitiveValue
@@ -1075,7 +1075,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class IntegerValue : PrimitiveValue
@@ -1099,7 +1099,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class RealValue : PrimitiveValue
@@ -1123,7 +1123,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class StringValue : PrimitiveValue
@@ -1147,7 +1147,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class RowValue : DataValue
@@ -1171,7 +1171,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:Core.service.livelink.opentext.com")]
     public partial class TableValue : DataValue
@@ -1235,7 +1235,7 @@ namespace Sassa.eDocs.CSDocuments
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(NodeRight))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(CollectionItem))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(NodePosition))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public abstract partial class ServiceDataObject
@@ -1243,7 +1243,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class MetadataLanguage : ServiceDataObject
@@ -1283,7 +1283,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class CopyOptions : ServiceDataObject
@@ -1387,7 +1387,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public enum AttributeSourceType
     {
@@ -1403,7 +1403,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class MoveOptions : ServiceDataObject
@@ -1459,7 +1459,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodePageResult : ServiceDataObject
@@ -1531,7 +1531,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class Node : ServiceDataObject
@@ -1955,7 +1955,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodeContainerInfo : ServiceDataObject
@@ -1995,7 +1995,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodeFeature : ServiceDataObject
@@ -2115,7 +2115,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class Metadata : ServiceDataObject
@@ -2139,7 +2139,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class AttributeGroup : ServiceDataObject
@@ -2211,7 +2211,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodePermissions : ServiceDataObject
@@ -2363,7 +2363,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodeReferenceInfo : ServiceDataObject
@@ -2419,7 +2419,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodeReservationInfo : ServiceDataObject
@@ -2475,7 +2475,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodeVersionInfo : ServiceDataObject
@@ -2627,7 +2627,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class Version : ServiceDataObject
@@ -3051,7 +3051,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodePageSpecification : ServiceDataObject
@@ -3203,7 +3203,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class CompoundDocRelease : ServiceDataObject
@@ -3355,7 +3355,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class PagedNodeAuditData : ServiceDataObject
@@ -3395,7 +3395,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodeAuditRecord : ServiceDataObject
@@ -3483,7 +3483,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class GetNodesInContainerOptions : ServiceDataObject
@@ -3523,7 +3523,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class CategoryItemsUpgradeInfo : ServiceDataObject
@@ -3579,7 +3579,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodeRightUpdateInfo : ServiceDataObject
@@ -3651,7 +3651,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class MultilingualMetadata : ServiceDataObject
@@ -3707,7 +3707,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class AttributeGroupDefinition : ServiceDataObject
@@ -3805,7 +3805,7 @@ namespace Sassa.eDocs.CSDocuments
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StringAttribute))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(UserAttribute))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(SetAttribute))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class Attribute : ServiceDataObject
@@ -3965,7 +3965,7 @@ namespace Sassa.eDocs.CSDocuments
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(RealAttribute))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(StringAttribute))]
     [System.Xml.Serialization.XmlIncludeAttribute(typeof(UserAttribute))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class PrimitiveAttribute : Attribute
@@ -3973,7 +3973,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class BooleanAttribute : PrimitiveAttribute
@@ -3997,7 +3997,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class DateAttribute : PrimitiveAttribute
@@ -4053,7 +4053,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class IntegerAttribute : PrimitiveAttribute
@@ -4093,7 +4093,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class ItemReferenceAttribute : PrimitiveAttribute
@@ -4133,7 +4133,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class MultiLineAttribute : PrimitiveAttribute
@@ -4189,7 +4189,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class RealAttribute : PrimitiveAttribute
@@ -4229,7 +4229,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class StringAttribute : PrimitiveAttribute
@@ -4301,7 +4301,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class UserAttribute : PrimitiveAttribute
@@ -4357,7 +4357,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class SetAttribute : Attribute
@@ -4397,7 +4397,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodeRights : ServiceDataObject
@@ -4469,7 +4469,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodeRight : ServiceDataObject
@@ -4525,7 +4525,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class CategoryInheritance : ServiceDataObject
@@ -4565,7 +4565,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class ReportResult : ServiceDataObject
@@ -4653,7 +4653,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class CollectionItem : ServiceDataObject
@@ -4693,7 +4693,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public partial class NodePosition : ServiceDataObject
@@ -4733,14 +4733,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="PurgeVersions", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class PurgeVersionsRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -4752,7 +4752,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public PurgeVersionsRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, int numberToKeep)
+        public PurgeVersionsRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, int numberToKeep)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -4761,47 +4761,47 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="PurgeVersionsResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class PurgeVersionsResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public PurgeVersionsResponse()
         {
         }
         
-        public PurgeVersionsResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public PurgeVersionsResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RearrangeNodes", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RearrangeNodesRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute("positions", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.NodePosition[] positions;
+        public Sassa.Services.CsDocuments.NodePosition[] positions;
         
         public RearrangeNodesRequest()
         {
         }
         
-        public RearrangeNodesRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.NodePosition[] positions)
+        public RearrangeNodesRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.NodePosition[] positions)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -4810,34 +4810,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RearrangeNodesResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RearrangeNodesResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public RearrangeNodesResponse()
         {
         }
         
-        public RearrangeNodesResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public RearrangeNodesResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RemoveFavorite", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RemoveFavoriteRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -4846,7 +4846,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public RemoveFavoriteRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID)
+        public RemoveFavoriteRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -4854,47 +4854,47 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RemoveFavoriteResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RemoveFavoriteResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public RemoveFavoriteResponse()
         {
         }
         
-        public RemoveFavoriteResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public RemoveFavoriteResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RemoveFromCollection", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RemoveFromCollectionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long collectionID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute("collectionItems", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.CollectionItem[] collectionItems;
+        public Sassa.Services.CsDocuments.CollectionItem[] collectionItems;
         
         public RemoveFromCollectionRequest()
         {
         }
         
-        public RemoveFromCollectionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long collectionID, Sassa.eDocs.CSDocuments.CollectionItem[] collectionItems)
+        public RemoveFromCollectionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long collectionID, Sassa.Services.CsDocuments.CollectionItem[] collectionItems)
         {
             this.OTAuthentication = OTAuthentication;
             this.collectionID = collectionID;
@@ -4903,46 +4903,46 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RemoveFromCollectionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RemoveFromCollectionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public RemoveFromCollectionResponse()
         {
         }
         
-        public RemoveFromCollectionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public RemoveFromCollectionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RemoveNodeRight", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RemoveNodeRightRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.NodeRight nodeRight;
+        public Sassa.Services.CsDocuments.NodeRight nodeRight;
         
         public RemoveNodeRightRequest()
         {
         }
         
-        public RemoveNodeRightRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.NodeRight nodeRight)
+        public RemoveNodeRightRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.NodeRight nodeRight)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -4951,34 +4951,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RemoveNodeRightResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RemoveNodeRightResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public RemoveNodeRightResponse()
         {
         }
         
-        public RemoveNodeRightResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public RemoveNodeRightResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RenameNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RenameNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -4990,7 +4990,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public RenameNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, string newName)
+        public RenameNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, string newName)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -4999,34 +4999,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RenameNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RenameNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public RenameNodeResponse()
         {
         }
         
-        public RenameNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public RenameNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RepositionNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RepositionNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -5038,7 +5038,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public RepositionNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long position)
+        public RepositionNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long position)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -5047,34 +5047,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RepositionNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RepositionNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public RepositionNodeResponse()
         {
         }
         
-        public RepositionNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public RepositionNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ReserveNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ReserveNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -5087,7 +5087,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public ReserveNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, System.Nullable<long> userID)
+        public ReserveNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, System.Nullable<long> userID)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -5096,47 +5096,47 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ReserveNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ReserveNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public ReserveNodeResponse()
         {
         }
         
-        public ReserveNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public ReserveNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RunReport", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RunReportRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long reportID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute("inputs", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.DataValue[] inputs;
+        public Sassa.Services.CsDocuments.DataValue[] inputs;
         
         public RunReportRequest()
         {
         }
         
-        public RunReportRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long reportID, Sassa.eDocs.CSDocuments.DataValue[] inputs)
+        public RunReportRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long reportID, Sassa.Services.CsDocuments.DataValue[] inputs)
         {
             this.OTAuthentication = OTAuthentication;
             this.reportID = reportID;
@@ -5145,23 +5145,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="RunReportResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class RunReportResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.ReportResult RunReportResult;
+        public Sassa.Services.CsDocuments.ReportResult RunReportResult;
         
         public RunReportResponse()
         {
         }
         
-        public RunReportResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.ReportResult RunReportResult)
+        public RunReportResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.ReportResult RunReportResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.RunReportResult = RunReportResult;
@@ -5169,27 +5169,27 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="SetCategoryInheritance", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class SetCategoryInheritanceRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute("categoryInheritanceObjs", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.CategoryInheritance[] categoryInheritanceObjs;
+        public Sassa.Services.CsDocuments.CategoryInheritance[] categoryInheritanceObjs;
         
         public SetCategoryInheritanceRequest()
         {
         }
         
-        public SetCategoryInheritanceRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.eDocs.CSDocuments.CategoryInheritance[] categoryInheritanceObjs)
+        public SetCategoryInheritanceRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.Services.CsDocuments.CategoryInheritance[] categoryInheritanceObjs)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -5198,46 +5198,46 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="SetCategoryInheritanceResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class SetCategoryInheritanceResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public SetCategoryInheritanceResponse()
         {
         }
         
-        public SetCategoryInheritanceResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public SetCategoryInheritanceResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="SetNodeMetadata", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class SetNodeMetadataRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         public SetNodeMetadataRequest()
         {
         }
         
-        public SetNodeMetadataRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public SetNodeMetadataRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.Services.CsDocuments.Metadata metadata)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -5246,46 +5246,46 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="SetNodeMetadataResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class SetNodeMetadataResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public SetNodeMetadataResponse()
         {
         }
         
-        public SetNodeMetadataResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public SetNodeMetadataResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="SetNodeRights", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class SetNodeRightsRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.NodeRights rights;
+        public Sassa.Services.CsDocuments.NodeRights rights;
         
         public SetNodeRightsRequest()
         {
         }
         
-        public SetNodeRightsRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.NodeRights rights)
+        public SetNodeRightsRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.NodeRights rights)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -5294,34 +5294,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="SetNodeRightsResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class SetNodeRightsResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public SetNodeRightsResponse()
         {
         }
         
-        public SetNodeRightsResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public SetNodeRightsResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UnlockRelease", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UnlockReleaseRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -5336,7 +5336,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public UnlockReleaseRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
+        public UnlockReleaseRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -5346,34 +5346,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UnlockReleaseResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UnlockReleaseResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public UnlockReleaseResponse()
         {
         }
         
-        public UnlockReleaseResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public UnlockReleaseResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UnlockVersion", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UnlockVersionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -5385,7 +5385,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public UnlockVersionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public UnlockVersionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -5394,34 +5394,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UnlockVersionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UnlockVersionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public UnlockVersionResponse()
         {
         }
         
-        public UnlockVersionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public UnlockVersionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UnreserveNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UnreserveNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -5430,7 +5430,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public UnreserveNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public UnreserveNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -5438,47 +5438,47 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UnreserveNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UnreserveNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public UnreserveNodeResponse()
         {
         }
         
-        public UnreserveNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public UnreserveNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateCategory", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateCategoryRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long categoryID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute("attributes", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.Attribute[] attributes;
+        public Sassa.Services.CsDocuments.Attribute[] attributes;
         
         public UpdateCategoryRequest()
         {
         }
         
-        public UpdateCategoryRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long categoryID, Sassa.eDocs.CSDocuments.Attribute[] attributes)
+        public UpdateCategoryRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long categoryID, Sassa.Services.CsDocuments.Attribute[] attributes)
         {
             this.OTAuthentication = OTAuthentication;
             this.categoryID = categoryID;
@@ -5487,23 +5487,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateCategoryResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateCategoryResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.AttributeGroupDefinition UpdateCategoryResult;
+        public Sassa.Services.CsDocuments.AttributeGroupDefinition UpdateCategoryResult;
         
         public UpdateCategoryResponse()
         {
         }
         
-        public UpdateCategoryResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.AttributeGroupDefinition UpdateCategoryResult)
+        public UpdateCategoryResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.AttributeGroupDefinition UpdateCategoryResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.UpdateCategoryResult = UpdateCategoryResult;
@@ -5511,27 +5511,27 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateMultilingualMetadata", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateMultilingualMetadataRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute("metadata", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.MultilingualMetadata[] metadata;
+        public Sassa.Services.CsDocuments.MultilingualMetadata[] metadata;
         
         public UpdateMultilingualMetadataRequest()
         {
         }
         
-        public UpdateMultilingualMetadataRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.eDocs.CSDocuments.MultilingualMetadata[] metadata)
+        public UpdateMultilingualMetadataRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.Services.CsDocuments.MultilingualMetadata[] metadata)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -5540,43 +5540,43 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateMultilingualMetadataResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateMultilingualMetadataResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public UpdateMultilingualMetadataResponse()
         {
         }
         
-        public UpdateMultilingualMetadataResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public UpdateMultilingualMetadataResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node node;
+        public Sassa.Services.CsDocuments.Node node;
         
         public UpdateNodeRequest()
         {
         }
         
-        public UpdateNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node node)
+        public UpdateNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node node)
         {
             this.OTAuthentication = OTAuthentication;
             this.node = node;
@@ -5584,46 +5584,46 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public UpdateNodeResponse()
         {
         }
         
-        public UpdateNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public UpdateNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateNodeRight", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateNodeRightRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.NodeRight nodeRight;
+        public Sassa.Services.CsDocuments.NodeRight nodeRight;
         
         public UpdateNodeRightRequest()
         {
         }
         
-        public UpdateNodeRightRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.NodeRight nodeRight)
+        public UpdateNodeRightRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.NodeRight nodeRight)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -5632,43 +5632,43 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateNodeRightResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateNodeRightResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public UpdateNodeRightResponse()
         {
         }
         
-        public UpdateNodeRightResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public UpdateNodeRightResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateNodeRights", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateNodeRightsRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.ChunkedOperationContext context;
+        public Sassa.Services.CsDocuments.ChunkedOperationContext context;
         
         public UpdateNodeRightsRequest()
         {
         }
         
-        public UpdateNodeRightsRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.ChunkedOperationContext context)
+        public UpdateNodeRightsRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.ChunkedOperationContext context)
         {
             this.OTAuthentication = OTAuthentication;
             this.context = context;
@@ -5676,23 +5676,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateNodeRightsResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateNodeRightsResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.NodeRightUpdateInfo UpdateNodeRightsResult;
+        public Sassa.Services.CsDocuments.NodeRightUpdateInfo UpdateNodeRightsResult;
         
         public UpdateNodeRightsResponse()
         {
         }
         
-        public UpdateNodeRightsResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.NodeRightUpdateInfo UpdateNodeRightsResult)
+        public UpdateNodeRightsResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.NodeRightUpdateInfo UpdateNodeRightsResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.UpdateNodeRightsResult = UpdateNodeRightsResult;
@@ -5700,7 +5700,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public enum RightOperation
     {
@@ -5719,7 +5719,7 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="urn:DocMan.service.livelink.opentext.com")]
     public enum RightPropagation
     {
@@ -5735,33 +5735,33 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateNodeRightsContext", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateNodeRightsContextRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.RightOperation operation;
+        public Sassa.Services.CsDocuments.RightOperation operation;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=2)]
         [System.Xml.Serialization.XmlElementAttribute("rights", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.NodeRight[] rights;
+        public Sassa.Services.CsDocuments.NodeRight[] rights;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=3)]
-        public Sassa.eDocs.CSDocuments.RightPropagation propagation;
+        public Sassa.Services.CsDocuments.RightPropagation propagation;
         
         public UpdateNodeRightsContextRequest()
         {
         }
         
-        public UpdateNodeRightsContextRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.eDocs.CSDocuments.RightOperation operation, Sassa.eDocs.CSDocuments.NodeRight[] rights, Sassa.eDocs.CSDocuments.RightPropagation propagation)
+        public UpdateNodeRightsContextRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.Services.CsDocuments.RightOperation operation, Sassa.Services.CsDocuments.NodeRight[] rights, Sassa.Services.CsDocuments.RightPropagation propagation)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -5772,23 +5772,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateNodeRightsContextResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateNodeRightsContextResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.ChunkedOperationContext UpdateNodeRightsContextResult;
+        public Sassa.Services.CsDocuments.ChunkedOperationContext UpdateNodeRightsContextResult;
         
         public UpdateNodeRightsContextResponse()
         {
         }
         
-        public UpdateNodeRightsContextResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.ChunkedOperationContext UpdateNodeRightsContextResult)
+        public UpdateNodeRightsContextResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.ChunkedOperationContext UpdateNodeRightsContextResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.UpdateNodeRightsContextResult = UpdateNodeRightsContextResult;
@@ -5796,23 +5796,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateVersion", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateVersionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Version version;
+        public Sassa.Services.CsDocuments.Version version;
         
         public UpdateVersionRequest()
         {
         }
         
-        public UpdateVersionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Version version)
+        public UpdateVersionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Version version)
         {
             this.OTAuthentication = OTAuthentication;
             this.version = version;
@@ -5820,43 +5820,43 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpdateVersionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpdateVersionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public UpdateVersionResponse()
         {
         }
         
-        public UpdateVersionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public UpdateVersionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpgradeCategoryItems", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpgradeCategoryItemsRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.ChunkedOperationContext context;
+        public Sassa.Services.CsDocuments.ChunkedOperationContext context;
         
         public UpgradeCategoryItemsRequest()
         {
         }
         
-        public UpgradeCategoryItemsRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.ChunkedOperationContext context)
+        public UpgradeCategoryItemsRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.ChunkedOperationContext context)
         {
             this.OTAuthentication = OTAuthentication;
             this.context = context;
@@ -5864,23 +5864,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpgradeCategoryItemsResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpgradeCategoryItemsResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.CategoryItemsUpgradeInfo UpgradeCategoryItemsResult;
+        public Sassa.Services.CsDocuments.CategoryItemsUpgradeInfo UpgradeCategoryItemsResult;
         
         public UpgradeCategoryItemsResponse()
         {
         }
         
-        public UpgradeCategoryItemsResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.CategoryItemsUpgradeInfo UpgradeCategoryItemsResult)
+        public UpgradeCategoryItemsResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.CategoryItemsUpgradeInfo UpgradeCategoryItemsResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.UpgradeCategoryItemsResult = UpgradeCategoryItemsResult;
@@ -5888,14 +5888,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpgradeCategoryItemsContext", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpgradeCategoryItemsContextRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long categoryID;
@@ -5910,7 +5910,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public UpgradeCategoryItemsContextRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long categoryID, long version, bool addVersion)
+        public UpgradeCategoryItemsContextRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long categoryID, long version, bool addVersion)
         {
             this.OTAuthentication = OTAuthentication;
             this.categoryID = categoryID;
@@ -5920,23 +5920,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="UpgradeCategoryItemsContextResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class UpgradeCategoryItemsContextResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.ChunkedOperationContext UpgradeCategoryItemsContextResult;
+        public Sassa.Services.CsDocuments.ChunkedOperationContext UpgradeCategoryItemsContextResult;
         
         public UpgradeCategoryItemsContextResponse()
         {
         }
         
-        public UpgradeCategoryItemsContextResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.ChunkedOperationContext UpgradeCategoryItemsContextResult)
+        public UpgradeCategoryItemsContextResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.ChunkedOperationContext UpgradeCategoryItemsContextResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.UpgradeCategoryItemsContextResult = UpgradeCategoryItemsContextResult;
@@ -5944,14 +5944,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetMultilingualMetadata", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetMultilingualMetadataRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -5964,7 +5964,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetMultilingualMetadataRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, string[] languageCodes)
+        public GetMultilingualMetadataRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, string[] languageCodes)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -5973,24 +5973,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetMultilingualMetadataResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetMultilingualMetadataResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetMultilingualMetadataResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.MultilingualMetadata[] GetMultilingualMetadataResult;
+        public Sassa.Services.CsDocuments.MultilingualMetadata[] GetMultilingualMetadataResult;
         
         public GetMultilingualMetadataResponse()
         {
         }
         
-        public GetMultilingualMetadataResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.MultilingualMetadata[] GetMultilingualMetadataResult)
+        public GetMultilingualMetadataResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.MultilingualMetadata[] GetMultilingualMetadataResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetMultilingualMetadataResult = GetMultilingualMetadataResult;
@@ -5998,14 +5998,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -6014,7 +6014,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public GetNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -6022,23 +6022,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node GetNodeResult;
+        public Sassa.Services.CsDocuments.Node GetNodeResult;
         
         public GetNodeResponse()
         {
         }
         
-        public GetNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node GetNodeResult)
+        public GetNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node GetNodeResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodeResult = GetNodeResult;
@@ -6046,14 +6046,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeAuditRecords", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeAuditRecordsRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -6062,7 +6062,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeAuditRecordsRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public GetNodeAuditRecordsRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -6070,24 +6070,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeAuditRecordsResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeAuditRecordsResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetNodeAuditRecordsResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.NodeAuditRecord[] GetNodeAuditRecordsResult;
+        public Sassa.Services.CsDocuments.NodeAuditRecord[] GetNodeAuditRecordsResult;
         
         public GetNodeAuditRecordsResponse()
         {
         }
         
-        public GetNodeAuditRecordsResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.NodeAuditRecord[] GetNodeAuditRecordsResult)
+        public GetNodeAuditRecordsResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.NodeAuditRecord[] GetNodeAuditRecordsResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodeAuditRecordsResult = GetNodeAuditRecordsResult;
@@ -6095,14 +6095,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeByGUID", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeByGUIDRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string guid;
@@ -6111,7 +6111,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeByGUIDRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string guid)
+        public GetNodeByGUIDRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string guid)
         {
             this.OTAuthentication = OTAuthentication;
             this.guid = guid;
@@ -6119,23 +6119,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeByGUIDResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeByGUIDResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node GetNodeByGUIDResult;
+        public Sassa.Services.CsDocuments.Node GetNodeByGUIDResult;
         
         public GetNodeByGUIDResponse()
         {
         }
         
-        public GetNodeByGUIDResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node GetNodeByGUIDResult)
+        public GetNodeByGUIDResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node GetNodeByGUIDResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodeByGUIDResult = GetNodeByGUIDResult;
@@ -6143,14 +6143,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeByName", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeByNameRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -6162,7 +6162,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeByNameRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name)
+        public GetNodeByNameRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -6171,23 +6171,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeByNameResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeByNameResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node GetNodeByNameResult;
+        public Sassa.Services.CsDocuments.Node GetNodeByNameResult;
         
         public GetNodeByNameResponse()
         {
         }
         
-        public GetNodeByNameResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node GetNodeByNameResult)
+        public GetNodeByNameResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node GetNodeByNameResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodeByNameResult = GetNodeByNameResult;
@@ -6195,14 +6195,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeByNickname", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeByNicknameRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string nickname;
@@ -6211,7 +6211,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeByNicknameRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string nickname)
+        public GetNodeByNicknameRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string nickname)
         {
             this.OTAuthentication = OTAuthentication;
             this.nickname = nickname;
@@ -6219,23 +6219,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeByNicknameResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeByNicknameResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node GetNodeByNicknameResult;
+        public Sassa.Services.CsDocuments.Node GetNodeByNicknameResult;
         
         public GetNodeByNicknameResponse()
         {
         }
         
-        public GetNodeByNicknameResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node GetNodeByNicknameResult)
+        public GetNodeByNicknameResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node GetNodeByNicknameResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodeByNicknameResult = GetNodeByNicknameResult;
@@ -6243,14 +6243,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeByPath", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeByPathRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long rootID;
@@ -6263,7 +6263,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeByPathRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long rootID, string[] pathElements)
+        public GetNodeByPathRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long rootID, string[] pathElements)
         {
             this.OTAuthentication = OTAuthentication;
             this.rootID = rootID;
@@ -6272,23 +6272,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeByPathResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeByPathResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node GetNodeByPathResult;
+        public Sassa.Services.CsDocuments.Node GetNodeByPathResult;
         
         public GetNodeByPathResponse()
         {
         }
         
-        public GetNodeByPathResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node GetNodeByPathResult)
+        public GetNodeByPathResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node GetNodeByPathResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodeByPathResult = GetNodeByPathResult;
@@ -6296,14 +6296,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeGUID", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeGUIDRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -6312,7 +6312,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeGUIDRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID)
+        public GetNodeGUIDRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -6320,14 +6320,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeGUIDResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeGUIDResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string GetNodeGUIDResult;
@@ -6336,7 +6336,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeGUIDResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string GetNodeGUIDResult)
+        public GetNodeGUIDResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string GetNodeGUIDResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodeGUIDResult = GetNodeGUIDResult;
@@ -6344,14 +6344,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeRights", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeRightsRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -6360,7 +6360,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeRightsRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public GetNodeRightsRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -6368,23 +6368,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeRightsResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeRightsResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.NodeRights GetNodeRightsResult;
+        public Sassa.Services.CsDocuments.NodeRights GetNodeRightsResult;
         
         public GetNodeRightsResponse()
         {
         }
         
-        public GetNodeRightsResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.NodeRights GetNodeRightsResult)
+        public GetNodeRightsResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.NodeRights GetNodeRightsResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodeRightsResult = GetNodeRightsResult;
@@ -6392,14 +6392,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodes", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodesRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("IDs")]
@@ -6409,7 +6409,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodesRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long[] IDs)
+        public GetNodesRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long[] IDs)
         {
             this.OTAuthentication = OTAuthentication;
             this.IDs = IDs;
@@ -6417,24 +6417,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodesResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodesResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetNodesResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.Node[] GetNodesResult;
+        public Sassa.Services.CsDocuments.Node[] GetNodesResult;
         
         public GetNodesResponse()
         {
         }
         
-        public GetNodesResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node[] GetNodesResult)
+        public GetNodesResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node[] GetNodesResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodesResult = GetNodesResult;
@@ -6442,14 +6442,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodesByNickname", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodesByNicknameRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("nicknames", IsNullable=true)]
@@ -6459,7 +6459,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodesByNicknameRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string[] nicknames)
+        public GetNodesByNicknameRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string[] nicknames)
         {
             this.OTAuthentication = OTAuthentication;
             this.nicknames = nicknames;
@@ -6467,24 +6467,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodesByNicknameResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodesByNicknameResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetNodesByNicknameResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.Node[] GetNodesByNicknameResult;
+        public Sassa.Services.CsDocuments.Node[] GetNodesByNicknameResult;
         
         public GetNodesByNicknameResponse()
         {
         }
         
-        public GetNodesByNicknameResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node[] GetNodesByNicknameResult)
+        public GetNodesByNicknameResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node[] GetNodesByNicknameResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodesByNicknameResult = GetNodesByNicknameResult;
@@ -6492,26 +6492,26 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodesInContainer", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodesInContainerRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long containerID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.GetNodesInContainerOptions options;
+        public Sassa.Services.CsDocuments.GetNodesInContainerOptions options;
         
         public GetNodesInContainerRequest()
         {
         }
         
-        public GetNodesInContainerRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long containerID, Sassa.eDocs.CSDocuments.GetNodesInContainerOptions options)
+        public GetNodesInContainerRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long containerID, Sassa.Services.CsDocuments.GetNodesInContainerOptions options)
         {
             this.OTAuthentication = OTAuthentication;
             this.containerID = containerID;
@@ -6520,24 +6520,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodesInContainerResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodesInContainerResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetNodesInContainerResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.Node[] GetNodesInContainerResult;
+        public Sassa.Services.CsDocuments.Node[] GetNodesInContainerResult;
         
         public GetNodesInContainerResponse()
         {
         }
         
-        public GetNodesInContainerResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node[] GetNodesInContainerResult)
+        public GetNodesInContainerResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node[] GetNodesInContainerResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodesInContainerResult = GetNodesInContainerResult;
@@ -6545,14 +6545,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeTemplate", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeTemplateRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -6564,7 +6564,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeTemplateRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string nodeType)
+        public GetNodeTemplateRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string nodeType)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -6573,23 +6573,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeTemplateResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeTemplateResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node GetNodeTemplateResult;
+        public Sassa.Services.CsDocuments.Node GetNodeTemplateResult;
         
         public GetNodeTemplateResponse()
         {
         }
         
-        public GetNodeTemplateResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node GetNodeTemplateResult)
+        public GetNodeTemplateResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node GetNodeTemplateResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodeTemplateResult = GetNodeTemplateResult;
@@ -6597,34 +6597,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeTypes", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeTypesRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public GetNodeTypesRequest()
         {
         }
         
-        public GetNodeTypesRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public GetNodeTypesRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetNodeTypesResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetNodeTypesResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetNodeTypesResult", IsNullable=true)]
@@ -6634,7 +6634,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetNodeTypesResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string[] GetNodeTypesResult)
+        public GetNodeTypesResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string[] GetNodeTypesResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetNodeTypesResult = GetNodeTypesResult;
@@ -6642,26 +6642,26 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetPagedNodeAuditData", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetPagedNodeAuditDataRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.PageHandle pageHandle;
+        public Sassa.Services.CsDocuments.PageHandle pageHandle;
         
         public GetPagedNodeAuditDataRequest()
         {
         }
         
-        public GetPagedNodeAuditDataRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.PageHandle pageHandle)
+        public GetPagedNodeAuditDataRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.PageHandle pageHandle)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -6670,23 +6670,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetPagedNodeAuditDataResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetPagedNodeAuditDataResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.PagedNodeAuditData GetPagedNodeAuditDataResult;
+        public Sassa.Services.CsDocuments.PagedNodeAuditData GetPagedNodeAuditDataResult;
         
         public GetPagedNodeAuditDataResponse()
         {
         }
         
-        public GetPagedNodeAuditDataResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.PagedNodeAuditData GetPagedNodeAuditDataResult)
+        public GetPagedNodeAuditDataResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.PagedNodeAuditData GetPagedNodeAuditDataResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetPagedNodeAuditDataResult = GetPagedNodeAuditDataResult;
@@ -6694,14 +6694,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRelease", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetReleaseRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -6716,7 +6716,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetReleaseRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
+        public GetReleaseRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -6726,23 +6726,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetReleaseResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetReleaseResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.CompoundDocRelease GetReleaseResult;
+        public Sassa.Services.CsDocuments.CompoundDocRelease GetReleaseResult;
         
         public GetReleaseResponse()
         {
         }
         
-        public GetReleaseResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.CompoundDocRelease GetReleaseResult)
+        public GetReleaseResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.CompoundDocRelease GetReleaseResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetReleaseResult = GetReleaseResult;
@@ -6750,14 +6750,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRenditionContents", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetRenditionContentsRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -6772,7 +6772,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetRenditionContentsRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
+        public GetRenditionContentsRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -6782,23 +6782,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRenditionContentsResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetRenditionContentsResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Attachment GetRenditionContentsResult;
+        public Sassa.Services.CsDocuments.Attachment GetRenditionContentsResult;
         
         public GetRenditionContentsResponse()
         {
         }
         
-        public GetRenditionContentsResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Attachment GetRenditionContentsResult)
+        public GetRenditionContentsResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Attachment GetRenditionContentsResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetRenditionContentsResult = GetRenditionContentsResult;
@@ -6806,14 +6806,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRenditionContentsContext", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetRenditionContentsContextRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -6828,7 +6828,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetRenditionContentsContextRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
+        public GetRenditionContentsContextRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -6838,14 +6838,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRenditionContentsContextResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetRenditionContentsContextResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string GetRenditionContentsContextResult;
@@ -6854,7 +6854,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetRenditionContentsContextResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string GetRenditionContentsContextResult)
+        public GetRenditionContentsContextResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string GetRenditionContentsContextResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetRenditionContentsContextResult = GetRenditionContentsContextResult;
@@ -6862,14 +6862,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRootNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetRootNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string rootType;
@@ -6878,7 +6878,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetRootNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string rootType)
+        public GetRootNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string rootType)
         {
             this.OTAuthentication = OTAuthentication;
             this.rootType = rootType;
@@ -6886,23 +6886,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRootNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetRootNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node GetRootNodeResult;
+        public Sassa.Services.CsDocuments.Node GetRootNodeResult;
         
         public GetRootNodeResponse()
         {
         }
         
-        public GetRootNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node GetRootNodeResult)
+        public GetRootNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node GetRootNodeResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetRootNodeResult = GetRootNodeResult;
@@ -6910,34 +6910,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRootNodeTypes", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetRootNodeTypesRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public GetRootNodeTypesRequest()
         {
         }
         
-        public GetRootNodeTypesRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public GetRootNodeTypesRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetRootNodeTypesResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetRootNodeTypesResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetRootNodeTypesResult", IsNullable=true)]
@@ -6947,7 +6947,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetRootNodeTypesResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string[] GetRootNodeTypesResult)
+        public GetRootNodeTypesResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string[] GetRootNodeTypesResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetRootNodeTypesResult = GetRootNodeTypesResult;
@@ -6955,14 +6955,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVersion", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetVersionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -6974,7 +6974,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetVersionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public GetVersionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -6983,23 +6983,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVersionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetVersionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Version GetVersionResult;
+        public Sassa.Services.CsDocuments.Version GetVersionResult;
         
         public GetVersionResponse()
         {
         }
         
-        public GetVersionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Version GetVersionResult)
+        public GetVersionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Version GetVersionResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetVersionResult = GetVersionResult;
@@ -7007,14 +7007,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVersionByGUID", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetVersionByGUIDRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string guid;
@@ -7023,7 +7023,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetVersionByGUIDRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string guid)
+        public GetVersionByGUIDRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string guid)
         {
             this.OTAuthentication = OTAuthentication;
             this.guid = guid;
@@ -7031,23 +7031,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVersionByGUIDResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetVersionByGUIDResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Version GetVersionByGUIDResult;
+        public Sassa.Services.CsDocuments.Version GetVersionByGUIDResult;
         
         public GetVersionByGUIDResponse()
         {
         }
         
-        public GetVersionByGUIDResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Version GetVersionByGUIDResult)
+        public GetVersionByGUIDResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Version GetVersionByGUIDResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetVersionByGUIDResult = GetVersionByGUIDResult;
@@ -7055,14 +7055,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVersionContents", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetVersionContentsRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -7074,7 +7074,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetVersionContentsRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public GetVersionContentsRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7083,23 +7083,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVersionContentsResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetVersionContentsResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Attachment GetVersionContentsResult;
+        public Sassa.Services.CsDocuments.Attachment GetVersionContentsResult;
         
         public GetVersionContentsResponse()
         {
         }
         
-        public GetVersionContentsResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Attachment GetVersionContentsResult)
+        public GetVersionContentsResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Attachment GetVersionContentsResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetVersionContentsResult = GetVersionContentsResult;
@@ -7107,14 +7107,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVersionContentsContext", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetVersionContentsContextRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -7126,7 +7126,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetVersionContentsContextRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public GetVersionContentsContextRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7135,14 +7135,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVersionContentsContextResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetVersionContentsContextResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string GetVersionContentsContextResult;
@@ -7151,7 +7151,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetVersionContentsContextResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string GetVersionContentsContextResult)
+        public GetVersionContentsContextResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string GetVersionContentsContextResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetVersionContentsContextResult = GetVersionContentsContextResult;
@@ -7159,14 +7159,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVersionGUID", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetVersionGUIDRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -7178,7 +7178,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetVersionGUIDRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNumber)
+        public GetVersionGUIDRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNumber)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -7187,14 +7187,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetVersionGUIDResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetVersionGUIDResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string GetVersionGUIDResult;
@@ -7203,7 +7203,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetVersionGUIDResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string GetVersionGUIDResult)
+        public GetVersionGUIDResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string GetVersionGUIDResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetVersionGUIDResult = GetVersionGUIDResult;
@@ -7211,14 +7211,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListNodes", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListNodesRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -7230,7 +7230,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public ListNodesRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, bool partialData)
+        public ListNodesRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, bool partialData)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -7239,24 +7239,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListNodesResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListNodesResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("ListNodesResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.Node[] ListNodesResult;
+        public Sassa.Services.CsDocuments.Node[] ListNodesResult;
         
         public ListNodesResponse()
         {
         }
         
-        public ListNodesResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node[] ListNodesResult)
+        public ListNodesResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node[] ListNodesResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.ListNodesResult = ListNodesResult;
@@ -7264,14 +7264,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListNodesByName", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListNodesByNameRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -7280,7 +7280,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public ListNodesByNameRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID)
+        public ListNodesByNameRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -7288,24 +7288,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListNodesByNameResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListNodesByNameResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("ListNodesByNameResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.Node[] ListNodesByNameResult;
+        public Sassa.Services.CsDocuments.Node[] ListNodesByNameResult;
         
         public ListNodesByNameResponse()
         {
         }
         
-        public ListNodesByNameResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node[] ListNodesByNameResult)
+        public ListNodesByNameResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node[] ListNodesByNameResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.ListNodesByNameResult = ListNodesByNameResult;
@@ -7313,26 +7313,26 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListNodesByPage", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListNodesByPageRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.NodePageSpecification pageSpec;
+        public Sassa.Services.CsDocuments.NodePageSpecification pageSpec;
         
         public ListNodesByPageRequest()
         {
         }
         
-        public ListNodesByPageRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, Sassa.eDocs.CSDocuments.NodePageSpecification pageSpec)
+        public ListNodesByPageRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, Sassa.Services.CsDocuments.NodePageSpecification pageSpec)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -7341,23 +7341,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListNodesByPageResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListNodesByPageResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.NodePageResult ListNodesByPageResult;
+        public Sassa.Services.CsDocuments.NodePageResult ListNodesByPageResult;
         
         public ListNodesByPageResponse()
         {
         }
         
-        public ListNodesByPageResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.NodePageResult ListNodesByPageResult)
+        public ListNodesByPageResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.NodePageResult ListNodesByPageResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.ListNodesByPageResult = ListNodesByPageResult;
@@ -7365,26 +7365,26 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListNodesByPageAndName", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListNodesByPageAndNameRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.NodePageSpecification pageSpec;
+        public Sassa.Services.CsDocuments.NodePageSpecification pageSpec;
         
         public ListNodesByPageAndNameRequest()
         {
         }
         
-        public ListNodesByPageAndNameRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, Sassa.eDocs.CSDocuments.NodePageSpecification pageSpec)
+        public ListNodesByPageAndNameRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, Sassa.Services.CsDocuments.NodePageSpecification pageSpec)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -7393,23 +7393,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListNodesByPageAndNameResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListNodesByPageAndNameResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.NodePageResult ListNodesByPageAndNameResult;
+        public Sassa.Services.CsDocuments.NodePageResult ListNodesByPageAndNameResult;
         
         public ListNodesByPageAndNameResponse()
         {
         }
         
-        public ListNodesByPageAndNameResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.NodePageResult ListNodesByPageAndNameResult)
+        public ListNodesByPageAndNameResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.NodePageResult ListNodesByPageAndNameResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.ListNodesByPageAndNameResult = ListNodesByPageAndNameResult;
@@ -7417,14 +7417,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListReferences", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListReferencesRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -7433,7 +7433,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public ListReferencesRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public ListReferencesRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7441,24 +7441,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListReferencesResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListReferencesResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("ListReferencesResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.Node[] ListReferencesResult;
+        public Sassa.Services.CsDocuments.Node[] ListReferencesResult;
         
         public ListReferencesResponse()
         {
         }
         
-        public ListReferencesResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node[] ListReferencesResult)
+        public ListReferencesResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node[] ListReferencesResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.ListReferencesResult = ListReferencesResult;
@@ -7466,14 +7466,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListReleases", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListReleasesRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -7482,7 +7482,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public ListReleasesRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public ListReleasesRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7490,24 +7490,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListReleasesResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListReleasesResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("ListReleasesResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.CompoundDocRelease[] ListReleasesResult;
+        public Sassa.Services.CsDocuments.CompoundDocRelease[] ListReleasesResult;
         
         public ListReleasesResponse()
         {
         }
         
-        public ListReleasesResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.CompoundDocRelease[] ListReleasesResult)
+        public ListReleasesResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.CompoundDocRelease[] ListReleasesResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.ListReleasesResult = ListReleasesResult;
@@ -7515,14 +7515,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListRenditions", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListRenditionsRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -7534,7 +7534,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public ListRenditionsRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum)
+        public ListRenditionsRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -7543,24 +7543,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ListRenditionsResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class ListRenditionsResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("ListRenditionsResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.Version[] ListRenditionsResult;
+        public Sassa.Services.CsDocuments.Version[] ListRenditionsResult;
         
         public ListRenditionsResponse()
         {
         }
         
-        public ListRenditionsResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Version[] ListRenditionsResult)
+        public ListRenditionsResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Version[] ListRenditionsResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.ListRenditionsResult = ListRenditionsResult;
@@ -7568,14 +7568,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="LockRelease", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class LockReleaseRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -7590,7 +7590,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public LockReleaseRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
+        public LockReleaseRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7600,34 +7600,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="LockReleaseResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class LockReleaseResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public LockReleaseResponse()
         {
         }
         
-        public LockReleaseResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public LockReleaseResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="LockVersion", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class LockVersionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -7639,7 +7639,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public LockVersionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public LockVersionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7648,34 +7648,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="LockVersionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class LockVersionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public LockVersionResponse()
         {
         }
         
-        public LockVersionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public LockVersionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="MoveNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class MoveNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -7687,13 +7687,13 @@ namespace Sassa.eDocs.CSDocuments
         public string newName;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=3)]
-        public Sassa.eDocs.CSDocuments.MoveOptions moveOptions;
+        public Sassa.Services.CsDocuments.MoveOptions moveOptions;
         
         public MoveNodeRequest()
         {
         }
         
-        public MoveNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long parentID, string newName, Sassa.eDocs.CSDocuments.MoveOptions moveOptions)
+        public MoveNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long parentID, string newName, Sassa.Services.CsDocuments.MoveOptions moveOptions)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7704,34 +7704,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="MoveNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class MoveNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public MoveNodeResponse()
         {
         }
         
-        public MoveNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public MoveNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="PromoteVersion", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class PromoteVersionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -7740,13 +7740,13 @@ namespace Sassa.eDocs.CSDocuments
         public long versionNum;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=2)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         public PromoteVersionRequest()
         {
         }
         
-        public PromoteVersionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public PromoteVersionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum, Sassa.Services.CsDocuments.Metadata metadata)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7756,23 +7756,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="PromoteVersionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class PromoteVersionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Version PromoteVersionResult;
+        public Sassa.Services.CsDocuments.Version PromoteVersionResult;
         
         public PromoteVersionResponse()
         {
         }
         
-        public PromoteVersionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Version PromoteVersionResult)
+        public PromoteVersionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Version PromoteVersionResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.PromoteVersionResult = PromoteVersionResult;
@@ -7780,14 +7780,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddFavorite", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddFavoriteRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -7796,7 +7796,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public AddFavoriteRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID)
+        public AddFavoriteRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -7804,49 +7804,49 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddFavoriteResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddFavoriteResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public AddFavoriteResponse()
         {
         }
         
-        public AddFavoriteResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public AddFavoriteResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddMajorVersion", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddMajorVersionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=2)]
-        public Sassa.eDocs.CSDocuments.Attachment attach;
+        public Sassa.Services.CsDocuments.Attachment attach;
         
         public AddMajorVersionRequest()
         {
         }
         
-        public AddMajorVersionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.Metadata metadata, Sassa.eDocs.CSDocuments.Attachment attach)
+        public AddMajorVersionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.Metadata metadata, Sassa.Services.CsDocuments.Attachment attach)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7856,23 +7856,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddMajorVersionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddMajorVersionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Version AddMajorVersionResult;
+        public Sassa.Services.CsDocuments.Version AddMajorVersionResult;
         
         public AddMajorVersionResponse()
         {
         }
         
-        public AddMajorVersionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Version AddMajorVersionResult)
+        public AddMajorVersionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Version AddMajorVersionResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.AddMajorVersionResult = AddMajorVersionResult;
@@ -7880,26 +7880,26 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddMajorVersionContext", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddMajorVersionContextRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         public AddMajorVersionContextRequest()
         {
         }
         
-        public AddMajorVersionContextRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public AddMajorVersionContextRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.Metadata metadata)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7908,14 +7908,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddMajorVersionContextResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddMajorVersionContextResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string AddMajorVersionContextResult;
@@ -7924,7 +7924,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public AddMajorVersionContextResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string AddMajorVersionContextResult)
+        public AddMajorVersionContextResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string AddMajorVersionContextResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.AddMajorVersionContextResult = AddMajorVersionContextResult;
@@ -7932,26 +7932,26 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddNodeRight", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddNodeRightRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.NodeRight nodeRight;
+        public Sassa.Services.CsDocuments.NodeRight nodeRight;
         
         public AddNodeRightRequest()
         {
         }
         
-        public AddNodeRightRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.NodeRight nodeRight)
+        public AddNodeRightRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.NodeRight nodeRight)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -7960,47 +7960,47 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddNodeRightResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddNodeRightResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public AddNodeRightResponse()
         {
         }
         
-        public AddNodeRightResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public AddNodeRightResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddToCollection", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddToCollectionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long collectionID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
         [System.Xml.Serialization.XmlElementAttribute("collectionItems", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.CollectionItem[] collectionItems;
+        public Sassa.Services.CsDocuments.CollectionItem[] collectionItems;
         
         public AddToCollectionRequest()
         {
         }
         
-        public AddToCollectionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long collectionID, Sassa.eDocs.CSDocuments.CollectionItem[] collectionItems)
+        public AddToCollectionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long collectionID, Sassa.Services.CsDocuments.CollectionItem[] collectionItems)
         {
             this.OTAuthentication = OTAuthentication;
             this.collectionID = collectionID;
@@ -8009,49 +8009,49 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddToCollectionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddToCollectionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public AddToCollectionResponse()
         {
         }
         
-        public AddToCollectionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public AddToCollectionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddVersion", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddVersionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=2)]
-        public Sassa.eDocs.CSDocuments.Attachment attach;
+        public Sassa.Services.CsDocuments.Attachment attach;
         
         public AddVersionRequest()
         {
         }
         
-        public AddVersionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.Metadata metadata, Sassa.eDocs.CSDocuments.Attachment attach)
+        public AddVersionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.Metadata metadata, Sassa.Services.CsDocuments.Attachment attach)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -8061,23 +8061,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddVersionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddVersionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Version AddVersionResult;
+        public Sassa.Services.CsDocuments.Version AddVersionResult;
         
         public AddVersionResponse()
         {
         }
         
-        public AddVersionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Version AddVersionResult)
+        public AddVersionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Version AddVersionResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.AddVersionResult = AddVersionResult;
@@ -8085,26 +8085,26 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddVersionContext", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddVersionContextRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         public AddVersionContextRequest()
         {
         }
         
-        public AddVersionContextRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public AddVersionContextRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.Metadata metadata)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -8113,14 +8113,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="AddVersionContextResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class AddVersionContextResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string AddVersionContextResult;
@@ -8129,7 +8129,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public AddVersionContextResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string AddVersionContextResult)
+        public AddVersionContextResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string AddVersionContextResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.AddVersionContextResult = AddVersionContextResult;
@@ -8137,14 +8137,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CopyNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CopyNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -8156,13 +8156,13 @@ namespace Sassa.eDocs.CSDocuments
         public string newName;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=3)]
-        public Sassa.eDocs.CSDocuments.CopyOptions copyOptions;
+        public Sassa.Services.CsDocuments.CopyOptions copyOptions;
         
         public CopyNodeRequest()
         {
         }
         
-        public CopyNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long parentID, string newName, Sassa.eDocs.CSDocuments.CopyOptions copyOptions)
+        public CopyNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long parentID, string newName, Sassa.Services.CsDocuments.CopyOptions copyOptions)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -8173,23 +8173,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CopyNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CopyNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node CopyNodeResult;
+        public Sassa.Services.CsDocuments.Node CopyNodeResult;
         
         public CopyNodeResponse()
         {
         }
         
-        public CopyNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node CopyNodeResult)
+        public CopyNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node CopyNodeResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CopyNodeResult = CopyNodeResult;
@@ -8197,14 +8197,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateCategory", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateCategoryRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -8217,16 +8217,16 @@ namespace Sassa.eDocs.CSDocuments
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=3)]
         [System.Xml.Serialization.XmlElementAttribute("attributes", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.Attribute[] attributes;
+        public Sassa.Services.CsDocuments.Attribute[] attributes;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=4)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         public CreateCategoryRequest()
         {
         }
         
-        public CreateCategoryRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, Sassa.eDocs.CSDocuments.Attribute[] attributes, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public CreateCategoryRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, Sassa.Services.CsDocuments.Attribute[] attributes, Sassa.Services.CsDocuments.Metadata metadata)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -8238,23 +8238,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateCategoryResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateCategoryResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node CreateCategoryResult;
+        public Sassa.Services.CsDocuments.Node CreateCategoryResult;
         
         public CreateCategoryResponse()
         {
         }
         
-        public CreateCategoryResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node CreateCategoryResult)
+        public CreateCategoryResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node CreateCategoryResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateCategoryResult = CreateCategoryResult;
@@ -8262,14 +8262,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateDocument", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateDocumentRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -8284,16 +8284,16 @@ namespace Sassa.eDocs.CSDocuments
         public bool advancedVersionControl;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=4)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=5)]
-        public Sassa.eDocs.CSDocuments.Attachment attach;
+        public Sassa.Services.CsDocuments.Attachment attach;
         
         public CreateDocumentRequest()
         {
         }
         
-        public CreateDocumentRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, bool advancedVersionControl, Sassa.eDocs.CSDocuments.Metadata metadata, Sassa.eDocs.CSDocuments.Attachment attach)
+        public CreateDocumentRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, bool advancedVersionControl, Sassa.Services.CsDocuments.Metadata metadata, Sassa.Services.CsDocuments.Attachment attach)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -8306,23 +8306,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateDocumentResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateDocumentResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node CreateDocumentResult;
+        public Sassa.Services.CsDocuments.Node CreateDocumentResult;
         
         public CreateDocumentResponse()
         {
         }
         
-        public CreateDocumentResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node CreateDocumentResult)
+        public CreateDocumentResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node CreateDocumentResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateDocumentResult = CreateDocumentResult;
@@ -8330,14 +8330,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateDocumentContext", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateDocumentContextRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -8352,13 +8352,13 @@ namespace Sassa.eDocs.CSDocuments
         public bool advancedVersionControl;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=4)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         public CreateDocumentContextRequest()
         {
         }
         
-        public CreateDocumentContextRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, bool advancedVersionControl, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public CreateDocumentContextRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, bool advancedVersionControl, Sassa.Services.CsDocuments.Metadata metadata)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -8370,14 +8370,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateDocumentContextResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateDocumentContextResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string CreateDocumentContextResult;
@@ -8386,7 +8386,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public CreateDocumentContextResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string CreateDocumentContextResult)
+        public CreateDocumentContextResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string CreateDocumentContextResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateDocumentContextResult = CreateDocumentContextResult;
@@ -8394,14 +8394,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateFolder", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateFolderRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -8413,13 +8413,13 @@ namespace Sassa.eDocs.CSDocuments
         public string comment;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=3)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         public CreateFolderRequest()
         {
         }
         
-        public CreateFolderRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public CreateFolderRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, Sassa.Services.CsDocuments.Metadata metadata)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -8430,23 +8430,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateFolderResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateFolderResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node CreateFolderResult;
+        public Sassa.Services.CsDocuments.Node CreateFolderResult;
         
         public CreateFolderResponse()
         {
         }
         
-        public CreateFolderResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node CreateFolderResult)
+        public CreateFolderResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node CreateFolderResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateFolderResult = CreateFolderResult;
@@ -8454,23 +8454,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node node;
+        public Sassa.Services.CsDocuments.Node node;
         
         public CreateNodeRequest()
         {
         }
         
-        public CreateNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node node)
+        public CreateNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node node)
         {
             this.OTAuthentication = OTAuthentication;
             this.node = node;
@@ -8478,23 +8478,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node CreateNodeResult;
+        public Sassa.Services.CsDocuments.Node CreateNodeResult;
         
         public CreateNodeResponse()
         {
         }
         
-        public CreateNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node CreateNodeResult)
+        public CreateNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node CreateNodeResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateNodeResult = CreateNodeResult;
@@ -8502,26 +8502,26 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateNodeAndVersion", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateNodeAndVersionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node node;
+        public Sassa.Services.CsDocuments.Node node;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=1)]
-        public Sassa.eDocs.CSDocuments.Attachment attach;
+        public Sassa.Services.CsDocuments.Attachment attach;
         
         public CreateNodeAndVersionRequest()
         {
         }
         
-        public CreateNodeAndVersionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node node, Sassa.eDocs.CSDocuments.Attachment attach)
+        public CreateNodeAndVersionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node node, Sassa.Services.CsDocuments.Attachment attach)
         {
             this.OTAuthentication = OTAuthentication;
             this.node = node;
@@ -8530,23 +8530,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateNodeAndVersionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateNodeAndVersionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node CreateNodeAndVersionResult;
+        public Sassa.Services.CsDocuments.Node CreateNodeAndVersionResult;
         
         public CreateNodeAndVersionResponse()
         {
         }
         
-        public CreateNodeAndVersionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node CreateNodeAndVersionResult)
+        public CreateNodeAndVersionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node CreateNodeAndVersionResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateNodeAndVersionResult = CreateNodeAndVersionResult;
@@ -8554,23 +8554,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateNodeAndVersionContext", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateNodeAndVersionContextRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node node;
+        public Sassa.Services.CsDocuments.Node node;
         
         public CreateNodeAndVersionContextRequest()
         {
         }
         
-        public CreateNodeAndVersionContextRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node node)
+        public CreateNodeAndVersionContextRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node node)
         {
             this.OTAuthentication = OTAuthentication;
             this.node = node;
@@ -8578,14 +8578,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateNodeAndVersionContextResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateNodeAndVersionContextResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string CreateNodeAndVersionContextResult;
@@ -8594,7 +8594,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public CreateNodeAndVersionContextResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string CreateNodeAndVersionContextResult)
+        public CreateNodeAndVersionContextResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string CreateNodeAndVersionContextResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateNodeAndVersionContextResult = CreateNodeAndVersionContextResult;
@@ -8602,14 +8602,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateRelease", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateReleaseRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -8624,7 +8624,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public CreateReleaseRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, bool major, string releaseName)
+        public CreateReleaseRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, bool major, string releaseName)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -8634,23 +8634,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateReleaseResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateReleaseResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.CompoundDocRelease CreateReleaseResult;
+        public Sassa.Services.CsDocuments.CompoundDocRelease CreateReleaseResult;
         
         public CreateReleaseResponse()
         {
         }
         
-        public CreateReleaseResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.CompoundDocRelease CreateReleaseResult)
+        public CreateReleaseResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.CompoundDocRelease CreateReleaseResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateReleaseResult = CreateReleaseResult;
@@ -8658,14 +8658,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateRendition", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateRenditionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -8677,13 +8677,13 @@ namespace Sassa.eDocs.CSDocuments
         public string renditionType;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=3)]
-        public Sassa.eDocs.CSDocuments.Attachment attach;
+        public Sassa.Services.CsDocuments.Attachment attach;
         
         public CreateRenditionRequest()
         {
         }
         
-        public CreateRenditionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType, Sassa.eDocs.CSDocuments.Attachment attach)
+        public CreateRenditionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType, Sassa.Services.CsDocuments.Attachment attach)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -8694,23 +8694,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateRenditionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateRenditionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Version CreateRenditionResult;
+        public Sassa.Services.CsDocuments.Version CreateRenditionResult;
         
         public CreateRenditionResponse()
         {
         }
         
-        public CreateRenditionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Version CreateRenditionResult)
+        public CreateRenditionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Version CreateRenditionResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateRenditionResult = CreateRenditionResult;
@@ -8718,14 +8718,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateRenditionContext", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateRenditionContextRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -8740,7 +8740,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public CreateRenditionContextRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
+        public CreateRenditionContextRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -8750,14 +8750,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateRenditionContextResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateRenditionContextResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string CreateRenditionContextResult;
@@ -8766,7 +8766,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public CreateRenditionContextResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string CreateRenditionContextResult)
+        public CreateRenditionContextResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string CreateRenditionContextResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateRenditionContextResult = CreateRenditionContextResult;
@@ -8774,14 +8774,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateShortcut", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateShortcutRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -8796,13 +8796,13 @@ namespace Sassa.eDocs.CSDocuments
         public long sourceID;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=4)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         public CreateShortcutRequest()
         {
         }
         
-        public CreateShortcutRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, long sourceID, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public CreateShortcutRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, long sourceID, Sassa.Services.CsDocuments.Metadata metadata)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -8814,23 +8814,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateShortcutResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateShortcutResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node CreateShortcutResult;
+        public Sassa.Services.CsDocuments.Node CreateShortcutResult;
         
         public CreateShortcutResponse()
         {
         }
         
-        public CreateShortcutResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node CreateShortcutResult)
+        public CreateShortcutResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node CreateShortcutResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateShortcutResult = CreateShortcutResult;
@@ -8838,14 +8838,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateSimpleDocument", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateSimpleDocumentRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -8854,13 +8854,13 @@ namespace Sassa.eDocs.CSDocuments
         public string name;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=2)]
-        public Sassa.eDocs.CSDocuments.Attachment attach;
+        public Sassa.Services.CsDocuments.Attachment attach;
         
         public CreateSimpleDocumentRequest()
         {
         }
         
-        public CreateSimpleDocumentRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, Sassa.eDocs.CSDocuments.Attachment attach)
+        public CreateSimpleDocumentRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, Sassa.Services.CsDocuments.Attachment attach)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -8870,14 +8870,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateSimpleDocumentResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateSimpleDocumentResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long CreateSimpleDocumentResult;
@@ -8886,7 +8886,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public CreateSimpleDocumentResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long CreateSimpleDocumentResult)
+        public CreateSimpleDocumentResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long CreateSimpleDocumentResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateSimpleDocumentResult = CreateSimpleDocumentResult;
@@ -8894,14 +8894,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateSimpleDocumentContext", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateSimpleDocumentContextRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -8913,7 +8913,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public CreateSimpleDocumentContextRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name)
+        public CreateSimpleDocumentContextRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -8922,14 +8922,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateSimpleDocumentContextResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateSimpleDocumentContextResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string CreateSimpleDocumentContextResult;
@@ -8938,7 +8938,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public CreateSimpleDocumentContextResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string CreateSimpleDocumentContextResult)
+        public CreateSimpleDocumentContextResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string CreateSimpleDocumentContextResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateSimpleDocumentContextResult = CreateSimpleDocumentContextResult;
@@ -8946,14 +8946,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateSimpleFolder", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateSimpleFolderRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -8965,7 +8965,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public CreateSimpleFolderRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name)
+        public CreateSimpleFolderRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -8974,14 +8974,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateSimpleFolderResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateSimpleFolderResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long CreateSimpleFolderResult;
@@ -8990,7 +8990,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public CreateSimpleFolderResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long CreateSimpleFolderResult)
+        public CreateSimpleFolderResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long CreateSimpleFolderResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateSimpleFolderResult = CreateSimpleFolderResult;
@@ -8998,14 +8998,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateURL", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateURLRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long parentID;
@@ -9020,13 +9020,13 @@ namespace Sassa.eDocs.CSDocuments
         public string location;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=4)]
-        public Sassa.eDocs.CSDocuments.Metadata metadata;
+        public Sassa.Services.CsDocuments.Metadata metadata;
         
         public CreateURLRequest()
         {
         }
         
-        public CreateURLRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, string location, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public CreateURLRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, string location, Sassa.Services.CsDocuments.Metadata metadata)
         {
             this.OTAuthentication = OTAuthentication;
             this.parentID = parentID;
@@ -9038,23 +9038,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateURLResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class CreateURLResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.Node CreateURLResult;
+        public Sassa.Services.CsDocuments.Node CreateURLResult;
         
         public CreateURLResponse()
         {
         }
         
-        public CreateURLResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node CreateURLResult)
+        public CreateURLResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node CreateURLResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.CreateURLResult = CreateURLResult;
@@ -9062,14 +9062,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="DeleteNode", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class DeleteNodeRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -9078,7 +9078,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public DeleteNodeRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public DeleteNodeRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -9086,34 +9086,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="DeleteNodeResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class DeleteNodeResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public DeleteNodeResponse()
         {
         }
         
-        public DeleteNodeResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public DeleteNodeResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="DeleteRelease", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class DeleteReleaseRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -9128,7 +9128,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public DeleteReleaseRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
+        public DeleteReleaseRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -9138,34 +9138,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="DeleteReleaseResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class DeleteReleaseResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public DeleteReleaseResponse()
         {
         }
         
-        public DeleteReleaseResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public DeleteReleaseResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="DeleteRendition", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class DeleteRenditionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -9180,7 +9180,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public DeleteRenditionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
+        public DeleteRenditionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -9190,34 +9190,34 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="DeleteRenditionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class DeleteRenditionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public DeleteRenditionResponse()
         {
         }
         
-        public DeleteRenditionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public DeleteRenditionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="DeleteVersion", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class DeleteVersionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long ID;
@@ -9229,7 +9229,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public DeleteVersionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public DeleteVersionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
             this.OTAuthentication = OTAuthentication;
             this.ID = ID;
@@ -9238,64 +9238,64 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="DeleteVersionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class DeleteVersionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public DeleteVersionResponse()
         {
         }
         
-        public DeleteVersionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public DeleteVersionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetAllFavorites", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetAllFavoritesRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public GetAllFavoritesRequest()
         {
         }
         
-        public GetAllFavoritesRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public GetAllFavoritesRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetAllFavoritesResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetAllFavoritesResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetAllFavoritesResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.Node[] GetAllFavoritesResult;
+        public Sassa.Services.CsDocuments.Node[] GetAllFavoritesResult;
         
         public GetAllFavoritesResponse()
         {
         }
         
-        public GetAllFavoritesResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node[] GetAllFavoritesResult)
+        public GetAllFavoritesResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node[] GetAllFavoritesResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetAllFavoritesResult = GetAllFavoritesResult;
@@ -9303,14 +9303,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetAllMultilingualMetadata", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetAllMultilingualMetadataRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -9319,7 +9319,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetAllMultilingualMetadataRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID)
+        public GetAllMultilingualMetadataRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -9327,24 +9327,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetAllMultilingualMetadataResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetAllMultilingualMetadataResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetAllMultilingualMetadataResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.MultilingualMetadata[] GetAllMultilingualMetadataResult;
+        public Sassa.Services.CsDocuments.MultilingualMetadata[] GetAllMultilingualMetadataResult;
         
         public GetAllMultilingualMetadataResponse()
         {
         }
         
-        public GetAllMultilingualMetadataResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.MultilingualMetadata[] GetAllMultilingualMetadataResult)
+        public GetAllMultilingualMetadataResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.MultilingualMetadata[] GetAllMultilingualMetadataResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetAllMultilingualMetadataResult = GetAllMultilingualMetadataResult;
@@ -9352,14 +9352,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetAttributeGroupDefinition", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetAttributeGroupDefinitionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string type;
@@ -9371,7 +9371,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetAttributeGroupDefinitionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string type, string key)
+        public GetAttributeGroupDefinitionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string type, string key)
         {
             this.OTAuthentication = OTAuthentication;
             this.type = type;
@@ -9380,23 +9380,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetAttributeGroupDefinitionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetAttributeGroupDefinitionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.AttributeGroupDefinition GetAttributeGroupDefinitionResult;
+        public Sassa.Services.CsDocuments.AttributeGroupDefinition GetAttributeGroupDefinitionResult;
         
         public GetAttributeGroupDefinitionResponse()
         {
         }
         
-        public GetAttributeGroupDefinitionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.AttributeGroupDefinition GetAttributeGroupDefinitionResult)
+        public GetAttributeGroupDefinitionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.AttributeGroupDefinition GetAttributeGroupDefinitionResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetAttributeGroupDefinitionResult = GetAttributeGroupDefinitionResult;
@@ -9404,14 +9404,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetAttributeGroupTemplate", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetAttributeGroupTemplateRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public string type;
@@ -9423,7 +9423,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetAttributeGroupTemplateRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string type, string key)
+        public GetAttributeGroupTemplateRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string type, string key)
         {
             this.OTAuthentication = OTAuthentication;
             this.type = type;
@@ -9432,23 +9432,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetAttributeGroupTemplateResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetAttributeGroupTemplateResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.AttributeGroup GetAttributeGroupTemplateResult;
+        public Sassa.Services.CsDocuments.AttributeGroup GetAttributeGroupTemplateResult;
         
         public GetAttributeGroupTemplateResponse()
         {
         }
         
-        public GetAttributeGroupTemplateResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.AttributeGroup GetAttributeGroupTemplateResult)
+        public GetAttributeGroupTemplateResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.AttributeGroup GetAttributeGroupTemplateResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetAttributeGroupTemplateResult = GetAttributeGroupTemplateResult;
@@ -9456,14 +9456,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetCategoryDefinition", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetCategoryDefinitionRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long categoryID;
@@ -9472,7 +9472,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetCategoryDefinitionRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long categoryID)
+        public GetCategoryDefinitionRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long categoryID)
         {
             this.OTAuthentication = OTAuthentication;
             this.categoryID = categoryID;
@@ -9480,23 +9480,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetCategoryDefinitionResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetCategoryDefinitionResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.AttributeGroupDefinition GetCategoryDefinitionResult;
+        public Sassa.Services.CsDocuments.AttributeGroupDefinition GetCategoryDefinitionResult;
         
         public GetCategoryDefinitionResponse()
         {
         }
         
-        public GetCategoryDefinitionResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.AttributeGroupDefinition GetCategoryDefinitionResult)
+        public GetCategoryDefinitionResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.AttributeGroupDefinition GetCategoryDefinitionResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetCategoryDefinitionResult = GetCategoryDefinitionResult;
@@ -9504,14 +9504,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetCategoryDefinitions", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetCategoryDefinitionsRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("categoryIDs")]
@@ -9521,7 +9521,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetCategoryDefinitionsRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long[] categoryIDs)
+        public GetCategoryDefinitionsRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long[] categoryIDs)
         {
             this.OTAuthentication = OTAuthentication;
             this.categoryIDs = categoryIDs;
@@ -9529,24 +9529,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetCategoryDefinitionsResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetCategoryDefinitionsResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetCategoryDefinitionsResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.AttributeGroupDefinition[] GetCategoryDefinitionsResult;
+        public Sassa.Services.CsDocuments.AttributeGroupDefinition[] GetCategoryDefinitionsResult;
         
         public GetCategoryDefinitionsResponse()
         {
         }
         
-        public GetCategoryDefinitionsResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.AttributeGroupDefinition[] GetCategoryDefinitionsResult)
+        public GetCategoryDefinitionsResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.AttributeGroupDefinition[] GetCategoryDefinitionsResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetCategoryDefinitionsResult = GetCategoryDefinitionsResult;
@@ -9554,14 +9554,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetCategoryInheritance", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetCategoryInheritanceRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long nodeID;
@@ -9570,7 +9570,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetCategoryInheritanceRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID)
+        public GetCategoryInheritanceRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID)
         {
             this.OTAuthentication = OTAuthentication;
             this.nodeID = nodeID;
@@ -9578,24 +9578,24 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetCategoryInheritanceResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetCategoryInheritanceResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetCategoryInheritanceResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.CategoryInheritance[] GetCategoryInheritanceResult;
+        public Sassa.Services.CsDocuments.CategoryInheritance[] GetCategoryInheritanceResult;
         
         public GetCategoryInheritanceResponse()
         {
         }
         
-        public GetCategoryInheritanceResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.CategoryInheritance[] GetCategoryInheritanceResult)
+        public GetCategoryInheritanceResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.CategoryInheritance[] GetCategoryInheritanceResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetCategoryInheritanceResult = GetCategoryInheritanceResult;
@@ -9603,14 +9603,14 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetCategoryTemplate", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetCategoryTemplateRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         public long categoryID;
@@ -9619,7 +9619,7 @@ namespace Sassa.eDocs.CSDocuments
         {
         }
         
-        public GetCategoryTemplateRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long categoryID)
+        public GetCategoryTemplateRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long categoryID)
         {
             this.OTAuthentication = OTAuthentication;
             this.categoryID = categoryID;
@@ -9627,23 +9627,23 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetCategoryTemplateResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetCategoryTemplateResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
-        public Sassa.eDocs.CSDocuments.AttributeGroup GetCategoryTemplateResult;
+        public Sassa.Services.CsDocuments.AttributeGroup GetCategoryTemplateResult;
         
         public GetCategoryTemplateResponse()
         {
         }
         
-        public GetCategoryTemplateResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.AttributeGroup GetCategoryTemplateResult)
+        public GetCategoryTemplateResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.AttributeGroup GetCategoryTemplateResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetCategoryTemplateResult = GetCategoryTemplateResult;
@@ -9651,58 +9651,58 @@ namespace Sassa.eDocs.CSDocuments
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetMetadataLanguages", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetMetadataLanguagesRequest
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         public GetMetadataLanguagesRequest()
         {
         }
         
-        public GetMetadataLanguagesRequest(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public GetMetadataLanguagesRequest(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
             this.OTAuthentication = OTAuthentication;
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetMetadataLanguagesResponse", WrapperNamespace="urn:DocMan.service.livelink.opentext.com", IsWrapped=true)]
     public partial class GetMetadataLanguagesResponse
     {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="urn:api.ecm.opentext.com")]
-        public Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication;
+        public Sassa.Services.CsDocuments.OTAuthentication OTAuthentication;
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="urn:DocMan.service.livelink.opentext.com", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute("GetMetadataLanguagesResult", IsNullable=true)]
-        public Sassa.eDocs.CSDocuments.MetadataLanguage[] GetMetadataLanguagesResult;
+        public Sassa.Services.CsDocuments.MetadataLanguage[] GetMetadataLanguagesResult;
         
         public GetMetadataLanguagesResponse()
         {
         }
         
-        public GetMetadataLanguagesResponse(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.MetadataLanguage[] GetMetadataLanguagesResult)
+        public GetMetadataLanguagesResponse(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.MetadataLanguage[] GetMetadataLanguagesResult)
         {
             this.OTAuthentication = OTAuthentication;
             this.GetMetadataLanguagesResult = GetMetadataLanguagesResult;
         }
     }
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    public interface DocumentManagementChannel : Sassa.eDocs.CSDocuments.DocumentManagement, System.ServiceModel.IClientChannel
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    public interface DocumentManagementChannel : Sassa.Services.CsDocuments.DocumentManagement, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    public partial class DocumentManagementClient : System.ServiceModel.ClientBase<Sassa.eDocs.CSDocuments.DocumentManagement>, Sassa.eDocs.CSDocuments.DocumentManagement
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    public partial class DocumentManagementClient : System.ServiceModel.ClientBase<Sassa.Services.CsDocuments.DocumentManagement>, Sassa.Services.CsDocuments.DocumentManagement
     {
         
         /// <summary>
@@ -9746,1043 +9746,1043 @@ namespace Sassa.eDocs.CSDocuments
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.PurgeVersionsResponse> Sassa.eDocs.CSDocuments.DocumentManagement.PurgeVersionsAsync(Sassa.eDocs.CSDocuments.PurgeVersionsRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.PurgeVersionsResponse> Sassa.Services.CsDocuments.DocumentManagement.PurgeVersionsAsync(Sassa.Services.CsDocuments.PurgeVersionsRequest request)
         {
             return base.Channel.PurgeVersionsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.PurgeVersionsResponse> PurgeVersionsAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, int numberToKeep)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.PurgeVersionsResponse> PurgeVersionsAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, int numberToKeep)
         {
-            Sassa.eDocs.CSDocuments.PurgeVersionsRequest inValue = new Sassa.eDocs.CSDocuments.PurgeVersionsRequest();
+            Sassa.Services.CsDocuments.PurgeVersionsRequest inValue = new Sassa.Services.CsDocuments.PurgeVersionsRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.numberToKeep = numberToKeep;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).PurgeVersionsAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).PurgeVersionsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RearrangeNodesResponse> Sassa.eDocs.CSDocuments.DocumentManagement.RearrangeNodesAsync(Sassa.eDocs.CSDocuments.RearrangeNodesRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RearrangeNodesResponse> Sassa.Services.CsDocuments.DocumentManagement.RearrangeNodesAsync(Sassa.Services.CsDocuments.RearrangeNodesRequest request)
         {
             return base.Channel.RearrangeNodesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RearrangeNodesResponse> RearrangeNodesAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.NodePosition[] positions)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RearrangeNodesResponse> RearrangeNodesAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.NodePosition[] positions)
         {
-            Sassa.eDocs.CSDocuments.RearrangeNodesRequest inValue = new Sassa.eDocs.CSDocuments.RearrangeNodesRequest();
+            Sassa.Services.CsDocuments.RearrangeNodesRequest inValue = new Sassa.Services.CsDocuments.RearrangeNodesRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.positions = positions;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).RearrangeNodesAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).RearrangeNodesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RemoveFavoriteResponse> Sassa.eDocs.CSDocuments.DocumentManagement.RemoveFavoriteAsync(Sassa.eDocs.CSDocuments.RemoveFavoriteRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RemoveFavoriteResponse> Sassa.Services.CsDocuments.DocumentManagement.RemoveFavoriteAsync(Sassa.Services.CsDocuments.RemoveFavoriteRequest request)
         {
             return base.Channel.RemoveFavoriteAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RemoveFavoriteResponse> RemoveFavoriteAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RemoveFavoriteResponse> RemoveFavoriteAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID)
         {
-            Sassa.eDocs.CSDocuments.RemoveFavoriteRequest inValue = new Sassa.eDocs.CSDocuments.RemoveFavoriteRequest();
+            Sassa.Services.CsDocuments.RemoveFavoriteRequest inValue = new Sassa.Services.CsDocuments.RemoveFavoriteRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).RemoveFavoriteAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).RemoveFavoriteAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RemoveFromCollectionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.RemoveFromCollectionAsync(Sassa.eDocs.CSDocuments.RemoveFromCollectionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RemoveFromCollectionResponse> Sassa.Services.CsDocuments.DocumentManagement.RemoveFromCollectionAsync(Sassa.Services.CsDocuments.RemoveFromCollectionRequest request)
         {
             return base.Channel.RemoveFromCollectionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RemoveFromCollectionResponse> RemoveFromCollectionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long collectionID, Sassa.eDocs.CSDocuments.CollectionItem[] collectionItems)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RemoveFromCollectionResponse> RemoveFromCollectionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long collectionID, Sassa.Services.CsDocuments.CollectionItem[] collectionItems)
         {
-            Sassa.eDocs.CSDocuments.RemoveFromCollectionRequest inValue = new Sassa.eDocs.CSDocuments.RemoveFromCollectionRequest();
+            Sassa.Services.CsDocuments.RemoveFromCollectionRequest inValue = new Sassa.Services.CsDocuments.RemoveFromCollectionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.collectionID = collectionID;
             inValue.collectionItems = collectionItems;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).RemoveFromCollectionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).RemoveFromCollectionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RemoveNodeRightResponse> Sassa.eDocs.CSDocuments.DocumentManagement.RemoveNodeRightAsync(Sassa.eDocs.CSDocuments.RemoveNodeRightRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RemoveNodeRightResponse> Sassa.Services.CsDocuments.DocumentManagement.RemoveNodeRightAsync(Sassa.Services.CsDocuments.RemoveNodeRightRequest request)
         {
             return base.Channel.RemoveNodeRightAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RemoveNodeRightResponse> RemoveNodeRightAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.NodeRight nodeRight)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RemoveNodeRightResponse> RemoveNodeRightAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.NodeRight nodeRight)
         {
-            Sassa.eDocs.CSDocuments.RemoveNodeRightRequest inValue = new Sassa.eDocs.CSDocuments.RemoveNodeRightRequest();
+            Sassa.Services.CsDocuments.RemoveNodeRightRequest inValue = new Sassa.Services.CsDocuments.RemoveNodeRightRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.nodeRight = nodeRight;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).RemoveNodeRightAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).RemoveNodeRightAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RenameNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.RenameNodeAsync(Sassa.eDocs.CSDocuments.RenameNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RenameNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.RenameNodeAsync(Sassa.Services.CsDocuments.RenameNodeRequest request)
         {
             return base.Channel.RenameNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RenameNodeResponse> RenameNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, string newName)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RenameNodeResponse> RenameNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, string newName)
         {
-            Sassa.eDocs.CSDocuments.RenameNodeRequest inValue = new Sassa.eDocs.CSDocuments.RenameNodeRequest();
+            Sassa.Services.CsDocuments.RenameNodeRequest inValue = new Sassa.Services.CsDocuments.RenameNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.newName = newName;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).RenameNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).RenameNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RepositionNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.RepositionNodeAsync(Sassa.eDocs.CSDocuments.RepositionNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RepositionNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.RepositionNodeAsync(Sassa.Services.CsDocuments.RepositionNodeRequest request)
         {
             return base.Channel.RepositionNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RepositionNodeResponse> RepositionNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long position)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RepositionNodeResponse> RepositionNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long position)
         {
-            Sassa.eDocs.CSDocuments.RepositionNodeRequest inValue = new Sassa.eDocs.CSDocuments.RepositionNodeRequest();
+            Sassa.Services.CsDocuments.RepositionNodeRequest inValue = new Sassa.Services.CsDocuments.RepositionNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.position = position;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).RepositionNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).RepositionNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ReserveNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.ReserveNodeAsync(Sassa.eDocs.CSDocuments.ReserveNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ReserveNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.ReserveNodeAsync(Sassa.Services.CsDocuments.ReserveNodeRequest request)
         {
             return base.Channel.ReserveNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ReserveNodeResponse> ReserveNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, System.Nullable<long> userID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ReserveNodeResponse> ReserveNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, System.Nullable<long> userID)
         {
-            Sassa.eDocs.CSDocuments.ReserveNodeRequest inValue = new Sassa.eDocs.CSDocuments.ReserveNodeRequest();
+            Sassa.Services.CsDocuments.ReserveNodeRequest inValue = new Sassa.Services.CsDocuments.ReserveNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.userID = userID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).ReserveNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).ReserveNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RunReportResponse> Sassa.eDocs.CSDocuments.DocumentManagement.RunReportAsync(Sassa.eDocs.CSDocuments.RunReportRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RunReportResponse> Sassa.Services.CsDocuments.DocumentManagement.RunReportAsync(Sassa.Services.CsDocuments.RunReportRequest request)
         {
             return base.Channel.RunReportAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.RunReportResponse> RunReportAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long reportID, Sassa.eDocs.CSDocuments.DataValue[] inputs)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.RunReportResponse> RunReportAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long reportID, Sassa.Services.CsDocuments.DataValue[] inputs)
         {
-            Sassa.eDocs.CSDocuments.RunReportRequest inValue = new Sassa.eDocs.CSDocuments.RunReportRequest();
+            Sassa.Services.CsDocuments.RunReportRequest inValue = new Sassa.Services.CsDocuments.RunReportRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.reportID = reportID;
             inValue.inputs = inputs;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).RunReportAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).RunReportAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.SetCategoryInheritanceResponse> Sassa.eDocs.CSDocuments.DocumentManagement.SetCategoryInheritanceAsync(Sassa.eDocs.CSDocuments.SetCategoryInheritanceRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.SetCategoryInheritanceResponse> Sassa.Services.CsDocuments.DocumentManagement.SetCategoryInheritanceAsync(Sassa.Services.CsDocuments.SetCategoryInheritanceRequest request)
         {
             return base.Channel.SetCategoryInheritanceAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.SetCategoryInheritanceResponse> SetCategoryInheritanceAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.eDocs.CSDocuments.CategoryInheritance[] categoryInheritanceObjs)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.SetCategoryInheritanceResponse> SetCategoryInheritanceAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.Services.CsDocuments.CategoryInheritance[] categoryInheritanceObjs)
         {
-            Sassa.eDocs.CSDocuments.SetCategoryInheritanceRequest inValue = new Sassa.eDocs.CSDocuments.SetCategoryInheritanceRequest();
+            Sassa.Services.CsDocuments.SetCategoryInheritanceRequest inValue = new Sassa.Services.CsDocuments.SetCategoryInheritanceRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.categoryInheritanceObjs = categoryInheritanceObjs;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).SetCategoryInheritanceAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).SetCategoryInheritanceAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.SetNodeMetadataResponse> Sassa.eDocs.CSDocuments.DocumentManagement.SetNodeMetadataAsync(Sassa.eDocs.CSDocuments.SetNodeMetadataRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.SetNodeMetadataResponse> Sassa.Services.CsDocuments.DocumentManagement.SetNodeMetadataAsync(Sassa.Services.CsDocuments.SetNodeMetadataRequest request)
         {
             return base.Channel.SetNodeMetadataAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.SetNodeMetadataResponse> SetNodeMetadataAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.SetNodeMetadataResponse> SetNodeMetadataAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.Services.CsDocuments.Metadata metadata)
         {
-            Sassa.eDocs.CSDocuments.SetNodeMetadataRequest inValue = new Sassa.eDocs.CSDocuments.SetNodeMetadataRequest();
+            Sassa.Services.CsDocuments.SetNodeMetadataRequest inValue = new Sassa.Services.CsDocuments.SetNodeMetadataRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.metadata = metadata;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).SetNodeMetadataAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).SetNodeMetadataAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.SetNodeRightsResponse> Sassa.eDocs.CSDocuments.DocumentManagement.SetNodeRightsAsync(Sassa.eDocs.CSDocuments.SetNodeRightsRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.SetNodeRightsResponse> Sassa.Services.CsDocuments.DocumentManagement.SetNodeRightsAsync(Sassa.Services.CsDocuments.SetNodeRightsRequest request)
         {
             return base.Channel.SetNodeRightsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.SetNodeRightsResponse> SetNodeRightsAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.NodeRights rights)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.SetNodeRightsResponse> SetNodeRightsAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.NodeRights rights)
         {
-            Sassa.eDocs.CSDocuments.SetNodeRightsRequest inValue = new Sassa.eDocs.CSDocuments.SetNodeRightsRequest();
+            Sassa.Services.CsDocuments.SetNodeRightsRequest inValue = new Sassa.Services.CsDocuments.SetNodeRightsRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.rights = rights;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).SetNodeRightsAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).SetNodeRightsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UnlockReleaseResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UnlockReleaseAsync(Sassa.eDocs.CSDocuments.UnlockReleaseRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UnlockReleaseResponse> Sassa.Services.CsDocuments.DocumentManagement.UnlockReleaseAsync(Sassa.Services.CsDocuments.UnlockReleaseRequest request)
         {
             return base.Channel.UnlockReleaseAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UnlockReleaseResponse> UnlockReleaseAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UnlockReleaseResponse> UnlockReleaseAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
         {
-            Sassa.eDocs.CSDocuments.UnlockReleaseRequest inValue = new Sassa.eDocs.CSDocuments.UnlockReleaseRequest();
+            Sassa.Services.CsDocuments.UnlockReleaseRequest inValue = new Sassa.Services.CsDocuments.UnlockReleaseRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.major = major;
             inValue.minor = minor;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UnlockReleaseAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UnlockReleaseAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UnlockVersionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UnlockVersionAsync(Sassa.eDocs.CSDocuments.UnlockVersionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UnlockVersionResponse> Sassa.Services.CsDocuments.DocumentManagement.UnlockVersionAsync(Sassa.Services.CsDocuments.UnlockVersionRequest request)
         {
             return base.Channel.UnlockVersionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UnlockVersionResponse> UnlockVersionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UnlockVersionResponse> UnlockVersionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
-            Sassa.eDocs.CSDocuments.UnlockVersionRequest inValue = new Sassa.eDocs.CSDocuments.UnlockVersionRequest();
+            Sassa.Services.CsDocuments.UnlockVersionRequest inValue = new Sassa.Services.CsDocuments.UnlockVersionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.versionNum = versionNum;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UnlockVersionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UnlockVersionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UnreserveNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UnreserveNodeAsync(Sassa.eDocs.CSDocuments.UnreserveNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UnreserveNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.UnreserveNodeAsync(Sassa.Services.CsDocuments.UnreserveNodeRequest request)
         {
             return base.Channel.UnreserveNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UnreserveNodeResponse> UnreserveNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UnreserveNodeResponse> UnreserveNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
-            Sassa.eDocs.CSDocuments.UnreserveNodeRequest inValue = new Sassa.eDocs.CSDocuments.UnreserveNodeRequest();
+            Sassa.Services.CsDocuments.UnreserveNodeRequest inValue = new Sassa.Services.CsDocuments.UnreserveNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UnreserveNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UnreserveNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateCategoryResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UpdateCategoryAsync(Sassa.eDocs.CSDocuments.UpdateCategoryRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateCategoryResponse> Sassa.Services.CsDocuments.DocumentManagement.UpdateCategoryAsync(Sassa.Services.CsDocuments.UpdateCategoryRequest request)
         {
             return base.Channel.UpdateCategoryAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateCategoryResponse> UpdateCategoryAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long categoryID, Sassa.eDocs.CSDocuments.Attribute[] attributes)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateCategoryResponse> UpdateCategoryAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long categoryID, Sassa.Services.CsDocuments.Attribute[] attributes)
         {
-            Sassa.eDocs.CSDocuments.UpdateCategoryRequest inValue = new Sassa.eDocs.CSDocuments.UpdateCategoryRequest();
+            Sassa.Services.CsDocuments.UpdateCategoryRequest inValue = new Sassa.Services.CsDocuments.UpdateCategoryRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.categoryID = categoryID;
             inValue.attributes = attributes;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UpdateCategoryAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UpdateCategoryAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateMultilingualMetadataResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UpdateMultilingualMetadataAsync(Sassa.eDocs.CSDocuments.UpdateMultilingualMetadataRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateMultilingualMetadataResponse> Sassa.Services.CsDocuments.DocumentManagement.UpdateMultilingualMetadataAsync(Sassa.Services.CsDocuments.UpdateMultilingualMetadataRequest request)
         {
             return base.Channel.UpdateMultilingualMetadataAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateMultilingualMetadataResponse> UpdateMultilingualMetadataAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.eDocs.CSDocuments.MultilingualMetadata[] metadata)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateMultilingualMetadataResponse> UpdateMultilingualMetadataAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.Services.CsDocuments.MultilingualMetadata[] metadata)
         {
-            Sassa.eDocs.CSDocuments.UpdateMultilingualMetadataRequest inValue = new Sassa.eDocs.CSDocuments.UpdateMultilingualMetadataRequest();
+            Sassa.Services.CsDocuments.UpdateMultilingualMetadataRequest inValue = new Sassa.Services.CsDocuments.UpdateMultilingualMetadataRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.metadata = metadata;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UpdateMultilingualMetadataAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UpdateMultilingualMetadataAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UpdateNodeAsync(Sassa.eDocs.CSDocuments.UpdateNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.UpdateNodeAsync(Sassa.Services.CsDocuments.UpdateNodeRequest request)
         {
             return base.Channel.UpdateNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeResponse> UpdateNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node node)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeResponse> UpdateNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node node)
         {
-            Sassa.eDocs.CSDocuments.UpdateNodeRequest inValue = new Sassa.eDocs.CSDocuments.UpdateNodeRequest();
+            Sassa.Services.CsDocuments.UpdateNodeRequest inValue = new Sassa.Services.CsDocuments.UpdateNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.node = node;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UpdateNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UpdateNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeRightResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UpdateNodeRightAsync(Sassa.eDocs.CSDocuments.UpdateNodeRightRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeRightResponse> Sassa.Services.CsDocuments.DocumentManagement.UpdateNodeRightAsync(Sassa.Services.CsDocuments.UpdateNodeRightRequest request)
         {
             return base.Channel.UpdateNodeRightAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeRightResponse> UpdateNodeRightAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.NodeRight nodeRight)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeRightResponse> UpdateNodeRightAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.NodeRight nodeRight)
         {
-            Sassa.eDocs.CSDocuments.UpdateNodeRightRequest inValue = new Sassa.eDocs.CSDocuments.UpdateNodeRightRequest();
+            Sassa.Services.CsDocuments.UpdateNodeRightRequest inValue = new Sassa.Services.CsDocuments.UpdateNodeRightRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.nodeRight = nodeRight;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UpdateNodeRightAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UpdateNodeRightAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeRightsResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UpdateNodeRightsAsync(Sassa.eDocs.CSDocuments.UpdateNodeRightsRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeRightsResponse> Sassa.Services.CsDocuments.DocumentManagement.UpdateNodeRightsAsync(Sassa.Services.CsDocuments.UpdateNodeRightsRequest request)
         {
             return base.Channel.UpdateNodeRightsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeRightsResponse> UpdateNodeRightsAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.ChunkedOperationContext context)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeRightsResponse> UpdateNodeRightsAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.ChunkedOperationContext context)
         {
-            Sassa.eDocs.CSDocuments.UpdateNodeRightsRequest inValue = new Sassa.eDocs.CSDocuments.UpdateNodeRightsRequest();
+            Sassa.Services.CsDocuments.UpdateNodeRightsRequest inValue = new Sassa.Services.CsDocuments.UpdateNodeRightsRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.context = context;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UpdateNodeRightsAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UpdateNodeRightsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeRightsContextResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UpdateNodeRightsContextAsync(Sassa.eDocs.CSDocuments.UpdateNodeRightsContextRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeRightsContextResponse> Sassa.Services.CsDocuments.DocumentManagement.UpdateNodeRightsContextAsync(Sassa.Services.CsDocuments.UpdateNodeRightsContextRequest request)
         {
             return base.Channel.UpdateNodeRightsContextAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateNodeRightsContextResponse> UpdateNodeRightsContextAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.eDocs.CSDocuments.RightOperation operation, Sassa.eDocs.CSDocuments.NodeRight[] rights, Sassa.eDocs.CSDocuments.RightPropagation propagation)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateNodeRightsContextResponse> UpdateNodeRightsContextAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, Sassa.Services.CsDocuments.RightOperation operation, Sassa.Services.CsDocuments.NodeRight[] rights, Sassa.Services.CsDocuments.RightPropagation propagation)
         {
-            Sassa.eDocs.CSDocuments.UpdateNodeRightsContextRequest inValue = new Sassa.eDocs.CSDocuments.UpdateNodeRightsContextRequest();
+            Sassa.Services.CsDocuments.UpdateNodeRightsContextRequest inValue = new Sassa.Services.CsDocuments.UpdateNodeRightsContextRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.operation = operation;
             inValue.rights = rights;
             inValue.propagation = propagation;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UpdateNodeRightsContextAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UpdateNodeRightsContextAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateVersionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UpdateVersionAsync(Sassa.eDocs.CSDocuments.UpdateVersionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateVersionResponse> Sassa.Services.CsDocuments.DocumentManagement.UpdateVersionAsync(Sassa.Services.CsDocuments.UpdateVersionRequest request)
         {
             return base.Channel.UpdateVersionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpdateVersionResponse> UpdateVersionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Version version)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpdateVersionResponse> UpdateVersionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Version version)
         {
-            Sassa.eDocs.CSDocuments.UpdateVersionRequest inValue = new Sassa.eDocs.CSDocuments.UpdateVersionRequest();
+            Sassa.Services.CsDocuments.UpdateVersionRequest inValue = new Sassa.Services.CsDocuments.UpdateVersionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.version = version;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UpdateVersionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UpdateVersionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpgradeCategoryItemsResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UpgradeCategoryItemsAsync(Sassa.eDocs.CSDocuments.UpgradeCategoryItemsRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpgradeCategoryItemsResponse> Sassa.Services.CsDocuments.DocumentManagement.UpgradeCategoryItemsAsync(Sassa.Services.CsDocuments.UpgradeCategoryItemsRequest request)
         {
             return base.Channel.UpgradeCategoryItemsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpgradeCategoryItemsResponse> UpgradeCategoryItemsAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.ChunkedOperationContext context)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpgradeCategoryItemsResponse> UpgradeCategoryItemsAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.ChunkedOperationContext context)
         {
-            Sassa.eDocs.CSDocuments.UpgradeCategoryItemsRequest inValue = new Sassa.eDocs.CSDocuments.UpgradeCategoryItemsRequest();
+            Sassa.Services.CsDocuments.UpgradeCategoryItemsRequest inValue = new Sassa.Services.CsDocuments.UpgradeCategoryItemsRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.context = context;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UpgradeCategoryItemsAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UpgradeCategoryItemsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpgradeCategoryItemsContextResponse> Sassa.eDocs.CSDocuments.DocumentManagement.UpgradeCategoryItemsContextAsync(Sassa.eDocs.CSDocuments.UpgradeCategoryItemsContextRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpgradeCategoryItemsContextResponse> Sassa.Services.CsDocuments.DocumentManagement.UpgradeCategoryItemsContextAsync(Sassa.Services.CsDocuments.UpgradeCategoryItemsContextRequest request)
         {
             return base.Channel.UpgradeCategoryItemsContextAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.UpgradeCategoryItemsContextResponse> UpgradeCategoryItemsContextAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long categoryID, long version, bool addVersion)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.UpgradeCategoryItemsContextResponse> UpgradeCategoryItemsContextAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long categoryID, long version, bool addVersion)
         {
-            Sassa.eDocs.CSDocuments.UpgradeCategoryItemsContextRequest inValue = new Sassa.eDocs.CSDocuments.UpgradeCategoryItemsContextRequest();
+            Sassa.Services.CsDocuments.UpgradeCategoryItemsContextRequest inValue = new Sassa.Services.CsDocuments.UpgradeCategoryItemsContextRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.categoryID = categoryID;
             inValue.version = version;
             inValue.addVersion = addVersion;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).UpgradeCategoryItemsContextAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).UpgradeCategoryItemsContextAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetMultilingualMetadataResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetMultilingualMetadataAsync(Sassa.eDocs.CSDocuments.GetMultilingualMetadataRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetMultilingualMetadataResponse> Sassa.Services.CsDocuments.DocumentManagement.GetMultilingualMetadataAsync(Sassa.Services.CsDocuments.GetMultilingualMetadataRequest request)
         {
             return base.Channel.GetMultilingualMetadataAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetMultilingualMetadataResponse> GetMultilingualMetadataAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, string[] languageCodes)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetMultilingualMetadataResponse> GetMultilingualMetadataAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, string[] languageCodes)
         {
-            Sassa.eDocs.CSDocuments.GetMultilingualMetadataRequest inValue = new Sassa.eDocs.CSDocuments.GetMultilingualMetadataRequest();
+            Sassa.Services.CsDocuments.GetMultilingualMetadataRequest inValue = new Sassa.Services.CsDocuments.GetMultilingualMetadataRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.languageCodes = languageCodes;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetMultilingualMetadataAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetMultilingualMetadataAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodeAsync(Sassa.eDocs.CSDocuments.GetNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodeAsync(Sassa.Services.CsDocuments.GetNodeRequest request)
         {
             return base.Channel.GetNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeResponse> GetNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeResponse> GetNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
-            Sassa.eDocs.CSDocuments.GetNodeRequest inValue = new Sassa.eDocs.CSDocuments.GetNodeRequest();
+            Sassa.Services.CsDocuments.GetNodeRequest inValue = new Sassa.Services.CsDocuments.GetNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeAuditRecordsResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodeAuditRecordsAsync(Sassa.eDocs.CSDocuments.GetNodeAuditRecordsRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeAuditRecordsResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodeAuditRecordsAsync(Sassa.Services.CsDocuments.GetNodeAuditRecordsRequest request)
         {
             return base.Channel.GetNodeAuditRecordsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeAuditRecordsResponse> GetNodeAuditRecordsAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeAuditRecordsResponse> GetNodeAuditRecordsAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
-            Sassa.eDocs.CSDocuments.GetNodeAuditRecordsRequest inValue = new Sassa.eDocs.CSDocuments.GetNodeAuditRecordsRequest();
+            Sassa.Services.CsDocuments.GetNodeAuditRecordsRequest inValue = new Sassa.Services.CsDocuments.GetNodeAuditRecordsRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodeAuditRecordsAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodeAuditRecordsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByGUIDResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodeByGUIDAsync(Sassa.eDocs.CSDocuments.GetNodeByGUIDRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByGUIDResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodeByGUIDAsync(Sassa.Services.CsDocuments.GetNodeByGUIDRequest request)
         {
             return base.Channel.GetNodeByGUIDAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByGUIDResponse> GetNodeByGUIDAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string guid)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByGUIDResponse> GetNodeByGUIDAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string guid)
         {
-            Sassa.eDocs.CSDocuments.GetNodeByGUIDRequest inValue = new Sassa.eDocs.CSDocuments.GetNodeByGUIDRequest();
+            Sassa.Services.CsDocuments.GetNodeByGUIDRequest inValue = new Sassa.Services.CsDocuments.GetNodeByGUIDRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.guid = guid;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodeByGUIDAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodeByGUIDAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByNameResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodeByNameAsync(Sassa.eDocs.CSDocuments.GetNodeByNameRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByNameResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodeByNameAsync(Sassa.Services.CsDocuments.GetNodeByNameRequest request)
         {
             return base.Channel.GetNodeByNameAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByNameResponse> GetNodeByNameAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByNameResponse> GetNodeByNameAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name)
         {
-            Sassa.eDocs.CSDocuments.GetNodeByNameRequest inValue = new Sassa.eDocs.CSDocuments.GetNodeByNameRequest();
+            Sassa.Services.CsDocuments.GetNodeByNameRequest inValue = new Sassa.Services.CsDocuments.GetNodeByNameRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.name = name;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodeByNameAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodeByNameAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByNicknameResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodeByNicknameAsync(Sassa.eDocs.CSDocuments.GetNodeByNicknameRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByNicknameResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodeByNicknameAsync(Sassa.Services.CsDocuments.GetNodeByNicknameRequest request)
         {
             return base.Channel.GetNodeByNicknameAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByNicknameResponse> GetNodeByNicknameAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string nickname)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByNicknameResponse> GetNodeByNicknameAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string nickname)
         {
-            Sassa.eDocs.CSDocuments.GetNodeByNicknameRequest inValue = new Sassa.eDocs.CSDocuments.GetNodeByNicknameRequest();
+            Sassa.Services.CsDocuments.GetNodeByNicknameRequest inValue = new Sassa.Services.CsDocuments.GetNodeByNicknameRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nickname = nickname;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodeByNicknameAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodeByNicknameAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByPathResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodeByPathAsync(Sassa.eDocs.CSDocuments.GetNodeByPathRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByPathResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodeByPathAsync(Sassa.Services.CsDocuments.GetNodeByPathRequest request)
         {
             return base.Channel.GetNodeByPathAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeByPathResponse> GetNodeByPathAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long rootID, string[] pathElements)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeByPathResponse> GetNodeByPathAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long rootID, string[] pathElements)
         {
-            Sassa.eDocs.CSDocuments.GetNodeByPathRequest inValue = new Sassa.eDocs.CSDocuments.GetNodeByPathRequest();
+            Sassa.Services.CsDocuments.GetNodeByPathRequest inValue = new Sassa.Services.CsDocuments.GetNodeByPathRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.rootID = rootID;
             inValue.pathElements = pathElements;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodeByPathAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodeByPathAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeGUIDResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodeGUIDAsync(Sassa.eDocs.CSDocuments.GetNodeGUIDRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeGUIDResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodeGUIDAsync(Sassa.Services.CsDocuments.GetNodeGUIDRequest request)
         {
             return base.Channel.GetNodeGUIDAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeGUIDResponse> GetNodeGUIDAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeGUIDResponse> GetNodeGUIDAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID)
         {
-            Sassa.eDocs.CSDocuments.GetNodeGUIDRequest inValue = new Sassa.eDocs.CSDocuments.GetNodeGUIDRequest();
+            Sassa.Services.CsDocuments.GetNodeGUIDRequest inValue = new Sassa.Services.CsDocuments.GetNodeGUIDRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodeGUIDAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodeGUIDAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeRightsResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodeRightsAsync(Sassa.eDocs.CSDocuments.GetNodeRightsRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeRightsResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodeRightsAsync(Sassa.Services.CsDocuments.GetNodeRightsRequest request)
         {
             return base.Channel.GetNodeRightsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeRightsResponse> GetNodeRightsAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeRightsResponse> GetNodeRightsAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
-            Sassa.eDocs.CSDocuments.GetNodeRightsRequest inValue = new Sassa.eDocs.CSDocuments.GetNodeRightsRequest();
+            Sassa.Services.CsDocuments.GetNodeRightsRequest inValue = new Sassa.Services.CsDocuments.GetNodeRightsRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodeRightsAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodeRightsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodesResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodesAsync(Sassa.eDocs.CSDocuments.GetNodesRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodesResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodesAsync(Sassa.Services.CsDocuments.GetNodesRequest request)
         {
             return base.Channel.GetNodesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodesResponse> GetNodesAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long[] IDs)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodesResponse> GetNodesAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long[] IDs)
         {
-            Sassa.eDocs.CSDocuments.GetNodesRequest inValue = new Sassa.eDocs.CSDocuments.GetNodesRequest();
+            Sassa.Services.CsDocuments.GetNodesRequest inValue = new Sassa.Services.CsDocuments.GetNodesRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.IDs = IDs;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodesAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodesByNicknameResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodesByNicknameAsync(Sassa.eDocs.CSDocuments.GetNodesByNicknameRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodesByNicknameResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodesByNicknameAsync(Sassa.Services.CsDocuments.GetNodesByNicknameRequest request)
         {
             return base.Channel.GetNodesByNicknameAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodesByNicknameResponse> GetNodesByNicknameAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string[] nicknames)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodesByNicknameResponse> GetNodesByNicknameAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string[] nicknames)
         {
-            Sassa.eDocs.CSDocuments.GetNodesByNicknameRequest inValue = new Sassa.eDocs.CSDocuments.GetNodesByNicknameRequest();
+            Sassa.Services.CsDocuments.GetNodesByNicknameRequest inValue = new Sassa.Services.CsDocuments.GetNodesByNicknameRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nicknames = nicknames;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodesByNicknameAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodesByNicknameAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodesInContainerResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodesInContainerAsync(Sassa.eDocs.CSDocuments.GetNodesInContainerRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodesInContainerResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodesInContainerAsync(Sassa.Services.CsDocuments.GetNodesInContainerRequest request)
         {
             return base.Channel.GetNodesInContainerAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodesInContainerResponse> GetNodesInContainerAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long containerID, Sassa.eDocs.CSDocuments.GetNodesInContainerOptions options)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodesInContainerResponse> GetNodesInContainerAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long containerID, Sassa.Services.CsDocuments.GetNodesInContainerOptions options)
         {
-            Sassa.eDocs.CSDocuments.GetNodesInContainerRequest inValue = new Sassa.eDocs.CSDocuments.GetNodesInContainerRequest();
+            Sassa.Services.CsDocuments.GetNodesInContainerRequest inValue = new Sassa.Services.CsDocuments.GetNodesInContainerRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.containerID = containerID;
             inValue.options = options;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodesInContainerAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodesInContainerAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeTemplateResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodeTemplateAsync(Sassa.eDocs.CSDocuments.GetNodeTemplateRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeTemplateResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodeTemplateAsync(Sassa.Services.CsDocuments.GetNodeTemplateRequest request)
         {
             return base.Channel.GetNodeTemplateAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeTemplateResponse> GetNodeTemplateAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string nodeType)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeTemplateResponse> GetNodeTemplateAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string nodeType)
         {
-            Sassa.eDocs.CSDocuments.GetNodeTemplateRequest inValue = new Sassa.eDocs.CSDocuments.GetNodeTemplateRequest();
+            Sassa.Services.CsDocuments.GetNodeTemplateRequest inValue = new Sassa.Services.CsDocuments.GetNodeTemplateRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.nodeType = nodeType;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodeTemplateAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodeTemplateAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeTypesResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetNodeTypesAsync(Sassa.eDocs.CSDocuments.GetNodeTypesRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeTypesResponse> Sassa.Services.CsDocuments.DocumentManagement.GetNodeTypesAsync(Sassa.Services.CsDocuments.GetNodeTypesRequest request)
         {
             return base.Channel.GetNodeTypesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetNodeTypesResponse> GetNodeTypesAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetNodeTypesResponse> GetNodeTypesAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
-            Sassa.eDocs.CSDocuments.GetNodeTypesRequest inValue = new Sassa.eDocs.CSDocuments.GetNodeTypesRequest();
+            Sassa.Services.CsDocuments.GetNodeTypesRequest inValue = new Sassa.Services.CsDocuments.GetNodeTypesRequest();
             inValue.OTAuthentication = OTAuthentication;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetNodeTypesAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetNodeTypesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetPagedNodeAuditDataResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetPagedNodeAuditDataAsync(Sassa.eDocs.CSDocuments.GetPagedNodeAuditDataRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetPagedNodeAuditDataResponse> Sassa.Services.CsDocuments.DocumentManagement.GetPagedNodeAuditDataAsync(Sassa.Services.CsDocuments.GetPagedNodeAuditDataRequest request)
         {
             return base.Channel.GetPagedNodeAuditDataAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetPagedNodeAuditDataResponse> GetPagedNodeAuditDataAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.PageHandle pageHandle)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetPagedNodeAuditDataResponse> GetPagedNodeAuditDataAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.PageHandle pageHandle)
         {
-            Sassa.eDocs.CSDocuments.GetPagedNodeAuditDataRequest inValue = new Sassa.eDocs.CSDocuments.GetPagedNodeAuditDataRequest();
+            Sassa.Services.CsDocuments.GetPagedNodeAuditDataRequest inValue = new Sassa.Services.CsDocuments.GetPagedNodeAuditDataRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.pageHandle = pageHandle;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetPagedNodeAuditDataAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetPagedNodeAuditDataAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetReleaseResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetReleaseAsync(Sassa.eDocs.CSDocuments.GetReleaseRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetReleaseResponse> Sassa.Services.CsDocuments.DocumentManagement.GetReleaseAsync(Sassa.Services.CsDocuments.GetReleaseRequest request)
         {
             return base.Channel.GetReleaseAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetReleaseResponse> GetReleaseAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetReleaseResponse> GetReleaseAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
         {
-            Sassa.eDocs.CSDocuments.GetReleaseRequest inValue = new Sassa.eDocs.CSDocuments.GetReleaseRequest();
+            Sassa.Services.CsDocuments.GetReleaseRequest inValue = new Sassa.Services.CsDocuments.GetReleaseRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.major = major;
             inValue.minor = minor;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetReleaseAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetReleaseAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRenditionContentsResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetRenditionContentsAsync(Sassa.eDocs.CSDocuments.GetRenditionContentsRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRenditionContentsResponse> Sassa.Services.CsDocuments.DocumentManagement.GetRenditionContentsAsync(Sassa.Services.CsDocuments.GetRenditionContentsRequest request)
         {
             return base.Channel.GetRenditionContentsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRenditionContentsResponse> GetRenditionContentsAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRenditionContentsResponse> GetRenditionContentsAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
         {
-            Sassa.eDocs.CSDocuments.GetRenditionContentsRequest inValue = new Sassa.eDocs.CSDocuments.GetRenditionContentsRequest();
+            Sassa.Services.CsDocuments.GetRenditionContentsRequest inValue = new Sassa.Services.CsDocuments.GetRenditionContentsRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.versionNum = versionNum;
             inValue.renditionType = renditionType;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetRenditionContentsAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetRenditionContentsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRenditionContentsContextResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetRenditionContentsContextAsync(Sassa.eDocs.CSDocuments.GetRenditionContentsContextRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRenditionContentsContextResponse> Sassa.Services.CsDocuments.DocumentManagement.GetRenditionContentsContextAsync(Sassa.Services.CsDocuments.GetRenditionContentsContextRequest request)
         {
             return base.Channel.GetRenditionContentsContextAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRenditionContentsContextResponse> GetRenditionContentsContextAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRenditionContentsContextResponse> GetRenditionContentsContextAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
         {
-            Sassa.eDocs.CSDocuments.GetRenditionContentsContextRequest inValue = new Sassa.eDocs.CSDocuments.GetRenditionContentsContextRequest();
+            Sassa.Services.CsDocuments.GetRenditionContentsContextRequest inValue = new Sassa.Services.CsDocuments.GetRenditionContentsContextRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.versionNum = versionNum;
             inValue.renditionType = renditionType;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetRenditionContentsContextAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetRenditionContentsContextAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRootNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetRootNodeAsync(Sassa.eDocs.CSDocuments.GetRootNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRootNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.GetRootNodeAsync(Sassa.Services.CsDocuments.GetRootNodeRequest request)
         {
             return base.Channel.GetRootNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRootNodeResponse> GetRootNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string rootType)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRootNodeResponse> GetRootNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string rootType)
         {
-            Sassa.eDocs.CSDocuments.GetRootNodeRequest inValue = new Sassa.eDocs.CSDocuments.GetRootNodeRequest();
+            Sassa.Services.CsDocuments.GetRootNodeRequest inValue = new Sassa.Services.CsDocuments.GetRootNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.rootType = rootType;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetRootNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetRootNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRootNodeTypesResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetRootNodeTypesAsync(Sassa.eDocs.CSDocuments.GetRootNodeTypesRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRootNodeTypesResponse> Sassa.Services.CsDocuments.DocumentManagement.GetRootNodeTypesAsync(Sassa.Services.CsDocuments.GetRootNodeTypesRequest request)
         {
             return base.Channel.GetRootNodeTypesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetRootNodeTypesResponse> GetRootNodeTypesAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetRootNodeTypesResponse> GetRootNodeTypesAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
-            Sassa.eDocs.CSDocuments.GetRootNodeTypesRequest inValue = new Sassa.eDocs.CSDocuments.GetRootNodeTypesRequest();
+            Sassa.Services.CsDocuments.GetRootNodeTypesRequest inValue = new Sassa.Services.CsDocuments.GetRootNodeTypesRequest();
             inValue.OTAuthentication = OTAuthentication;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetRootNodeTypesAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetRootNodeTypesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetVersionAsync(Sassa.eDocs.CSDocuments.GetVersionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionResponse> Sassa.Services.CsDocuments.DocumentManagement.GetVersionAsync(Sassa.Services.CsDocuments.GetVersionRequest request)
         {
             return base.Channel.GetVersionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionResponse> GetVersionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionResponse> GetVersionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
-            Sassa.eDocs.CSDocuments.GetVersionRequest inValue = new Sassa.eDocs.CSDocuments.GetVersionRequest();
+            Sassa.Services.CsDocuments.GetVersionRequest inValue = new Sassa.Services.CsDocuments.GetVersionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.versionNum = versionNum;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetVersionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetVersionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionByGUIDResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetVersionByGUIDAsync(Sassa.eDocs.CSDocuments.GetVersionByGUIDRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionByGUIDResponse> Sassa.Services.CsDocuments.DocumentManagement.GetVersionByGUIDAsync(Sassa.Services.CsDocuments.GetVersionByGUIDRequest request)
         {
             return base.Channel.GetVersionByGUIDAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionByGUIDResponse> GetVersionByGUIDAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string guid)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionByGUIDResponse> GetVersionByGUIDAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string guid)
         {
-            Sassa.eDocs.CSDocuments.GetVersionByGUIDRequest inValue = new Sassa.eDocs.CSDocuments.GetVersionByGUIDRequest();
+            Sassa.Services.CsDocuments.GetVersionByGUIDRequest inValue = new Sassa.Services.CsDocuments.GetVersionByGUIDRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.guid = guid;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetVersionByGUIDAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetVersionByGUIDAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionContentsResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetVersionContentsAsync(Sassa.eDocs.CSDocuments.GetVersionContentsRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionContentsResponse> Sassa.Services.CsDocuments.DocumentManagement.GetVersionContentsAsync(Sassa.Services.CsDocuments.GetVersionContentsRequest request)
         {
             return base.Channel.GetVersionContentsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionContentsResponse> GetVersionContentsAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionContentsResponse> GetVersionContentsAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
-            Sassa.eDocs.CSDocuments.GetVersionContentsRequest inValue = new Sassa.eDocs.CSDocuments.GetVersionContentsRequest();
+            Sassa.Services.CsDocuments.GetVersionContentsRequest inValue = new Sassa.Services.CsDocuments.GetVersionContentsRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.versionNum = versionNum;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetVersionContentsAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetVersionContentsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionContentsContextResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetVersionContentsContextAsync(Sassa.eDocs.CSDocuments.GetVersionContentsContextRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionContentsContextResponse> Sassa.Services.CsDocuments.DocumentManagement.GetVersionContentsContextAsync(Sassa.Services.CsDocuments.GetVersionContentsContextRequest request)
         {
             return base.Channel.GetVersionContentsContextAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionContentsContextResponse> GetVersionContentsContextAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionContentsContextResponse> GetVersionContentsContextAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
-            Sassa.eDocs.CSDocuments.GetVersionContentsContextRequest inValue = new Sassa.eDocs.CSDocuments.GetVersionContentsContextRequest();
+            Sassa.Services.CsDocuments.GetVersionContentsContextRequest inValue = new Sassa.Services.CsDocuments.GetVersionContentsContextRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.versionNum = versionNum;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetVersionContentsContextAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetVersionContentsContextAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionGUIDResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetVersionGUIDAsync(Sassa.eDocs.CSDocuments.GetVersionGUIDRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionGUIDResponse> Sassa.Services.CsDocuments.DocumentManagement.GetVersionGUIDAsync(Sassa.Services.CsDocuments.GetVersionGUIDRequest request)
         {
             return base.Channel.GetVersionGUIDAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetVersionGUIDResponse> GetVersionGUIDAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNumber)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetVersionGUIDResponse> GetVersionGUIDAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNumber)
         {
-            Sassa.eDocs.CSDocuments.GetVersionGUIDRequest inValue = new Sassa.eDocs.CSDocuments.GetVersionGUIDRequest();
+            Sassa.Services.CsDocuments.GetVersionGUIDRequest inValue = new Sassa.Services.CsDocuments.GetVersionGUIDRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.versionNumber = versionNumber;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetVersionGUIDAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetVersionGUIDAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesResponse> Sassa.eDocs.CSDocuments.DocumentManagement.ListNodesAsync(Sassa.eDocs.CSDocuments.ListNodesRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesResponse> Sassa.Services.CsDocuments.DocumentManagement.ListNodesAsync(Sassa.Services.CsDocuments.ListNodesRequest request)
         {
             return base.Channel.ListNodesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesResponse> ListNodesAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, bool partialData)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesResponse> ListNodesAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, bool partialData)
         {
-            Sassa.eDocs.CSDocuments.ListNodesRequest inValue = new Sassa.eDocs.CSDocuments.ListNodesRequest();
+            Sassa.Services.CsDocuments.ListNodesRequest inValue = new Sassa.Services.CsDocuments.ListNodesRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.partialData = partialData;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).ListNodesAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).ListNodesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesByNameResponse> Sassa.eDocs.CSDocuments.DocumentManagement.ListNodesByNameAsync(Sassa.eDocs.CSDocuments.ListNodesByNameRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesByNameResponse> Sassa.Services.CsDocuments.DocumentManagement.ListNodesByNameAsync(Sassa.Services.CsDocuments.ListNodesByNameRequest request)
         {
             return base.Channel.ListNodesByNameAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesByNameResponse> ListNodesByNameAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesByNameResponse> ListNodesByNameAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID)
         {
-            Sassa.eDocs.CSDocuments.ListNodesByNameRequest inValue = new Sassa.eDocs.CSDocuments.ListNodesByNameRequest();
+            Sassa.Services.CsDocuments.ListNodesByNameRequest inValue = new Sassa.Services.CsDocuments.ListNodesByNameRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).ListNodesByNameAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).ListNodesByNameAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesByPageResponse> Sassa.eDocs.CSDocuments.DocumentManagement.ListNodesByPageAsync(Sassa.eDocs.CSDocuments.ListNodesByPageRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesByPageResponse> Sassa.Services.CsDocuments.DocumentManagement.ListNodesByPageAsync(Sassa.Services.CsDocuments.ListNodesByPageRequest request)
         {
             return base.Channel.ListNodesByPageAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesByPageResponse> ListNodesByPageAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, Sassa.eDocs.CSDocuments.NodePageSpecification pageSpec)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesByPageResponse> ListNodesByPageAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, Sassa.Services.CsDocuments.NodePageSpecification pageSpec)
         {
-            Sassa.eDocs.CSDocuments.ListNodesByPageRequest inValue = new Sassa.eDocs.CSDocuments.ListNodesByPageRequest();
+            Sassa.Services.CsDocuments.ListNodesByPageRequest inValue = new Sassa.Services.CsDocuments.ListNodesByPageRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.pageSpec = pageSpec;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).ListNodesByPageAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).ListNodesByPageAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesByPageAndNameResponse> Sassa.eDocs.CSDocuments.DocumentManagement.ListNodesByPageAndNameAsync(Sassa.eDocs.CSDocuments.ListNodesByPageAndNameRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesByPageAndNameResponse> Sassa.Services.CsDocuments.DocumentManagement.ListNodesByPageAndNameAsync(Sassa.Services.CsDocuments.ListNodesByPageAndNameRequest request)
         {
             return base.Channel.ListNodesByPageAndNameAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListNodesByPageAndNameResponse> ListNodesByPageAndNameAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, Sassa.eDocs.CSDocuments.NodePageSpecification pageSpec)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListNodesByPageAndNameResponse> ListNodesByPageAndNameAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, Sassa.Services.CsDocuments.NodePageSpecification pageSpec)
         {
-            Sassa.eDocs.CSDocuments.ListNodesByPageAndNameRequest inValue = new Sassa.eDocs.CSDocuments.ListNodesByPageAndNameRequest();
+            Sassa.Services.CsDocuments.ListNodesByPageAndNameRequest inValue = new Sassa.Services.CsDocuments.ListNodesByPageAndNameRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.pageSpec = pageSpec;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).ListNodesByPageAndNameAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).ListNodesByPageAndNameAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListReferencesResponse> Sassa.eDocs.CSDocuments.DocumentManagement.ListReferencesAsync(Sassa.eDocs.CSDocuments.ListReferencesRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListReferencesResponse> Sassa.Services.CsDocuments.DocumentManagement.ListReferencesAsync(Sassa.Services.CsDocuments.ListReferencesRequest request)
         {
             return base.Channel.ListReferencesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListReferencesResponse> ListReferencesAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListReferencesResponse> ListReferencesAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
-            Sassa.eDocs.CSDocuments.ListReferencesRequest inValue = new Sassa.eDocs.CSDocuments.ListReferencesRequest();
+            Sassa.Services.CsDocuments.ListReferencesRequest inValue = new Sassa.Services.CsDocuments.ListReferencesRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).ListReferencesAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).ListReferencesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListReleasesResponse> Sassa.eDocs.CSDocuments.DocumentManagement.ListReleasesAsync(Sassa.eDocs.CSDocuments.ListReleasesRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListReleasesResponse> Sassa.Services.CsDocuments.DocumentManagement.ListReleasesAsync(Sassa.Services.CsDocuments.ListReleasesRequest request)
         {
             return base.Channel.ListReleasesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListReleasesResponse> ListReleasesAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListReleasesResponse> ListReleasesAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
-            Sassa.eDocs.CSDocuments.ListReleasesRequest inValue = new Sassa.eDocs.CSDocuments.ListReleasesRequest();
+            Sassa.Services.CsDocuments.ListReleasesRequest inValue = new Sassa.Services.CsDocuments.ListReleasesRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).ListReleasesAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).ListReleasesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListRenditionsResponse> Sassa.eDocs.CSDocuments.DocumentManagement.ListRenditionsAsync(Sassa.eDocs.CSDocuments.ListRenditionsRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListRenditionsResponse> Sassa.Services.CsDocuments.DocumentManagement.ListRenditionsAsync(Sassa.Services.CsDocuments.ListRenditionsRequest request)
         {
             return base.Channel.ListRenditionsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.ListRenditionsResponse> ListRenditionsAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.ListRenditionsResponse> ListRenditionsAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum)
         {
-            Sassa.eDocs.CSDocuments.ListRenditionsRequest inValue = new Sassa.eDocs.CSDocuments.ListRenditionsRequest();
+            Sassa.Services.CsDocuments.ListRenditionsRequest inValue = new Sassa.Services.CsDocuments.ListRenditionsRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.versionNum = versionNum;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).ListRenditionsAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).ListRenditionsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.LockReleaseResponse> Sassa.eDocs.CSDocuments.DocumentManagement.LockReleaseAsync(Sassa.eDocs.CSDocuments.LockReleaseRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.LockReleaseResponse> Sassa.Services.CsDocuments.DocumentManagement.LockReleaseAsync(Sassa.Services.CsDocuments.LockReleaseRequest request)
         {
             return base.Channel.LockReleaseAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.LockReleaseResponse> LockReleaseAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.LockReleaseResponse> LockReleaseAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
         {
-            Sassa.eDocs.CSDocuments.LockReleaseRequest inValue = new Sassa.eDocs.CSDocuments.LockReleaseRequest();
+            Sassa.Services.CsDocuments.LockReleaseRequest inValue = new Sassa.Services.CsDocuments.LockReleaseRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.major = major;
             inValue.minor = minor;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).LockReleaseAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).LockReleaseAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.LockVersionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.LockVersionAsync(Sassa.eDocs.CSDocuments.LockVersionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.LockVersionResponse> Sassa.Services.CsDocuments.DocumentManagement.LockVersionAsync(Sassa.Services.CsDocuments.LockVersionRequest request)
         {
             return base.Channel.LockVersionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.LockVersionResponse> LockVersionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.LockVersionResponse> LockVersionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
-            Sassa.eDocs.CSDocuments.LockVersionRequest inValue = new Sassa.eDocs.CSDocuments.LockVersionRequest();
+            Sassa.Services.CsDocuments.LockVersionRequest inValue = new Sassa.Services.CsDocuments.LockVersionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.versionNum = versionNum;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).LockVersionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).LockVersionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.MoveNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.MoveNodeAsync(Sassa.eDocs.CSDocuments.MoveNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.MoveNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.MoveNodeAsync(Sassa.Services.CsDocuments.MoveNodeRequest request)
         {
             return base.Channel.MoveNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.MoveNodeResponse> MoveNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long parentID, string newName, Sassa.eDocs.CSDocuments.MoveOptions moveOptions)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.MoveNodeResponse> MoveNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long parentID, string newName, Sassa.Services.CsDocuments.MoveOptions moveOptions)
         {
-            Sassa.eDocs.CSDocuments.MoveNodeRequest inValue = new Sassa.eDocs.CSDocuments.MoveNodeRequest();
+            Sassa.Services.CsDocuments.MoveNodeRequest inValue = new Sassa.Services.CsDocuments.MoveNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.parentID = parentID;
             inValue.newName = newName;
             inValue.moveOptions = moveOptions;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).MoveNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).MoveNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.PromoteVersionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.PromoteVersionAsync(Sassa.eDocs.CSDocuments.PromoteVersionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.PromoteVersionResponse> Sassa.Services.CsDocuments.DocumentManagement.PromoteVersionAsync(Sassa.Services.CsDocuments.PromoteVersionRequest request)
         {
             return base.Channel.PromoteVersionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.PromoteVersionResponse> PromoteVersionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.PromoteVersionResponse> PromoteVersionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum, Sassa.Services.CsDocuments.Metadata metadata)
         {
-            Sassa.eDocs.CSDocuments.PromoteVersionRequest inValue = new Sassa.eDocs.CSDocuments.PromoteVersionRequest();
+            Sassa.Services.CsDocuments.PromoteVersionRequest inValue = new Sassa.Services.CsDocuments.PromoteVersionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.versionNum = versionNum;
             inValue.metadata = metadata;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).PromoteVersionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).PromoteVersionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddFavoriteResponse> Sassa.eDocs.CSDocuments.DocumentManagement.AddFavoriteAsync(Sassa.eDocs.CSDocuments.AddFavoriteRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddFavoriteResponse> Sassa.Services.CsDocuments.DocumentManagement.AddFavoriteAsync(Sassa.Services.CsDocuments.AddFavoriteRequest request)
         {
             return base.Channel.AddFavoriteAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddFavoriteResponse> AddFavoriteAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddFavoriteResponse> AddFavoriteAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID)
         {
-            Sassa.eDocs.CSDocuments.AddFavoriteRequest inValue = new Sassa.eDocs.CSDocuments.AddFavoriteRequest();
+            Sassa.Services.CsDocuments.AddFavoriteRequest inValue = new Sassa.Services.CsDocuments.AddFavoriteRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).AddFavoriteAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).AddFavoriteAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddMajorVersionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.AddMajorVersionAsync(Sassa.eDocs.CSDocuments.AddMajorVersionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddMajorVersionResponse> Sassa.Services.CsDocuments.DocumentManagement.AddMajorVersionAsync(Sassa.Services.CsDocuments.AddMajorVersionRequest request)
         {
             return base.Channel.AddMajorVersionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddMajorVersionResponse> AddMajorVersionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.Metadata metadata, Sassa.eDocs.CSDocuments.Attachment attach)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddMajorVersionResponse> AddMajorVersionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.Metadata metadata, Sassa.Services.CsDocuments.Attachment attach)
         {
-            Sassa.eDocs.CSDocuments.AddMajorVersionRequest inValue = new Sassa.eDocs.CSDocuments.AddMajorVersionRequest();
+            Sassa.Services.CsDocuments.AddMajorVersionRequest inValue = new Sassa.Services.CsDocuments.AddMajorVersionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.metadata = metadata;
             inValue.attach = attach;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).AddMajorVersionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).AddMajorVersionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddMajorVersionContextResponse> Sassa.eDocs.CSDocuments.DocumentManagement.AddMajorVersionContextAsync(Sassa.eDocs.CSDocuments.AddMajorVersionContextRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddMajorVersionContextResponse> Sassa.Services.CsDocuments.DocumentManagement.AddMajorVersionContextAsync(Sassa.Services.CsDocuments.AddMajorVersionContextRequest request)
         {
             return base.Channel.AddMajorVersionContextAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddMajorVersionContextResponse> AddMajorVersionContextAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddMajorVersionContextResponse> AddMajorVersionContextAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.Metadata metadata)
         {
-            Sassa.eDocs.CSDocuments.AddMajorVersionContextRequest inValue = new Sassa.eDocs.CSDocuments.AddMajorVersionContextRequest();
+            Sassa.Services.CsDocuments.AddMajorVersionContextRequest inValue = new Sassa.Services.CsDocuments.AddMajorVersionContextRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.metadata = metadata;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).AddMajorVersionContextAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).AddMajorVersionContextAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddNodeRightResponse> Sassa.eDocs.CSDocuments.DocumentManagement.AddNodeRightAsync(Sassa.eDocs.CSDocuments.AddNodeRightRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddNodeRightResponse> Sassa.Services.CsDocuments.DocumentManagement.AddNodeRightAsync(Sassa.Services.CsDocuments.AddNodeRightRequest request)
         {
             return base.Channel.AddNodeRightAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddNodeRightResponse> AddNodeRightAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.NodeRight nodeRight)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddNodeRightResponse> AddNodeRightAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.NodeRight nodeRight)
         {
-            Sassa.eDocs.CSDocuments.AddNodeRightRequest inValue = new Sassa.eDocs.CSDocuments.AddNodeRightRequest();
+            Sassa.Services.CsDocuments.AddNodeRightRequest inValue = new Sassa.Services.CsDocuments.AddNodeRightRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.nodeRight = nodeRight;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).AddNodeRightAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).AddNodeRightAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddToCollectionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.AddToCollectionAsync(Sassa.eDocs.CSDocuments.AddToCollectionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddToCollectionResponse> Sassa.Services.CsDocuments.DocumentManagement.AddToCollectionAsync(Sassa.Services.CsDocuments.AddToCollectionRequest request)
         {
             return base.Channel.AddToCollectionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddToCollectionResponse> AddToCollectionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long collectionID, Sassa.eDocs.CSDocuments.CollectionItem[] collectionItems)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddToCollectionResponse> AddToCollectionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long collectionID, Sassa.Services.CsDocuments.CollectionItem[] collectionItems)
         {
-            Sassa.eDocs.CSDocuments.AddToCollectionRequest inValue = new Sassa.eDocs.CSDocuments.AddToCollectionRequest();
+            Sassa.Services.CsDocuments.AddToCollectionRequest inValue = new Sassa.Services.CsDocuments.AddToCollectionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.collectionID = collectionID;
             inValue.collectionItems = collectionItems;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).AddToCollectionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).AddToCollectionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddVersionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.AddVersionAsync(Sassa.eDocs.CSDocuments.AddVersionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddVersionResponse> Sassa.Services.CsDocuments.DocumentManagement.AddVersionAsync(Sassa.Services.CsDocuments.AddVersionRequest request)
         {
             return base.Channel.AddVersionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddVersionResponse> AddVersionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.Metadata metadata, Sassa.eDocs.CSDocuments.Attachment attach)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddVersionResponse> AddVersionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.Metadata metadata, Sassa.Services.CsDocuments.Attachment attach)
         {
-            Sassa.eDocs.CSDocuments.AddVersionRequest inValue = new Sassa.eDocs.CSDocuments.AddVersionRequest();
+            Sassa.Services.CsDocuments.AddVersionRequest inValue = new Sassa.Services.CsDocuments.AddVersionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.metadata = metadata;
             inValue.attach = attach;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).AddVersionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).AddVersionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddVersionContextResponse> Sassa.eDocs.CSDocuments.DocumentManagement.AddVersionContextAsync(Sassa.eDocs.CSDocuments.AddVersionContextRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddVersionContextResponse> Sassa.Services.CsDocuments.DocumentManagement.AddVersionContextAsync(Sassa.Services.CsDocuments.AddVersionContextRequest request)
         {
             return base.Channel.AddVersionContextAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.AddVersionContextResponse> AddVersionContextAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.AddVersionContextResponse> AddVersionContextAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, Sassa.Services.CsDocuments.Metadata metadata)
         {
-            Sassa.eDocs.CSDocuments.AddVersionContextRequest inValue = new Sassa.eDocs.CSDocuments.AddVersionContextRequest();
+            Sassa.Services.CsDocuments.AddVersionContextRequest inValue = new Sassa.Services.CsDocuments.AddVersionContextRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.metadata = metadata;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).AddVersionContextAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).AddVersionContextAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CopyNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CopyNodeAsync(Sassa.eDocs.CSDocuments.CopyNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CopyNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.CopyNodeAsync(Sassa.Services.CsDocuments.CopyNodeRequest request)
         {
             return base.Channel.CopyNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CopyNodeResponse> CopyNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long parentID, string newName, Sassa.eDocs.CSDocuments.CopyOptions copyOptions)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CopyNodeResponse> CopyNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long parentID, string newName, Sassa.Services.CsDocuments.CopyOptions copyOptions)
         {
-            Sassa.eDocs.CSDocuments.CopyNodeRequest inValue = new Sassa.eDocs.CSDocuments.CopyNodeRequest();
+            Sassa.Services.CsDocuments.CopyNodeRequest inValue = new Sassa.Services.CsDocuments.CopyNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.parentID = parentID;
             inValue.newName = newName;
             inValue.copyOptions = copyOptions;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CopyNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CopyNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateCategoryResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateCategoryAsync(Sassa.eDocs.CSDocuments.CreateCategoryRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateCategoryResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateCategoryAsync(Sassa.Services.CsDocuments.CreateCategoryRequest request)
         {
             return base.Channel.CreateCategoryAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateCategoryResponse> CreateCategoryAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, Sassa.eDocs.CSDocuments.Attribute[] attributes, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateCategoryResponse> CreateCategoryAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, Sassa.Services.CsDocuments.Attribute[] attributes, Sassa.Services.CsDocuments.Metadata metadata)
         {
-            Sassa.eDocs.CSDocuments.CreateCategoryRequest inValue = new Sassa.eDocs.CSDocuments.CreateCategoryRequest();
+            Sassa.Services.CsDocuments.CreateCategoryRequest inValue = new Sassa.Services.CsDocuments.CreateCategoryRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.name = name;
             inValue.comment = comment;
             inValue.attributes = attributes;
             inValue.metadata = metadata;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateCategoryAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateCategoryAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateDocumentResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateDocumentAsync(Sassa.eDocs.CSDocuments.CreateDocumentRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateDocumentResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateDocumentAsync(Sassa.Services.CsDocuments.CreateDocumentRequest request)
         {
             return base.Channel.CreateDocumentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateDocumentResponse> CreateDocumentAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, bool advancedVersionControl, Sassa.eDocs.CSDocuments.Metadata metadata, Sassa.eDocs.CSDocuments.Attachment attach)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateDocumentResponse> CreateDocumentAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, bool advancedVersionControl, Sassa.Services.CsDocuments.Metadata metadata, Sassa.Services.CsDocuments.Attachment attach)
         {
-            Sassa.eDocs.CSDocuments.CreateDocumentRequest inValue = new Sassa.eDocs.CSDocuments.CreateDocumentRequest();
+            Sassa.Services.CsDocuments.CreateDocumentRequest inValue = new Sassa.Services.CsDocuments.CreateDocumentRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.name = name;
@@ -10790,409 +10790,416 @@ namespace Sassa.eDocs.CSDocuments
             inValue.advancedVersionControl = advancedVersionControl;
             inValue.metadata = metadata;
             inValue.attach = attach;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateDocumentAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateDocumentAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateDocumentContextResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateDocumentContextAsync(Sassa.eDocs.CSDocuments.CreateDocumentContextRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateDocumentContextResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateDocumentContextAsync(Sassa.Services.CsDocuments.CreateDocumentContextRequest request)
         {
             return base.Channel.CreateDocumentContextAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateDocumentContextResponse> CreateDocumentContextAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, bool advancedVersionControl, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateDocumentContextResponse> CreateDocumentContextAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, bool advancedVersionControl, Sassa.Services.CsDocuments.Metadata metadata)
         {
-            Sassa.eDocs.CSDocuments.CreateDocumentContextRequest inValue = new Sassa.eDocs.CSDocuments.CreateDocumentContextRequest();
+            Sassa.Services.CsDocuments.CreateDocumentContextRequest inValue = new Sassa.Services.CsDocuments.CreateDocumentContextRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.name = name;
             inValue.comment = comment;
             inValue.advancedVersionControl = advancedVersionControl;
             inValue.metadata = metadata;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateDocumentContextAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateDocumentContextAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateFolderResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateFolderAsync(Sassa.eDocs.CSDocuments.CreateFolderRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateFolderResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateFolderAsync(Sassa.Services.CsDocuments.CreateFolderRequest request)
         {
             return base.Channel.CreateFolderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateFolderResponse> CreateFolderAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateFolderResponse> CreateFolderAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, Sassa.Services.CsDocuments.Metadata metadata)
         {
-            Sassa.eDocs.CSDocuments.CreateFolderRequest inValue = new Sassa.eDocs.CSDocuments.CreateFolderRequest();
+            Sassa.Services.CsDocuments.CreateFolderRequest inValue = new Sassa.Services.CsDocuments.CreateFolderRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.name = name;
             inValue.comment = comment;
             inValue.metadata = metadata;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateFolderAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateFolderAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateNodeAsync(Sassa.eDocs.CSDocuments.CreateNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateNodeAsync(Sassa.Services.CsDocuments.CreateNodeRequest request)
         {
             return base.Channel.CreateNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateNodeResponse> CreateNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node node)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateNodeResponse> CreateNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node node)
         {
-            Sassa.eDocs.CSDocuments.CreateNodeRequest inValue = new Sassa.eDocs.CSDocuments.CreateNodeRequest();
+            Sassa.Services.CsDocuments.CreateNodeRequest inValue = new Sassa.Services.CsDocuments.CreateNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.node = node;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateNodeAndVersionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateNodeAndVersionAsync(Sassa.eDocs.CSDocuments.CreateNodeAndVersionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateNodeAndVersionResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateNodeAndVersionAsync(Sassa.Services.CsDocuments.CreateNodeAndVersionRequest request)
         {
             return base.Channel.CreateNodeAndVersionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateNodeAndVersionResponse> CreateNodeAndVersionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node node, Sassa.eDocs.CSDocuments.Attachment attach)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateNodeAndVersionResponse> CreateNodeAndVersionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node node, Sassa.Services.CsDocuments.Attachment attach)
         {
-            Sassa.eDocs.CSDocuments.CreateNodeAndVersionRequest inValue = new Sassa.eDocs.CSDocuments.CreateNodeAndVersionRequest();
+            Sassa.Services.CsDocuments.CreateNodeAndVersionRequest inValue = new Sassa.Services.CsDocuments.CreateNodeAndVersionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.node = node;
             inValue.attach = attach;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateNodeAndVersionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateNodeAndVersionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateNodeAndVersionContextResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateNodeAndVersionContextAsync(Sassa.eDocs.CSDocuments.CreateNodeAndVersionContextRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateNodeAndVersionContextResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateNodeAndVersionContextAsync(Sassa.Services.CsDocuments.CreateNodeAndVersionContextRequest request)
         {
             return base.Channel.CreateNodeAndVersionContextAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateNodeAndVersionContextResponse> CreateNodeAndVersionContextAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, Sassa.eDocs.CSDocuments.Node node)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateNodeAndVersionContextResponse> CreateNodeAndVersionContextAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, Sassa.Services.CsDocuments.Node node)
         {
-            Sassa.eDocs.CSDocuments.CreateNodeAndVersionContextRequest inValue = new Sassa.eDocs.CSDocuments.CreateNodeAndVersionContextRequest();
+            Sassa.Services.CsDocuments.CreateNodeAndVersionContextRequest inValue = new Sassa.Services.CsDocuments.CreateNodeAndVersionContextRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.node = node;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateNodeAndVersionContextAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateNodeAndVersionContextAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateReleaseResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateReleaseAsync(Sassa.eDocs.CSDocuments.CreateReleaseRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateReleaseResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateReleaseAsync(Sassa.Services.CsDocuments.CreateReleaseRequest request)
         {
             return base.Channel.CreateReleaseAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateReleaseResponse> CreateReleaseAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, bool major, string releaseName)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateReleaseResponse> CreateReleaseAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, bool major, string releaseName)
         {
-            Sassa.eDocs.CSDocuments.CreateReleaseRequest inValue = new Sassa.eDocs.CSDocuments.CreateReleaseRequest();
+            Sassa.Services.CsDocuments.CreateReleaseRequest inValue = new Sassa.Services.CsDocuments.CreateReleaseRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.major = major;
             inValue.releaseName = releaseName;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateReleaseAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateReleaseAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateRenditionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateRenditionAsync(Sassa.eDocs.CSDocuments.CreateRenditionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateRenditionResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateRenditionAsync(Sassa.Services.CsDocuments.CreateRenditionRequest request)
         {
             return base.Channel.CreateRenditionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateRenditionResponse> CreateRenditionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType, Sassa.eDocs.CSDocuments.Attachment attach)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateRenditionResponse> CreateRenditionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType, Sassa.Services.CsDocuments.Attachment attach)
         {
-            Sassa.eDocs.CSDocuments.CreateRenditionRequest inValue = new Sassa.eDocs.CSDocuments.CreateRenditionRequest();
+            Sassa.Services.CsDocuments.CreateRenditionRequest inValue = new Sassa.Services.CsDocuments.CreateRenditionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.versionNum = versionNum;
             inValue.renditionType = renditionType;
             inValue.attach = attach;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateRenditionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateRenditionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateRenditionContextResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateRenditionContextAsync(Sassa.eDocs.CSDocuments.CreateRenditionContextRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateRenditionContextResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateRenditionContextAsync(Sassa.Services.CsDocuments.CreateRenditionContextRequest request)
         {
             return base.Channel.CreateRenditionContextAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateRenditionContextResponse> CreateRenditionContextAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateRenditionContextResponse> CreateRenditionContextAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
         {
-            Sassa.eDocs.CSDocuments.CreateRenditionContextRequest inValue = new Sassa.eDocs.CSDocuments.CreateRenditionContextRequest();
+            Sassa.Services.CsDocuments.CreateRenditionContextRequest inValue = new Sassa.Services.CsDocuments.CreateRenditionContextRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.versionNum = versionNum;
             inValue.renditionType = renditionType;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateRenditionContextAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateRenditionContextAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateShortcutResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateShortcutAsync(Sassa.eDocs.CSDocuments.CreateShortcutRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateShortcutResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateShortcutAsync(Sassa.Services.CsDocuments.CreateShortcutRequest request)
         {
             return base.Channel.CreateShortcutAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateShortcutResponse> CreateShortcutAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, long sourceID, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateShortcutResponse> CreateShortcutAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, long sourceID, Sassa.Services.CsDocuments.Metadata metadata)
         {
-            Sassa.eDocs.CSDocuments.CreateShortcutRequest inValue = new Sassa.eDocs.CSDocuments.CreateShortcutRequest();
+            Sassa.Services.CsDocuments.CreateShortcutRequest inValue = new Sassa.Services.CsDocuments.CreateShortcutRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.name = name;
             inValue.comment = comment;
             inValue.sourceID = sourceID;
             inValue.metadata = metadata;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateShortcutAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateShortcutAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateSimpleDocumentResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateSimpleDocumentAsync(Sassa.eDocs.CSDocuments.CreateSimpleDocumentRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateSimpleDocumentResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateSimpleDocumentAsync(Sassa.Services.CsDocuments.CreateSimpleDocumentRequest request)
         {
             return base.Channel.CreateSimpleDocumentAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateSimpleDocumentResponse> CreateSimpleDocumentAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, Sassa.eDocs.CSDocuments.Attachment attach)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateSimpleDocumentResponse> CreateSimpleDocumentAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, Sassa.Services.CsDocuments.Attachment attach)
         {
-            Sassa.eDocs.CSDocuments.CreateSimpleDocumentRequest inValue = new Sassa.eDocs.CSDocuments.CreateSimpleDocumentRequest();
+            Sassa.Services.CsDocuments.CreateSimpleDocumentRequest inValue = new Sassa.Services.CsDocuments.CreateSimpleDocumentRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.name = name;
             inValue.attach = attach;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateSimpleDocumentAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateSimpleDocumentAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateSimpleDocumentContextResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateSimpleDocumentContextAsync(Sassa.eDocs.CSDocuments.CreateSimpleDocumentContextRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateSimpleDocumentContextResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateSimpleDocumentContextAsync(Sassa.Services.CsDocuments.CreateSimpleDocumentContextRequest request)
         {
             return base.Channel.CreateSimpleDocumentContextAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateSimpleDocumentContextResponse> CreateSimpleDocumentContextAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateSimpleDocumentContextResponse> CreateSimpleDocumentContextAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name)
         {
-            Sassa.eDocs.CSDocuments.CreateSimpleDocumentContextRequest inValue = new Sassa.eDocs.CSDocuments.CreateSimpleDocumentContextRequest();
+            Sassa.Services.CsDocuments.CreateSimpleDocumentContextRequest inValue = new Sassa.Services.CsDocuments.CreateSimpleDocumentContextRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.name = name;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateSimpleDocumentContextAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateSimpleDocumentContextAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateSimpleFolderResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateSimpleFolderAsync(Sassa.eDocs.CSDocuments.CreateSimpleFolderRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateSimpleFolderResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateSimpleFolderAsync(Sassa.Services.CsDocuments.CreateSimpleFolderRequest request)
         {
             return base.Channel.CreateSimpleFolderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateSimpleFolderResponse> CreateSimpleFolderAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateSimpleFolderResponse> CreateSimpleFolderAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name)
         {
-            Sassa.eDocs.CSDocuments.CreateSimpleFolderRequest inValue = new Sassa.eDocs.CSDocuments.CreateSimpleFolderRequest();
+            Sassa.Services.CsDocuments.CreateSimpleFolderRequest inValue = new Sassa.Services.CsDocuments.CreateSimpleFolderRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.name = name;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateSimpleFolderAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateSimpleFolderAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateURLResponse> Sassa.eDocs.CSDocuments.DocumentManagement.CreateURLAsync(Sassa.eDocs.CSDocuments.CreateURLRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateURLResponse> Sassa.Services.CsDocuments.DocumentManagement.CreateURLAsync(Sassa.Services.CsDocuments.CreateURLRequest request)
         {
             return base.Channel.CreateURLAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.CreateURLResponse> CreateURLAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, string location, Sassa.eDocs.CSDocuments.Metadata metadata)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.CreateURLResponse> CreateURLAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long parentID, string name, string comment, string location, Sassa.Services.CsDocuments.Metadata metadata)
         {
-            Sassa.eDocs.CSDocuments.CreateURLRequest inValue = new Sassa.eDocs.CSDocuments.CreateURLRequest();
+            Sassa.Services.CsDocuments.CreateURLRequest inValue = new Sassa.Services.CsDocuments.CreateURLRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.parentID = parentID;
             inValue.name = name;
             inValue.comment = comment;
             inValue.location = location;
             inValue.metadata = metadata;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).CreateURLAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).CreateURLAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteNodeResponse> Sassa.eDocs.CSDocuments.DocumentManagement.DeleteNodeAsync(Sassa.eDocs.CSDocuments.DeleteNodeRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteNodeResponse> Sassa.Services.CsDocuments.DocumentManagement.DeleteNodeAsync(Sassa.Services.CsDocuments.DeleteNodeRequest request)
         {
             return base.Channel.DeleteNodeAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteNodeResponse> DeleteNodeAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteNodeResponse> DeleteNodeAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID)
         {
-            Sassa.eDocs.CSDocuments.DeleteNodeRequest inValue = new Sassa.eDocs.CSDocuments.DeleteNodeRequest();
+            Sassa.Services.CsDocuments.DeleteNodeRequest inValue = new Sassa.Services.CsDocuments.DeleteNodeRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).DeleteNodeAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).DeleteNodeAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteReleaseResponse> Sassa.eDocs.CSDocuments.DocumentManagement.DeleteReleaseAsync(Sassa.eDocs.CSDocuments.DeleteReleaseRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteReleaseResponse> Sassa.Services.CsDocuments.DocumentManagement.DeleteReleaseAsync(Sassa.Services.CsDocuments.DeleteReleaseRequest request)
         {
             return base.Channel.DeleteReleaseAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteReleaseResponse> DeleteReleaseAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteReleaseResponse> DeleteReleaseAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long major, long minor)
         {
-            Sassa.eDocs.CSDocuments.DeleteReleaseRequest inValue = new Sassa.eDocs.CSDocuments.DeleteReleaseRequest();
+            Sassa.Services.CsDocuments.DeleteReleaseRequest inValue = new Sassa.Services.CsDocuments.DeleteReleaseRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.major = major;
             inValue.minor = minor;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).DeleteReleaseAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).DeleteReleaseAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteRenditionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.DeleteRenditionAsync(Sassa.eDocs.CSDocuments.DeleteRenditionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteRenditionResponse> Sassa.Services.CsDocuments.DocumentManagement.DeleteRenditionAsync(Sassa.Services.CsDocuments.DeleteRenditionRequest request)
         {
             return base.Channel.DeleteRenditionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteRenditionResponse> DeleteRenditionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteRenditionResponse> DeleteRenditionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID, long versionNum, string renditionType)
         {
-            Sassa.eDocs.CSDocuments.DeleteRenditionRequest inValue = new Sassa.eDocs.CSDocuments.DeleteRenditionRequest();
+            Sassa.Services.CsDocuments.DeleteRenditionRequest inValue = new Sassa.Services.CsDocuments.DeleteRenditionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
             inValue.versionNum = versionNum;
             inValue.renditionType = renditionType;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).DeleteRenditionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).DeleteRenditionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteVersionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.DeleteVersionAsync(Sassa.eDocs.CSDocuments.DeleteVersionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteVersionResponse> Sassa.Services.CsDocuments.DocumentManagement.DeleteVersionAsync(Sassa.Services.CsDocuments.DeleteVersionRequest request)
         {
             return base.Channel.DeleteVersionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.DeleteVersionResponse> DeleteVersionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.DeleteVersionResponse> DeleteVersionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long ID, long versionNum)
         {
-            Sassa.eDocs.CSDocuments.DeleteVersionRequest inValue = new Sassa.eDocs.CSDocuments.DeleteVersionRequest();
+            Sassa.Services.CsDocuments.DeleteVersionRequest inValue = new Sassa.Services.CsDocuments.DeleteVersionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.ID = ID;
             inValue.versionNum = versionNum;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).DeleteVersionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).DeleteVersionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAllFavoritesResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetAllFavoritesAsync(Sassa.eDocs.CSDocuments.GetAllFavoritesRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAllFavoritesResponse> Sassa.Services.CsDocuments.DocumentManagement.GetAllFavoritesAsync(Sassa.Services.CsDocuments.GetAllFavoritesRequest request)
         {
             return base.Channel.GetAllFavoritesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAllFavoritesResponse> GetAllFavoritesAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAllFavoritesResponse> GetAllFavoritesAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
-            Sassa.eDocs.CSDocuments.GetAllFavoritesRequest inValue = new Sassa.eDocs.CSDocuments.GetAllFavoritesRequest();
+            Sassa.Services.CsDocuments.GetAllFavoritesRequest inValue = new Sassa.Services.CsDocuments.GetAllFavoritesRequest();
             inValue.OTAuthentication = OTAuthentication;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetAllFavoritesAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetAllFavoritesAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAllMultilingualMetadataResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetAllMultilingualMetadataAsync(Sassa.eDocs.CSDocuments.GetAllMultilingualMetadataRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAllMultilingualMetadataResponse> Sassa.Services.CsDocuments.DocumentManagement.GetAllMultilingualMetadataAsync(Sassa.Services.CsDocuments.GetAllMultilingualMetadataRequest request)
         {
             return base.Channel.GetAllMultilingualMetadataAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAllMultilingualMetadataResponse> GetAllMultilingualMetadataAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAllMultilingualMetadataResponse> GetAllMultilingualMetadataAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID)
         {
-            Sassa.eDocs.CSDocuments.GetAllMultilingualMetadataRequest inValue = new Sassa.eDocs.CSDocuments.GetAllMultilingualMetadataRequest();
+            Sassa.Services.CsDocuments.GetAllMultilingualMetadataRequest inValue = new Sassa.Services.CsDocuments.GetAllMultilingualMetadataRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetAllMultilingualMetadataAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetAllMultilingualMetadataAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAttributeGroupDefinitionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetAttributeGroupDefinitionAsync(Sassa.eDocs.CSDocuments.GetAttributeGroupDefinitionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAttributeGroupDefinitionResponse> Sassa.Services.CsDocuments.DocumentManagement.GetAttributeGroupDefinitionAsync(Sassa.Services.CsDocuments.GetAttributeGroupDefinitionRequest request)
         {
             return base.Channel.GetAttributeGroupDefinitionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAttributeGroupDefinitionResponse> GetAttributeGroupDefinitionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string type, string key)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAttributeGroupDefinitionResponse> GetAttributeGroupDefinitionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string type, string key)
         {
-            Sassa.eDocs.CSDocuments.GetAttributeGroupDefinitionRequest inValue = new Sassa.eDocs.CSDocuments.GetAttributeGroupDefinitionRequest();
+            Sassa.Services.CsDocuments.GetAttributeGroupDefinitionRequest inValue = new Sassa.Services.CsDocuments.GetAttributeGroupDefinitionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.type = type;
             inValue.key = key;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetAttributeGroupDefinitionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetAttributeGroupDefinitionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAttributeGroupTemplateResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetAttributeGroupTemplateAsync(Sassa.eDocs.CSDocuments.GetAttributeGroupTemplateRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAttributeGroupTemplateResponse> Sassa.Services.CsDocuments.DocumentManagement.GetAttributeGroupTemplateAsync(Sassa.Services.CsDocuments.GetAttributeGroupTemplateRequest request)
         {
             return base.Channel.GetAttributeGroupTemplateAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetAttributeGroupTemplateResponse> GetAttributeGroupTemplateAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, string type, string key)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetAttributeGroupTemplateResponse> GetAttributeGroupTemplateAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, string type, string key)
         {
-            Sassa.eDocs.CSDocuments.GetAttributeGroupTemplateRequest inValue = new Sassa.eDocs.CSDocuments.GetAttributeGroupTemplateRequest();
+            Sassa.Services.CsDocuments.GetAttributeGroupTemplateRequest inValue = new Sassa.Services.CsDocuments.GetAttributeGroupTemplateRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.type = type;
             inValue.key = key;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetAttributeGroupTemplateAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetAttributeGroupTemplateAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryDefinitionResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetCategoryDefinitionAsync(Sassa.eDocs.CSDocuments.GetCategoryDefinitionRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryDefinitionResponse> Sassa.Services.CsDocuments.DocumentManagement.GetCategoryDefinitionAsync(Sassa.Services.CsDocuments.GetCategoryDefinitionRequest request)
         {
             return base.Channel.GetCategoryDefinitionAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryDefinitionResponse> GetCategoryDefinitionAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long categoryID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryDefinitionResponse> GetCategoryDefinitionAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long categoryID)
         {
-            Sassa.eDocs.CSDocuments.GetCategoryDefinitionRequest inValue = new Sassa.eDocs.CSDocuments.GetCategoryDefinitionRequest();
+            Sassa.Services.CsDocuments.GetCategoryDefinitionRequest inValue = new Sassa.Services.CsDocuments.GetCategoryDefinitionRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.categoryID = categoryID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetCategoryDefinitionAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetCategoryDefinitionAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryDefinitionsResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetCategoryDefinitionsAsync(Sassa.eDocs.CSDocuments.GetCategoryDefinitionsRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryDefinitionsResponse> Sassa.Services.CsDocuments.DocumentManagement.GetCategoryDefinitionsAsync(Sassa.Services.CsDocuments.GetCategoryDefinitionsRequest request)
         {
             return base.Channel.GetCategoryDefinitionsAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryDefinitionsResponse> GetCategoryDefinitionsAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long[] categoryIDs)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryDefinitionsResponse> GetCategoryDefinitionsAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long[] categoryIDs)
         {
-            Sassa.eDocs.CSDocuments.GetCategoryDefinitionsRequest inValue = new Sassa.eDocs.CSDocuments.GetCategoryDefinitionsRequest();
+            Sassa.Services.CsDocuments.GetCategoryDefinitionsRequest inValue = new Sassa.Services.CsDocuments.GetCategoryDefinitionsRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.categoryIDs = categoryIDs;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetCategoryDefinitionsAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetCategoryDefinitionsAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryInheritanceResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetCategoryInheritanceAsync(Sassa.eDocs.CSDocuments.GetCategoryInheritanceRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryInheritanceResponse> Sassa.Services.CsDocuments.DocumentManagement.GetCategoryInheritanceAsync(Sassa.Services.CsDocuments.GetCategoryInheritanceRequest request)
         {
             return base.Channel.GetCategoryInheritanceAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryInheritanceResponse> GetCategoryInheritanceAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long nodeID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryInheritanceResponse> GetCategoryInheritanceAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long nodeID)
         {
-            Sassa.eDocs.CSDocuments.GetCategoryInheritanceRequest inValue = new Sassa.eDocs.CSDocuments.GetCategoryInheritanceRequest();
+            Sassa.Services.CsDocuments.GetCategoryInheritanceRequest inValue = new Sassa.Services.CsDocuments.GetCategoryInheritanceRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.nodeID = nodeID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetCategoryInheritanceAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetCategoryInheritanceAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryTemplateResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetCategoryTemplateAsync(Sassa.eDocs.CSDocuments.GetCategoryTemplateRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryTemplateResponse> Sassa.Services.CsDocuments.DocumentManagement.GetCategoryTemplateAsync(Sassa.Services.CsDocuments.GetCategoryTemplateRequest request)
         {
             return base.Channel.GetCategoryTemplateAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetCategoryTemplateResponse> GetCategoryTemplateAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication, long categoryID)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetCategoryTemplateResponse> GetCategoryTemplateAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication, long categoryID)
         {
-            Sassa.eDocs.CSDocuments.GetCategoryTemplateRequest inValue = new Sassa.eDocs.CSDocuments.GetCategoryTemplateRequest();
+            Sassa.Services.CsDocuments.GetCategoryTemplateRequest inValue = new Sassa.Services.CsDocuments.GetCategoryTemplateRequest();
             inValue.OTAuthentication = OTAuthentication;
             inValue.categoryID = categoryID;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetCategoryTemplateAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetCategoryTemplateAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetMetadataLanguagesResponse> Sassa.eDocs.CSDocuments.DocumentManagement.GetMetadataLanguagesAsync(Sassa.eDocs.CSDocuments.GetMetadataLanguagesRequest request)
+        System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetMetadataLanguagesResponse> Sassa.Services.CsDocuments.DocumentManagement.GetMetadataLanguagesAsync(Sassa.Services.CsDocuments.GetMetadataLanguagesRequest request)
         {
             return base.Channel.GetMetadataLanguagesAsync(request);
         }
         
-        public System.Threading.Tasks.Task<Sassa.eDocs.CSDocuments.GetMetadataLanguagesResponse> GetMetadataLanguagesAsync(Sassa.eDocs.CSDocuments.OTAuthentication OTAuthentication)
+        public System.Threading.Tasks.Task<Sassa.Services.CsDocuments.GetMetadataLanguagesResponse> GetMetadataLanguagesAsync(Sassa.Services.CsDocuments.OTAuthentication OTAuthentication)
         {
-            Sassa.eDocs.CSDocuments.GetMetadataLanguagesRequest inValue = new Sassa.eDocs.CSDocuments.GetMetadataLanguagesRequest();
+            Sassa.Services.CsDocuments.GetMetadataLanguagesRequest inValue = new Sassa.Services.CsDocuments.GetMetadataLanguagesRequest();
             inValue.OTAuthentication = OTAuthentication;
-            return ((Sassa.eDocs.CSDocuments.DocumentManagement)(this)).GetMetadataLanguagesAsync(inValue);
+            return ((Sassa.Services.CsDocuments.DocumentManagement)(this)).GetMetadataLanguagesAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
         {
             return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndOpen));
         }
+        
+        #if !NET6_0_OR_GREATER
+        public virtual System.Threading.Tasks.Task CloseAsync()
+        {
+            return System.Threading.Tasks.Task.Factory.FromAsync(((System.ServiceModel.ICommunicationObject)(this)).BeginClose(null, null), new System.Action<System.IAsyncResult>(((System.ServiceModel.ICommunicationObject)(this)).EndClose));
+        }
+        #endif
         
         private static System.ServiceModel.Channels.Binding GetBindingForEndpoint(EndpointConfiguration endpointConfiguration)
         {
@@ -11212,7 +11219,7 @@ namespace Sassa.eDocs.CSDocuments
         {
             if ((endpointConfiguration == EndpointConfiguration.BasicHttpBinding_DocumentManagement))
             {
-                return new System.ServiceModel.EndpointAddress("http://ssvsprcsphc01.sassa.local:8080/cws/services/DocumentManagement");
+                return new System.ServiceModel.EndpointAddress("http://ssvsdrcsshc02.sassa.local:8080/cws/services/DocumentManagement");
             }
             throw new System.InvalidOperationException(string.Format("Could not find endpoint with name \'{0}\'.", endpointConfiguration));
         }

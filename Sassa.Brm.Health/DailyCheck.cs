@@ -1,7 +1,34 @@
-﻿namespace Sassa.Brm.Health
+﻿using Microsoft.Extensions.Logging;
+using Sassa.Services;
+
+namespace Sassa.Brm.Health
 {
     public class DailyCheck
     {
+
+        private readonly ILogger<DailyCheck> _logger;
+        private readonly CSService _csService;
+        public DailyCheck(ILogger<DailyCheck> logger,CSService csService)
+        {
+            _logger = logger;
+            _csService = csService ?? throw new ArgumentNullException(nameof(csService));
+        }
+
+        public async Task WriteDailyReport(string creator, int userCount, DateTime date)
+        {
+            try
+            {
+                _logger.LogInformation("Daily health check report generation.");
+                var report = GenerateHealthCheckReport(creator, userCount, date);
+                await _csService.UploadHealthDoc(report);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during daily report generation initialization.");
+                throw;
+            }
+        }
+
         private string htmlContent = @"<!DOCTYPE html>
         <html lang=""en"">
         <head>
