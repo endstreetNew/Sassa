@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+	  <TargetFramework>net9.0</TargetFramework>
+	  <Nullable>enable</Nullable>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <OutputType>Exe</OutputType>
+	  <Version>2.0.0</Version>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Watch Include="**\*.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Services\SocpenService.cs" />
+	  <Compile Remove="Services\WindowsAuthenticationStateProvider.cs" />
+	  <Compile Remove="Startup.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Watch Remove="Components\Report\ReportDownload.razor" />
+	  <Watch Remove="Routes.razor" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Connected Services\" />
+    <Folder Include="wwwroot\brmFiles\" />
+    <Folder Include="wwwroot\images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="9.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="9.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.6" />
+    <PackageReference Include="PDFsharp" Version="6.2.0" />
+    <PackageReference Include="Serilog" Version="4.3.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="System.Management" Version="9.0.6" />
+    <PackageReference Include="System.ServiceModel.Federation" Version="8.1.2" />
+    <PackageReference Include="System.ServiceModel.Http" Version="8.1.2" />
+    <PackageReference Include="System.ServiceModel.NetTcp" Version="8.1.2" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\razor.Components\razor.Components.csproj" />
+    <ProjectReference Include="..\Sassa.Barcoder\Sassa.Barcoder.csproj" />
+    <ProjectReference Include="..\Sassa.Brm.Common\Sassa.Brm.Common.csproj" />
+    <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
+    <ProjectReference Include="..\Sassa.Brm.Health\Sassa.Brm.Health.csproj" />
+    <ProjectReference Include="..\Sassa.CsService\Sassa.CsService.csproj" />
+    <ProjectReference Include="..\Sassa.PdfServices\Sassa.PdfServices.csproj" />
+    <ProjectReference Include="..\Sassa.QrCoder\Sassa.QrCoder.csproj" />
+    <ProjectReference Include="..\Sassa.Socpen.Data\Sassa.Socpen.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="tasklist /fi &quot;imagename eq iisexpress.exe&quot; |find &quot;:&quot; &gt; nul&#xD;&#xA;if errorlevel 1 taskkill /f /im &quot;iisexpress.exe&quot;" />
+  </Target>
+</Project>

@@ -10,6 +10,9 @@
     <None Remove="Sql\AddChildGrants.sql" />
     <None Remove="Sql\AddMainGrants.sql" />
     <None Remove="Sql\AddSrds.sql" />
+    <None Remove="Sql\MergeDisability.sql" />
+    <None Remove="Sql\MergeOldAge.sql" />
+    <None Remove="Sql\RetireDisability.sql" />
     <None Remove="Sql\RetireSrds.sql" />
   </ItemGroup>
 
@@ -21,6 +24,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sql\AddSrds.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\MergeDisability.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\MergeOldAge.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Sql\RetireDisability.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Sql\RetireSrds.sql">
