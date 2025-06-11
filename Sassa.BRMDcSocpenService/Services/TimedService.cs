@@ -109,6 +109,24 @@
                 _fu.WriteJson(Globals, fileName);
                 await _raw.ExecuteNonQuery(sql);
 
+                sql = File.ReadAllText(sqlPath + "\\MergeDisablility.sql");
+
+                Globals.Progress = "Merge Disability Grants.";
+                _fu.WriteJson(Globals, fileName);
+                await _raw.ExecuteNonQuery(sql);
+
+                sql = File.ReadAllText(sqlPath + "\\MergeOldAge.sql");
+
+                Globals.Progress = "Merge Old Age Grants.";
+                _fu.WriteJson(Globals, fileName);
+                await _raw.ExecuteNonQuery(sql);
+
+                sql = File.ReadAllText(sqlPath + "\\RetireDisability.sql");
+
+                Globals.Progress = "Retire Disability Grants.";
+                _fu.WriteJson(Globals, fileName);
+                await _raw.ExecuteNonQuery(sql);
+
                 sql = File.ReadAllText(sqlPath + "\\RetireSrds.sql");
                 Globals.Progress = "Retire Srds.";
                 _fu.WriteJson(Globals, fileName);
