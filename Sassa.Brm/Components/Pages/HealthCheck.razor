@@ -15,7 +15,6 @@
         try
         {
             await check.WriteDailyReport(session.session.Name, 10, DateTime.Now);
-            //await csService.UploadHealthDoc(check.GenerateHealthCheckReport(session.session.Name, 10, DateTime.Now));
             toast.Success("Healthcheck saved.");
         }
         catch(Exception ex)

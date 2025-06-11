@@ -68,7 +68,11 @@
 </div>
 <div style="display: table-row;">
     <div style="vertical-align: middle; display: table-cell; padding: 0 5px 0 5px;">
-        <input type="checkbox" @bind="@chkSearchFull" /><label class="chkboxLabel"> Search Id History.</label>
+        <span><strong>Legend</strong></span>
+        <button class="btn btn-primary btn-sm active btn-success" >Record is Merge Parent</button>
+        <button class="btn btn-primary btn-sm active btn-warning" >Record is Merge Candidate</button>
+
+        @* <input type="checkbox" @bind="@chkSearchFull" /><label class="chkboxLabel"> Search Id History.</label> *@
     </div>
 </div>
 <br />
@@ -82,7 +86,7 @@
                 <TemplateColumn Title="Actions">
 @*                 <button style="width:20px;height:20px;" class="btn btn-sm active @(!string.IsNullOrEmpty(context.Brm_Parent) ? "btn-success" : context.IsMergeCandidate ? "btn-warning" : "btn-primary")">
                     </button> *@
-                <button class="btn btn-primary btn-sm active @(string.IsNullOrEmpty(context.Brm_Parent) ? "btn-success" : context.IsMergeCandidate ? "btn-warning" : "btn-primary")" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnNewCover_Click(context))">New Cover</button>
+                <button class="btn btn-primary btn-sm active @(!string.IsNullOrEmpty(context.Brm_Parent) ? "btn-success" : context.IsMergeCandidate ? "btn-warning" : "btn-primary")" data-bs-toggle="modal" data-bs-target="#myModal" @onclick="@(() => btnNewCover_Click(context))">New Cover</button>
                     @if (sessionservice.session.IsSupport())
                     {
                         <button class="btn btn-danger btn-sm active" @onclick="@(() => btnDelete_Click(context))">Delete</button>

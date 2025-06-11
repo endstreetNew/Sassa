@@ -28,6 +28,10 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         {
             return "LcType specified without LC status.";
         }
+        if(!"LC-MAIN|LC-ARCHIVE|MAIN|ARCHIVE".Contains(app.AppStatus))
+        {
+            return "Invalid Application Status.";
+        }
         //Ensure insert and update is possible
         if (string.IsNullOrEmpty(app.Clm_No))
         {
