@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using razor.Components;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
@@ -35,6 +36,16 @@ public class Program
         // connection strings   
         string BrmConnection = builder.Configuration.GetConnectionString("BrmConnection")!;
         string CsConnection = builder.Configuration.GetConnectionString("CsConnection")!;
+        //Options pattern for scheduled tasks
+
+
+
+        builder.Services.Configure<ScheduleOptions>(options =>
+        {
+            options.Enabled = builder.Configuration.GetValue<bool>("ScheduleOptions:Enabled");
+            options.RunAtHour = builder.Configuration.GetValue<int>("ScheduleOptions:RunAtHour");
+            options.ConnectionString = BrmConnection;
+        });
         //Factory pattern
         builder.Services.AddDbContextFactory<ModelContext>(options =>
         {
@@ -161,6 +172,8 @@ public class Program
         .CreateLogger();
 
         builder.Host.UseSerilog();
+        //Hosted Services(Socpen Task Scheduler)
+        builder.Services.AddHostedService<ScheduleService>();
 
         var app = builder.Build();
 

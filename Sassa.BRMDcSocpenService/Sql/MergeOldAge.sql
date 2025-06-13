@@ -1,6 +1,8 @@
 ﻿--merge old agestats to disability records
 DECLARE 
-    CURSOR c1 IS SELECT beneficiary_id, CAPTURE_REFERENCE, CAPTURE_DATE, SCAN_DATE, SOCPEN_DATE, CS_DATE, TDW_REC FROM DC_Socpen where grant_type = '0';
+    CURSOR c1 IS SELECT beneficiary_id, CAPTURE_REFERENCE, CAPTURE_DATE, SCAN_DATE, SOCPEN_DATE, CS_DATE, TDW_REC FROM DC_Socpen s 
+    where grant_type = '0' 
+    and exists (SELECT 1 FROM DC_Socpen where beneficiary_id = s.beneficiary_id AND grant_type = '3');
 BEGIN
     FOR source IN c1 LOOP
            UPDATE DC_SOCPEN target 
@@ -14,4 +16,4 @@ BEGIN
            and target.grant_type = '3';           
         COMMIT; -- Commit periodically to avoid undo log overflow
     END LOOP;
-END
+END;

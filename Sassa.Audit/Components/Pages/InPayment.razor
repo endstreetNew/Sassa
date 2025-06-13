@@ -25,7 +25,7 @@
     </FluentStack>
     <hr />
 
-    <FluentDataGrid Items="@misFiles" TGridItem="Inpayment" Pagination="@paginationState">
+    <FluentDataGrid Items="@misFiles" TGridItem="Inpayment" Pagination="@paginationState" >
         <PropertyColumn Title="ID No" Property="f => f.ApplicantNo" />
         <PropertyColumn Title="Name" Property="f => f.FirstName" />
         <PropertyColumn Title="Surname" Property="f => f.Surname" />
@@ -62,15 +62,15 @@
 
     protected override void OnInitialized()
     {
-
         context = dbContextFactory.CreateDbContext();
+
         report = new ReportDefinition { ReportIndex = "1", ReportName = "In Payment Files", FilterOptions = new FilterOptions() { "Region", "OgaStatus", "RegType", } };
-        misFiles = context.Inpayments.AsQueryable();
+        misFiles = context.Inpayments;
         InitializeFilterData();
         loading = false;
     }
 
-    protected void SearchMis()
+    protected async Task SearchMis()
     {
         if(string.IsNullOrEmpty(searchId) || searchId.Length < 13)
         {
@@ -79,7 +79,7 @@
         }
         try
         {
-            misFiles = context.Inpayments.Where(x => x.ApplicantNo == searchId);
+            misFiles = misFiles.Where(x => x.ApplicantNo == searchId);
         }
         catch(Exception ex)
         {
@@ -90,7 +90,7 @@
 
     private void ValidateReportFilter()
     {
-        misFiles = context.Inpayments.AsQueryable();
+        misFiles = context.Inpayments;
         try
         {
             foreach (var option in report.FilterOptions)
@@ -173,7 +173,7 @@
             header.Region = RegionName;
             List<Inpayment> result = misFiles.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
             result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
-            misFiles = context.Inpayments.AsQueryable();
+            misFiles = context.Inpayments;
         }
         catch (Exception ex)
         {
@@ -217,7 +217,7 @@
             header.Region = RegionName;
             List<Inpayment> result = misFiles.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
             result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
-            misFiles = context.Inpayments.AsQueryable();
+            misFiles = context.Inpayments;
         }
         catch (Exception ex)
         {

@@ -103,13 +103,21 @@
                 _fu.WriteJson(Globals, fileName);
                 await _raw.ExecuteNonQuery(sql);
 
+                sql = File.ReadAllText(sqlPath + "\\AddDisability.sql");
+
+                Globals.Progress = "Insert Disability Grants.";
+                _fu.WriteJson(Globals, fileName);
+                await _raw.ExecuteNonQuery(sql);
+
                 sql = File.ReadAllText(sqlPath + "\\AddChildGrants.sql");
 
                 Globals.Progress = "Insert new Child Grants.";
                 _fu.WriteJson(Globals, fileName);
                 await _raw.ExecuteNonQuery(sql);
 
-                sql = File.ReadAllText(sqlPath + "\\MergeDisablility.sql");
+
+
+                sql = File.ReadAllText(sqlPath + "\\MergeDisability.sql");
 
                 Globals.Progress = "Merge Disability Grants.";
                 _fu.WriteJson(Globals, fileName);

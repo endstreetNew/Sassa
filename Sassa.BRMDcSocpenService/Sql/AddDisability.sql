@@ -1,4 +1,4 @@
--- NO semicolons(;) at the end of the SQL statements in this file!
+﻿-- NO semicolons(;) at the end of the SQL statements in this file!
 DECLARE
     CURSOR cur_src IS
         SELECT 
@@ -19,7 +19,12 @@ DECLARE
         FROM SASSA.SOCPEN_PERSONAL_GRANTS A
         INNER JOIN SASSA.SOCPEN_PERSONAL B ON A.PENSION_NO = B.PENSION_NO
         LEFT JOIN SASSA.CUST_RESCODES D ON B.SECONDARY_PAYPOINT = D.RES_CODE
-        WHERE A.GRANT_TYPE IN ('0', '1', '4', '7', '8')                                  --Any Grant
+        WHERE GRANT_TYPE = '3' AND A.PRIM_STATUS IN ('B', 'A', '9') AND A.SEC_STATUS = '2') --Active disability
+             OR (GRANT_TYPE = '3' AND NOT EXISTS(SELECT 1                                 --Disability where no Old age grant exists
+            FROM DC_SOCPEN d
+            WHERE d.BENEFICIARY_ID = LPAD(A.PENSION_NO, 13, '0')
+              AND d.GRANT_TYPE = '0')
+              )
         AND A.APPLICATION_DATE > TO_DATE('2012-12-31', 'YYYY-MM-DD')
         AND NOT EXISTS(
                     SELECT 1
