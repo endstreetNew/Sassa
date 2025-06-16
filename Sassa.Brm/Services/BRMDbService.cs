@@ -215,15 +215,6 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
 
-    //public async Task LockBox(string boxNo)
-    //{
-    //    using (var _context = _contextFactory.CreateDbContext())
-    //    {
-    //        List<DcFile> boxfiles = await _context.DcFiles.Where(b => b.TdwBoxno == boxNo).ToListAsync();
-    //        boxfiles.ToList().ForEach(f => { f.TdwBatch = 0; f.BoxLocked = 0; });
-    //        await _context.SaveChangesAsync();
-    //    }
-    //}
 
     /// <summary>
     /// TDW Bat submit reboxing change

@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2EE5C454-61E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sassa.QrCoder", "Sassa.QrCoder\Sassa.QrCoder.csproj", "{3C0A639A-912D-42C2-A9B4-DC31A669ADB4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sassa.BRMDcSocpenService", "Sassa.BRMDcSocpenService\Sassa.BRMDcSocpenService.csproj", "{466B2FFC-C1BD-451A-B8BD-507E419A478A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sassa.BRMDcSocpenService.Redundant", "Sassa.BRMDcSocpenService\Sassa.BRMDcSocpenService.Redundant.csproj", "{466B2FFC-C1BD-451A-B8BD-507E419A478A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sassa.Socpen.Data", "Sassa.Socpen.Data\Sassa.Socpen.Data.csproj", "{416CEE59-F66F-4606-AEA0-93DE786EA062}"
 EndProject
@@ -48,7 +48,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.OfficeAdmin", "Sassa.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.PdfServices", "Sassa.PdfServices\Sassa.PdfServices.csproj", "{6B48ADE1-547E-498D-8CCE-9F6568E31BE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.Monitor.Shared", "Sassa.Monitor.Shared\Sassa.Monitor.Shared.csproj", "{A9E63DF7-9CFA-1366-EF4D-73BAEC582EEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.Monitor.Shared.Redundant", "Sassa.Monitor.Shared\Sassa.Monitor.Shared.Redundant.csproj", "{A9E63DF7-9CFA-1366-EF4D-73BAEC582EEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.Brm.Health", "Sassa.Brm.Health\Sassa.Brm.Health.csproj", "{7E8CBF25-9DA9-4D0C-A275-58F4777078EC}"
 EndProject

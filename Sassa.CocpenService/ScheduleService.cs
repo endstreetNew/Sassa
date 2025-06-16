@@ -34,7 +34,14 @@ namespace Sassa.Services
             if (_scheduleOptions.Value.Enabled)
             {
                 _logger.LogInformation("Executing SyncSocpen() task at: {Time}", DateTime.Now);
-                _socpen.SyncSocpen();
+                try
+                {
+                    _socpen.SyncSocpen();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error during SyncSocpen() execution at {Time}", DateTime.Now);
+                }
             }
             else
             {

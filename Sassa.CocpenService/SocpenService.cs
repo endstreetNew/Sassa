@@ -17,14 +17,11 @@ namespace Sassa.Services
         }
         public void SyncSocpen()
         {
-            
-
             using (OracleConnection conn = new OracleConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-                    Console.WriteLine("Connected to Oracle DB");
                     using (OracleCommand cmd = new OracleCommand())
                     {
                         cmd.Connection = conn;  
@@ -35,7 +32,7 @@ namespace Sassa.Services
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
+                    throw;
                 }
             }
         }

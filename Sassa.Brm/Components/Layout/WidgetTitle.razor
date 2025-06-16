@@ -1,0 +1,20 @@
+﻿<div class="widgetTitle">
+     <div style="width:80%">
+         <h5>@Title</h5>
+    </div>
+    <div>
+        @if (Loading)
+        {
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "";
+    [Parameter]
+    public bool Loading { get; set; }
+}

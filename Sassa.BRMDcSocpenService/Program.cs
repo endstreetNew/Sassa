@@ -1,5 +1,7 @@
 using Sassa.BRM.Services;
-
+///
+///This project has been rplaced with Sassa.Socpen.Service
+///
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<RawSqlService>();

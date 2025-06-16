@@ -1,0 +1,42 @@
+@using System.IO
+@inject IWebHostEnvironment Env
+
+<WidgetTitle Title="Error Log Viewer"/>
+
+@if (logLines == null)
+{
+    <p>Loading log...</p>
+}
+else if (!logLines.Any())
+{
+    <p>No error log found or log is empty.</p>
+}
+else
+{
+    <div style="max-height:600px;overflow:auto;font-family:monospace;background:#222;color:#eee;padding:1em;">
+        @foreach (var line in logLines)
+        {
+            <div>@line</div>
+        }
+    </div>
+}
+
+@code {
+    private List<string>? logLines;
+
+    protected override void OnInitialized()
+    {
+        // Adjust the path as needed to match your log file location
+        var logPath = Path.Combine(Env.ContentRootPath, "Logs", $"app-Brm-Error{DateTime.Today.AddDays(-1).ToString("yyyyMMdd")}.log");
+        if (File.Exists(logPath))
+        {
+            // Read only the last 200 lines for performance
+            var allLines = File.ReadLines(logPath).Reverse().Take(200).Reverse().ToList();
+            logLines = allLines;
+        }
+        else
+        {
+            logLines = new List<string>();
+        }
+    }
+}

@@ -37,9 +37,6 @@ public class Program
         string BrmConnection = builder.Configuration.GetConnectionString("BrmConnection")!;
         string CsConnection = builder.Configuration.GetConnectionString("CsConnection")!;
         //Options pattern for scheduled tasks
-
-
-
         builder.Services.Configure<ScheduleOptions>(options =>
         {
             options.Enabled = builder.Configuration.GetValue<bool>("ScheduleOptions:Enabled");
@@ -176,7 +173,26 @@ public class Program
         builder.Services.AddHostedService<ScheduleService>();
 
         var app = builder.Build();
-
+        // --- Database connectivity check on startup ---
+        using (var scope = app.Services.CreateScope())
+        {
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+            try
+            {
+                var dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ModelContext>>();
+                using var dbContext = dbFactory.CreateDbContext();
+                dbContext.Database.OpenConnection();
+                dbContext.Database.CloseConnection();
+                logger.LogInformation("Database connectivity check succeeded.");
+            }
+            catch (Exception ex)
+            {
+                logger.LogCritical(ex, "Database connectivity check failed. Application will terminate.");
+                Log.CloseAndFlush();
+                Environment.Exit(1);
+            }
+        }
+        // --- End database connectivity check ---
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())

@@ -13,7 +13,6 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
 
     UserSession _session = session.session!;//SessionService must be loaded before this service
 
-
     public List<TdwBatchViewModel> GetBox(string boxNo)
     {
         using var _context = _contextFactory.CreateDbContext();
