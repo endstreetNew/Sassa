@@ -14,7 +14,7 @@ namespace Sassa.Services
         private readonly ILogger<CSService> _logger;
         private readonly DocumentManagementClient _docClient;
         private readonly AuthenticationClient _authClient;
-        private CsDocuments.OTAuthentication? _ota;
+        //private CsDocuments.OTAuthentication? _ota;
         public long NodeId { get; private set; }
         private string _idNumber = "";
 
@@ -36,12 +36,29 @@ namespace Sassa.Services
         /// <summary>
         /// CS Webservice authentication
         /// </summary>
-        private async Task Authenticate()
+        //private async Task Authenticate()
+        //{
+
+        //    try
+        //    {
+        //        _ota = new Sassa.Services.CsDocuments.OTAuthentication
+        //        {
+        //            AuthenticationToken = await _authClient.AuthenticateUserAsync(_settings.CsServiceUser, _settings.CsServicePass)
+        //        };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Failed to Authenticate Contentserver WS.");
+        //        throw new Exception("Failed to Authenticate Contentserver WS.");
+        //    }
+        //}
+
+        private async Task<CsDocuments.OTAuthentication> Authenticate()
         {
 
             try
             {
-                _ota = new Sassa.Services.CsDocuments.OTAuthentication
+                return new Sassa.Services.CsDocuments.OTAuthentication
                 {
                     AuthenticationToken = await _authClient.AuthenticateUserAsync(_settings.CsServiceUser, _settings.CsServicePass)
                 };
@@ -58,13 +75,13 @@ namespace Sassa.Services
             _idNumber = idNumber;
             try
             {
-                await Authenticate();
-                // Get the root node for this id
+                
+                // Get the root node for this id from the db
                 long? nodeId = await GetNodeIdForIdNumber(idNumber);
                 if (nodeId == null) return;
 
                 NodeId = nodeId.Value;
-
+                CsDocuments.OTAuthentication _ota = await Authenticate();
                 var result = await _docClient.GetNodesInContainerAsync(_ota, NodeId, new GetNodesInContainerOptions { MaxDepth = 1, MaxResults = 10 });
                 var nodes = result.GetNodesInContainerResult;
                 if (nodes == null) return;
@@ -73,17 +90,13 @@ namespace Sassa.Services
 
                 foreach (var node in nodes)
                 {
-                    await AddRecursive(node, NodeId);
+                    await AddRecursive(node, NodeId, _ota);
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error in GetCSDocuments for idNumber: {_idNumber}", _idNumber);
                 throw;
-            }
-            finally
-            {
-                _ota = null;
             }
         }
 
@@ -119,7 +132,7 @@ namespace Sassa.Services
             }
         }
 
-        private async Task AddRecursive(Node node, long parentNode)
+        private async Task AddRecursive(Node node, long parentNode, CsDocuments.OTAuthentication _ota)
         {
             try
             {
@@ -130,10 +143,11 @@ namespace Sassa.Services
                     var subnodes = result.GetNodesInContainerResult;
                     if (subnodes == null) return;
                     foreach (var snode in subnodes)
-                        await AddRecursive(snode, node.ID);
+                        await AddRecursive(snode, node.ID,_ota);
                 }
                 else if (node.VersionInfo != null)
                 {
+
                     var result = await _docClient.GetVersionContentsAsync(_ota, node.ID, node.VersionInfo.VersionNum);
                     var doc = result.GetVersionContentsResult;
                     SaveAttachment(doc, _idNumber, node.ID, parentNode);
@@ -230,11 +244,11 @@ namespace Sassa.Services
             {
                 await Authenticate();
                 NodeId = 94643845; // Health Checks - BRM node id
+                CsDocuments.OTAuthentication _ota = await Authenticate();
                 await _docClient.CreateDocumentAsync(_ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);
             }
             catch (Exception ex)
             {
-                _ota = null;
                 throw new Exception(ex.Message);
             }
 

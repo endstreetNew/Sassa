@@ -28,7 +28,7 @@
         </div>
     </div>
 </div>
-
+<WidgetTitle Title="File Requests" Loading="loading"/>
 @if (showpreview)
 {
     <div class="fileTree">
@@ -71,6 +71,7 @@ else
     int viewIndex;
     TreeNode? node;
     List<TreeNode> files = new();
+    bool loading = false;
 
     protected async Task btnRequest_Click()
     {
@@ -99,6 +100,7 @@ else
         {
             await Validate();
             toast.Info("Searching document Images..");
+            loading = true;
             await cs.GetCSDocuments(sm.IdNo);
             folderItems = cs.GetFolderList(sm.IdNo);
             node = await db.GetCSFiles(sm.IdNo);
@@ -107,6 +109,7 @@ else
             {
                 toast.Warn("No document Images found.");
             }
+            loading = false;
 
         }
         catch (Exception ex)

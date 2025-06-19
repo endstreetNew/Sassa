@@ -24,7 +24,7 @@ namespace Sassa.Brm.Health
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error during daily report generation initialization.");
+                _logger.LogWarning(ex, "Error during daily report generation initialization.");
                 throw;
             }
         }
