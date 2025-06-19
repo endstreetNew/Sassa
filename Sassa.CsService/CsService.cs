@@ -9,12 +9,12 @@ namespace Sassa.Services
 {
     public class CSService
     {
-        CsServiceSettings _settings = new CsServiceSettings();
+        private readonly CsServiceSettings _settings;
         private readonly ModelContext _context;
+        private readonly ILogger<CSService> _logger;
         private readonly DocumentManagementClient _docClient;
         private readonly AuthenticationClient _authClient;
         private CsDocuments.OTAuthentication? _ota;
-        private ILogger<CSService> _logger;
         public long NodeId { get; private set; }
         private string _idNumber = "";
 
@@ -78,7 +78,7 @@ namespace Sassa.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, ex.Message);
+                _logger.LogError(ex, "Error in GetCSDocuments for idNumber: {_idNumber}", _idNumber);
                 throw;
             }
             finally
@@ -89,49 +89,65 @@ namespace Sassa.Services
 
         private async Task<long?> GetNodeIdForIdNumber(string idNumber)
         {
-            using var con = new OracleConnection(_settings.CsConnection);
-            await con.OpenAsync();
-            using var cmd = con.CreateCommand();
-            cmd.BindByName = true;
-            cmd.CommandTimeout = 0;
-            cmd.FetchSize *= 8;
+            try
+            {
+                using var con = new OracleConnection(_settings.CsConnection);
+                await con.OpenAsync();
+                using var cmd = con.CreateCommand();
+                cmd.BindByName = true;
+                cmd.CommandTimeout = 0;
+                cmd.FetchSize *= 8;
 
-            cmd.CommandText = $"select DATAID from dtree where name=:prefix and parentid = 47634";
-            cmd.Parameters.Add(new OracleParameter("prefix", idNumber.Substring(0, 4)));
-            using var reader = await cmd.ExecuteReaderAsync();
-            if (!await reader.ReadAsync()) return null;
-            long periodId = reader.GetInt64(0);
+                cmd.CommandText = $"select DATAID from dtree where name=:prefix and parentid = 47634";
+                cmd.Parameters.Add(new OracleParameter("prefix", idNumber.Substring(0, 4)));
+                using var reader = await cmd.ExecuteReaderAsync();
+                if (!await reader.ReadAsync()) return null;
+                long periodId = reader.GetInt64(0);
 
-            cmd.CommandText = $"select DATAID from dtree where name=:id and parentid = :periodId";
-            cmd.Parameters.Clear();
-            cmd.Parameters.Add(new OracleParameter("id", idNumber));
-            cmd.Parameters.Add(new OracleParameter("periodId", periodId));
-            using var reader2 = await cmd.ExecuteReaderAsync();
-            if (!await reader2.ReadAsync()) return null;
-            return reader2.GetInt64(0);
+                cmd.CommandText = $"select DATAID from dtree where name=:id and parentid = :periodId";
+                cmd.Parameters.Clear();
+                cmd.Parameters.Add(new OracleParameter("id", idNumber));
+                cmd.Parameters.Add(new OracleParameter("periodId", periodId));
+                using var reader2 = await cmd.ExecuteReaderAsync();
+                if (!await reader2.ReadAsync()) return null;
+                return reader2.GetInt64(0);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in GetNodeIdForIdNumber for idNumber: {_idNumber}", _idNumber);
+                return null;
+            }
         }
 
         private async Task AddRecursive(Node node, long parentNode)
         {
-            if (node.IsContainer)
+            try
             {
-                //SaveFolder(node.Name, node.ID);
-                var result = await _docClient.GetNodesInContainerAsync(_ota, node.ID, new GetNodesInContainerOptions { MaxDepth = 1, MaxResults = 10 });
-                var subnodes = result.GetNodesInContainerResult;
-                if (subnodes == null) return;
-                foreach (var snode in subnodes)
-                    await AddRecursive(snode, node.ID);
+                if (node.IsContainer)
+                {
+                    //SaveFolder(node.Name, node.ID);
+                    var result = await _docClient.GetNodesInContainerAsync(_ota, node.ID, new GetNodesInContainerOptions { MaxDepth = 1, MaxResults = 10 });
+                    var subnodes = result.GetNodesInContainerResult;
+                    if (subnodes == null) return;
+                    foreach (var snode in subnodes)
+                        await AddRecursive(snode, node.ID);
+                }
+                else if (node.VersionInfo != null)
+                {
+                    var result = await _docClient.GetVersionContentsAsync(_ota, node.ID, node.VersionInfo.VersionNum);
+                    var doc = result.GetVersionContentsResult;
+                    SaveAttachment(doc, _idNumber, node.ID, parentNode);
+                }
             }
-            else if (node.VersionInfo != null)
+            catch (Exception ex)
             {
-                var result = await _docClient.GetVersionContentsAsync(_ota, node.ID, node.VersionInfo.VersionNum);
-                var doc = result.GetVersionContentsResult;
-                SaveAttachment(doc, _idNumber, node.ID, parentNode);
+                _logger.LogError(ex, "Error in AddRecursive for nodeId: {NodeId}", node.ID);
             }
         }
 
         private void SaveAttachment(Attachment doc, string idNo, long nodeId, long parentNode)
         {
+            //Todo to save document method
             //if (!_context.DcDocumentImages.Where(d => d.Filename == doc.FileName).ToList().Any())
             //{
             //    var image = new DcDocumentImage

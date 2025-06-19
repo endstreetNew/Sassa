@@ -8,7 +8,7 @@ using Sassa.BRM.ViewModels;
 using System.Diagnostics;
 
 
-public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, SessionService session, RawSqlService _raw, MailMessages _mail, LoggingService logger)
+public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService, SessionService session, RawSqlService _raw, MailMessages _mail, ILogger<TdwBatchService> logger)
 {
 
     UserSession _session = session.session!;//SessionService must be loaded before this service
@@ -44,7 +44,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
             .Select(g => new TdwBatchViewModel
             {
                 BoxNo = g.Key,
-                Region = _staticService.GetRegion(_session.Office.RegionId!),
+                Region = session.session.Office.OfficeName,//_staticService.GetRegion(_session.Office.RegionId!),
                 MiniBoxes = (int)g.Sum(f => f.MiniBoxno ?? 0),
                 Files = g.Count(),
                 User = _session.SamName,
@@ -137,12 +137,68 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         }
         return tdwBatch;
     }
+    public async Task SendTDWBulkReturnedMail(int tdwBatchNo)
+    {
+        try
+        {
+            List<TDWRequestMain> tpl = new();
+            List<string> files = new();
+
+            using var _context = _contextFactory.CreateDbContext();
+
+            // Fetch all relevant DcFiles
+            var dcFiles = await _context.DcFiles
+                .Where(bn => bn.TdwBatch == tdwBatchNo)
+                .AsNoTracking()
+                .ToListAsync();
+
+            // Group by box number
+            var groupedByBox = dcFiles.GroupBy(f => f.TdwBoxno);
+
+            foreach (var boxGroup in groupedByBox)
+            {
+                foreach (var parent in boxGroup)
+                {
+                    tpl.Add(new TDWRequestMain
+                    {
+                        BRM_No = parent.BrmBarcode,
+                        CLM_No = parent.UnqFileNo,
+                        Folder_ID = parent.UnqFileNo,
+                        Grant_Type = parent.GrantType,
+                        Firstname = parent.UserFirstname,
+                        Surname = parent.UserLastname,
+                        ID_Number = parent.ApplicantNo,
+                        Year = (parent.UpdatedDate ?? DateTime.Now).ToString("yyyy"),
+                        Location = parent.TdwBoxno,
+                        Reg = parent.RegType,
+                        Box = parent.MiniBoxno?.ToString() ?? "",
+                        UserPicked = ""
+                    });
+                }
+            }
+
+            string fileName = $"{_session.Office.RegionCode}-{_session.SamName!.ToUpper()}-TDW_ReturnedBatch_{tdwBatchNo}-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}";
+            string csvPath = Path.Combine(StaticDataService.ReportFolder, $"{fileName}.csv");
+
+            // Write CSV file
+            File.WriteAllText(csvPath, tpl.CreateCSV());
+            files.Add(csvPath);
+
+            // Send mail to TDW
+            _mail.SendTDWIncoming(_session, tdwBatchNo, files);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "SendTDWBulkReturnedMail() Error sending TDW email failed.");
+        }
+    }
+
     /// <summary>
     /// New TDW Batch feature
     /// </summary>
     /// <param name="tdwBatchNo"></param>
     /// <returns></returns>
-    public async Task SendTDWBulkReturnedMail(int tdwBatchNo)
+    public async Task SendTDWBulkReturnedMailRedundant(int tdwBatchNo)
     {
         List<TDWRequestMain> tpl = new List<TDWRequestMain>();
         List<DcFile> parentlist;
@@ -193,7 +249,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         }
         catch (Exception ex)
         {
-            await logger.LogToConsole(ex.Message);
+            logger.LogError(ex,"Error sending TDW email failed.");
         }
     }
 

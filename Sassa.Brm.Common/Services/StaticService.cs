@@ -133,10 +133,16 @@ namespace Sassa.Brm.Common.Services
         }
         public async Task<bool> UpdateUserLocalOffice(string officeId, decimal? fspId, UserSession session)
         {
+            //Todo: if officeId is invalid throw exception
+            if (string.IsNullOrEmpty(officeId) || officeId == "0" || StaticDataService.LocalOffices.Where(o => o.OfficeId == officeId).Count() == 0)
+            {
+                throw new ArgumentException("Invalid Office Id", nameof(officeId));
+            }
             session.Office.FspId = fspId;
             DcOfficeKuafLink officeLink;
             using (var context = _contextFactory.CreateDbContext())
             {
+
                 var query = await context.DcOfficeKuafLinks.Where(okl => okl.Username == session.SamName).ToListAsync();
                 if (query.Count() > 1)
                 {

@@ -20,6 +20,10 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         {
             return "Invalid ID.";
         }
+        if (app.AppDate.ToDate("dd/MMM/yy") > DateTime.Now)
+        {
+            return "Invalid Application Date. Format : dd/MMM/yy.";
+        }
         if (string.IsNullOrEmpty(app.LcType.Trim('0')) && app.AppStatus.ToLower().Contains("lc"))
         {
             return "LC status without LcType.";
@@ -104,7 +108,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
     public async Task<DcFile> ValidateApiAndInsert(Application application, string reason)
     {
         while (!staticService.IsInitialized) { }
-        ;
+
         using (var _context = dbContextFactory.CreateDbContext())
         {
             try

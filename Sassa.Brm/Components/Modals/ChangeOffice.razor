@@ -1,6 +1,7 @@
 ﻿@inject BRMDbService db
 @inject StaticService staticservice
 @inject SessionService sessionservice
+@inject IAlertService toast
 
 <div class="modal" tabindex="-1" style="display:block;" role="dialog">
     <div class="modal-dialog">
@@ -66,11 +67,18 @@
 
     protected async Task btnOk_Click()
     {
-        //Update the office linq
-        await staticservice.UpdateUserLocalOffice(office.OfficeId, office.FspId, sessionservice.session);
-        //Update the User
-        sessionservice.UpdateUserOffice();
-        await Cancel.InvokeAsync();
+        try
+        {
+            //Update the office linq
+            await staticservice.UpdateUserLocalOffice(office.OfficeId, office.FspId, sessionservice.session);
+            //Update the User
+            sessionservice.UpdateUserOffice();
+            await Cancel.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
     }
     protected void btnCancel_Click()
     {

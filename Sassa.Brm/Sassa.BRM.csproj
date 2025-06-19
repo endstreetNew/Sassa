@@ -13,10 +13,20 @@
 
 	<ItemGroup>
 	  <Compile Remove="Logs\**" />
+	  <Compile Remove="wwwroot\brmFiles\**" />
+	  <Compile Remove="wwwroot\CSImages\**" />
 	  <Content Remove="Logs\**" />
+	  <Content Remove="wwwroot\brmFiles\**" />
+	  <Content Remove="wwwroot\CSImages\**" />
 	  <EmbeddedResource Remove="Logs\**" />
+	  <EmbeddedResource Remove="wwwroot\brmFiles\**" />
+	  <EmbeddedResource Remove="wwwroot\CSImages\**" />
 	  <None Remove="Logs\**" />
+	  <None Remove="wwwroot\brmFiles\**" />
+	  <None Remove="wwwroot\CSImages\**" />
 	  <Watch Remove="Logs\**" />
+	  <Watch Remove="wwwroot\brmFiles\**" />
+	  <Watch Remove="wwwroot\CSImages\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -32,7 +42,6 @@
 
   <ItemGroup>
     <Folder Include="Connected Services\" />
-    <Folder Include="wwwroot\brmFiles\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

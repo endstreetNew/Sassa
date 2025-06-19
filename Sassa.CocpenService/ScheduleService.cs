@@ -23,7 +23,7 @@ namespace Sassa.Services
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            
+            _logger.LogInformation("Socpen Task Scheduler starting...");
             ScheduleNextRun();
             return Task.CompletedTask;
         }

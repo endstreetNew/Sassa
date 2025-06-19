@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using razor.Components;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
@@ -14,7 +13,6 @@ using Sassa.BRM.Services;
 using Sassa.Services;
 using Sassa.Socpen.Data;
 using Serilog;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace Sassa.BRM;
 
@@ -59,8 +57,7 @@ public class Program
         builder.Services.AddScoped<MisFileService>();
         builder.Services.AddScoped<DestructionService>();
         builder.Services.AddScoped<SocpenService>();
-        //builder.Services.AddScoped<DeprecatedTdwBatchService>();
-        builder.Services.AddScoped<LoggingService>();
+        //builder.Services.AddScoped<LoggingService>();
         builder.Services.AddScoped<TdwBatchService>();
         builder.Services.AddScoped<CoverSheetService>();
         builder.Services.AddSingleton<BarCodeService>();
