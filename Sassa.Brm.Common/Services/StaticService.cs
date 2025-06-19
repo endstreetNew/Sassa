@@ -14,9 +14,12 @@ namespace Sassa.Brm.Common.Services
     {
 
         public bool IsInitialized { get; set; }
-        IDbContextFactory<ModelContext> _contextFactory;
-        public StaticService(IDbContextFactory<ModelContext> contextFactory, IConfiguration config, IWebHostEnvironment env)
+        private readonly IDbContextFactory<ModelContext> _contextFactory;
+        private readonly ILogger<StaticService> _logger;
+
+        public StaticService(IDbContextFactory<ModelContext> contextFactory, IConfiguration config, IWebHostEnvironment env,ILogger<StaticService> logger)
         {
+            _logger = logger;
             StaticDataService.SupportUsers = config.GetRequiredSection("SupportUsers").GetChildren().Select(c => c.Value!.ToLower()).ToList()!;
             _contextFactory = contextFactory;
             StaticDataService.ReportFolder = Path.Combine(env.ContentRootPath, @$"wwwroot\{config["Folders:Reports"]!}\");
@@ -47,7 +50,6 @@ namespace Sassa.Brm.Common.Services
                 StaticDataService.GrantTypes = context.DcGrantTypes.AsNoTracking().ToDictionary(key => key.TypeId, value => value.TypeName);
                 StaticDataService.LcTypes = context.DcLcTypes.AsNoTracking().ToDictionary(key => key.Pk, value => value.Description);
                 StaticDataService.ServicePoints = context.DcFixedServicePoints.AsNoTracking().ToList();
-                StaticDataService.DcOfficeKuafLinks = context.DcOfficeKuafLinks.AsNoTracking().ToList();
                 StaticDataService.RequiredDocs = context.DcGrantDocLinks
                     .Join(context.DcDocumentTypes, reqDocGrant => reqDocGrant.DocumentId, reqDoc => reqDoc.TypeId, (reqDocGrant, reqDoc) => new { reqDocGrant, reqDoc })
                     .Where(joinResult => joinResult.reqDocGrant.CriticalFlag == "Y")
@@ -142,8 +144,9 @@ namespace Sassa.Brm.Common.Services
             DcOfficeKuafLink officeLink;
             using (var context = _contextFactory.CreateDbContext())
             {
-
+                //Get Officelink for this user
                 var query = await context.DcOfficeKuafLinks.Where(okl => okl.Username == session.SamName).ToListAsync();
+                //If there are more than one links for this user, remove them all and create a new one
                 if (query.Count() > 1)
                 {
                     foreach (var ol in query)
@@ -174,6 +177,7 @@ namespace Sassa.Brm.Common.Services
                 }
                 catch (Exception ex)
                 {
+                    _logger.LogError(ex, "Error updating user local office {Office} for user {UserName} Please contact support.",officeId, session.SamName);
                     throw new Exception(ex.Message);
                 }
             }

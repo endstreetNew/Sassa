@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Sassa.Brm.Common.Services;
 using Sassa.BRM.Helpers;
 using Sassa.BRM.Models;
-
 //using Sassa.BRM.Pages.Components;
 using System.Data;
 using System.Diagnostics;
@@ -58,7 +57,6 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             case "C":
             case "9":
             case "5":
-            case "6":
                 if (string.IsNullOrEmpty(app.ChildId))
                 {
                     return "A Child ID is required for this application.";
@@ -87,7 +85,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 }
                 break;
             default:
-                if (!"0|1|3|7|8|4".Contains(app.GrantType))
+                if (!"0|1|3|7|8|4|6".Contains(app.GrantType))
                 {
                     return "Invalid Grant Type.";
                 }
