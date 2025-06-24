@@ -126,7 +126,7 @@ else
     protected string toQuarter ="";
     protected List<MissingFile> dashboardData = new();
     protected bool IsDashboardLoaded;
-
+    protected UserSettings? settings;
     ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddMonths(-1), ToDate = DateTime.Now };
 
     protected async Task btnLoadProgress_Click()
@@ -137,6 +137,7 @@ else
             toast.Info($"Please select report Filter.");
             return;
         }
+        settings = sservice.GetUserSettings(sessionService.session.SamName);
         toast.Info($"Progress Dashboard loading...");
         dashboardData = await og.MissingProgress(StaticDataService.QuarterList()[fromQuarter], StaticDataService.QuarterList()[toQuarter],office.RegionId);
         IsDashboardLoaded = true;
@@ -153,7 +154,7 @@ else
             toast.Info($"{rs.reportList["3"]} queued.");
             string FileName = helper.GetFileName(rs.reportList["3"].Replace(" ", "_"),sessionService.session);
             //db.session.Office.RegionCode + "-" + db.session.SamName.ToUpper() + "-" + reportList["3"].Replace(" ", "_") + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");
-            await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), "3", office.OfficeId, "RMC", office.RegionId, "", FileName);
+            await rs.SaveReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), "3", office.OfficeId, "RMC", office.RegionId, "", FileName,settings!.ReportFormat);
         }
         catch (Exception ex)
         {

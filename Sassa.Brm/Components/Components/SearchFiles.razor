@@ -109,12 +109,14 @@ else
             {
                 toast.Warn("No document Images found.");
             }
-            loading = false;
-
         }
         catch (Exception ex)
         {
             toast.Error(ex.Message);
+        }
+        finally
+        {
+            loading = false;
         }
     }
 

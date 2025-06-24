@@ -7,10 +7,10 @@ namespace Sassa.Brm.Common.Models
 
         public UserOffice()
         {
-            OfficeId = "7";
+            OfficeId = "712";
             OfficeName = "Unknown";
             OfficeType = "LO";
-            RegionId = "";
+            RegionId = "7";
             RegionCode = "";
             RegionName = "";
             FspId = null;

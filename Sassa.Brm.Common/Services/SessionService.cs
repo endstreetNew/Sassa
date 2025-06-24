@@ -31,6 +31,7 @@ public class SessionService(StaticService _staticservice, AuthenticationStatePro
         ClaimsPrincipal claimsPrincipal = (await auth.GetAuthenticationStateAsync()).User;
         //Get user details
         _session = claimsPrincipal.GetSession();
+        _staticservice.CreateDcUser(_session);
         //Get user region and office link
         UpdateUserOffice();
     }

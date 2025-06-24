@@ -13,7 +13,7 @@
 
 <TabControl ActivePageId="1" PageActivate="OnTabActivate">
     <TabPage Text="Reports" Id="1" Enabled="true">
-
+        <WidgetTitle Title="Reports" Loading="loading" />
              <br/>
              <div class="row">
                  <div class="col">
@@ -162,6 +162,7 @@
                 }
             }
             }
+            
     </TabPage>
     <TabPage Text="Progress" Id="2" Enabled="true">
 @*        <MissingFiles></MissingFiles>*@
@@ -246,6 +247,7 @@
     string toQuarter ="";
     string forMonth ="";
 
+    protected bool loading;
     //string customSql;
 
     protected bool IsDashboardLoaded;
@@ -263,6 +265,7 @@
     PagedResult<DcSocpen> missingFiles = new PagedResult<DcSocpen>();
 
     string GrantType = "";
+    protected UserSettings? settings;
     int page;
     int missingpage;
 
@@ -272,6 +275,7 @@
         page = 1;
         IsMissingDashboardLoaded = false;
         IsDashboardLoaded = false;
+        settings = sservice.GetUserSettings(sessionservice.session.SamName);
         await OnTabActivate(1);
     }
 
@@ -313,6 +317,7 @@
     {
         try
         {
+            loading = true;
             await Task.Delay(100);
             if (rIndex == "7" && string.IsNullOrEmpty(office.OfficeId)) //Performance Report
             {
@@ -330,7 +335,7 @@
 
             if (rIndex == "8")
             {
-                await rs.SaveReport(rIndex, quarterList[fromQuarter],quarterList[toQuarter], office.RegionId, FileName);
+                await rs.SaveReport(rIndex, quarterList[fromQuarter], quarterList[toQuarter], office.RegionId, FileName,settings!.ReportFormat);
             }
             else
             {
@@ -339,13 +344,13 @@
                     var monthYear = forMonth.Split('|');
                     int month = int.Parse(monthYear[0]);
                     int year = int.Parse(monthYear[1]);
-                    await rs.SaveCsvReport(new DateTime(year, month, 1).ToString("dd/MM/yyyy"),new DateTime(year, month, DateTime.DaysInMonth(year, month)).ToString("dd/MM/yyyy"),rIndex, office.OfficeId, "RMC", office.RegionId, GrantType, FileName);
+                    await rs.SaveReport(new DateTime(year, month, 1).ToString("dd/MM/yyyy"), new DateTime(year, month, DateTime.DaysInMonth(year, month)).ToString("dd/MM/yyyy"), rIndex, office.OfficeId, "RMC", office.RegionId, GrantType, FileName, settings!.ReportFormat);
                 }
                 else if(rIndex == "11")
                 {
                     if (sessionservice.session.IsRmc() && sessionservice.session.IsInRole("GRP_BRM_Supervisors"))
                     {
-                        await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), rIndex, office.OfficeId, office.OfficeType, office.RegionId, GrantType, FileName, "");
+                        await rs.SaveReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), rIndex, office.OfficeId, office.OfficeType, office.RegionId, GrantType, FileName, "");
                     }
                     else
                     {
@@ -354,7 +359,8 @@
                 }
                 else
                 {
-                    await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), rIndex, office.OfficeId, office.OfficeType, office.RegionId, GrantType, FileName);
+
+                    await rs.SaveReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), rIndex, office.OfficeId, office.OfficeType, office.RegionId, GrantType, FileName, settings!.ReportFormat);
                 }
             }
 
@@ -362,6 +368,10 @@
         catch (Exception ex)
         {
             toast.Error(ex.Message);
+        }
+        finally
+        {
+            loading = false;
         }
 
     }
@@ -416,7 +426,7 @@
             toast.Info($"{reportList["3"]} queued.");
             string FileName = helper.GetFileName(reportList["3"].Replace(" ", "_"),sessionservice.session);
             //db.session.Office.RegionCode + "-" + db.session.SamName.ToUpper() + "-" + reportList["3"].Replace(" ", "_") + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");
-            await rs.SaveCsvReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), "3", office.OfficeId, "RMC", office.RegionId, GrantType, FileName);
+            await rs.SaveReport(period.FromDate.ToString("dd/MM/yyyy"), period.ToDate.ToString("dd/MM/yyyy"), "3", office.OfficeId, "RMC", office.RegionId, GrantType, FileName, settings!.ReportFormat);
         }
         catch (Exception ex)
         {

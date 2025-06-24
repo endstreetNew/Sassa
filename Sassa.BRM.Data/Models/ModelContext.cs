@@ -44,25 +44,27 @@ public partial class ModelContext : DbContext
 
     public virtual DbSet<DcFileRequest> DcFileRequests { get; set; }
 
-    public virtual DbSet<DcFixedServicePoint> DcFixedServicePoints { get; set; }
-
     public virtual DbSet<DcGrantDocLink> DcGrantDocLinks { get; set; }
 
     public virtual DbSet<DcGrantType> DcGrantTypes { get; set; }
 
     public virtual DbSet<DcLcType> DcLcTypes { get; set; }
 
+    public virtual DbSet<DcFixedServicePoint> DcFixedServicePoints { get; set; }
+
     public virtual DbSet<DcLocalOffice> DcLocalOffices { get; set; }
+
+    public virtual DbSet<DcRegion> DcRegions { get; set; }
+
+    public virtual DbSet<DcUser> DcUsers { get; set; }
 
     public virtual DbSet<DcMerge> DcMerges { get; set; }
 
-    public virtual DbSet<DcOfficeKuafLink> DcOfficeKuafLinks { get; set; }
+    //public virtual DbSet<DcOfficeKuafLink> DcOfficeKuafLinks { get; set; }
 
     public virtual DbSet<DcPicklist> DcPicklists { get; set; }
 
     public virtual DbSet<DcPicklistItem> DcPicklistItems { get; set; }
-
-    public virtual DbSet<DcRegion> DcRegions { get; set; }
 
     public virtual DbSet<DcReqCategory> DcReqCategories { get; set; }
 
@@ -1445,35 +1447,80 @@ public partial class ModelContext : DbContext
                 .HasColumnName("PARENT_BRM_BARCODE");
         });
 
-        modelBuilder.Entity<DcOfficeKuafLink>(entity =>
+        //modelBuilder.Entity<DcOfficeKuafLink>(entity =>
+        //{
+        //    entity.HasKey(e => e.Pk).HasName("DC_OFFICE_KUAF_LINK_PK");
+
+        //    entity.ToTable("DC_OFFICE_KUAF_LINK");
+
+        //    entity.Property(e => e.Pk)
+        //        .ValueGeneratedOnAdd()
+        //        .HasColumnType("NUMBER")
+        //        .HasColumnName("PK");
+        //    entity.Property(e => e.FspId)
+        //        .HasColumnType("NUMBER")
+        //        .HasColumnName("FSP_ID");
+        //    entity.Property(e => e.OfficeId)
+        //        .HasMaxLength(10)
+        //        .IsUnicode(false)
+        //        .HasColumnName("OFFICE_ID");
+        //    entity.Property(e => e.Supervisor)
+        //        .HasMaxLength(10)
+        //        .IsUnicode(false)
+        //        .HasColumnName("SUPERVISOR");
+        //    entity.Property(e => e.Username)
+        //        .HasMaxLength(225)
+        //        .IsUnicode(false)
+        //        .HasColumnName("USERNAME");
+
+        //    entity.HasOne(d => d.Office).WithMany(p => p.DcOfficeKuafLinks)
+        //        .HasForeignKey(d => d.OfficeId)
+        //        .HasConstraintName("FK_LOCAL_OFFICE");
+        //});
+        modelBuilder.Entity<DcUser>(entity =>
         {
-            entity.HasKey(e => e.Pk).HasName("DC_OFFICE_KUAF_LINK_PK");
+            entity.HasKey(e => e.AdUser).HasName("DC_USER_PK");
 
-            entity.ToTable("DC_OFFICE_KUAF_LINK");
+            entity.ToTable("DC_USER");
 
-            entity.Property(e => e.Pk)
-                .ValueGeneratedOnAdd()
+            entity.Property(e => e.AdUser)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("AD_USER");
+            entity.Property(e => e.DcFspId)
                 .HasColumnType("NUMBER")
-                .HasColumnName("PK");
-            entity.Property(e => e.FspId)
-                .HasColumnType("NUMBER")
-                .HasColumnName("FSP_ID");
-            entity.Property(e => e.OfficeId)
-                .HasMaxLength(10)
+                .HasColumnName("DC_FSP_ID");
+            entity.Property(e => e.DcLocalOfficeId)
+                .IsRequired()
+                .HasMaxLength(20)
                 .IsUnicode(false)
-                .HasColumnName("OFFICE_ID");
-            entity.Property(e => e.Supervisor)
-                .HasMaxLength(10)
+                .HasColumnName("DC_LOCAL_OFFICE_ID");
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
                 .IsUnicode(false)
-                .HasColumnName("SUPERVISOR");
-            entity.Property(e => e.Username)
-                .HasMaxLength(225)
+                .HasColumnName("EMAIL");
+            entity.Property(e => e.Firstname)
+                .IsRequired()
+                .HasMaxLength(50)
                 .IsUnicode(false)
-                .HasColumnName("USERNAME");
+                .HasColumnName("FIRSTNAME");
+            entity.Property(e => e.Lastname)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("LASTNAME");
+            entity.Property(e => e.Settings)
+                .HasMaxLength(255)
+                .IsUnicode(false)
+                .HasColumnName("SETTINGS");
 
-            entity.HasOne(d => d.Office).WithMany(p => p.DcOfficeKuafLinks)
-                .HasForeignKey(d => d.OfficeId)
-                .HasConstraintName("FK_LOCAL_OFFICE");
+            entity.HasOne(d => d.DcFsp).WithMany(p => p.DcUsers)
+                .HasForeignKey(d => d.DcFspId)
+                .HasConstraintName("DC_USER_FK2");
+
+            entity.HasOne(d => d.DcLocalOffice).WithMany(p => p.DcUsers)
+                .HasForeignKey(d => d.DcLocalOfficeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("DC_USER_FK1");
         });
 
         modelBuilder.Entity<DcPicklist>(entity =>

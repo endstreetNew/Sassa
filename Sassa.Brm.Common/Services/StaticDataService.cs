@@ -26,8 +26,9 @@ public static class StaticDataService
         return Regions!.Where(r => r.RegionId == RegionId).First().RegionName;
     }
     public static List<DcLocalOffice> LocalOffices { get; set; } = new();
+    public static List<DcUser> Users { get; set; } = new();
     public static List<DcFixedServicePoint> ServicePoints { get; set; } = new();
-    public static List<DcOfficeKuafLink> DcOfficeKuafLinks { get; set; } = new();
+    //public static List<DcOfficeKuafLink> DcOfficeKuafLinks { get; set; } = new();
     public static Dictionary<string, string> GrantTypes { get; set; } = new();
     public static string GrantName(string GrantId)
     {

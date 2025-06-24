@@ -3,6 +3,7 @@
 @inject BRMDbService db
 @inject Helper helper
 @inject SessionService sessionService
+@inject StaticService staticService
 
 
 <table class="table table-sm" style="font-size:x-small;">
@@ -46,7 +47,7 @@
     protected PagedResult<DayDetail> pagedDetail = new PagedResult<DayDetail>();
     int page = 1;
     //CaptureDay day;
-
+    UserSettings? settings;
     bool IsValid = false;
 
     protected override void OnInitialized()
@@ -59,6 +60,7 @@
         //day = DayDetail.result.First();
         pagedDetail.count = DayDetail.count;
         pagedDetail.result = DayDetail.result.ToList();
+        settings = staticService.GetUserSettings(sessionService.session.SamName);
         OnPaged(1);
     }
 
@@ -77,7 +79,7 @@
             toast.Info($"Daily Scanning Report queued.");
             string FileName = helper.GetFileName("Daily Scanning Report".Replace(" ", "_"), sessionService.session);
             //db.session.Office.RegionCode + "-" + db.session.SamName.ToUpper() + "-" + reportList["3"].Replace(" ", "_") + "-" + DateTime.Now.ToShortDateString().Replace("/", "-") + "-" + DateTime.Now.ToString("HH-mm");
-            await rs.SaveCsvReport(new DateTime(cDay.Year,cDay.Month,cDay.Day).ToString("dd/MM/yyyy"), new DateTime(cDay.Year,cDay.Month,cDay.Day).ToString("dd/MM/yyyy"), "9", cDay.OfficeId, "RMC", cDay.RegionId, cDay.OfficeId, FileName);
+            await rs.SaveReport(new DateTime(cDay.Year,cDay.Month,cDay.Day).ToString("dd/MM/yyyy"), new DateTime(cDay.Year,cDay.Month,cDay.Day).ToString("dd/MM/yyyy"), "9", cDay.OfficeId, "RMC", cDay.RegionId, cDay.OfficeId, FileName,settings!.ReportFormat);
         }
         catch (Exception ex)
         {

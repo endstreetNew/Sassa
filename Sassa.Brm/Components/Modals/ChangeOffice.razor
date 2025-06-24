@@ -42,6 +42,13 @@
                             }
                         </InputSelect>
                     </div>
+                    <div class="form-group">
+                        <label>Report Format:</label>
+                        <InputSelect class="form-select" @bind-Value="settings.ReportFormat">
+                            <option value="csv">CSV</option>
+                            <option value="xlsx">XLSX</option>
+                        </InputSelect>
+                    </div>
                 <br />
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @onclick="btnCancel_Click">Cancel</button>
@@ -59,18 +66,31 @@
     public EventCallback Cancel { get; set; }
 
     protected UserOffice office = new();
+    protected UserSettings settings = new("N;csv");
+    protected DcUser? userupdate = new();
 
     protected override void OnInitialized()
     {
         office = sessionservice.session.Office!;
+        userupdate = staticservice.GetDcUser(sessionservice.session.SamName);
+        if (userupdate != null)
+        {
+            settings = new UserSettings(userupdate.Settings);
+        }
+        else
+        {
+            //Create a new user settings if not found
+            toast.Error("User settings not found.");
+        }
     }
 
     protected async Task btnOk_Click()
     {
         try
         {
-            //Update the office linq
-            await staticservice.UpdateUserLocalOffice(office.OfficeId, office.FspId, sessionservice.session);
+            userupdate!.Settings = settings.ToString();
+            //Update the office link
+            await staticservice.UpdateUserLocalOffice(userupdate);
             //Update the User
             sessionservice.UpdateUserOffice();
             await Cancel.InvokeAsync();

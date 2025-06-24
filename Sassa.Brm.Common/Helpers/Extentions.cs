@@ -1,4 +1,10 @@
-﻿using Sassa.BRM.Data.ViewModels;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Drawing;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
+using DocumentFormat.OpenXml.ExtendedProperties;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Sassa.Brm.Common.Services;
+using Sassa.BRM.Data.ViewModels;
 using Sassa.BRM.Models;
 using System.Data;
 //using System.Data.Entity.Core.Objects;
@@ -6,6 +12,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using Path = System.IO.Path;
 
 namespace Sassa.Brm.Common.Helpers
 {
@@ -113,57 +120,6 @@ namespace Sassa.Brm.Common.Helpers
         {
             return ((DateTime)fromdate).ToString("dd/MMM/yy");
         }
-        //public static string ToStandardDateString(this string fromdate, string fromformat)
-        //{
-        //    fromformat = fromformat.Replace("-", "/").Replace("mm", "MM"); ;
-        //    fromdate = fromdate.Replace("-", "/");
-        //    if (string.IsNullOrEmpty(fromdate)) return "";
-        //    DateTime parsedDate;
-        //    try 
-        //    { 
-        //        parsedDate = (DateTime)fromdate.ToDate(fromformat)!; 
-        //    }
-        //    catch (Exception)
-        //    {
-        //        return System.DateTime.Now.ToString("dd/MMM/yy");
-        //    }
-        //    return parsedDate.ToString("dd/MMM/yy");
-        //}
-
-        //public static string ChangeDateStringFormat(this string fromdate, string fromformat, string toFormat)
-        //{
-        //    if (string.IsNullOrEmpty(fromdate)) return "";
-        //    return ((DateTime)fromdate.ToDate(fromformat)).ToString(toFormat);
-        //}
-
-        //public static Decimal? ToDecimal(this string val)
-        //{
-        //    decimal result;
-        //    if (Decimal.TryParse(val, out result))
-        //    {
-        //        return result;
-        //    }
-        //    return null;
-        //}
-        //public static String ToEncodedString(this Stream stream, Encoding? enc = null)
-        //{
-        //    enc = enc ?? Encoding.UTF8;
-
-        //    byte[] bytes = new byte[stream.Length];
-        //    stream.Position = 0;
-        //    stream.Read(bytes, 0, (int)stream.Length);
-        //    string data = enc.GetString(bytes);
-
-        //    return enc.GetString(bytes);
-        //}
-
-        //public static int ParseOrZero(this string source)
-        //{
-        //    int result = 0;
-        //    int.TryParse(source, out result);
-        //    return result;
-
-        //}
 
         public static string ToCSV(this DataTable dtDataTable)
         {
@@ -219,9 +175,9 @@ namespace Sassa.Brm.Common.Helpers
         public static void ToCsv(this IDataReader reader, string filename, ReportHeader header, string? path = null, string extension = "csv")
         {
             //Username, Region, Date Range and number of application
-            int nextResult = 0;
-            do
-            {
+            //int nextResult = 0;
+            //do
+            //{
                 var filePath = Path.Combine(string.IsNullOrEmpty(path) ? Path.GetTempPath() : path, string.Format("{0}.{1}", filename, extension));
                 using (StreamWriter writer = new StreamWriter(filePath))
                 {
@@ -240,11 +196,118 @@ namespace Sassa.Brm.Common.Helpers
                     writer.WriteLine($"{header.Region}|{header.Username}|{header.FromDate}|{header.ToDate}|{count}");
                 }
 
-                filename = string.Format("{0}-{1}", filename, ++nextResult);
+                //filename = string.Format("{0}-{1}", filename, ++nextResult);
+            //}
+            //while (reader.NextResult());
+        }
+        public static void ToXlsx(this IDataReader reader, string filename, ReportHeader header, string? path = null, string extension = "xlsx")
+        {
+            //int nextResult = 0;
+            List<string> lines = new();
+            int count = 0;
+            do
+            {
+                lines.Add(string.Join(",", Enumerable.Range(0, reader.FieldCount).Select(reader.GetName).ToList()));
+                while (reader.Read())
+                {
+                    lines.Add(string.Join(",", Enumerable.Range(0, reader.FieldCount).Select(reader.GetValue).ToList()));
+                }
+                count++;
             }
-            while (reader.NextResult());
+            while (reader.NextResult()) ;
+            //Username, Region, Date Range and number of application
+            lines.Add($"");
+            lines.Add($"{header.Region}|{header.Username}|{header.FromDate}|{header.ToDate}|{count}");
+            var filePath = Path.Combine(string.IsNullOrEmpty(path) ? Path.GetTempPath() : path, string.Format("{0}.{1}", filename, extension));
+            //filename = string.Format("{0}-{1}", filename, ++nextResult);
+            XlsxHelper.ConvertCsvToXlsx(lines, filePath);
         }
 
+
+        public static void ToXlsx<T>(this List<T> list,string fileName, string extension = "xlsx")
+        {
+            var properties = typeof(T).GetProperties().Where(p => !(p.GetGetMethod()?.IsVirtual ?? false)).ToList();
+
+            int idx = 0;
+            int lastIdx = properties.Count - 1;
+            StringBuilder line = new StringBuilder();
+            foreach (var prop in properties)
+            {
+                bool isLast = (idx == lastIdx);
+                // Use isLast as needed
+                idx++;
+                if (isLast)
+                {
+                    line.Append(prop.Name + Environment.NewLine);
+                }
+                else
+                {
+                    line.Append(prop.Name + ",");
+                }
+            }
+            List<string> lines = new();
+            lines.Add(line.ToString());
+            int count = 0;
+            
+            foreach (var item in list)
+            {
+                line = new StringBuilder();
+                idx = 0;
+                foreach (var prop in properties)
+                {
+                    bool isLast = (idx == lastIdx);
+                    // Use isLast as needed
+                    idx++;
+                    if (isLast)
+                    {
+                        line.Append(prop.GetValue(item) + Environment.NewLine);
+                    }
+                    else
+                    {
+                        line.Append(prop.GetValue(item) + ",");
+                    }
+                }
+                lines.Add(line.ToString());
+                count++;
+            }
+            lines.Add($"");
+            var filePath = Path.Combine(string.IsNullOrEmpty(StaticDataService.ReportFolder) ? Path.GetTempPath() : StaticDataService.ReportFolder, string.Format("{0}.{1}", fileName, extension));
+            XlsxHelper.ConvertCsvToXlsx(lines, filePath);
+        }
+        public static void ToXlsx<T>(this List<T> list, string filename, ReportHeader header, string? path = null, string extension = "xlsx")
+        {
+            PropertyInfo[] properties = typeof(T).GetProperties();
+            //Create Header
+            StringBuilder line = new StringBuilder();
+            for (int i = 0; i < properties.Length - 1; i++)
+            {
+                line.Append(properties[i].Name + ",");
+            }
+            var lastProp = properties[properties.Length - 1].Name;
+            line.Append(lastProp + Environment.NewLine);
+
+            List<string> lines = new();
+            lines.Add(line.ToString());
+            int count = 0;
+
+            foreach(var item in list)
+            {
+                line = new StringBuilder();
+                for (int i = 0; i < properties.Length - 1; i++)
+                {
+                    var prop = properties[i];
+                    line.Append(prop.GetValue(item) + ",");
+                }
+                var llastProp = properties[properties.Length - 1];
+                line.Append(llastProp.GetValue(item) + Environment.NewLine);
+                lines.Add(line.ToString());
+                count++;
+            }
+            lines.Add($"");
+            lines.Add($"{header.Region}|{header.Username}|{header.FromDate}|{header.ToDate}|{count}");
+            var filePath = Path.Combine(string.IsNullOrEmpty(path) ? Path.GetTempPath() : path, string.Format("{0}.{1}", filename, extension));
+            XlsxHelper.ConvertCsvToXlsx(lines, filePath);
+        }
         public static void ToCsv<T>(this List<T> list, string filename, ReportHeader header, string? path = null, string extension = "csv")
         {
             var filePath = Path.Combine(string.IsNullOrEmpty(path) ? Path.GetTempPath() : path, string.Format("{0}.{1}", filename, extension));
@@ -279,46 +342,6 @@ namespace Sassa.Brm.Common.Helpers
             }
 
         }
-
-        //public static DataTable ToTable(this OracleDataReader reader)
-        //{
-        //    DataTable files = new DataTable();
-        //    var columns = Enumerable.Range(0, reader.FieldCount).Select(reader.GetName).ToList();
-        //    DataColumn column;
-        //    foreach (var col in columns)
-        //    {
-        //        column = new DataColumn();
-        //        column.DataType = System.Type.GetType("System.String");
-        //        column.ColumnName = col;
-        //        files.Columns.Add(column);
-        //    }
-
-        //    while (reader.Read())
-        //    {
-        //        DataRow row = files.NewRow();
-        //        foreach (var col in columns)
-        //        {
-        //            row[col] = reader[col].ToString();
-        //        }
-        //        files.Rows.Add(row);
-        //    }
-        //    return files;
-        //}
-
-        /// <summary>
-        /// Formats "YYYYMMDD" to YYYY/MM/DD
-        /// </summary>
-        /// <param name="appdate"></param>
-        /// <returns></returns>
-        //public static string FormatORDate(this string appdate)
-        //{
-        //    string myYYYY = appdate.Substring(0, 4);
-        //    string myMM = appdate.Substring(4, 2);
-        //    string myDD = appdate.Substring(6, 2);
-
-        //    return myYYYY + "/" + myMM + "/" + myDD;
-        //}
-
 
         public static string GetDigitId(this string id)
         {

@@ -18,6 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "razor.Components", "razor.C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2EE5C454-61EE-440F-A3E3-F7A4FC7827CE}"
 	ProjectSection(SolutionItems) = preProject
+		DcUserSwitch.sql = DcUserSwitch.sql
 		DeploymentOct2021.sql = DeploymentOct2021.sql
 		INDEX_BARCODE.sql = INDEX_BARCODE.sql
 		LC_MISMATCH_FIX.sql = LC_MISMATCH_FIX.sql

@@ -47,7 +47,7 @@ public class ReportDataService
         _ogs = ogs;
     }
 
-    public async Task SaveCsvReport(string dateFrom, string dateTo, string rIndex, string office_id, string office_type, string region_id, string grant_type, string filename, string status = "", string sql = "")
+    public async Task SaveReport(string dateFrom, string dateTo, string rIndex, string office_id, string office_type, string region_id, string grant_type, string filename,string fileFormat, string status = "", string sql = "")
     {
         ReportHeader header = new ReportHeader();
         header.FromDate = dateFrom;
@@ -264,7 +264,19 @@ public class ReportDataService
                     con.Open();
                     using (OracleDataReader reader = (OracleDataReader)await cmd.ExecuteReaderAsync())
                     {
-                        reader.ToCsv(filename, header, StaticDataService.ReportFolder);
+                        switch(fileFormat)
+                        {
+                            case "csv":
+                                reader.ToCsv(filename, header, StaticDataService.ReportFolder);
+                                break;
+                            case "xlsx":
+                                reader.ToXlsx(filename, header, StaticDataService.ReportFolder);
+                                break;
+                            default:
+                                throw new Exception("Invalid file format specified.");
+                        }
+                        //
+                        
                     }
                 }
                 con.Close();
@@ -276,7 +288,7 @@ public class ReportDataService
         }
     }
 
-    public async Task SaveReport(string rIndex, ReportPeriod from, ReportPeriod to, string regionId, string fileName)
+    public async Task SaveReport(string rIndex, ReportPeriod from, ReportPeriod to, string regionId, string fileName,string fileFormat)
     {
         ReportHeader header = new ReportHeader();
         header.FromDate = from.FromDate.ToShortDateString();
@@ -289,7 +301,17 @@ public class ReportDataService
         {
             case "8"://Missing Summary
                 List<MissingFile> result = await _ogs.MissingProgress(from, to, regionId);
-                result.ToCsv<MissingFile>(fileName, header, StaticDataService.ReportFolder);
+                switch(fileFormat)
+                {
+                    case "csv":
+                        result.ToCsv<MissingFile>(fileName, header, StaticDataService.ReportFolder);
+                        break;
+                        case "xlsx":
+                        result.ToXlsx<MissingFile>(fileName, header, StaticDataService.ReportFolder);
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;
@@ -321,28 +343,7 @@ public class ReportDataService
         return result;
     }
 
-    //public PagedResult<CsvListItem> RedundantGetTdwFiles(string regionCode, string username, int page)
-    //{
-    //    PagedResult<CsvListItem> result = new PagedResult<CsvListItem>();
-    //    string[] files = new string[0];
-    //    try
-    //    {
-    //        files = Directory.GetFiles(StaticDataService.ReportFolder, $"{regionCode}-{username.ToUpper()}-TDW*");
-    //    }
-    //    catch //(Exception ex)
-    //    {
 
-    //    }
-
-    //    result.count = files.Count();
-    //    foreach (string filePath in files)
-    //    {
-    //        result.result.Add(new CsvListItem(Path.GetFileName(filePath)));
-    //    }
-    //    //Page the result..
-    //    result.result = result.result.OrderByDescending(r => r.ReportDate).Skip((page - 1) * 12).Take(12).ToList();
-    //    return result;
-    //}
 
     public IQueryable<CsvListItem> GetTdwFiles(string regionCode, string username)
     {
@@ -363,29 +364,6 @@ public class ReportDataService
         }
         return result.AsQueryable().OrderByDescending(r => r.ReportDate); // Convert List to IQueryable
     }
-
-    //public PagedResult<CsvListItem> RedundantGetBoxHisTory(string regionCode, string username, int page)
-    //    {
-    //        PagedResult<CsvListItem> result = new PagedResult<CsvListItem>();
-    //        string[] files = new string[0];
-    //        try
-    //        {
-    //            files = Directory.GetFiles(StaticDataService.ReportFolder, $"{regionCode}-{username.ToUpper()}*");
-    //        }
-    //        catch //(Exception ex)
-    //        {
-
-    //        }
-
-    //        result.count = files.Count();
-    //        foreach (string filePath in files)
-    //        {
-    //            result.result.Add(new CsvListItem(Path.GetFileName(filePath)));
-    //        }
-    //        //Page the result..
-    //        result.result = result.result.OrderByDescending(r => r.ReportDate).Skip((page - 1) * 12).Take(12).ToList();
-    //        return result;
-    //    }
 
     public void DeleteReport(string fileName)
     {

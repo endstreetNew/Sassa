@@ -1,5 +1,9 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+
+
+
 
 namespace Sassa.Brm.Common.Helpers
 {
@@ -82,6 +86,39 @@ namespace Sassa.Brm.Common.Helpers
         //        return Enumerable.Empty<string>();
         //    }
         //}
+        public static void ConvertCsvToXlsx(List<string> lines, string xlsxPath)
+        {
+            using var spreadsheet = SpreadsheetDocument.Create(xlsxPath, SpreadsheetDocumentType.Workbook);
+            var workbookPart = spreadsheet.AddWorkbookPart();
+            workbookPart.Workbook = new Workbook();
+            var worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+            var sheetData = new SheetData();
+            worksheetPart.Worksheet = new Worksheet(sheetData);
 
+            var sheets = spreadsheet.WorkbookPart!.Workbook.AppendChild(new Sheets());
+            sheets.Append(new Sheet
+            {
+                Id = spreadsheet.WorkbookPart.GetIdOfPart(worksheetPart),
+                SheetId = 1,
+                Name = "Sheet1"
+            });
+
+            foreach (var line in lines)
+            {
+                var row = new Row();
+                var cells = line.Split(',');
+                foreach (var cell in cells)
+                {
+                    row.Append(new Cell
+                    {
+                        DataType = CellValues.String,
+                        CellValue = new CellValue(cell)
+                    });
+                }
+                sheetData.Append(row);
+            }
+
+            workbookPart.Workbook.Save();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿@using Sassa.PdfServices
+﻿@using Sassa.Services
 @inject Helper helper
 @inject CoverSheetService coverSheetService
 @inject Navigation Navigate
@@ -248,7 +248,7 @@
     protected void btnPdf_Click(Application app)
     {
         string html = coverSheetService.getCoverHtml(app.Clm_No);
-        Converters.ToReportFolder(html, helper.GetFileName("Cover", sessionservice.session), StaticDataService.ReportFolder);
+        PdfService.ToPdfFile(html, helper.GetFileName("Cover", sessionservice.session), StaticDataService.ReportFolder);
     }
 
     protected void btnEditBarcode_Click(Application app)

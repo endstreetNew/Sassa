@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -46,7 +48,7 @@ namespace Sassa.Brm.Common.Services
             {
                 StaticDataService.Regions = context.DcRegions.AsNoTracking().ToList();
                 StaticDataService.LocalOffices = context.DcLocalOffices.AsNoTracking().ToList();
-                StaticDataService.DcOfficeKuafLinks = context.DcOfficeKuafLinks.AsNoTracking().ToList();
+                StaticDataService.Users = context.DcUsers.AsNoTracking().ToList();
                 StaticDataService.GrantTypes = context.DcGrantTypes.AsNoTracking().ToDictionary(key => key.TypeId, value => value.TypeName);
                 StaticDataService.LcTypes = context.DcLcTypes.AsNoTracking().ToDictionary(key => key.Pk, value => value.Description);
                 StaticDataService.ServicePoints = context.DcFixedServicePoints.AsNoTracking().ToList();
@@ -89,29 +91,62 @@ namespace Sassa.Brm.Common.Services
             try
             {
                 office = StaticDataService.LocalOffices!
-                .Join(StaticDataService.DcOfficeKuafLinks!.Where(l => l.Username == userName),
+                .Join(StaticDataService.Users!.Where(l => l.AdUser == userName),
                 lo => lo.OfficeId,
-                link => link.OfficeId,
-                (lo, link) => new UserOffice(lo, link.FspId)).FirstOrDefault();
+                link => link.DcLocalOfficeId,
+                (lo, link) => new UserOffice(lo, link.DcFspId)).FirstOrDefault();
+                if (office is null)
+                {
+                    throw new Exception($"User {userName} does not have a local office assigned.");
+                }
             }
             catch //(Exception ex)
             {
                 DcLocalOffice defaultOffice = GetOffices("7").FirstOrDefault()!;
                 office = new UserOffice(defaultOffice, null);
+
             }
-            if (office is null)
-            {
-                //Add new users to Gauteng office by default
-                DcLocalOffice defaultOffice = GetOffices("7").FirstOrDefault()!;
-                office = new UserOffice(defaultOffice, null);
-            }
+
             office.RegionName = GetRegion(office.RegionId);
             office.RegionCode = GetRegionCode(office.RegionId);
             return office;
 
         }
-
-
+        public DcUser CreateDcUser(UserSession session)
+        {
+            DcUser? user = StaticDataService.Users.Where(u => u.AdUser == session.SamName).FirstOrDefault();
+            if (user is null)
+            {
+                user = new DcUser
+                {
+                    AdUser = session.SamName,
+                    DcLocalOfficeId = session.Office?.OfficeId ?? "712", // Default to Gauteng office if no office is available
+                    DcFspId = session.Office?.FspId,
+                    Settings = $"{(session.IsInRole("GRP_BRM_Supervisors") ? "Y" : "N")};csv", // Default settings
+                    Firstname = session.Name,
+                    Lastname = session.Surname
+                };
+                using (var context = _contextFactory.CreateDbContext())
+                {
+                    context.DcUsers.Add(user);
+                    try
+                    {
+                        context.SaveChanges();
+                        StaticDataService.Users = context.DcUsers.AsNoTracking().ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error creating user {UserName} Please contact support.", session.SamName);
+                        throw new Exception(ex.Message);
+                    }
+                }
+            }
+            return user;
+        }
+        public UserSettings GetUserSettings(string userName)
+        {
+            return new UserSettings(StaticDataService.Users.Where(u => u.AdUser == userName).FirstOrDefault()!.Settings);
+        }
         public DcLocalOffice GetLocalOffice(string officeId)
         {
             return StaticDataService.LocalOffices!.Where(lo => lo.OfficeId == officeId).FirstOrDefault()!;
@@ -133,6 +168,62 @@ namespace Sassa.Brm.Common.Services
             }
             return "";
         }
+
+        public DcUser GetDcUser(string AdUser)
+        {
+            DcUser? user;
+            if (string.IsNullOrEmpty(AdUser))
+            {
+                throw new ArgumentException("AdUser cannot be null or empty.", nameof(AdUser));
+            }
+
+            user = StaticDataService.Users.Where(u => u.AdUser == AdUser).FirstOrDefault();
+            if (user == null)
+            {
+
+                throw new KeyNotFoundException($"User with AdUser '{AdUser}' not found.");
+            }
+            return user;
+        }
+
+        public async Task<bool> UpdateUserLocalOffice(DcUser user)
+        {
+            //Todo: if officeId is invalid throw exception
+            if (string.IsNullOrEmpty(user.DcLocalOfficeId) || StaticDataService.LocalOffices.Where(o => o.OfficeId == user.DcLocalOfficeId).Count() == 0)
+            {
+                throw new ArgumentException("Invalid Office Id", user.DcLocalOfficeId);
+            }
+            using (var context = _contextFactory.CreateDbContext())
+            {
+                //Get Officelink for this user
+                DcUser? userupdate = await context.DcUsers.Where(okl => okl.AdUser == user.AdUser).FirstOrDefaultAsync();
+                if (userupdate is not null)
+                {
+                    userupdate.DcLocalOfficeId = user.DcLocalOfficeId;
+                    userupdate.DcFspId = user.DcFspId;
+                    userupdate.Settings = user.Settings;
+                    userupdate.Firstname = user.Firstname;
+                    userupdate.Lastname = user.Lastname;
+                }
+                else
+                {
+                    context.DcUsers.Add(user);
+                }
+                try
+                {
+                    await context.SaveChangesAsync();
+                    //Update the staticData
+                    StaticDataService.Users = await context.DcUsers.AsNoTracking().ToListAsync();
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error updating user local office {Office} for user {UserName} Please contact support.", user.DcLocalOfficeId, user.AdUser);
+                    throw new Exception(ex.Message);
+                }
+            }
+            return true;
+        }
         public async Task<bool> UpdateUserLocalOffice(string officeId, decimal? fspId, UserSession session)
         {
             //Todo: if officeId is invalid throw exception
@@ -141,38 +232,31 @@ namespace Sassa.Brm.Common.Services
                 throw new ArgumentException("Invalid Office Id", nameof(officeId));
             }
             session.Office.FspId = fspId;
-            DcOfficeKuafLink officeLink;
+            DcUser officeLink;
             using (var context = _contextFactory.CreateDbContext())
             {
                 //Get Officelink for this user
-                var query = await context.DcOfficeKuafLinks.Where(okl => okl.Username == session.SamName).ToListAsync();
-                //If there are more than one links for this user, remove them all and create a new one
-                if (query.Count() > 1)
-                {
-                    foreach (var ol in query)
-                    {
-                        context.DcOfficeKuafLinks.Remove(ol);
-                    }
-                    await context.SaveChangesAsync();
-                    query = await context.DcOfficeKuafLinks.Where(okl => okl.Username == session.SamName).ToListAsync();
-                }
+                var query = await context.DcUsers.Where(okl => okl.AdUser == session.SamName).ToListAsync();
 
                 if (query.Any())
                 {
                     officeLink = query.First();
-                    officeLink.OfficeId = officeId;
-                    officeLink.FspId = fspId;
+                    officeLink.DcLocalOfficeId = officeId;
+                    officeLink.DcFspId = fspId;
+                    officeLink.Firstname = session.Name;
+                    officeLink.Lastname = session.Surname;
+                    officeLink.Settings = string.IsNullOrEmpty(officeLink.Settings) ? $"{(session.IsInRole("GRP_BRM_Supervisors") ? "Y" : "N")};csv" : officeLink.Settings;
                 }
                 else
                 {
-                    officeLink = new DcOfficeKuafLink() { OfficeId = officeId, FspId = session.Office?.FspId, Username = session.SamName, Supervisor = session.IsInRole("GRP_BRM_Supervisors") ? "Y" : "N" };
-                    context.DcOfficeKuafLinks.Add(officeLink);
+                    officeLink = new DcUser() { DcLocalOfficeId = officeId, DcFspId = session.Office?.FspId, AdUser = session.SamName,Firstname = session.Name,Lastname = session.Surname, Settings = $"{(session.IsInRole("GRP_BRM_Supervisors") ? "Y" : "N")};csv" };
+                    context.DcUsers.Add(officeLink);
                 }
                 try
                 {
                     await context.SaveChangesAsync();
                     //Update the staticData
-                    StaticDataService.DcOfficeKuafLinks = await context.DcOfficeKuafLinks.AsNoTracking().ToListAsync();
+                    StaticDataService.Users = await context.DcUsers.AsNoTracking().ToListAsync();
 
                 }
                 catch (Exception ex)
@@ -271,10 +355,10 @@ namespace Sassa.Brm.Common.Services
                         fsp.OfficeId = toOfficeId.ToString();
                     }
                     //DC_OFFICE_KUAF_LINK
-                    var oldKuafrecs = await context.DcOfficeKuafLinks.Where(o => o.OfficeId == fromOfficeId).ToListAsync();
+                    var oldKuafrecs = await context.DcUsers.Where(o => o.DcLocalOfficeId == fromOfficeId).ToListAsync();
                     foreach (var kuaf in oldKuafrecs)
                     {
-                        kuaf.OfficeId = toOfficeId.ToString();
+                        kuaf.DcLocalOfficeId = toOfficeId.ToString();
                     }
 
                     //DC_Batches

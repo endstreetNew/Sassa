@@ -4,6 +4,7 @@
 @inject StaticService sservice
 @namespace Sassa.BRM.Components.Admin
 @using Sassa.Socpen.Data
+@inject Helper helper
 @layout NoLayout
 @inject IAlertService toast
 
@@ -25,6 +26,9 @@
     </div>
     <div class ="col">
         <button class="btn btn-primary active" @onclick="btnLoad_Click">Load</button>
+    </div>
+    <div class="col">
+        <button class="btn btn-primary active" @onclick="PrintOfficeList">Office List</button>
     </div>
 </div>
 
@@ -123,6 +127,19 @@
     {
         await GetRegionOffices();
 
+    }
+
+    protected void PrintOfficeList()
+    {
+        try
+        {
+            string FileName = helper.GetFileName("OfficeList".Replace(" ", "_"), sessionservice.session);
+            StaticDataService.LocalOffices.ToXlsx(FileName);
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
     }
 
     protected async Task GetRegionOffices()

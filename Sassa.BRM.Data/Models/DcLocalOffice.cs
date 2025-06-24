@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Sassa.BRM.Models;
 
@@ -18,11 +19,12 @@ public partial class DcLocalOffice
 
     public string ManualBatch { get; set; }
 
-    public virtual ICollection<DcFile> DcFiles { get; set; } = new List<DcFile>();
-
     public virtual ICollection<DcFixedServicePoint> DcFixedServicePoints { get; set; } = new List<DcFixedServicePoint>();
 
-    public virtual ICollection<DcOfficeKuafLink> DcOfficeKuafLinks { get; set; } = new List<DcOfficeKuafLink>();
+    public virtual ICollection<DcUser> DcUsers { get; set; } = new List<DcUser>();
+
+    public virtual ICollection<DcFile> DcFiles { get; set; } = new List<DcFile>();
 
     public virtual DcRegion Region { get; set; }
+
 }
