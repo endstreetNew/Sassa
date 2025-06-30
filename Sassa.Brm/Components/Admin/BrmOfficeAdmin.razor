@@ -180,13 +180,17 @@
 
     protected async void btnMove_Click()
     {
+        try
+        {
+            await sservice.MoveOffice(fromOfficeId, SelectedOfficeId.ToString());
+            // IsLoaded = false;
+            await GetRegionOffices();
+            showOfficeConfirmation = false;
+        }
+        catch (Exception ex)
+        {
+            toast.Error(ex.Message);
+        }
 
-        await sservice.MoveOffice(fromOfficeId, SelectedOfficeId.ToString());
-        IsLoaded = false;
-        showOfficeConfirmation = false;
-        await GetRegionOffices();
-        
     }
-
-
 }

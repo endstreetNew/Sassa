@@ -102,15 +102,13 @@ namespace Sassa.Brm.Common.Services
             }
             catch //(Exception ex)
             {
+                _logger.LogError("User {userName} does not have an office assigned", userName);
                 DcLocalOffice defaultOffice = GetOffices("7").FirstOrDefault()!;
                 office = new UserOffice(defaultOffice, null);
-
             }
-
             office.RegionName = GetRegion(office.RegionId);
             office.RegionCode = GetRegionCode(office.RegionId);
             return office;
-
         }
         public DcUser CreateDcUser(UserSession session)
         {
@@ -368,13 +366,17 @@ namespace Sassa.Brm.Common.Services
                         batch.OfficeId = toOfficeId.ToString();
                     }
                     await context.SaveChangesAsync();
+                    //Remove the oldoffice
+                    context.DcLocalOffices.RemoveRange(await context.DcLocalOffices.Where(o => o.OfficeId == fromOfficeId).AsNoTracking().ToListAsync());
+                    await context.SaveChangesAsync();
+                    StaticDataService.LocalOffices = await context.DcLocalOffices.AsNoTracking().ToListAsync();
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    throw new Exception($"Error moving office {fromOfficeId} to {toOfficeId}. Please contact support. {ex.Message}");
                 }
             }
-            await DeleteLocalOffice(fromOfficeId);
+            //await DeleteLocalOffice(fromOfficeId);
         }
         public async Task SaveManualBatch(string officeId, string manualBatch)
         {

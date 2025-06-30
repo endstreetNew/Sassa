@@ -104,26 +104,34 @@ namespace Sassa.Services
         {
             try
             {
-                using var con = new OracleConnection(_settings.CsConnection);
-                await con.OpenAsync();
-                using var cmd = con.CreateCommand();
-                cmd.BindByName = true;
-                cmd.CommandTimeout = 0;
-                cmd.FetchSize *= 8;
+                long? result;
+                using (var con = new OracleConnection(_settings.CsConnection))
+                {
+                    if (con.State != ConnectionState.Open)
+                    {
+                        await con.OpenAsync();
+                    }
+                    using var cmd = con.CreateCommand();
+                    cmd.BindByName = true;
+                    //cmd.CommandTimeout = 0;
+                    cmd.FetchSize *= 8;
 
-                cmd.CommandText = $"select DATAID from dtree where name=:prefix and parentid = 47634";
-                cmd.Parameters.Add(new OracleParameter("prefix", idNumber.Substring(0, 4)));
-                using var reader = await cmd.ExecuteReaderAsync();
-                if (!await reader.ReadAsync()) return null;
-                long periodId = reader.GetInt64(0);
+                    cmd.CommandText = $"select DATAID from dtree where name=:prefix and parentid = 47634";
+                    cmd.Parameters.Add(new OracleParameter("prefix", idNumber.Substring(0, 4)));
+                    using var reader = await cmd.ExecuteReaderAsync();
+                    //ORA-02396: exceeded maximum idle time, please connect again
+                    if (!await reader.ReadAsync()) return null;
+                    long periodId = reader.GetInt64(0);
 
-                cmd.CommandText = $"select DATAID from dtree where name=:id and parentid = :periodId";
-                cmd.Parameters.Clear();
-                cmd.Parameters.Add(new OracleParameter("id", idNumber));
-                cmd.Parameters.Add(new OracleParameter("periodId", periodId));
-                using var reader2 = await cmd.ExecuteReaderAsync();
-                if (!await reader2.ReadAsync()) return null;
-                return reader2.GetInt64(0);
+                    cmd.CommandText = $"select DATAID from dtree where name=:id and parentid = :periodId";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.Add(new OracleParameter("id", idNumber));
+                    cmd.Parameters.Add(new OracleParameter("periodId", periodId));
+                    using var reader2 = await cmd.ExecuteReaderAsync();
+                    if (!await reader2.ReadAsync()) return null;
+                    result = reader2.GetInt64(0);
+                }
+                return result;
             }
             catch (Exception ex)
             {

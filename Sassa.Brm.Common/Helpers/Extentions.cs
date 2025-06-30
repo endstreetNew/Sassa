@@ -223,7 +223,13 @@ namespace Sassa.Brm.Common.Helpers
             XlsxHelper.ConvertCsvToXlsx(lines, filePath);
         }
 
-
+        /// <summary>
+        /// Exclude virtual properties
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="fileName"></param>
+        /// <param name="extension"></param>
         public static void ToXlsx<T>(this List<T> list,string fileName, string extension = "xlsx")
         {
             var properties = typeof(T).GetProperties().Where(p => !(p.GetGetMethod()?.IsVirtual ?? false)).ToList();

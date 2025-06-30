@@ -11,7 +11,7 @@ namespace Sassa.Brm.Common.Helpers
     public static class XlsxHelper
     {
         /// <summary>
-        ///  This is a demo to read the previously created basix.xlsx file
+        ///  Read .xlsx destroy list from the specified column in an Excel file.
         /// </summary>
         public static List<string> ReadDestroyList(string fileName, string targetColumnName = "A")
         {
@@ -66,26 +66,6 @@ namespace Sassa.Brm.Common.Helpers
                 return cell.CellValue!.Text;
             }
         }
-
-
-        //public static IEnumerable<string> GetColumnNames(string filePath)
-        //{
-        //    using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filePath, false))
-        //    {
-        //        WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart!;
-        //        var sheet = workbookPart!.Workbook.Descendants<Sheet>().First();
-        //        var worksheetPart = (WorksheetPart)workbookPart.GetPartById(sheet.Id!);
-
-        //        // Get the first row (assumed to contain column headers)
-        //        var firstRow = worksheetPart.Worksheet.Descendants<Row>().FirstOrDefault();
-        //        if (firstRow != null)
-        //        {
-        //            return firstRow.Elements<Cell>().Select(cell => GetCellValue(workbookPart, cell));
-        //        }
-
-        //        return Enumerable.Empty<string>();
-        //    }
-        //}
         public static void ConvertCsvToXlsx(List<string> lines, string xlsxPath)
         {
             using var spreadsheet = SpreadsheetDocument.Create(xlsxPath, SpreadsheetDocumentType.Workbook);
