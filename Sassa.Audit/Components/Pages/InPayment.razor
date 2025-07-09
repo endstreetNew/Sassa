@@ -25,7 +25,7 @@
     </FluentStack>
     <hr />
 
-    <FluentDataGrid Items="@misFiles" TGridItem="Inpayment" Pagination="@paginationState" >
+    <FluentDataGrid Items="@misFiles.AsQueryable()" TGridItem="Inpayment" Pagination="@paginationState" >
         <PropertyColumn Title="ID No" Property="f => f.ApplicantNo" />
         <PropertyColumn Title="Name" Property="f => f.FirstName" />
         <PropertyColumn Title="Surname" Property="f => f.Surname" />
@@ -46,7 +46,7 @@
 
 
 @code {
-    protected IQueryable<Inpayment> misFiles = Enumerable.Empty<Inpayment>().AsQueryable();
+    protected List<Inpayment> misFiles = new();
     protected string searchId = "";
     PaginationState paginationState = new PaginationState { ItemsPerPage = 15 };
 
@@ -65,32 +65,37 @@
         context = dbContextFactory.CreateDbContext();
 
         report = new ReportDefinition { ReportIndex = "1", ReportName = "In Payment Files", FilterOptions = new FilterOptions() { "Region", "OgaStatus", "RegType", } };
-        misFiles = context.Inpayments;
+        misFiles = context.Inpayments.Take(1000).ToList();
         InitializeFilterData();
         loading = false;
     }
 
     protected async Task SearchMis()
     {
+
         if(string.IsNullOrEmpty(searchId) || searchId.Length < 13)
         {
             toast.ShowError("Please enter a valid applicant id.");
+            loading = true;
             return;
         }
+        loading = true;
         try
         {
-            misFiles = misFiles.Where(x => x.ApplicantNo == searchId);
+            misFiles = context.Inpayments.Where(x => x.ApplicantNo == searchId).ToList();
         }
         catch(Exception ex)
         {
             toast.ShowError(ex.Message);
         }
+        loading = false;
     }
     private ModelContext context = default!;
 
     private void ValidateReportFilter()
     {
-        misFiles = context.Inpayments;
+        loading = true;
+        var query = context.Inpayments;
         try
         {
             foreach (var option in report.FilterOptions)
@@ -103,47 +108,49 @@
                             toast.ShowError($"Please select a Region.");
                             return;
                         }
-                        misFiles = misFiles.Where(m => m.RegionId == office.RegionId);
+                        query = query.Where(m => m.RegionId == office.RegionId);
                         break;
                     case "OgaStatus":
                         switch (ogaStatus)
                         {
+                            case "":
                             case "All":
                                 break;
                             case "CS":
-                                misFiles = misFiles.Where(m => m.OgaStatus == "CS");
+                                query = query.Where(m => m.OgaStatus == "CS");
                                 break;
                             case "AW":
-                                misFiles = misFiles.Where(m => m.OgaStatus == "AW");
+                                query = query.Where(m => m.OgaStatus == "AW");
                                 break;
                             case "NONE":
-                                misFiles = misFiles.Where(m => m.OgaStatus == "NONE");
+                                query = query.Where(m => m.OgaStatus == "NONE");
                                 break;
                         }
                         break;
                     case "RegType":
                         switch(regType)
                         {
+                            case "":
                             case "All":
                                 break;
                             case "LC":
-                                misFiles = misFiles.Where(m => m.RegType.ToLower().Contains("lc"));
+                                query = query.Where(m => m.RegType.ToLower().Contains("lc"));
                                 break;
                             case "MAIN":
-                                misFiles = misFiles.Where(m => !m.RegType.ToLower().Contains("lc") && !m.RegType.Contains("None"));
+                                query = query.Where(m => !m.RegType.ToLower().Contains("lc") && !m.RegType.Contains("None"));
                                 break;
                             case "LCNOMAIN":
 
-                                var lc = misFiles.Where(m => m.RegType.ToLower().Contains("lc"));
-                                var main = misFiles.Where(m => !m.RegType.ToLower().Contains("lc") && !m.RegType.Contains("None"));
+                                var lc = query.Where(m => m.RegType.ToLower().Contains("lc"));
+                                var main = query.Where(m => !m.RegType.ToLower().Contains("lc") && !m.RegType.Contains("None"));
 
-                                misFiles = lc.Where(i => !main.Any(n =>
+                                query = lc.Where(i => !main.Any(n =>
                                 n.ApplicantNo == i.ApplicantNo &&
                                 n.GrantType == i.GrantType));
 
                                 break;
                             case "None":
-                                misFiles = misFiles.Where(m => m.RegType == "None");
+                                query = query.Where(m => m.RegType == "None");
                                 break;
                         }
                         break;
@@ -171,13 +178,17 @@
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = RegionName;
-            List<Inpayment> result = misFiles.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
+            List<Inpayment> result = query.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
             result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
-            misFiles = context.Inpayments;
+            misFiles = context.Inpayments.Take(1000).ToList(); 
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
+        }
+        finally
+        {
+            loading = false;
         }
     }
 
@@ -191,9 +202,9 @@
                 toast.ShowError($"Please select a Region.");
                 return;
             }
-            misFiles = misFiles.Where(m => m.RegionId == office.RegionId);
+            var query = context.Inpayments.Where(m => m.RegionId == office.RegionId);
             //misFiles = misFiles.Where(m => m.BrmBarcode == null && m.ClmNo == null && m.MisFileNo == null && m.EcMisFile == null && m.OgaStatus == "None" && m.RegionId == office.RegionId);
-            misFiles = misFiles.Where(m => m.FileExists == null);
+            query = query.Where(m => m.FileExists == null);
             string RegionName;
             if (office.RegionId != "0")
             {
@@ -215,9 +226,9 @@
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = RegionName;
-            List<Inpayment> result = misFiles.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
+            List<Inpayment> result = query.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
             result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
-            misFiles = context.Inpayments;
+            misFiles = context.Inpayments.Take(1000).ToList();
         }
         catch (Exception ex)
         {

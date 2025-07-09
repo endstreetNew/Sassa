@@ -79,13 +79,13 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 {
                     return "Invalid Srd No.";
                 }
-                if (app.ChildId != null)
+                if (!string.IsNullOrEmpty(app.ChildId))
                 {
                     return "Only a child grant can have a child Id.";
                 }
                 break;
             default:
-                if (!"0|1|3|7|8|4|6".Contains(app.GrantType))
+                if (!"0|1|3|7|8|4|6|S".Contains(app.GrantType))
                 {
                     return "Invalid Grant Type.";
                 }
