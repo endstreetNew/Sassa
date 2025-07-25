@@ -26,13 +26,14 @@
     <ProjectReference Include="..\razor.Components\razor.Components.csproj" />
     <ProjectReference Include="..\Sassa.Brm.Common\Sassa.Brm.Common.csproj" />
     <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
+    <ProjectReference Include="..\Sassa.CsService\Sassa.CsService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Update="wwwroot\app.css">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 </Project>

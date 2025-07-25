@@ -1,8 +1,12 @@
 ﻿@using Microsoft.JSInterop
 @using System.IO
+@using Sassa.Services
+@using System.Text
 
 @typeparam TItem
 @inject IJSRuntime JS
+@inject IAlertService toast
+@inject CSService cs
 
 
 <h3>@Title</h3>
@@ -58,6 +62,11 @@
 @*                                <a class="btn btn-primary btn-sm active" href="../brmfiles/@propa.GetValue(u)?.ToString()" download="@propa.GetValue(u)" target="_top">Download</a> *@
                             </td>
                             <td>
+                                <button class="btn btn-primary btn-sm active" @onclick="async () => await ShareOnCs(propa, u)">
+                                    Share on CS
+                                </button>
+                            </td>
+                            <td>
                                 <button class="btn btn-danger btn-sm active" @onclick="@(() => btnDelete_Click(propa.GetValue(u)!.ToString()!))">Delete</button>
                             </td>
                         }
@@ -90,8 +99,8 @@ else
     [Parameter]
     public int PageSize { get; set; } = 12;
 
-    [Parameter]
-    public string ReportFolder { get; set; } = "";
+    // [Parameter]
+    // public string ReportFolder { get; set; } = "";
 
     IList<PropertyInfo> props = new List<PropertyInfo>();
 
@@ -153,6 +162,27 @@ else
         catch(Exception ex)
         {
             var s = ex.Message;
+        }
+    }
+    public async Task ShareOnCs(PropertyInfo pi, TItem? u)
+    {
+        try
+        {
+            
+            var fileName = pi.GetValue(u)?.ToString();
+            var filePath = Path.Combine(StaticDataService.ReportFolder, fileName ?? string.Empty);
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+            {
+                string fileContent = reader.ReadToEnd();
+                await cs.UploadSharedReport(fileContent, fileName);
+            }
+
+            toast.Success("File sent to  CS (BRM shared Reports).");
+        }
+        catch (Exception ex)
+        {
+            toast.Error("Error sending File to CS.");
         }
     }
 }

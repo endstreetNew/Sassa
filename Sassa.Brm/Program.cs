@@ -110,13 +110,13 @@ public class Program
             csServiceSettings.CsDocFolder = $"{builder.Environment.WebRootPath}\\{builder.Configuration.GetValue<string>("Folders:CS")}\\";
             return csServiceSettings;
         });
-        
+        builder.Services.AddScoped<CSService>();
         builder.Services.AddScoped<IAlertService, AlertService>();
         builder.Services.AddScoped<Navigation>();
         builder.Services.AddScoped<ReportDataService>();
         builder.Services.AddScoped<ProgressService>();
         builder.Services.AddScoped<Helper>();
-        builder.Services.AddScoped<CSService>();
+        
         builder.Services.AddScoped<DailyCheck>();
         builder.Services.AddScoped<ActiveUser>();
         builder.Services.AddSingleton<ActiveUserList>();

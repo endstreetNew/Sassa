@@ -170,21 +170,21 @@ namespace Sassa.Services
         private void SaveAttachment(Attachment doc, string idNo, long nodeId, long parentNode)
         {
             //Todo to save document method
-            //if (!_context.DcDocumentImages.Where(d => d.Filename == doc.FileName).ToList().Any())
-            //{
-            //    var image = new DcDocumentImage
-            //    {
-            //        Filename = doc.FileName,
-            //        IdNo = idNo,
-            //        Image = doc.Contents,
-            //        Url = $"../CsImages/{doc.FileName}",
-            //        Csnode = nodeId,
-            //        Type = true,
-            //        Parentnode = parentNode
-            //    };
-            //    _context.DcDocumentImages.Add(image);
-            //    _context.SaveChanges();
-            //}
+            if (!_context.DcDocumentImages.Where(d => d.Filename == doc.FileName).ToList().Any())
+            {
+                var image = new DcDocumentImage
+                {
+                    Filename = doc.FileName,
+                    IdNo = idNo,
+                    Image = doc.Contents,
+                    Url = $"../CsImages/{doc.FileName}",
+                    Csnode = nodeId,
+                    Type = true,
+                    Parentnode = parentNode
+                };
+                _context.DcDocumentImages.Add(image);
+                _context.SaveChanges();
+            }
             var filePath = Path.Combine(_settings.CsDocFolder, doc.FileName);
             if (File.Exists(filePath)) return;
             File.WriteAllBytes(filePath, doc.Contents);
@@ -252,6 +252,30 @@ namespace Sassa.Services
             {
                 await Authenticate();
                 NodeId = 94643845; // Health Checks - BRM node id
+                CsDocuments.OTAuthentication _ota = await Authenticate();
+                await _docClient.CreateDocumentAsync(_ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+        }
+
+        public async Task UploadSharedReport(string reportContent,string fileName)
+        {
+            byte[] content = System.Text.Encoding.UTF8.GetBytes(reportContent);
+            var attachment = new Attachment
+            {
+                FileName = fileName,
+                Contents = content,
+                CreatedDate = DateTime.Now,
+                FileSize = content.Length
+            };
+            try
+            {
+                await Authenticate();
+                NodeId = 242046960; //BRM shared Reports node id
                 CsDocuments.OTAuthentication _ota = await Authenticate();
                 await _docClient.CreateDocumentAsync(_ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);
             }

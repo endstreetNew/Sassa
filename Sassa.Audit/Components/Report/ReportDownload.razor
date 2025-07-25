@@ -1,8 +1,12 @@
 ﻿@page "/download"
 
 @using System.Reflection
+@using System.Text
+@using Sassa.Services
 @inject IJSRuntime JS
 @inject ReportDataService rs
+@inject CSService cs
+@inject IToastService toast
 @* @inject SessionService sessionservice *@
 
 
@@ -53,8 +57,10 @@
                         @foreach (var propa in props.Where(p => p.Name == "FileName"))
                         {
                             <td>
-                                <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.ArrowDown())" OnClick="@(async () => await DownloadFileFromStream(propa,u))">DownLoad</FluentButton>
-@*                                <a class="btn btn-primary btn-sm active" href="../brmfiles/@propa.GetValue(u)?.ToString()" download="@propa.GetValue(u)" target="_top">Download</a> *@
+                                <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.ArrowDown())" OnClick="@(async () => await DownloadFileFromStream(u))">DownLoad</FluentButton>
+                            </td>
+                            <td>
+                                <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size20.ArrowDown())" OnClick="@(async () => await ShareOnCs(u))">Share on CS</FluentButton>
                             </td>
                             <td>
                                 <FluentButton BackgroundColor="Red" Color="White" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size12.Delete())" OnClick="@(() => btnDelete_Click(propa.GetValue(u)!.ToString()!))" />
@@ -75,6 +81,9 @@ else
 @code {
     [Parameter]
     public string? Title { get; set; }
+
+    [Parameter]
+    public string ReportFolder { get; set; } = "";
 
     List<CsvListItem> pagedResult = new();
 
@@ -110,16 +119,36 @@ else
         return File.OpenRead(path);
     }
 
-    private async Task DownloadFileFromStream(PropertyInfo pi,CsvListItem u)
+    private async Task DownloadFileFromStream(CsvListItem u)
     {
         try
         {
-            var fileName = @pi.GetValue(u)?.ToString();
+            var fileName = u.FileName;
             await JS.InvokeVoidAsync("triggerFileDownload", fileName, $"/brmFiles/{fileName}");
         }
         catch(Exception ex)
         {
             var s = ex.Message;
+        }
+    }
+    public async Task ShareOnCs(CsvListItem u)
+    {
+        try
+        {
+            var fileName = u.FileName;
+            var filePath = Path.Combine(StaticDataService.ReportFolder, fileName ?? string.Empty);
+            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+            {
+                string fileContent = reader.ReadToEnd();
+                await cs.UploadSharedReport(fileContent, fileName);
+            }
+
+            toast.ShowSuccess("File sent to  CS (BRM shared Reports).");
+        }
+        catch (Exception ex)
+        {
+            toast.ShowError("Error sending File to CS.");
         }
     }
 }
