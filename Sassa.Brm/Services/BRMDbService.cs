@@ -1426,8 +1426,13 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         {
 
             var socpen = await _context.DcSocpens.FirstAsync(s => s.CaptureReference == a.Clm_No);
-            if (socpen == null) return;
+            if (socpen == null)
+            {
+                //Todo: match on all fields
+                return;
+            }
             _context.DcSocpens.Remove(socpen);
+            //Todo:delete related brm records too
             await _context.SaveChangesAsync();
         }
     }

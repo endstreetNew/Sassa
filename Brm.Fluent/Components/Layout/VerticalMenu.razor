@@ -39,7 +39,7 @@
     bool expanded = true;
     protected override void OnInitialized()
     {
-        RsWeb = config.GetValue<string>("Url:RsWeb")!;
+        RsWeb = config.GetValue<string>("Urls:RsWeb")!;
         sessionservice.UserOfficeChanged += new EventHandler(OnUserOfficeChanged);
         // if(sessionservice.session.IsLoggedIn())
         // {
