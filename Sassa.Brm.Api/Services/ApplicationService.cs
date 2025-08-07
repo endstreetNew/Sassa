@@ -1,7 +1,7 @@
 ﻿//using DocumentFormat.OpenXml.VariantTypes;
 using Microsoft.EntityFrameworkCore;
 using Sassa.Brm.Common.Services;
-using Sassa.BRM.Helpers;
+using Sassa.BRM.Common.Helpers;
 using Sassa.BRM.Models;
 //using Sassa.BRM.Pages.Components;
 using System.Data;
@@ -226,7 +226,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             _context.DcSocpens.Where(s => s.BrmBarcode == application.Brm_BarCode).ToList().ForEach(s => s.BrmBarcode = null);
             await _context.SaveChangesAsync();
             var result = new List<DcSocpen>();
-            if (("C95".Contains(application.GrantType) && application.ChildId == application.ChildId))//child Grant
+            if ("C95".Contains(application.GrantType) )//child Grant
             {
                 result = await _context.DcSocpens.Where(s => s.BeneficiaryId == application.Id && s.GrantType == application.GrantType && s.ChildId == application.ChildId).ToListAsync();
             }

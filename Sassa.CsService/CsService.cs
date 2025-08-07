@@ -4,6 +4,7 @@ using Sassa.BRM.Models;
 using Sassa.Services.Cs;
 using Sassa.Services.CsDocuments;
 using System.Data;
+using System.Reflection.Metadata;
 
 namespace Sassa.Services
 {
@@ -284,6 +285,39 @@ namespace Sassa.Services
                 throw new Exception(ex.Message);
             }
 
+        }
+
+        //6911250346089_Child Support Grant_GAU287202114492948_eGA
+        public async Task UploadDoc(string csNode, Attachment attachment)
+        {
+            CsDocuments.OTAuthentication ota = await Authenticate();
+
+            DocumentManagementClient docClient = new DocumentManagementClient();
+            docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 3, 0);
+            try
+            {
+                if (NodeId == 0)
+                {
+                    //find node
+                    var response = await docClient.GetNodeByNameAsync(ota, 2000, "12. Beneficiaries");
+                    response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 4));
+                    response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 13));
+                    response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode);
+                    NodeId = response.GetNodeByNameResult.ID;
+                }
+
+
+                await docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "Cs Service", false, new Metadata(), attachment);
+
+            }
+            catch// (Exception ex)
+            {
+                throw;
+            }
+            finally
+            {
+                await docClient.CloseAsync();
+            }
         }
     }
 }

@@ -12,13 +12,15 @@
 
   <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.3.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
-    <PackageReference Include="System.Management" Version="9.0.6" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
+    <PackageReference Include="System.Management" Version="9.0.8" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Sassa.Brm.Common\Sassa.Brm.Common.csproj" />
     <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
+    <ProjectReference Include="..\Sassa.CsService\Sassa.CsService.csproj" />
+    <ProjectReference Include="..\Sassa.LoService\Sassa.LoService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

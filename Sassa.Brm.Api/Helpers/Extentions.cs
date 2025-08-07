@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Sassa.BRM.Helpers
+namespace Sassa.BRM.Common.Helpers
 {
     public static class Extentions
     {

@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.8" />
     <PackageReference Include="System.ServiceModel.Http" Version="8.*" />
     <PackageReference Include="System.ServiceModel.NetTcp" Version="8.*" />
     <PackageReference Include="System.ServiceModel.Primitives" Version="8.*" />

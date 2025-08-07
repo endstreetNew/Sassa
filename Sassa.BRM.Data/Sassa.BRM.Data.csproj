@@ -21,15 +21,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.6">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.8">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.80" />
+		<PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.90" />
 	</ItemGroup>
 
 </Project>

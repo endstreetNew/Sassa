@@ -145,6 +145,10 @@ namespace Sassa.Brm.Common.Services
         {
             return new UserSettings(StaticDataService.Users.Where(u => u.AdUser == userName).FirstOrDefault()!.Settings);
         }
+        public DcLocalOffice GetLocalOfficeFromOfficeName(string officeName)
+        {
+            return StaticDataService.LocalOffices!.Where(lo => lo.OfficeName == officeName).FirstOrDefault()!;
+        }
         public DcLocalOffice GetLocalOffice(string officeId)
         {
             return StaticDataService.LocalOffices!.Where(lo => lo.OfficeId == officeId).FirstOrDefault()!;
