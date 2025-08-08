@@ -23,7 +23,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">Office</span>
-                    <InputSelect class="form-select" ValueExpression="@(() => office.OfficeId)" Value="office.OfficeId" ValueChanged="@((string value) => SelectOffice(value))">
+                    <InputSelect class="form-select" ValueExpression="@(() => office.OfficeId)" Value="@office.OfficeId" ValueChanged="@((string value) => SelectOffice(value))">
                             <option selected>select...</option>
                         @foreach (var val in staticservice.GetOffices(office.RegionId).Where(o => o.ActiveStatus == "A"))
                         {
@@ -109,19 +109,23 @@
     {
         office.RegionId = regionid;
         office.OfficeId = staticservice.GetOffices(office.RegionId).First().OfficeId;
+        userupdate.DcLocalOfficeId = office.OfficeId;
     }
 
     protected void SelectOffice(string officeid)
     {
         office!.OfficeId = officeid;
         office.FspId = null;
+        userupdate.DcLocalOfficeId = office.OfficeId;
+        userupdate.DcFspId = office.FspId;
+
 
     }
 
     private void SelectServicePoint(decimal? e)
     {
         office.FspId = e!.Value;
-
+        userupdate.DcFspId = office.FspId;
     }
 
     //private void SelectServicePoint(ChangeEventArgs e)

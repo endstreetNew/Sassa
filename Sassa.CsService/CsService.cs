@@ -5,6 +5,7 @@ using Sassa.Services.Cs;
 using Sassa.Services.CsDocuments;
 using System.Data;
 using System.Reflection.Metadata;
+using System.Text;
 
 namespace Sassa.Services
 {
@@ -288,14 +289,29 @@ namespace Sassa.Services
         }
 
         //6911250346089_Child Support Grant_GAU287202114492948_eGA
-        public async Task UploadDoc(string csNode, Attachment attachment)
+        public async Task UploadDoc(string csNode,string filePath )
         {
-            CsDocuments.OTAuthentication ota = await Authenticate();
-
             DocumentManagementClient docClient = new DocumentManagementClient();
-            docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 3, 0);
             try
             {
+                CsDocuments.OTAuthentication ota = await Authenticate();
+                Attachment attachment;
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                {
+                    string fileContent = reader.ReadToEnd();
+                    byte[] content = System.Text.Encoding.UTF8.GetBytes(fileContent);
+                    attachment = new Attachment
+                    {
+                        FileName = Path.GetFileName(filePath),
+                        Contents = content,
+                        CreatedDate = DateTime.Now,
+                        FileSize = content.Length
+                    };
+                }
+
+                docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 3, 0);
+
                 if (NodeId == 0)
                 {
                     //find node
@@ -312,7 +328,7 @@ namespace Sassa.Services
             }
             catch// (Exception ex)
             {
-                throw;
+                throw new Exception("Error Uploading to Content server.");
             }
             finally
             {

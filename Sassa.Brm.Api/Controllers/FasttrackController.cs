@@ -5,21 +5,25 @@ using Sassa.BRM.Api.Services;
 using Sassa.BRM.Data.ViewModels;
 using Sassa.BRM.Models;
 using Sassa.BRM.ViewModels;
+using Sassa.Models;
+using Sassa.Services;
 
-namespace Sassa.Brm.Api.Controllers
+namespace Sassa.BRM.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class FasttrackController : ControllerBase
     {
 
-        private readonly ApplicationService _brmService;
+        private readonly FasttrackService _ftService;
+        private readonly LoService _loService;
         IConfiguration _config;
 
-        public FasttrackController(ApplicationService context, IConfiguration config)
+        public FasttrackController(FasttrackService context, IConfiguration config,LoService loService)
         {
-            _brmService = context;
+            _ftService = context;
             _config = config;
+            _loService = loService;
         }
 
         [HttpPost]
@@ -29,29 +33,19 @@ namespace Sassa.Brm.Api.Controllers
             DcFile result = new DcFile();
 
             result.UpdatedByAd = _config.GetValue<string>("BrmUser")!;
-
-            
+            string ScanFolder = _config.GetValue<string>("Urls:ScanFolderRoot")!;
 
             ApiResponse<DcFile> response = new ApiResponse<DcFile>();
             try
             {
-                //todo: 1 using the reference populate the brm record
-                //Validate the application
-                //var ValidApplcation = _brmService.ValidateApplcation(app);
-                //if (ValidApplcation != "") throw new Exception(ValidApplcation);
-
-                //if (app.BrmUserName == "SVC_BRM_LO")
-                //{
-                //    response.Data = await _brmService.ValidateApiAndInsert(app, "Inserted via API.");
-                //}
-                //else
-                //{
-                //    response.Data = await _brmService.CreateBRM(app, "Inserted via BRM Capture.");
-                //}
+                _ftService.SetScanFolder(ScanFolder);
+                await _ftService.ProcessLoRecord(app);
+                await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = app.LoReferece, ValidationDate = DateTime.Now,Validationresult = "Ok"});
                 return Ok(response);
             }
             catch (Exception ex)
             {
+                await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = app.LoReferece, ValidationDate = DateTime.Now, Validationresult = ex.Message });
                 // Handle both ValidationException and InternalServerErrorException here
                 response.Success = false;
                 response.ErrorMessage = ex.Message;

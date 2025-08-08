@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 string BrmConnectionString = builder.Configuration.GetConnectionString("BrmConnection")!;
 string LoConnectionString = builder.Configuration.GetConnectionString("LoConnection")!;
+string CsConnectionString = builder.Configuration.GetConnectionString("CsConnection")!;
 // Add services to the container.
 //Factory pattern
 builder.Services.AddDbContextFactory<ModelContext>(options =>
@@ -23,6 +24,18 @@ builder.Services.AddScoped<ActivityService>();
 builder.Services.AddScoped<ApplicationService>();
 builder.Services.AddScoped<FasttrackService>();
 builder.Services.AddScoped<LoService>();
+builder.Services.AddScoped<SharedFolderService>();
+builder.Services.AddSingleton<CsServiceSettings>(c =>
+{
+    CsServiceSettings csServiceSettings = new CsServiceSettings();
+    csServiceSettings.CsConnection = CsConnectionString;
+    csServiceSettings.CsWSEndpoint = builder.Configuration.GetValue<string>("ContentServer:CSWSEndpoint")!;
+    csServiceSettings.CsServiceUser = builder.Configuration.GetValue<string>("ContentServer:CSServiceUser")!;
+    csServiceSettings.CsServicePass = builder.Configuration.GetValue<string>("ContentServer:CSServicePass")!;
+    csServiceSettings.CsDocFolder = $"{builder.Environment.WebRootPath}\\{builder.Configuration.GetValue<string>("Folders:CS")}\\";
+    return csServiceSettings;
+});
+builder.Services.AddScoped<CSService>();
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

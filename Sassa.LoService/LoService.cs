@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sassa.BRM.Models;
 using Sassa.Models;
 
 namespace Sassa.Services
@@ -49,7 +50,7 @@ namespace Sassa.Services
             }
         }
 
-        public async Task UpdateClmNumber(string reference,string clmNumber)
+        public async Task UpdateClmNumber(string reference,DcFile file)
         {
             try
             {
@@ -59,7 +60,8 @@ namespace Sassa.Services
                     if (result.Count() == 0) throw new Exception($"Reference NUM {reference} not found ");
                     if (result.Count() > 1) throw new Exception($"Multiple records found for Reference NUM {reference}");
                     var cover =  result.First();
-                    cover.Clmnumber = clmNumber;
+                    cover.Clmnumber = file.UnqFileNo;
+                    cover.BrmNumber = file.BrmBarcode;
                     cover.ScannedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                     await _context.SaveChangesAsync();
                 }

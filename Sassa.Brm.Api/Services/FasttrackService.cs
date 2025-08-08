@@ -8,27 +8,49 @@ using Sassa.BRM.Models;
 using Sassa.Models;
 using Sassa.Services;
 
-namespace Sassa.Brm.Api.Services
+namespace Sassa.BRM.Api.Services
 {
-    public class FasttrackService(LoService loService,CSService csService, IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
+    public class FasttrackService(LoService loService,CSService csService, IDbContextFactory<ModelContext> dbContextFactory,SharedFolderService sharedFolder, StaticService staticService)
     {
+        private string scanFolder = "";
+        public void SetScanFolder(string folder)
+        {
+            scanFolder = folder;
+        }
         public async Task ProcessLoRecord(FasttrackScan scanModel)
         {
             try
             {
+                var file = $@"{scanFolder}\{scanModel.LoReferece}.pdf";
+                if (!File.Exists(file))
+                {
+                    throw new Exception($"Expected File {file} does not exist (KOFAX).");
+                }
                 DcFile dcFile = await GetDcFileFromLoAsync(scanModel);
                 string result = Validate(dcFile);
                 if (!string.IsNullOrEmpty(result)) throw new Exception(result);
                 await CheckForSocpenRecordAsync(dcFile);
                 await CreateBrmRecordAsync(dcFile);
-                await loService.UpdateClmNumber(scanModel.LoReferece, dcFile.UnqFileNo);
-                await loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now,Validationresult = "Ok"});
-                //Todo: Add the file to contentServer
+                await loService.UpdateClmNumber(scanModel.LoReferece, dcFile);
+                
+                //Rename the file
+                var newFileName = GetFilename(dcFile, staticService.GetLocalOffice(dcFile.OfficeId));
+                string newFilePath = $@"{scanFolder}\" + newFileName;
+                File.Move(file, newFilePath);
+                string csNode = dcFile.ApplicantNo + "_" + staticService.GetGrantType(dcFile.GrantType) + "_" + dcFile.UnqFileNo;
+               // pretend this one for now!
+                //await csService.UploadDoc(csNode, file);
+                File.Move(newFilePath, $@"{scanFolder}\Processed\{newFileName}");
             }
             catch (Exception ex)
             {
                 throw;
             }
+        }
+        private string GetFilename(DcFile doc, DcLocalOffice office)
+        {
+            //0110040430081_Child Support Grant_KZNC31572469_UMZIMKHULU_KZN_LO.pdf
+            return $"{doc.ApplicantNo}_{staticService.GetGrantType(doc.GrantType)}_{doc.UnqFileNo}_{office.OfficeName}_{staticService.GetRegionCode(office.RegionId)}_{office.OfficeType}.pdf";
         }
         private async Task<DcFile> GetDcFileFromLoAsync(FasttrackScan scanModel)
         {
@@ -40,6 +62,10 @@ namespace Sassa.Brm.Api.Services
                 if (!decimal.TryParse(coverSheet.DrpdwnTransaction, out decimal decTrnType))
                 {
                     throw new Exception($"Invalid Transaction Type {coverSheet.DrpdwnTransaction} , expected 0,1 or 2");
+                }
+                if (!decimal.TryParse(coverSheet.DrpdwnLcType, out decimal decLcType))
+                {
+                    decLcType = 0;
                 }
                 var localoffice = staticService.GetLocalOfficeFromOfficeName(coverSheet.DrpdwnLocalOfficeSo);
                 if (localoffice == null)
@@ -61,17 +87,18 @@ namespace Sassa.Brm.Api.Services
                     RegionId = localoffice.RegionId,
                     //FspId = localoffice.,
                     DocsPresent = coverSheet.DocsubmittedBrm,
-                    UpdatedDate = coverSheet.ApplicationDate.ToDate("dd/MM/yyyy"),//Todo: tryparse first
+                    UpdatedDate = coverSheet.ApplicationDate.ToDate("mm/MMM/yy"),//Todo: tryparse first
                     UserFirstname = coverSheet.TxtName,
                     UserLastname = coverSheet.TxtSurname,
-                    ApplicationStatus = AppStatus(coverSheet.DrpdwnLcType, coverSheet.DrpdwnAppStatus),
-                    TransDate = coverSheet.ApplicationDate.ToDate("dd/MM/yyyy"),
+                    ApplicationStatus = AppStatus(decLcType, coverSheet.DrpdwnAppStatus),
+                    TransDate = coverSheet.ApplicationDate.ToDate("mm/MMM/yy"),
                     SrdNo = coverSheet.TxtSrdRefNumber,
                     ChildIdNo = coverSheet.TxtIdNumberChild,
                     Isreview = decTrnType == 2 ? "Y" : "N",
+                    ScanDatetime = DateTime.Now,
                     //Lastreviewdate = application.LastReviewDate.ToDate("dd/MMM/yy"),
                     //ArchiveYear = coverSheet.DrpdwnAppStatus.Contains("ARCHIVE") ? application.ARCHIVE_YEAR : null,
-                    Lctype = !coverSheet.DrpdwnLcType.IsNumeric() ? 0 : (Decimal?)Decimal.Parse(coverSheet.DrpdwnLcType),
+                    Lctype = decLcType,
                     //TdwBoxno = application.TDW_BOXNO,
                     //MiniBoxno = application.MiniBox,
                     FileComment = "Fasttrack API",
@@ -86,9 +113,9 @@ namespace Sassa.Brm.Api.Services
             }
         }
 
-        private string AppStatus(string lcType, string AppStatus)
+        private string AppStatus(decimal lcType, string AppStatus)
         {
-            if (!string.IsNullOrEmpty(lcType.Trim('0')))
+            if (lcType > 0)
             {
                 if (!AppStatus.StartsWith("LC-"))
                 {
@@ -203,13 +230,13 @@ namespace Sassa.Brm.Api.Services
                     if(file.UnqFileNo == "")
                     {
                         _context.DcFiles.Add(file);
-
+                        await _context.SaveChangesAsync();
                     }
                     else
                     {
                         await UpdateBrmRecord(file);
                     }
-
+                    file.UnqFileNo = _context.DcFiles.Where(k => k.BrmBarcode == file.BrmBarcode).FirstOrDefault().UnqFileNo;
                 }
             }
             catch (Exception ex)
@@ -231,6 +258,7 @@ namespace Sassa.Brm.Api.Services
                     }
                     else
                     {
+                        file.UnqFileNo = "";
                         _context.DcFiles.Add(file);
                     }
                     await _context.SaveChangesAsync();
@@ -274,6 +302,8 @@ namespace Sassa.Brm.Api.Services
             {
                 throw;
             }
+
+
         }
     }
 }
