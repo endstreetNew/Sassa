@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using Serilog;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using System.Net.NetworkInformation;
 using System.Text;
 
 namespace Sassa.BRM.Services
@@ -12,12 +14,18 @@ namespace Sassa.BRM.Services
         private string _smtpServer;
         private int _port;
         private NetworkCredential _credential;
+        // Replace this line:
+        // Serilog _logger
 
-        public EmailClient(string smptpserver, int port, NetworkCredential credential)
+        // With the following line:
+        ILogger _logger;
+
+        public EmailClient(string smptpserver, int port, NetworkCredential credential, ILogger logger)
         {
             _smtpServer = smptpserver;
             _port = port;
             _credential = credential;
+            _logger = logger;
             client = new SmtpClient(_smtpServer, _port);
         }
         public void SendMail(string from, string to, string subject, string body, List<string> attachments)
@@ -48,12 +56,7 @@ namespace Sassa.BRM.Services
             }
             catch (Exception ex)
             {
-                using (EventLog eventLog = new EventLog("Application"))
-                {
-                    //eventLog.Source = "BRM Application";
-                    //eventLog.WriteEntry($"From {from} to {to} err: {ex.Message}", EventLogEntryType.Error, 101, 1);
-                    Console.WriteLine($"From {from} to {to} err: {ex.Message}");
-                }
+                _logger.Error(ex, $"Error sending email from {from} to {to} with subject {subject}");
             }
         }
 

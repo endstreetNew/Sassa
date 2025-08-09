@@ -300,4 +300,21 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
             Debug.WriteLine(ex.Message);
         }
     }
+
+    public void SendTdwMailTest(string fileName)
+    {
+
+        string tdwBoxNo = "EmailTest";
+        //send mail to TDW
+        try
+        {
+            //if (!Environment.MachineName.ToLower().Contains("prod")) return;
+            _mail.SendTDWIncoming(_session, tdwBoxNo, null, fileName);
+        }
+        catch (Exception ex)
+        {
+            //ignore confirmation errors
+            Debug.WriteLine(ex.Message);
+        }
+    }
 }

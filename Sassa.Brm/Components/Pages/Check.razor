@@ -3,14 +3,18 @@
 @inject DailyCheck check
 @inject SessionService session
 @inject IAlertService toast
+@inject TdwBatchService batchService
+
 
 <button class="btn btn-primary btn-sm active" @onclick="() => SaveReport()">Save Health check</button>
+<button class="btn btn-primary btn-sm active" @onclick="() => TdwEmailTest()">Tdw Email Test</button>
 <hr />
 <ErrorLog/>
 
 @* @((MarkupString)check.GenerateHealthCheckReport(session.session.Name, 10, DateTime.Now))
  *@
-@code {
+    @code {
+        [Inject] IWebHostEnvironment Env { get; set; } = default;
 
     public async Task SaveReport()
     {
@@ -22,6 +26,19 @@
         catch(Exception ex)
         {
             toast.Error("Healthcheck already saved.");
+        }
+    }
+
+    public async Task TdwEmailTest()
+    {
+        try
+        {
+            batchService.SendTdwMailTest(Path.Combine(Env.WebRootPath, "TestFile.csv"));
+            toast.Success("TestMail sent please check the log for any error.");
+        }
+        catch(Exception ex)
+        {
+            toast.Error("Error consumer in Email client...");
         }
     }
 
