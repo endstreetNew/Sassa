@@ -10,6 +10,8 @@ public partial class DcGrantDocLink
 
     public string CriticalFlag { get; set; }
 
+    public string ChildIdFlag { get; set; }
+
     public string Section { get; set; }
 
     public virtual DcDocumentType Document { get; set; }

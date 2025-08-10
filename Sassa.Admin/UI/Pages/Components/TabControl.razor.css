@@ -1,0 +1,14 @@
+﻿.btn-group
+{
+    margin:5px 0 5px 0;
+}
+@media print {
+
+    .btn {
+        display: none;
+    }
+
+    ul.nav {
+        display: none;
+    }
+}

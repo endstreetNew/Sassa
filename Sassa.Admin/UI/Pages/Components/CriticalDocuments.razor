@@ -1,0 +1,94 @@
+﻿@* @inject BRMDbService db *@
+@inject StaticService sservice
+
+<div>
+    <label class="form-label">Legend :</label>
+    <input type="checkbox" checked="checked" class="red-checkbox" />
+    <label class="chkboxLabel" for="critical">Critical</label>
+    <input type="checkbox" checked="checked"/>
+    <label class="chkboxLabel" for="present">ChildId required</label>
+</div>
+<hr/>
+@foreach (var section in "General Particulars|Particulars of Income|Particulars of Assets".Split('|'))
+{
+    <h5>@(section)</h5>
+    // Get docs for this section and split into odd/even lists
+    var sectionDocs = docs.Where(d => d.DOC_SECTION == section).ToList();
+    var oddDocs = sectionDocs.Where((doc, idx) => idx % 2 == 0).ToList();
+    var evenDocs = sectionDocs.Where((doc, idx) => idx % 2 == 1).ToList();
+    <div class="row">
+        <div class="col">
+            @foreach (var doc in oddDocs)
+            {
+                <div>
+                    <input type="checkbox" class="red-checkbox" checked="@(doc.DOC_CRITICAL == "Y")" @onchange="(e) => DeleteDocument(doc.DOC_ID, doc.DOC_CRITICAL)" />
+                    <input type="checkbox" checked="@(_docspresent.Contains(doc.DOC_ID.ToString()))"  @onchange="(e) => OnDocsChanged(doc, e)" />
+                    <label class="chkboxLabel">@doc.DOC_NAME</label>
+                </div>
+            }
+        </div>
+        <div class="col">
+            @foreach (var doc in evenDocs)
+            {
+                <div>
+                    <input type="checkbox" class="red-checkbox" checked="@(doc.DOC_CRITICAL == "Y")" @onchange="(e) => DeleteDocument(doc.DOC_ID, doc.DOC_CRITICAL)" />
+                    <input type="checkbox" checked="@(_docspresent.Contains(doc.DOC_ID.ToString()))"
+                           @onchange="(e) => OnDocsChanged(doc, e)" />
+                    <label class="chkboxLabel">@doc.DOC_NAME</label>
+                </div>
+            }
+        </div>
+    </div>
+    <br />
+
+}
+
+@code {
+        [Parameter]
+        public string GrantType { get; set; } = "";
+        [Parameter]
+        public string DocsPresent { get; set; } = "";
+        [Parameter]
+        public EventCallback<string> DocsChanged { get; set; }
+
+    private List<RequiredDocsView> docs { get; set; } = new();
+    private List<string> _docspresent = new();
+
+    protected override void OnParametersSet()
+    {
+        _docspresent = DocsPresent.Split(';').ToList();
+        _docspresent = _docspresent.Distinct().Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+        docs = sservice.GetAllGrantDocuments(GrantType);
+        StateHasChanged();
+    }
+
+    private Task OnDocsChanged(RequiredDocsView doc, ChangeEventArgs e)
+    {
+        if ((bool)e.Value!)
+        {
+            if (!_docspresent.Contains(doc.DOC_ID.ToString().Trim()))
+            {
+                _docspresent.Add(doc.DOC_ID.ToString().Trim());
+            }
+        }
+        else
+        {
+            if (_docspresent.Contains(doc.DOC_ID.ToString().Trim()))
+            {
+                _docspresent.Remove(doc.DOC_ID.ToString().Trim());
+            }
+        }
+        _docspresent = _docspresent.Distinct().Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+        DocsPresent = String.Join(";", _docspresent.ToArray());
+        return DocsChanged.InvokeAsync(DocsPresent);
+    }
+    private Task DeleteDocument(decimal docId, string docState)
+    {
+        docState = docState == "Y" ? "N":"Y";
+        sservice.DeleteGrantDocument(GrantType,docId,docState);
+        docs = sservice.GetAllGrantDocuments(GrantType);
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+}

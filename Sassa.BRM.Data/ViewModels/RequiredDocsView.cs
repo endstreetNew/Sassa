@@ -7,6 +7,7 @@
         public string DOC_NAME { get; set; }
         public string DOC_SECTION { get; set; }
         public string DOC_CRITICAL { get; set; }
+        public string DOC_CHILDID { get; set; }
         public bool DOC_PRESENT { get; set; }
 
         public RequiredDocsView Copy(RequiredDocsView other)

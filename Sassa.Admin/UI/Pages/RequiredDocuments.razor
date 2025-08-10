@@ -1,0 +1,51 @@
+﻿@page "/documentadmin"
+@inject StaticService sservice
+
+<WidgetTitle Title="Required Documents Admin"></WidgetTitle>
+
+<div class="input-group mb-1">
+    <span class="input-group-text">Grant Type</span>
+    <select class="form-select" @onchange="OnGrantTypeChanged">
+        <option value="" selected>All...</option>
+        @foreach (var val in sservice.GetGrantTypes().Where(g => "5|6|C|9".Contains(g.Key)))
+        {
+            <option value="@val.Key">@val.Value</option>
+        }
+    </select>
+</div>
+@if (!string.IsNullOrEmpty(GrantType))
+{
+    <br />
+    <h4>Current documents with Required Child Id Flag</h4>
+    <hr />
+    <CriticalDocuments GrantType="@GrantType" DocsPresent="@RequiredDocs" DocsChanged="OnRequiredDocsChanged"></CriticalDocuments>
+}
+
+@code {
+
+    public string GrantType { get; set; } = "";
+    public string RequiredDocs { get; set; } = "";
+
+    private void OnGrantTypeChanged(ChangeEventArgs e)
+    {
+        GrantType = e.Value?.ToString() ?? "";
+        if (!string.IsNullOrEmpty(GrantType))
+        {
+            var rdocs = sservice.GetRequiredChildDocuments(GrantType);
+            RequiredDocs = string.Join(";", rdocs.Select(d => d.DOC_ID).Where(id => id != 0 && !string.IsNullOrWhiteSpace(id.ToString())));
+        }
+        else
+        {
+            RequiredDocs = "";
+        }
+        StateHasChanged();
+    }
+
+    private void OnRequiredDocsChanged(string rsdocs)
+    {
+        RequiredDocs = rsdocs;
+        sservice.SaveRequiredDocs(GrantType, RequiredDocs);
+        var rdocs = sservice.GetRequiredChildDocuments(GrantType);
+        RequiredDocs = string.Join(";", rdocs.Select(d => d.DOC_ID).Where(id => id != 0 && !string.IsNullOrWhiteSpace(id.ToString())));
+    }
+}

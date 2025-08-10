@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+﻿using DocumentFormat.OpenXml.InkML;
+using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -63,7 +64,21 @@ namespace Sassa.Brm.Common.Services
                         DOC_ID = joinResult.reqDoc.TypeId,
                         DOC_NAME = joinResult.reqDoc.TypeName,
                         DOC_SECTION = joinResult.reqDocGrant.Section,
-                        DOC_CRITICAL = joinResult.reqDocGrant.CriticalFlag
+                        DOC_CRITICAL = joinResult.reqDocGrant.CriticalFlag,
+                        DOC_CHILDID = joinResult.reqDocGrant.ChildIdFlag
+                    }).Distinct().AsNoTracking().ToList();
+                StaticDataService.AllDocs = context.DcGrantDocLinks
+                    .Join(context.DcDocumentTypes, reqDocGrant => reqDocGrant.DocumentId, reqDoc => reqDoc.TypeId, (reqDocGrant, reqDoc) => new { reqDocGrant, reqDoc })
+                    .OrderBy(joinResult => joinResult.reqDocGrant.Section)
+                    .ThenBy(joinResult => joinResult.reqDoc.TypeId)
+                    .Select(joinResult => new RequiredDocsView
+                    {
+                        GrantType = joinResult.reqDocGrant.GrantId,
+                        DOC_ID = joinResult.reqDoc.TypeId,
+                        DOC_NAME = joinResult.reqDoc.TypeName,
+                        DOC_SECTION = joinResult.reqDocGrant.Section,
+                        DOC_CRITICAL = joinResult.reqDocGrant.CriticalFlag,
+                        DOC_CHILDID = joinResult.reqDocGrant.ChildIdFlag
                     }).Distinct().AsNoTracking().ToList();
                 StaticDataService.BoxTypes = context.DcBoxTypes.AsNoTracking().ToList();
                 StaticDataService.RequestCategoryTypeLinks = context.DcReqCategoryTypeLinks.AsNoTracking().ToList();
@@ -487,6 +502,99 @@ namespace Sassa.Brm.Common.Services
         public List<RequiredDocsView> GetGrantDocuments(string grantType)
         {
             return StaticDataService.RequiredDocs!.Where(r => r.GrantType == grantType).OrderBy(g => g.DOC_SECTION).ThenBy(g => g.DOC_ID).ToList();
+        }
+        /// <summary>
+        /// Reguired docs maintenance screen
+        /// </summary>
+        /// <param name="grantType"></param>
+        /// <returns></returns>
+        public List<RequiredDocsView> GetAllGrantDocuments(string grantType)
+        {
+            return StaticDataService.AllDocs!.Where(r => r.GrantType == grantType).OrderBy(g => g.DOC_SECTION).ThenBy(g => g.DOC_ID).ToList();
+        }
+
+        public List<RequiredDocsView> GetRequiredChildDocuments(string grantType)
+        {
+            return StaticDataService.RequiredDocs!.Where(r => r.GrantType == grantType && r.DOC_CHILDID == "Y").OrderBy(g => g.DOC_SECTION).ThenBy(g => g.DOC_ID).ToList();
+        }
+        /// <summary>
+        /// Reguired docs maintenance screen
+        /// </summary>
+        /// <param name="grantType"></param>
+        /// <param name="requiredDocs"></param>
+        public void SaveRequiredDocs(string grantType,string requiredDocs)
+        {
+            using (var context = _contextFactory.CreateDbContext())
+            {
+                foreach (var doc in GetAllGrantDocuments(grantType))
+                {
+                    var updateDocs = context.DcGrantDocLinks.Where(r => r.DocumentId == doc.DOC_ID && r.GrantId == grantType).ToList();
+                    foreach (DcGrantDocLink link in updateDocs)
+                    {
+                        link.ChildIdFlag = requiredDocs.Contains(doc.DOC_ID.ToString()) ? "Y" : "N";
+                    }
+                }
+                context.SaveChanges();
+
+                StaticDataService.RequiredDocs = context.DcGrantDocLinks
+                .Join(context.DcDocumentTypes, reqDocGrant => reqDocGrant.DocumentId, reqDoc => reqDoc.TypeId, (reqDocGrant, reqDoc) => new { reqDocGrant, reqDoc })
+                .Where(joinResult => joinResult.reqDocGrant.CriticalFlag == "Y")
+                .OrderBy(joinResult => joinResult.reqDocGrant.Section)
+                .ThenBy(joinResult => joinResult.reqDoc.TypeId)
+                .Select(joinResult => new RequiredDocsView
+                {
+                    GrantType = joinResult.reqDocGrant.GrantId,
+                    DOC_ID = joinResult.reqDoc.TypeId,
+                    DOC_NAME = joinResult.reqDoc.TypeName,
+                    DOC_SECTION = joinResult.reqDocGrant.Section,
+                    DOC_CRITICAL = joinResult.reqDocGrant.CriticalFlag,
+                    DOC_CHILDID = joinResult.reqDocGrant.ChildIdFlag
+                }).Distinct().AsNoTracking().ToList();
+            }
+        }
+        /// <summary>
+        /// Reguired docs maintenance screen
+        /// </summary>
+        /// <param name="grantType"></param>
+        /// <param name="docId"></param>
+        public void DeleteGrantDocument(string grantType, decimal docId,string docState)
+        {
+            using (var context = _contextFactory.CreateDbContext())
+            {
+                var docs = context.DcGrantDocLinks.Where(r => r.GrantId == grantType && r.DocumentId == docId);
+                foreach (var doc in docs)
+                {
+                    doc.CriticalFlag = docState;
+                }
+                context.SaveChanges();
+                StaticDataService.RequiredDocs = context.DcGrantDocLinks
+                .Join(context.DcDocumentTypes, reqDocGrant => reqDocGrant.DocumentId, reqDoc => reqDoc.TypeId, (reqDocGrant, reqDoc) => new { reqDocGrant, reqDoc })
+                .Where(joinResult => joinResult.reqDocGrant.CriticalFlag == "Y")
+                .OrderBy(joinResult => joinResult.reqDocGrant.Section)
+                .ThenBy(joinResult => joinResult.reqDoc.TypeId)
+                .Select(joinResult => new RequiredDocsView
+                {
+                    GrantType = joinResult.reqDocGrant.GrantId,
+                    DOC_ID = joinResult.reqDoc.TypeId,
+                    DOC_NAME = joinResult.reqDoc.TypeName,
+                    DOC_SECTION = joinResult.reqDocGrant.Section,
+                    DOC_CRITICAL = joinResult.reqDocGrant.CriticalFlag,
+                    DOC_CHILDID = joinResult.reqDocGrant.ChildIdFlag
+                }).Distinct().AsNoTracking().ToList();
+                StaticDataService.AllDocs = context.DcGrantDocLinks
+                    .Join(context.DcDocumentTypes, reqDocGrant => reqDocGrant.DocumentId, reqDoc => reqDoc.TypeId, (reqDocGrant, reqDoc) => new { reqDocGrant, reqDoc })
+                    .OrderBy(joinResult => joinResult.reqDocGrant.Section)
+                    .ThenBy(joinResult => joinResult.reqDoc.TypeId)
+                    .Select(joinResult => new RequiredDocsView
+                    {
+                        GrantType = joinResult.reqDocGrant.GrantId,
+                        DOC_ID = joinResult.reqDoc.TypeId,
+                        DOC_NAME = joinResult.reqDoc.TypeName,
+                        DOC_SECTION = joinResult.reqDocGrant.Section,
+                        DOC_CRITICAL = joinResult.reqDocGrant.CriticalFlag,
+                        DOC_CHILDID = joinResult.reqDocGrant.ChildIdFlag
+                    }).Distinct().AsNoTracking().ToList();
+            }
         }
         /// <summary>
         /// Transport Y or N

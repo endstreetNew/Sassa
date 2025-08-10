@@ -1,0 +1,69 @@
+﻿
+<CascadingValue Value="this">
+        <ul class="nav nav-tabs">
+
+            @foreach (TabPage tabPage in Pages)
+            {
+                //TODO : Disable = "@(Usersession.Office.OfficeType == " RMC" || Usersession.Office.OfficeType= ="SC" ? "" : "disabled" "
+                <li class="nav-item">
+                    <a role="button" class="@GetButtonClass(tabPage)" @onclick=@( () => ActivatePage(tabPage) )>
+                        @tabPage.Text
+                    </a>
+                </li>
+            }
+
+        </ul>
+        <div class="tabArea">
+            @ChildContent
+        </div>
+    
+</CascadingValue>
+   
+@code {
+    // Next line is needed so we are able to add <TabPage> components inside
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public int ActivePageId { get; set; } = 1;
+
+    [Parameter]
+    public EventCallback<int> PageActivate { get; set; }
+
+    public TabPage? ActivePage { get; set; }
+
+    List<TabPage> Pages = new List<TabPage>();
+
+    protected override void OnInitialized()
+    {
+        Pages = new List<TabPage>();
+    }
+
+    internal void AddPage(TabPage tabPage)
+    {
+        Pages.Add(tabPage);
+        if (tabPage.Id == ActivePageId)
+        {
+            ActivePage = tabPage;
+            ActivatePage(tabPage);
+        }
+        StateHasChanged();
+    }
+    string GetButtonClass(TabPage page)
+    {
+        if (page.Enabled)
+        {
+            return page == ActivePage ? "nav-link active" : "nav-link";
+        }
+        else
+        {
+            return "nav-link disabled";
+        }
+    }
+
+    void ActivatePage(TabPage page)
+    {
+        ActivePage = page;
+        PageActivate.InvokeAsync(page.Id);
+    }
+}

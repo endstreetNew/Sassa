@@ -1321,6 +1321,11 @@ public partial class ModelContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("SECTION");
+            entity.Property(e => e.ChildIdFlag)
+                .HasMaxLength(1)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("CHILDID_FLAG");
 
             entity.HasOne(d => d.Document).WithMany(p => p.DcGrantDocLinks)
                 .HasForeignKey(d => d.DocumentId)

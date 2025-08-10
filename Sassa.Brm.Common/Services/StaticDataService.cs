@@ -36,6 +36,7 @@ public static class StaticDataService
     }
     public static Dictionary<decimal, string> LcTypes { get; set; } = new();
     public static List<RequiredDocsView> RequiredDocs { get; set; } = new();
+    public static List<RequiredDocsView> AllDocs { get; set; } = new();
     public static List<DcBatch> ActiveBatches { get; set; } = new();
     public static List<DcBoxType> BoxTypes { get; set; } = new();
     public static List<DcReqCategory> RequestCategories { get; set; } = new();
