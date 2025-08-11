@@ -12,7 +12,7 @@ namespace Sassa.Services
         private readonly ILogger<ScheduleService> _logger;
         private readonly SocpenService _socpen;
         IOptions<ScheduleOptions> _scheduleOptions;
-        private Timer? _timer;
+        //private Timer? _timer;
 
         public ScheduleService(ILogger<ScheduleService> logger, IOptions<ScheduleOptions> options)
         {
@@ -63,7 +63,7 @@ namespace Sassa.Services
         public override Task StopAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Socpen Task Scheduler stopping...");
-            _timer?.Change(Timeout.Infinite, 0);
+            //_timer?.Change(Timeout.Infinite, 0);
             return base.StopAsync(stoppingToken);
         }
 

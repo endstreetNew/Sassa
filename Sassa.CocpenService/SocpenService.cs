@@ -30,7 +30,7 @@ namespace Sassa.Services
                         cmd.ExecuteNonQueryAsync();
                     }
                 }
-                catch (Exception ex)
+                catch 
                 {
                     throw;
                 }

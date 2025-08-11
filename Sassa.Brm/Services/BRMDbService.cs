@@ -26,7 +26,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 result = interim.Any();
             }
         }
-        catch (Exception ex)
+        catch 
         {
             return true;
             //throw new Exception("Duplicate BarCode");
@@ -1173,7 +1173,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     /// <param name="SearchId"></param>
     /// <param name="FullSearch"></param>
     /// <returns></returns>
-    public async Task<List<Application>> SearchSocpenId(string SearchId, bool FullSearch)
+    public async Task<List<Application>> SearchSocpenId(string SearchId)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
@@ -2391,7 +2391,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 await _context.SaveChangesAsync();
             }
         }
-        catch (Exception ex)
+        catch 
         {
             throw;
         }

@@ -108,7 +108,7 @@ public class DcFileController(IDbContextFactory<ModelContext> dbContextFactory, 
                 dc_socpen.LocalofficeId = file.OfficeId;
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch 
             {
                 //Ignoring failed socpen update for now.
             }

@@ -24,7 +24,6 @@ builder.Services.AddScoped<ActivityService>();
 builder.Services.AddScoped<ApplicationService>();
 builder.Services.AddScoped<FasttrackService>();
 builder.Services.AddScoped<LoService>();
-builder.Services.AddScoped<SharedFolderService>();
 builder.Services.AddSingleton<CsServiceSettings>(c =>
 {
     CsServiceSettings csServiceSettings = new CsServiceSettings();

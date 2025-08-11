@@ -18,7 +18,7 @@ namespace Sassa.Services
                     return result.First();
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
@@ -44,7 +44,7 @@ namespace Sassa.Services
 
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
@@ -66,7 +66,7 @@ namespace Sassa.Services
                     await _context.SaveChangesAsync();
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }

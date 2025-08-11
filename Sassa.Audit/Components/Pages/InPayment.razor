@@ -21,7 +21,7 @@
     <WidgetTitle Title="Search" />
     <FluentStack>
         <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => SearchMis())"></FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => await SearchMis())"></FluentButton>
     </FluentStack>
     <hr />
 
@@ -76,13 +76,13 @@
         if(string.IsNullOrEmpty(searchId) || searchId.Length < 13)
         {
             toast.ShowError("Please enter a valid applicant id.");
-            loading = true;
+            loading = false;
             return;
         }
         loading = true;
         try
         {
-            misFiles = context.Inpayments.Where(x => x.ApplicantNo == searchId).ToList();
+            misFiles = await context.Inpayments.Where(x => x.ApplicantNo == searchId).ToListAsync();
         }
         catch(Exception ex)
         {

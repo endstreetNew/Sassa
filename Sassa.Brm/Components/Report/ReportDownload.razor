@@ -169,8 +169,13 @@ else
         try
         {
             
-            var fileName = pi.GetValue(u)?.ToString();
-            var filePath = Path.Combine(StaticDataService.ReportFolder, fileName ?? string.Empty);
+            var fileName = pi.GetValue(u)?.ToString() ?? string.Empty;
+            if (string.IsNullOrEmpty(fileName))
+            {
+                toast.Error("File name is empty.");
+                return;
+            }
+            var filePath = Path.Combine(StaticDataService.ReportFolder, fileName);
             using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
             {
@@ -180,7 +185,7 @@ else
 
             toast.Success("File sent to  CS (BRM shared Reports).");
         }
-        catch (Exception ex)
+        catch
         {
             toast.Error("Error sending File to CS.");
         }

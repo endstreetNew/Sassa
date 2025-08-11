@@ -10,7 +10,7 @@ using Sassa.Services;
 
 namespace Sassa.BRM.Api.Services
 {
-    public class FasttrackService(LoService loService,CSService csService, IDbContextFactory<ModelContext> dbContextFactory,SharedFolderService sharedFolder, StaticService staticService)
+    public class FasttrackService(LoService loService,CSService csService, IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
     {
         private string scanFolder = "";
         public void SetScanFolder(string folder)
@@ -42,7 +42,7 @@ namespace Sassa.BRM.Api.Services
                 //await csService.UploadDoc(csNode, file);
                 File.Move(newFilePath, $@"{scanFolder}\Processed\{newFileName}");
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
@@ -67,12 +67,25 @@ namespace Sassa.BRM.Api.Services
                 {
                     decLcType = 0;
                 }
+
+                // Fix for CS8604: check for null before passing to GetLocalOfficeFromOfficeName
+                if (string.IsNullOrEmpty(coverSheet.DrpdwnLocalOfficeSo))
+                {
+                    throw new Exception("Local Office name is missing.");
+                }
                 var localoffice = staticService.GetLocalOfficeFromOfficeName(coverSheet.DrpdwnLocalOfficeSo);
                 if (localoffice == null)
                 {
                     throw new Exception($"Office {coverSheet.DrpdwnLocalOfficeSo} was not found.");
                 }
-
+                if(string.IsNullOrEmpty(coverSheet.DrpdwnAppStatus))
+                {
+                    throw new Exception("Application Status is invalid or missing.");
+                }
+                if (string.IsNullOrEmpty(coverSheet.ApplicationDate))
+                {
+                    throw new Exception("Application Status is invalid or missing.");
+                }
 
                 DcFile file = new DcFile()
                 {
@@ -107,7 +120,7 @@ namespace Sassa.BRM.Api.Services
                 };
                 return await Task.FromResult(file);
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
@@ -215,7 +228,7 @@ namespace Sassa.BRM.Api.Services
 
                 return "";
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
@@ -236,10 +249,11 @@ namespace Sassa.BRM.Api.Services
                     {
                         await UpdateBrmRecord(file);
                     }
-                    file.UnqFileNo = _context.DcFiles.Where(k => k.BrmBarcode == file.BrmBarcode).FirstOrDefault().UnqFileNo;
+                    await _context.SaveChangesAsync();
+                   // file.UnqFileNo = _context.DcFiles.Where(k => k.BrmBarcode == file.BrmBarcode).FirstOrDefault()!.UnqFileNo;
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
@@ -264,7 +278,7 @@ namespace Sassa.BRM.Api.Services
                     await _context.SaveChangesAsync();
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
@@ -298,7 +312,7 @@ namespace Sassa.BRM.Api.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }

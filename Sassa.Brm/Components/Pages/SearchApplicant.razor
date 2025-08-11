@@ -120,7 +120,7 @@
 
     string txtSearchId ="";
     string txtSearchSRD="";
-    bool chkSearchFull;
+    //bool chkSearchFull;
     //bool chkSearchMv = false;
 
     string regionChangeMessage = "";
@@ -193,7 +193,7 @@
                 else
                 {
                     if (!txtSearchId.IsNumeric() || txtSearchId.Length != 13) throw new Exception("Id is Invalid.");
-                    DTSocPen = await db.SearchSocpenId(txtSearchId, chkSearchFull);
+                    DTSocPen = await db.SearchSocpenId(txtSearchId);
                 }
                 if (!DTSocPen.Any()) toast.Info("No Socpen results");
                 DTBrm = await db.SearchBRMID(txtSearchId);

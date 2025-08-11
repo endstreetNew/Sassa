@@ -14,7 +14,7 @@
 @* @((MarkupString)check.GenerateHealthCheckReport(session.session.Name, 10, DateTime.Now))
  *@
     @code {
-        [Inject] IWebHostEnvironment Env { get; set; } = default;
+        [Inject] IWebHostEnvironment? Env { get; set; }
 
     public async Task SaveReport()
     {
@@ -23,22 +23,27 @@
             await check.WriteDailyReport(session.session.Name, 10, DateTime.Now);
             toast.Success("Healthcheck saved.");
         }
-        catch(Exception ex)
+        catch
         {
             toast.Error("Healthcheck already saved.");
         }
     }
 
-    public async Task TdwEmailTest()
+    public void TdwEmailTest()
     {
         try
         {
+            if (Env == null)
+            {
+                toast.Error("Environment not set.");
+                return;
+            }
             batchService.SendTdwMailTest(Path.Combine(Env.WebRootPath, "TestFile.csv"));
             toast.Success("TestMail sent please check the log for any error.");
         }
-        catch(Exception ex)
+        catch
         {
-            toast.Error("Error consumer in Email client...");
+            toast.Error("Error consumed in Email client...");
         }
     }
 
