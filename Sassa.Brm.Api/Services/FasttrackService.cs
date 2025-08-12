@@ -32,7 +32,7 @@ namespace Sassa.BRM.Api.Services
                 await CheckForSocpenRecordAsync(dcFile);
                 await CreateBrmRecordAsync(dcFile);
                 await loService.UpdateClmNumber(scanModel.LoReferece, dcFile);
-                
+                await UpdateSocpenRecordAsync(dcFile);
                 //Rename the file
                 var newFileName = GetFilename(dcFile, staticService.GetLocalOffice(dcFile.OfficeId));
                 string newFilePath = $@"{scanFolder}\" + newFileName;
@@ -249,8 +249,7 @@ namespace Sassa.BRM.Api.Services
                     {
                         await UpdateBrmRecord(file);
                     }
-                    await _context.SaveChangesAsync();
-                   // file.UnqFileNo = _context.DcFiles.Where(k => k.BrmBarcode == file.BrmBarcode).FirstOrDefault()!.UnqFileNo;
+                    file.UnqFileNo = _context.DcFiles.Where(k => k.BrmBarcode == file.BrmBarcode).FirstOrDefault()!.UnqFileNo;
                 }
             }
             catch 
@@ -283,7 +282,54 @@ namespace Sassa.BRM.Api.Services
                 throw;
             }
         }
+        private async Task UpdateSocpenRecordAsync(DcFile file)
+        {
+            try
+            {
+                using (var _context = dbContextFactory.CreateDbContext())
+                {
+                    DcSocpen dc_socpen;
+                    long? srd = null;
 
+
+                    var result = new List<DcSocpen>();
+                    if (("C95".Contains(file.GrantType)))//child Grant
+                    {
+                        result = await _context.DcSocpens.Where(s => s.BeneficiaryId == file.ApplicantNo && s.GrantType == file.GrantType && s.ChildId == file.ChildIdNo).ToListAsync();
+                    }
+                    else if(file.GrantType == "S")
+                    {
+                        if (file.SrdNo != null && file.SrdNo.IsNumeric())
+                        {
+                            srd = long.Parse(file.SrdNo);
+                        }
+                        result = await _context.DcSocpens.Where(s => s.BeneficiaryId == file.ApplicantNo && s.GrantType == file.GrantType && s.SrdNo == srd).ToListAsync();
+                    }
+                    else
+                    {
+                        result = await _context.DcSocpens.Where(s => s.BeneficiaryId == file.ApplicantNo && s.GrantType == file.GrantType).ToListAsync();
+                    }
+
+                    if (result.ToList().Any())
+                    {
+                        dc_socpen = result.First();
+                        dc_socpen.CaptureReference = file.UnqFileNo;
+                        dc_socpen.BrmBarcode = file.BrmBarcode;
+                        dc_socpen.CaptureDate = DateTime.Now;
+                        dc_socpen.RegionId = file.RegionId;
+                        dc_socpen.LocalofficeId = file.RegionId;
+                        dc_socpen.StatusCode = file.ApplicationStatus.Contains("MAIN") ? "ACTIVE" : "INACTIVE";
+                        dc_socpen.ApplicationDate = file.UpdatedDate;
+                        dc_socpen.SocpenDate = file.UpdatedDate;
+                    }
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
         private async Task CheckForSocpenRecordAsync(DcFile file)
         {
             try

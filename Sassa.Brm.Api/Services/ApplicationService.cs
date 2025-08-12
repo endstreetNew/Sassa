@@ -208,7 +208,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 _context.DcFiles.Add(file);
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
@@ -406,7 +406,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
 
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
@@ -470,7 +470,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             {
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch 
             {
                 //SaveActivity("Capture", file.SrdNo, file.Lctype, "Error:" + ex.Message.Substring(0, 200), file.RegionId, decimal.Parse(file.OfficeId), file.UpdatedByAd, file.UnqFileNo);
                 //throw;
