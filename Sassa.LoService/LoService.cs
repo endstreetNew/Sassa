@@ -72,5 +72,28 @@ namespace Sassa.Services
             }
 
         }
+
+        public async Task<bool> ValidationExists(string reference)
+        {
+            try
+            {
+                using (var _context = dbContextFactory.CreateDbContext())
+                {
+                    var result = await _context.CustCoversheetValidations.Where(c => c.ReferenceNum == reference).ToListAsync();
+                    if (result.Count() == 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {                   
+                         return true;
+                    }
+                }
+            }
+            catch 
+            {
+                throw new Exception("LO may be offline. (Retry)");
+            }
+        }
     }
 }

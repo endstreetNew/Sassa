@@ -35,6 +35,7 @@ builder.Services.AddSingleton<CsServiceSettings>(c =>
     return csServiceSettings;
 });
 builder.Services.AddScoped<CSService>();
+builder.Services.AddScoped<CoverSheetService>();
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

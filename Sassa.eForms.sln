@@ -50,11 +50,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.Brm.Health", "Sassa.B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.CsService", "Sassa.CsService\Sassa.CsService.csproj", "{4FF35D9A-91A1-4331-AE77-2B4D2991BFE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.SocpenService", "Sassa.CocpenService\Sassa.SocpenService.csproj", "{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.LoService", "Sassa.LoService\Sassa.LoService.csproj", "{DEA14F7E-3265-4E91-89EB-71B8E8B754F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.Admin", "Sassa.Admin\Sassa.Admin.csproj", "{C814FEE1-EEAF-6C6D-8D98-6A603C6C494C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Sassa.BRMDcSocpenService\Sql\AddChildGrants.sql = Sassa.BRMDcSocpenService\Sql\AddChildGrants.sql
+		Sassa.BRMDcSocpenService\Sql\AddDisability.sql = Sassa.BRMDcSocpenService\Sql\AddDisability.sql
+		Sassa.BRMDcSocpenService\Sql\AddMainGrants.sql = Sassa.BRMDcSocpenService\Sql\AddMainGrants.sql
+		Sassa.BRMDcSocpenService\Sql\AddSrds.sql = Sassa.BRMDcSocpenService\Sql\AddSrds.sql
+		Sassa.BRMDcSocpenService\Sql\DgToOag.sql = Sassa.BRMDcSocpenService\Sql\DgToOag.sql
+		Sassa.BRMDcSocpenService\Sql\MergeDisability.sql = Sassa.BRMDcSocpenService\Sql\MergeDisability.sql
+		Sassa.BRMDcSocpenService\Sql\MergeOldAge.sql = Sassa.BRMDcSocpenService\Sql\MergeOldAge.sql
+		Sassa.BRMDcSocpenService\Sql\Payment_File.sql = Sassa.BRMDcSocpenService\Sql\Payment_File.sql
+		Sassa.BRMDcSocpenService\Sql\RetireSrds.sql = Sassa.BRMDcSocpenService\Sql\RetireSrds.sql
+		Sassa.BRMDcSocpenService\Sql\UpdateScriptSample.sql = Sassa.BRMDcSocpenService\Sql\UpdateScriptSample.sql
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.SocpenService", "Sassa.SocpenService\Sassa.SocpenService.csproj", "{29ADABCE-7412-9C25-A14B-DB814B07B577}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -410,26 +424,6 @@ Global
 		{4FF35D9A-91A1-4331-AE77-2B4D2991BFE4}.Release|x64.Build.0 = Release|Any CPU
 		{4FF35D9A-91A1-4331-AE77-2B4D2991BFE4}.Release|x86.ActiveCfg = Release|Any CPU
 		{4FF35D9A-91A1-4331-AE77-2B4D2991BFE4}.Release|x86.Build.0 = Release|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Debug|ARM.Build.0 = Debug|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Debug|x64.Build.0 = Debug|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Debug|x86.Build.0 = Debug|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Release|ARM.ActiveCfg = Release|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Release|ARM.Build.0 = Release|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Release|ARM64.Build.0 = Release|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Release|x64.ActiveCfg = Release|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Release|x64.Build.0 = Release|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Release|x86.ActiveCfg = Release|Any CPU
-		{849F9FEF-4D11-4BF3-9DA7-F899F2EB0C20}.Release|x86.Build.0 = Release|Any CPU
 		{DEA14F7E-3265-4E91-89EB-71B8E8B754F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DEA14F7E-3265-4E91-89EB-71B8E8B754F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEA14F7E-3265-4E91-89EB-71B8E8B754F7}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -470,12 +464,33 @@ Global
 		{C814FEE1-EEAF-6C6D-8D98-6A603C6C494C}.Release|x64.Build.0 = Release|Any CPU
 		{C814FEE1-EEAF-6C6D-8D98-6A603C6C494C}.Release|x86.ActiveCfg = Release|Any CPU
 		{C814FEE1-EEAF-6C6D-8D98-6A603C6C494C}.Release|x86.Build.0 = Release|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Debug|ARM.Build.0 = Debug|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Debug|x64.Build.0 = Debug|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Debug|x86.Build.0 = Debug|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Release|ARM.ActiveCfg = Release|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Release|ARM.Build.0 = Release|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Release|ARM64.Build.0 = Release|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Release|x64.ActiveCfg = Release|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Release|x64.Build.0 = Release|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Release|x86.ActiveCfg = Release|Any CPU
+		{29ADABCE-7412-9C25-A14B-DB814B07B577}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2EE5C454-61EE-440F-A3E3-F7A4FC7827CE} = {A8B7B77B-A480-45F8-A09C-A7E47F16E9E8}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {2EE5C454-61EE-440F-A3E3-F7A4FC7827CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2C8B4780-B0AE-4962-97E1-0BFEC30FAF24}

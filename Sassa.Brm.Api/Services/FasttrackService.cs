@@ -10,36 +10,70 @@ using Sassa.Services;
 
 namespace Sassa.BRM.Api.Services
 {
-    public class FasttrackService(LoService loService,CSService csService, IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
+    public class FasttrackService(LoService loService,CoverSheetService coverSheetService,CSService csService, IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
     {
         private string scanFolder = "";
         public void SetScanFolder(string folder)
         {
             scanFolder = folder;
         }
-        public async Task ProcessLoRecord(FasttrackScan scanModel)
+        public async Task ProcessLoRecord(FasttrackScan scanModel,bool addCover = true)
         {
             try
             {
+                bool IsRetry = await loService.ValidationExists(scanModel.LoReferece);
                 var file = $@"{scanFolder}\{scanModel.LoReferece}.pdf";
                 if (!File.Exists(file))
                 {
-                    throw new Exception($"Expected File {file} does not exist (KOFAX).");
+                    if (!scanModel.Result.Contains("Retry"))
+                    {
+                        throw new Exception($"Expected File {file} does not exist (KOFAX).");
+                    }
                 }
+                else 
+                {
+                    var fileInfo = new FileInfo(file);
+                    long sizeInBytes = fileInfo.Length;
+                    if (sizeInBytes == 0) throw new Exception($"File empty (KOFAX).");
+                    if (sizeInBytes > 2000000) throw new Exception($"File too big (KOFAX).");
+                }
+
                 DcFile dcFile = await GetDcFileFromLoAsync(scanModel);
-                string result = Validate(dcFile);
-                if (!string.IsNullOrEmpty(result)) throw new Exception(result);
-                await CheckForSocpenRecordAsync(dcFile);
+                if (!scanModel.Result.Contains("Retry"))
+                {
+                    string result = Validate(dcFile);
+                    if (!string.IsNullOrEmpty(result)) throw new Exception(result);
+                }
+                else
+                {
+                    await CheckForSocpenRecordAsync(dcFile);
+                }
                 await CreateBrmRecordAsync(dcFile);
                 await loService.UpdateClmNumber(scanModel.LoReferece, dcFile);
                 await UpdateSocpenRecordAsync(dcFile);
+
                 //Rename the file
                 var newFileName = GetFilename(dcFile, staticService.GetLocalOffice(dcFile.OfficeId));
                 string newFilePath = $@"{scanFolder}\" + newFileName;
-                File.Move(file, newFilePath);
+                if (File.Exists(file))
+                {
+                    if(addCover)
+                    {
+                        //Add cover sheet
+                        coverSheetService.AddCoverSheetToFile(dcFile.UnqFileNo, file, newFilePath);
+
+                    }
+                    else
+                    {
+                        //Just move the file
+                        File.Move(file, newFilePath);
+                    }   
+
+                }
+                //build the csNode index
                 string csNode = dcFile.ApplicantNo + "_" + staticService.GetGrantType(dcFile.GrantType) + "_" + dcFile.UnqFileNo;
-               // pretend this one for now!
-                //await csService.UploadDoc(csNode, file);
+                //pretend this one for now!
+                await UploadToContentserver(csNode, newFilePath);
                 File.Move(newFilePath, $@"{scanFolder}\Processed\{newFileName}");
             }
             catch 
@@ -49,8 +83,10 @@ namespace Sassa.BRM.Api.Services
         }
         private string GetFilename(DcFile doc, DcLocalOffice office)
         {
-            //0110040430081_Child Support Grant_KZNC31572469_UMZIMKHULU_KZN_LO.pdf
-            return $"{doc.ApplicantNo}_{staticService.GetGrantType(doc.GrantType)}_{doc.UnqFileNo}_{office.OfficeName}_{staticService.GetRegionCode(office.RegionId)}_{office.OfficeType}.pdf";
+            //0110040430081_Child Support Grant_KZNC31572469_UMZIMKHULU_KZN_LO_LC.pdf
+            string officeName = office.OfficeName.Replace("  ","").Replace(" ", "").Replace("/", "_");
+            string lcTxt = doc.Lctype > 0 ? $"_LC{doc.Lctype}" : "";
+            return $"{doc.ApplicantNo}_{staticService.GetGrantType(doc.GrantType)}_{doc.UnqFileNo}_{officeName}_{staticService.GetRegionCode(office.RegionId)}_{office.OfficeType}{lcTxt}.pdf";
         }
         private async Task<DcFile> GetDcFileFromLoAsync(FasttrackScan scanModel)
         {
@@ -354,7 +390,7 @@ namespace Sassa.BRM.Api.Services
 
                     if (!result.Any())
                     {
-                        throw new Exception($"No Socpen record found for {file.ApplicantNo} with Grant Type {file.GrantType} and Srd No {file.SrdNo}.");
+                        throw new Exception($"No Socpen record found for {file.ApplicantNo} with Grant Type {file.GrantType} and Srd No {file.SrdNo}. (Retry)");
                     }
                 }
             }
@@ -363,6 +399,34 @@ namespace Sassa.BRM.Api.Services
                 throw;
             }
 
+
+        }
+
+        private async Task UploadToContentserver(string csNode,string file)
+        {
+            // Retry strategy for UploadDoc
+            const int maxRetries = 3;
+            const int delayMs = 2000;
+            int attempt = 0;
+            Exception? lastException = null;
+            while (attempt < maxRetries)
+            {
+                try
+                {
+                    await csService.UploadDoc(csNode, file);
+                    lastException = null;
+                    break; // Success
+                }
+                catch (Exception ex)
+                {
+                    lastException = ex;
+                    attempt++;
+                    if (attempt < maxRetries)
+                        await Task.Delay(delayMs);
+                }
+            }
+            if (lastException != null)
+                throw new Exception($"Upload to CS failed after {maxRetries} attempts. (Retry)");
 
         }
     }

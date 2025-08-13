@@ -318,7 +318,7 @@ namespace Sassa.Services
                     var response = await docClient.GetNodeByNameAsync(ota, 2000, "12. Beneficiaries");
                     response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 4));
                     response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 13));
-                    response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode);
+                    //response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode);
                     NodeId = response.GetNodeByNameResult.ID;
                 }
 

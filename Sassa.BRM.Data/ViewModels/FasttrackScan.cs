@@ -11,6 +11,6 @@ namespace Sassa.BRM.Data.ViewModels
         public string LoReferece { get; set; }
         public string BrmBarcode { get; set; }
         public DateTime ScanDate { get; set; } = DateTime.Now;
-        public string Result { get; set; }
+        public string Result { get; set; } = string.Empty;
     }
 }
