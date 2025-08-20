@@ -172,6 +172,7 @@
         regionOffices = regionOffices.OrderBy(o => o.OfficeName).ToList();
         unlinkedSpOffices = regionOffices.Where(r => r.OfficeId == 0).OrderBy(r => r.OfficeName).ToList();
         IsLoaded = true;
+        StateHasChanged();
     }
 
     protected async void btnLinkBRMOffice_Click(RegionOffice u)
@@ -183,8 +184,8 @@
                 toast.Warn("No Office selected to link");
                 return;
             }
-            await ss.LinkBrmOffice(u.ResCode,u.LinkOfficeId);
             IsLoaded = false;
+            await ss.LinkBrmOffice(u.ResCode,u.LinkOfficeId);
             await GetRegionOffices();
 
         }
@@ -235,8 +236,8 @@
             {
                 throw new Exception("Can't create Office office exists, !");
             }
-            await sservice.CreateOffice(u);
             IsLoaded = false;
+            await sservice.CreateOffice(u);
             await GetRegionOffices();
         }
         catch(Exception ex)

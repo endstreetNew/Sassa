@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+﻿//using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.EntityFrameworkCore;
 using Oracle.EntityFrameworkCore.Query.Internal;
 using Sassa.Brm.Common.Helpers;
@@ -8,75 +8,107 @@ using Sassa.BRM.Models;
 using Sassa.Models;
 using Sassa.Services;
 
-namespace Sassa.BRM.Api.Services
+namespace Sassa.BRM.Services
 {
     public class FasttrackService(LoService loService,CoverSheetService coverSheetService,CSService csService, IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
     {
-        private string scanFolder = "";
-        public void SetScanFolder(string folder)
-        {
-            scanFolder = folder;
-        }
+        public string scanFolder{ get; set; } = "";
         public async Task ProcessLoRecord(FasttrackScan scanModel,bool addCover = true)
         {
             try
             {
                 bool IsRetry = await loService.ValidationExists(scanModel.LoReferece);
-                var file = $@"{scanFolder}\{scanModel.LoReferece}.pdf";
-                if (!File.Exists(file))
+                if (IsRetry)
                 {
-                    if (!scanModel.Result.Contains("Retry"))
-                    {
-                        throw new Exception($"Expected File {file} does not exist (KOFAX).");
-                    }
+                    if(string.IsNullOrEmpty(scanModel.Result))throw new Exception($"File Already Processed by KOFAX (Retry).");
+                    await RetryLoRecord(scanModel, addCover);
                 }
-                else 
+                else
                 {
+                    if (scanModel.LoReferece.Length != 16) throw new Exception($"Invalid LO Reference (KOFAX).");
+                    if (scanModel.BrmBarcode.Length != 8) throw new Exception($"Invalid BrmBarcode (KOFAX).");
+                    var file = $@"{scanFolder}\{scanModel.LoReferece}.pdf";
+                    if (!File.Exists(file))
+                    {
+                         throw new Exception($"Expected File {file} does not exist (KOFAX).");
+                    }
                     var fileInfo = new FileInfo(file);
                     long sizeInBytes = fileInfo.Length;
                     if (sizeInBytes == 0) throw new Exception($"File empty (KOFAX).");
                     if (sizeInBytes > 2000000) throw new Exception($"File too big (KOFAX).");
-                }
+                    scanModel.BrmBarcode = scanModel.BrmBarcode.ToUpper();
 
-                DcFile dcFile = await GetDcFileFromLoAsync(scanModel);
-                if (!scanModel.Result.Contains("Retry"))
-                {
+                    DcFile dcFile = await GetDcFileFromLoAsync(scanModel);
                     string result = Validate(dcFile);
                     if (!string.IsNullOrEmpty(result)) throw new Exception(result);
-                }
-                else
-                {
-                    await CheckForSocpenRecordAsync(dcFile);
-                }
-                await CreateBrmRecordAsync(dcFile);
-                await loService.UpdateClmNumber(scanModel.LoReferece, dcFile);
-                await UpdateSocpenRecordAsync(dcFile);
-
-                //Rename the file
-                var newFileName = GetFilename(dcFile, staticService.GetLocalOffice(dcFile.OfficeId));
-                string newFilePath = $@"{scanFolder}\" + newFileName;
-                if (File.Exists(file))
-                {
-                    if(addCover)
+                    dcFile = await CheckForSocpenRecordAsync(dcFile, scanModel.LoReferece);
+                    //File is valid and ready to be processed
+                    //Rename the file
+                    var newFileName = GetFilename(dcFile, staticService.GetLocalOffice(dcFile.OfficeId));
+                    string newFilePath = $@"{scanFolder}\" + newFileName;
+                    if (addCover)
                     {
                         //Add cover sheet
                         coverSheetService.AddCoverSheetToFile(dcFile.UnqFileNo, file, newFilePath);
-
                     }
                     else
                     {
                         //Just move the file
                         File.Move(file, newFilePath);
-                    }   
-
+                    }
+                    ////build the csNode index
+                    //string csNode = dcFile.ApplicantNo;
+                    ////pretend this one for now!
+                    //await UploadToContentserver(csNode, newFilePath);
+                    //File.Move(newFilePath, $@"{scanFolder}\Processed\{newFileName}");
                 }
-                //build the csNode index
-                string csNode = dcFile.ApplicantNo + "_" + staticService.GetGrantType(dcFile.GrantType) + "_" + dcFile.UnqFileNo;
-                //pretend this one for now!
-                await UploadToContentserver(csNode, newFilePath);
-                File.Move(newFilePath, $@"{scanFolder}\Processed\{newFileName}");
             }
             catch 
+            {
+                throw;
+            }
+        }
+
+        public async Task RetryLoRecord(FasttrackScan scanModel, bool addCover = false)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(scanModel.Result)) throw new Exception("Validation Result not provided for retry.");
+                DcFile dcFile = await GetDcFileFromLoAsync(scanModel);
+                var file = $@"{scanFolder}\{scanModel.LoReferece}.pdf";
+                var newFileName = GetFilename(dcFile, staticService.GetLocalOffice(dcFile.OfficeId));
+                string newFilePath = $@"{scanFolder}\" + newFileName;
+                if (File.Exists(file)) //Validation has not completed
+                {
+                    string result = Validate(dcFile);
+                    if (!string.IsNullOrEmpty(result)) throw new Exception(result);
+                    //Check and update socpenrecord
+                    dcFile = await CheckForSocpenRecordAsync(dcFile, scanModel.LoReferece);
+                    //File is valid and ready to be processed
+                    newFileName = GetFilename(dcFile, staticService.GetLocalOffice(dcFile.OfficeId));
+                    newFilePath = $@"{scanFolder}\" + newFileName;
+                    if (addCover)
+                    {
+                        //Add cover sheet
+                        coverSheetService.AddCoverSheetToFile(dcFile.UnqFileNo, file, newFilePath);
+                    }
+                    else
+                    {
+                            //Just move the file
+                        File.Move(file, newFilePath);
+                    }
+                }
+                //else
+                //{
+                //    if (!File.Exists(newFilePath)) throw new Exception($"File {newFileName} not found for Cs Upload.");
+                //}
+                ////build the csNode index
+                //string csNode = dcFile.ApplicantNo;
+                ////Insert Contentserver file
+                //await UploadToContentserver(csNode, newFilePath);
+                //File.Move(newFilePath, $@"{scanFolder}\Processed\{newFileName}");
+            }
+            catch
             {
                 throw;
             }
@@ -84,15 +116,14 @@ namespace Sassa.BRM.Api.Services
         private string GetFilename(DcFile doc, DcLocalOffice office)
         {
             //0110040430081_Child Support Grant_KZNC31572469_UMZIMKHULU_KZN_LO_LC.pdf
-            string officeName = office.OfficeName.Replace("  ","").Replace(" ", "").Replace("/", "_");
-            string lcTxt = doc.Lctype > 0 ? $"_LC{doc.Lctype}" : "";
+            string officeName = office.OfficeName.Replace("(", "_").Replace(")", "").Replace("  ","").Replace(" ", "").Replace("/", "_").ToUpper();
+            string lcTxt = doc.Lctype > 0 ? $"_LC" : "";
             return $"{doc.ApplicantNo}_{staticService.GetGrantType(doc.GrantType)}_{doc.UnqFileNo}_{officeName}_{staticService.GetRegionCode(office.RegionId)}_{office.OfficeType}{lcTxt}.pdf";
         }
         private async Task<DcFile> GetDcFileFromLoAsync(FasttrackScan scanModel)
         {
             try
             {
-
 
                 CustCoversheet coverSheet = await loService.GetCoversheetAsync(scanModel.LoReferece);
                 if (!decimal.TryParse(coverSheet.DrpdwnTransaction, out decimal decTrnType))
@@ -120,7 +151,7 @@ namespace Sassa.BRM.Api.Services
                 }
                 if (string.IsNullOrEmpty(coverSheet.ApplicationDate))
                 {
-                    throw new Exception("Application Status is invalid or missing.");
+                    throw new Exception("ApplicationDate is invalid or missing.");
                 }
 
                 DcFile file = new DcFile()
@@ -154,7 +185,7 @@ namespace Sassa.BRM.Api.Services
                     UpdatedByAd = "SVC_BRM_LO",
                     TdwBatch = 0
                 };
-                return await Task.FromResult(file);
+                return await Task.FromResult(file);//Todo check BRM and clm
             }
             catch 
             {
@@ -270,7 +301,7 @@ namespace Sassa.BRM.Api.Services
             }
         }
 
-        private async Task CreateBrmRecordAsync(DcFile file)
+        private async Task<DcFile> CreateBrmRecordAsync(DcFile file)
         {
             try
             {
@@ -280,93 +311,37 @@ namespace Sassa.BRM.Api.Services
                     {
                         _context.DcFiles.Add(file);
                         await _context.SaveChangesAsync();
-                    }
-                    else
-                    {
-                        await UpdateBrmRecord(file);
-                    }
-                    file.UnqFileNo = _context.DcFiles.Where(k => k.BrmBarcode == file.BrmBarcode).FirstOrDefault()!.UnqFileNo;
-                }
-            }
-            catch 
-            {
-                throw;
-            }
-        }
-
-        private async Task UpdateBrmRecord(DcFile file)
-        {
-            try
-            {
-                using (var _context = dbContextFactory.CreateDbContext())
-                {
-                    var existingFile = _context.DcFiles.FirstOrDefault(x => x.UnqFileNo == file.UnqFileNo);
-                    if (existingFile != null)
-                    {
-                        _context.Entry(existingFile).CurrentValues.SetValues(file);
-                    }
-                    else
-                    {
-                        file.UnqFileNo = "";
-                        _context.DcFiles.Add(file);
-                    }
-                    await _context.SaveChangesAsync();
-                }
-            }
-            catch 
-            {
-                throw;
-            }
-        }
-        private async Task UpdateSocpenRecordAsync(DcFile file)
-        {
-            try
-            {
-                using (var _context = dbContextFactory.CreateDbContext())
-                {
-                    DcSocpen dc_socpen;
-                    long? srd = null;
-
-
-                    var result = new List<DcSocpen>();
-                    if (("C95".Contains(file.GrantType)))//child Grant
-                    {
-                        result = await _context.DcSocpens.Where(s => s.BeneficiaryId == file.ApplicantNo && s.GrantType == file.GrantType && s.ChildId == file.ChildIdNo).ToListAsync();
-                    }
-                    else if(file.GrantType == "S")
-                    {
-                        if (file.SrdNo != null && file.SrdNo.IsNumeric())
+                        var files = await _context.DcFiles.Where(k => k.BrmBarcode == file.BrmBarcode).ToListAsync();
+                        if (files.Any())
                         {
-                            srd = long.Parse(file.SrdNo);
+                            return files.First();
                         }
-                        result = await _context.DcSocpens.Where(s => s.BeneficiaryId == file.ApplicantNo && s.GrantType == file.GrantType && s.SrdNo == srd).ToListAsync();
                     }
                     else
                     {
-                        result = await _context.DcSocpens.Where(s => s.BeneficiaryId == file.ApplicantNo && s.GrantType == file.GrantType).ToListAsync();
+                        var existingFile = _context.DcFiles.FirstOrDefault(x => x.UnqFileNo == file.UnqFileNo);
+                        if (existingFile != null)
+                        {
+                            _context.Entry(existingFile).CurrentValues.SetValues(file);
+                        }
+                        else
+                        {
+                            //Check If the barcode exists
+                            _context.DcFiles.Add(file);//Tested
+                        }
+                        await _context.SaveChangesAsync();
                     }
-
-                    if (result.ToList().Any())
-                    {
-                        dc_socpen = result.First();
-                        dc_socpen.CaptureReference = file.UnqFileNo;
-                        dc_socpen.BrmBarcode = file.BrmBarcode;
-                        dc_socpen.CaptureDate = DateTime.Now;
-                        dc_socpen.RegionId = file.RegionId;
-                        dc_socpen.LocalofficeId = file.RegionId;
-                        dc_socpen.StatusCode = file.ApplicationStatus.Contains("MAIN") ? "ACTIVE" : "INACTIVE";
-                        dc_socpen.ApplicationDate = file.UpdatedDate;
-                        dc_socpen.SocpenDate = file.UpdatedDate;
-                    }
-                    await _context.SaveChangesAsync();
+                    return file;
                 }
+
             }
-            catch
+            catch 
             {
                 throw;
             }
         }
-        private async Task CheckForSocpenRecordAsync(DcFile file)
+
+        private async Task<DcFile> CheckForSocpenRecordAsync(DcFile file, string loReference)
         {
             try
             {
@@ -392,6 +367,29 @@ namespace Sassa.BRM.Api.Services
                     {
                         throw new Exception($"No Socpen record found for {file.ApplicantNo} with Grant Type {file.GrantType} and Srd No {file.SrdNo}. (Retry)");
                     }
+                    else
+                    {
+                        //Create BRM record
+                        file = await CreateBrmRecordAsync(file);
+                        await loService.UpdateLOCover(loReference, file);
+                        foreach (DcSocpen dc_socpen in result)
+                        {
+                            dc_socpen.CaptureReference = file.UnqFileNo;
+                            dc_socpen.BrmBarcode = file.BrmBarcode;
+                            dc_socpen.CaptureDate = DateTime.Now;
+                            dc_socpen.RegionId = file.RegionId;
+                            dc_socpen.LocalofficeId = file.RegionId;
+                            //dc_socpen.StatusCode = file.ApplicationStatus.Contains("MAIN") ? "ACTIVE" : "INACTIVE";
+                            dc_socpen.ApplicationDate = file.UpdatedDate;
+                            dc_socpen.SocpenDate = file.UpdatedDate;
+                            dc_socpen.LoReference = loReference;
+                            dc_socpen.ScanDate = DateTime.Now;
+                            dc_socpen.CsDate = DateTime.Now;
+
+                        }
+                        await _context.SaveChangesAsync();
+                        return file;
+                    }
                 }
             }
             catch 
@@ -413,7 +411,7 @@ namespace Sassa.BRM.Api.Services
             {
                 try
                 {
-                    await csService.UploadDoc(csNode, file);
+                    await csService.UploadGrantDoc(csNode, file);
                     lastException = null;
                     break; // Success
                 }

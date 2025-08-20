@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sassa.BRM.Models;
 
@@ -61,4 +62,8 @@ public partial class DcSocpen
     public string Exception { get; set; }
 
     public DateTime? OgaDate { get; set; }
+
+    public string LoReference { get; set; }
+
+    public decimal? IsSocpen { get; set; }
 }

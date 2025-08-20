@@ -133,6 +133,7 @@
         regionOffices = regionOffices.OrderBy(o => o.OfficeName).ToList();
         //unlinkedSpOffices = regionOffices.Where(r => r.OfficeId == 0).ToList();
         IsLoaded = true;
+        StateHasChanged();
     }
 
     protected async void  btnActive_Click(RegionOffice u)
@@ -168,6 +169,7 @@
         await sservice.ChangeOfficeName(u.OfficeId.ToString(),u.OfficeName);
         IsLoaded = false;
         await GetRegionOffices();
+        
     }
 
     protected  void ConfirmOfficeMove(RegionOffice u)
@@ -184,8 +186,8 @@
         {
             await sservice.MoveOffice(fromOfficeId, SelectedOfficeId.ToString());
             // IsLoaded = false;
-            await GetRegionOffices();
             showOfficeConfirmation = false;
+            await GetRegionOffices();
         }
         catch (Exception ex)
         {

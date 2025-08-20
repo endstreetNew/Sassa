@@ -6,7 +6,7 @@ using Sassa.BRM.Models;
 using Sassa.Services;
 using System.Text;
 
-namespace Sassa.BRM.Api.Services
+namespace Sassa.BRM.Services
 {
     public class CoverSheetService(IDbContextFactory<ModelContext> _contextFactory, StaticService _staticService)
     {
@@ -18,13 +18,12 @@ namespace Sassa.BRM.Api.Services
                 var file = context.DcFiles.FirstOrDefault(x => x.UnqFileNo == unqFileNo);
                 if (file == null) throw new Exception($"File {unqFileNo} not found.(BRM)");
                 string coverSHtml = getCoverHtml(file);
-                string[] pdfFiles = new string[2];
                 PdfService.AddFileToCover(coverSHtml, fileName,targetFileName);
                 File.Delete(fileName);
             }
-            catch (Exception ex)
+            catch
             {
-                throw new Exception("Error adding Coversheet. (BRM)");
+                throw new Exception("Error adding Coversheet. (BRM) Retry");
             }
         }
         public string getCoverHtml(DcFile file)

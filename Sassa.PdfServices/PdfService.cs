@@ -63,44 +63,10 @@ namespace Sassa.Services
                     merger.Merge(pdfDocs, 1, pdfDocs.GetNumberOfPages());
                 }
             }
-            catch(Exception ex)
+            catch
             {
                 throw;
             }
         }
-        //public static void AddFileToCover(string htmlString, string filePath, string targetPath)
-        //{
-        //    PdfDocument pdf;
-        //    using (MemoryStream fs = new MemoryStream())
-        //    {
-        //        // Create PdfWriter
-        //        PdfWriter writer = new PdfWriter(fs, new WriterProperties().SetFullCompressionMode(true));
-        //        // Create PdfDocument
-        //        pdf = new PdfDocument(writer);
-        //        pdf.SetDefaultPageSize(PageSize.A4);
-        //        // Configure ConverterProperties for better fit
-        //        ConverterProperties properties = new ConverterProperties();
-        //        var mediaDevice = new MediaDeviceDescription(MediaType.PRINT);
-        //        mediaDevice.SetWidth(PageSize.A4.GetWidth());
-        //        mediaDevice.SetHeight(PageSize.A4.GetHeight());
-        //        properties.SetMediaDeviceDescription(mediaDevice);
-        //        // Convert HTML to PDF
-        //        HtmlConverter.ConvertToPdf(htmlString, writer, properties);
-        //    }
-
-        //    using (PdfWriter twriter = new PdfWriter(targetPath))
-        //    using (PdfDocument mergedPdf = new PdfDocument(twriter))
-        //    {
-        //        PdfMerger merger = new PdfMerger(mergedPdf);
-        //        merger.Merge(pdf, 1, pdf.GetNumberOfPages());
-        //        // Merge documents
-        //        using (PdfDocument pdfDocs = new PdfDocument(new PdfReader(filePath)))
-        //        {
-        //            merger.Merge(pdf, 1, pdfDocs.GetNumberOfPages());
-        //        }
-        //    }
-
-        //}
-
     }
 }

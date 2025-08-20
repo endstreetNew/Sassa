@@ -1755,15 +1755,25 @@ public partial class ModelContext : DbContext
 
             entity.ToTable("DC_SOCPEN");
 
-            entity.HasIndex(e => e.BrmBarcode, "DC_SOCPEN_BRM_BARCODE").IsUnique();
+            entity.HasIndex(e => e.BrmBarcode, "DC_SOCPEN_BRM_BARCODE");
+
+            entity.HasIndex(e => e.CaptureReference, "DC_SOCPEN_CAPTURE_REFERENCE");
 
             entity.HasIndex(e => e.BeneficiaryId, "DC_SOCPEN_IDX01");
 
-            entity.HasIndex(e => e.CaptureReference, "DC_SOCPEN_IDX02");
+            entity.HasIndex(e => new { e.RegionId, e.TdwRec, e.MisFile, e.StatusCode, e.CaptureReference, e.EcmisFile, e.OgaDate, e.ApplicationDate }, "DC_SOCPEN_IDX02");
+
+            entity.HasIndex(e => new { e.BeneficiaryId, e.GrantType }, "DC_SOCPEN_IDX03");
 
             entity.HasIndex(e => new { e.BeneficiaryId, e.GrantType, e.ChildId, e.SrdNo }, "DC_SOCPEN_ID_GRANT").IsUnique();
 
+            entity.HasIndex(e => e.ApplicationDate, "DC_SOCPEN_INDEX_APPLICATION_DATE");
+
+            entity.HasIndex(e => e.ScanDate, "DC_SOCPEN_SCAN_DATE");
+
             entity.HasIndex(e => e.SrdNo, "DC_SOCPEN_SRD").IsUnique();
+
+            entity.HasIndex(e => e.TdwRec, "DC_SOCPEN_TDW");
 
             entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd()
@@ -1788,10 +1798,12 @@ public partial class ModelContext : DbContext
                 .IsRequired()
                 .HasMaxLength(13)
                 .IsUnicode(false)
+                .ValueGeneratedOnAdd()
                 .HasColumnName("BENEFICIARY_ID");
             entity.Property(e => e.BrmBarcode)
                 .HasMaxLength(20)
                 .IsUnicode(false)
+                .ValueGeneratedOnAdd()
                 .HasColumnName("BRM_BARCODE");
             entity.Property(e => e.CaptureDate)
                 .HasColumnType("DATE")
@@ -1823,11 +1835,20 @@ public partial class ModelContext : DbContext
                 .IsRequired()
                 .HasMaxLength(1)
                 .IsUnicode(false)
+                .ValueGeneratedOnAdd()
                 .HasColumnName("GRANT_TYPE");
             entity.Property(e => e.IdHistory)
                 .HasMaxLength(255)
                 .IsUnicode(false)
                 .HasColumnName("ID_HISTORY");
+            entity.Property(e => e.IsSocpen)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("IS_SOCPEN");
+            entity.Property(e => e.LoReference)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("LO_REFERENCE");
             entity.Property(e => e.LocalofficeId)
                 .HasMaxLength(60)
                 .IsUnicode(false)
@@ -1852,6 +1873,7 @@ public partial class ModelContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("REGION_ID");
             entity.Property(e => e.ScanDate)
+                .ValueGeneratedOnAdd()
                 .HasColumnType("DATE")
                 .HasColumnName("SCAN_DATE");
             entity.Property(e => e.SocpenDate)

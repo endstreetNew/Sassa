@@ -288,13 +288,18 @@ namespace Sassa.Services
 
         }
 
-        //6911250346089_Child Support Grant_GAU287202114492948_eGA
+        /// <summary>
+        /// Retired Uploads a document to the Content Server under the specified node.
+        /// </summary>
+        /// <param name="csNode"></param>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task UploadDoc(string csNode,string filePath )
         {
-            DocumentManagementClient docClient = new DocumentManagementClient();
+            
             try
             {
-                CsDocuments.OTAuthentication ota = await Authenticate();
                 Attachment attachment;
                 using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                 using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
@@ -310,29 +315,99 @@ namespace Sassa.Services
                     };
                 }
 
-                docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 3, 0);
-
+                //docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 3, 0);
+                CsDocuments.OTAuthentication ota = await Authenticate();
                 if (NodeId == 0)
                 {
                     //find node
-                    var response = await docClient.GetNodeByNameAsync(ota, 2000, "12. Beneficiaries");
-                    response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 4));
-                    response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 13));
+                    //QA
+                    //var response = await _docClient.GetNodeAsync(ota, 126638);
+                    var response = await _docClient.GetNodeByNameAsync(ota, 2000, "12. Beneficiaries");
+                    response = await _docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 4));
+                    response = await _docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 13));
                     //response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode);
                     NodeId = response.GetNodeByNameResult.ID;
                 }
 
 
-                await docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "Cs Service", false, new Metadata(), attachment);
-
+                await _docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "Cs Service", false, new Metadata(), attachment);
+                _ = _docClient.CloseAsync();
             }
-            catch// (Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Error Uploading to Content server.");
             }
             finally
             {
-                await docClient.CloseAsync();
+               
+            }
+        }
+
+        public async Task UploadGrantDoc(string csNode, string filePath)
+        {
+            try
+            {
+                // Prepare the attachment
+                Attachment attachment;
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                {
+                    string fileContent = reader.ReadToEnd();
+                    byte[] content = System.Text.Encoding.UTF8.GetBytes(fileContent);
+                    attachment = new Attachment
+                    {
+                        FileName = Path.GetFileName(filePath),
+                        Contents = content,
+                        CreatedDate = DateTime.Now,
+                        FileSize = content.Length
+                    };
+                }
+
+                CsDocuments.OTAuthentication ota = await Authenticate();
+
+                // Node hierarchy: Root (2000) -> "12. Beneficiaries" -> prefix -> id
+                long rootId = 2000;
+                string rootName = "Beneficiaries";
+                string prefix = csNode.Substring(0, 4);
+                string id = csNode.Substring(0, 13);
+
+                // 1. Get or create "12. Beneficiaries"
+                var rootResponse = await _docClient.GetNodeByNameAsync(ota, rootId, rootName);
+                var rootNode = rootResponse.GetNodeByNameResult;
+                if (rootNode == null || rootNode.ID == 0)
+                {
+                    var createRootNode = await _docClient.CreateFolderAsync(ota, rootId, rootName, "Auto-created", new Metadata());
+                    rootNode = new Sassa.Services.CsDocuments.Node { ID = createRootNode.CreateFolderResult.ID, Name = rootName };
+                    //throw new Exception("12. Beneficiaries not found on CS");
+                }
+
+                // 2. Get or create prefix node
+                var prefixResponse = await _docClient.GetNodeByNameAsync(ota, rootNode.ID, prefix);
+                var prefixNode = prefixResponse.GetNodeByNameResult;
+                if (prefixNode == null || prefixNode.ID == 0)
+                {
+                    var createPrefix = await _docClient.CreateFolderAsync(ota, rootNode.ID, prefix, "Auto-created", new Metadata());
+                    prefixNode = new Sassa.Services.CsDocuments.Node { ID = createPrefix.CreateFolderResult.ID, Name = prefix };
+                }
+
+                // 3. Get or create id node
+                var idResponse = await _docClient.GetNodeByNameAsync(ota, prefixNode.ID, id);
+                var idNode = idResponse.GetNodeByNameResult;
+                if (idNode == null || idNode.ID == 0)
+                {
+                    var createId = await _docClient.CreateFolderAsync(ota, prefixNode.ID, id, "Auto-created", new Metadata());
+                    idNode = new Sassa.Services.CsDocuments.Node { ID = createId.CreateFolderResult.ID, Name = id };
+                }
+
+                NodeId = idNode.ID;
+
+                // 4. Upload the document
+                await _docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "Cs Service", false, new Metadata(), attachment);
+                _ = _docClient.CloseAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error Uploading to Content server.", ex);
             }
         }
     }

@@ -13,8 +13,8 @@ namespace Sassa.Services
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
                     var result = await _context.CustCoversheets.Where(c => c.ReferenceNum == reference).ToListAsync();
-                    if(result.Count() == 0)throw new Exception($"Reference NUM {reference} not found ");
-                    if (result.Count() > 1) throw new Exception($"Multiple records found for Reference NUM {reference} not found ");
+                    if(result.Count() == 0)throw new Exception($"Reference NUM {reference} not found.");
+                    if (result.Count() > 1) throw new Exception($"Multiple records found for Reference NUM {reference}.");
                     return result.First();
                 }
             }
@@ -38,7 +38,7 @@ namespace Sassa.Services
                     else
                     {
                         validation.ValidationDate = DateTime.Now;
-                        validation.Validationresult = custCoversheetValidation.Validationresult;
+                        validation.Validationresult = custCoversheetValidation.Validationresult?.Length > 254 ? custCoversheetValidation.Validationresult.Substring(0, 254) : custCoversheetValidation.Validationresult;
                     }
                     await _context.SaveChangesAsync(); // Persist changes
 
@@ -50,7 +50,7 @@ namespace Sassa.Services
             }
         }
 
-        public async Task UpdateClmNumber(string reference,DcFile file)
+        public async Task UpdateLOCover(string reference,DcFile file)
         {
             try
             {
@@ -59,10 +59,12 @@ namespace Sassa.Services
                     var result = await _context.CustCoversheets.Where(c => c.ReferenceNum == reference).ToListAsync();
                     if (result.Count() == 0) throw new Exception($"Reference NUM {reference} not found ");
                     if (result.Count() > 1) throw new Exception($"Multiple records found for Reference NUM {reference}");
-                    var cover =  result.First();
-                    cover.Clmnumber = file.UnqFileNo;
-                    cover.BrmNumber = file.BrmBarcode;
-                    cover.ScannedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                    foreach (var cover in result)
+                    {
+                        cover.Clmnumber = file.UnqFileNo;
+                        cover.BrmNumber = file.BrmBarcode;
+                        cover.ScannedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                    }
                     await _context.SaveChangesAsync();
                 }
             }
@@ -80,19 +82,27 @@ namespace Sassa.Services
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
                     var result = await _context.CustCoversheetValidations.Where(c => c.ReferenceNum == reference).ToListAsync();
-                    if (result.Count() == 0)
-                    {
-                        return false;
-                    }
-                    else
-                    {                   
-                         return true;
-                    }
+                    return result.Count() > 0;
                 }
             }
             catch 
             {
                 throw new Exception("LO may be offline. (Retry)");
+            }
+        }
+
+        public async Task<List<CustCoversheetValidation>> GetRepairQueue()
+        {
+            try
+            {
+                using (var _context = dbContextFactory.CreateDbContext())
+                {
+                    return await _context.CustCoversheetValidations.Where(c => c.Validationresult!.ToLower() != "ok").OrderBy(c => c.ValidationDate).Take(100).ToListAsync();
+                }
+            }
+            catch
+            {
+                throw;
             }
         }
     }

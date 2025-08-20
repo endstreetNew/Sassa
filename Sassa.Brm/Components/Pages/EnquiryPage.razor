@@ -183,6 +183,7 @@
         <thead>
             <tr>
                 <th scope="col">BRM Barcode</th>
+                <th scope="col">CLM No</th>
                 <th scope="col">Capture Date</th>
                 <th scope="col">Grant Type</th>
                 <th scope="col">Action</th>
@@ -195,6 +196,7 @@
             {
                 <tr>
                     <td>@u.BrmBarCode</td>
+                    <td>@u.UnqFileNo</td>
                     <td>@u.CaptureDate</td>
                     <td>@u.GrantType</td>
                     <td><NavLink class="btn btn-primary btn-sm active" target="_blank" href="@($"{NavigationM.BaseUri}coversheet/{u.BrmBarCode}")">View Cover</NavLink></td>

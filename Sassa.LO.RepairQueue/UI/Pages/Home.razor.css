@@ -1,0 +1,30 @@
+﻿.container {
+    display: grid;
+    grid-template-columns: 0.5fr 1.9fr 0.6fr;
+    grid-template-rows: 0.3fr 0.3fr 2.5fr;
+    gap: 0px 0px;
+    grid-template-areas:
+        "Queue LO Record Action"
+        "Queue SOCPENRecord Action"
+        "Queue Preview Action";
+}
+
+.Queue {
+    grid-area: Queue;
+}
+
+.LORecord {
+    grid-area: LO Record;
+}
+
+.SOCPENRecord {
+    grid-area: SOCPENRecord;
+}
+
+.Preview {
+    grid-area: Preview;
+}
+
+.Action {
+    grid-area: Action;
+}

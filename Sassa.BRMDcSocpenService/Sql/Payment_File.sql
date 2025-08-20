@@ -5,33 +5,44 @@ commit;
 TRUNCATE TABLE DC_PAYMENT;
 commit;
 INSERT INTO DC_PAYMENT
-SELECT * FROM cust_payment;
+SELECT * FROM cust_payment
+Where ACTION_DATE between sysdate - 30 and sysdate;
 commit;
 
 --set records INACTIVE
 DECLARE
-    CURSOR c1 IS SELECT ROWID FROM DC_SOCPEN WHERE STATUS_CODE = 'ACTIVE';
+    TYPE rid_array IS TABLE OF ROWID INDEX BY PLS_INTEGER;
+    v_rids rid_array;
 BEGIN
-    FOR rec IN c1 LOOP
-        UPDATE DC_SOCPEN 
-        SET STATUS_CODE = 'INACTIVE' 
-        WHERE ROWID = rec.ROWID;
-    END LOOP;
+    -- Collect all matching ROWIDs
+    SELECT ROWID BULK COLLECT INTO v_rids
+    FROM DC_SOCPEN
+    WHERE STATUS_CODE = 'ACTIVE';
+
+    -- Bulk update using FORALL
+    FORALL i IN v_rids.FIRST .. v_rids.LAST
+        UPDATE DC_SOCPEN
+        SET STATUS_CODE = 'INACTIVE'
+        WHERE ROWID = v_rids(i);
+
     COMMIT;
 END;
 
+
 --set new records ACTIVE
-DECLARE 
-    CURSOR c1 IS SELECT id_number, GRANT_TYPE FROM DC_PAYMENT;
 BEGIN
-    FOR rec IN c1 LOOP
-        UPDATE DC_SOCPEN
-        SET STATUS_CODE = 'ACTIVE'
-        WHERE  beneficiary_id = rec.id_number
-        AND GRANT_TYPE = rec.GRANT_TYPE;
-    END LOOP;
+    UPDATE DC_SOCPEN sp
+    SET STATUS_CODE = 'ACTIVE'
+    WHERE EXISTS (
+        SELECT 1
+        FROM DC_PAYMENT dp
+        WHERE dp.id_number = sp.beneficiary_id
+          AND dp.GRANT_TYPE = sp.GRANT_TYPE
+    );
+
     COMMIT;
 END;
+
 
 --merge old agestats to disability records
 DECLARE 

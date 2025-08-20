@@ -19,9 +19,9 @@ public partial class LoModelContext : DbContext
 
     public virtual DbSet<CustCoversheetValidation> CustCoversheetValidations { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-
-        => optionsBuilder.UseOracle("Data Source=(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.117.123.51)(PORT = 1525))(CONNECT_DATA =(service_name = ecsqa)));;Persist Security Info=True;User ID=lo_admin;Password=sassa123;");
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+//        => optionsBuilder.UseOracle("Data Source=(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = 10.117.123.51)(PORT = 1525))(CONNECT_DATA =(service_name = ecsqa)));;Persist Security Info=True;User ID=lo_admin;Password=sassa123;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -31,11 +31,9 @@ public partial class LoModelContext : DbContext
 
         modelBuilder.Entity<CustCoversheet>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("CUST_COVERSHEET");
+            entity.HasKey(e => e.ReferenceNum).HasName("CUST_COVERSHEET_PK");
 
-            entity.HasIndex(e => e.BrmNumber, "COVERSHEET_BRM_NUM");
+            entity.ToTable("CUST_COVERSHEET");
 
             entity.HasIndex(e => e.Clmnumber, "COVERSHEET_CSNUMBER");
 
@@ -43,14 +41,16 @@ public partial class LoModelContext : DbContext
 
             entity.HasIndex(e => e.TxtIdNumber, "COVERSHEET_ID_NUMBER");
 
-            entity.HasIndex(e => e.ReferenceNum, "COVERSHEET_REFERENCE_NUM");
-
             entity.HasIndex(e => new { e.ScanRegion, e.ScanLocaloffice }, "COVERSHEET_REGION");
 
             entity.HasIndex(e => e.TxtSocpenRefNumber, "COVERSHEET_SOCPEN_REF_NUM");
 
             entity.HasIndex(e => new { e.TxtSocpenUseridSo, e.TxtNameSo, e.TxtSurnameSo }, "COVERSHEET_SOCPEN_USERID");
 
+            entity.Property(e => e.ReferenceNum)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("REFERENCE_NUM");
             entity.Property(e => e.ApplicationDate)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -131,10 +131,6 @@ public partial class LoModelContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("POID");
-            entity.Property(e => e.ReferenceNum)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("REFERENCE_NUM");
             entity.Property(e => e.ScanLocaloffice)
                 .HasMaxLength(100)
                 .IsUnicode(false)

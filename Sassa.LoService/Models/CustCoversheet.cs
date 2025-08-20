@@ -5,7 +5,7 @@ namespace Sassa.Models;
 
 public partial class CustCoversheet
 {
-    public string? ReferenceNum { get; set; }
+    public string ReferenceNum { get; set; } = null!;
 
     public string? BrmNumber { get; set; }
 

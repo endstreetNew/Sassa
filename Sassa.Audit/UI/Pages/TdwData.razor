@@ -1,8 +1,4 @@
 ﻿@page "/tdwdata"
-
-@inject MisFileService db
-@inject IToastService toast
-
 @using Microsoft.EntityFrameworkCore
 @using Sassa.BRM.Data.ViewModels
 
@@ -12,9 +8,7 @@
 @inject StaticService sservice
 @inject ReportDataService rs
 @inject IToastService toast
-@inject IDbContextFactory<ModelContext> _contextFactory
 
-@implements IDisposable
 
 <BrmPageTitle Title="TDW Data" Loading="@loading"></BrmPageTitle>
 <FluentStack Orientation="Orientation.Vertical">
@@ -30,7 +24,7 @@
         <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => Search())"></FluentButton>
     </FluentStack>
     <hr />
-    <FluentDataGrid Items="@files" TGridItem="TdwFileLocation" Pagination="@pagination">
+    <FluentDataGrid Items="@files.AsQueryable()" TGridItem="TdwFileLocation" Pagination="@pagination">
         <PropertyColumn Width="130px" Property="@(p => p.Description)" Title="Id number" />
         <PropertyColumn Width="100px" Property="@(p => p.Name)" Title="Name" Sortable="true" />
         <PropertyColumn Width="200px" Property="@(p => p.GrantType)" Sortable="true" />
@@ -47,7 +41,7 @@
     protected PaginationState pagination = new PaginationState { ItemsPerPage = 15 };
 
     protected ReportDefinition report = new();
-    protected IQueryable<TdwFileLocation>? files;
+    protected List<TdwFileLocation> files =new();
 
     protected ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddYears(-10), ToDate = DateTime.Now };
 
@@ -56,21 +50,20 @@
 
     protected bool loading = true;
 
-    protected ModelContext? _context;
 
     protected List<string> tdwRegions = new();
     protected string selectedRegion = "";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        _context = _contextFactory.CreateDbContext();
-        tdwRegions = db.GetTdwRegions(_context);
+        loading = true;
+        tdwRegions = await db.GetTdwRegions();
         report = new ReportDefinition { ReportIndex = "1", ReportName = "Tdw Data", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "GrantType" } };
-        files = db.GetTdwFiles(period, selectedRegion, grantType, searchId, _context);
+        files = await db.GetTdwFiles(period, selectedRegion, grantType, searchId, true);
         loading = false;
     }
 
-    protected void Search()
+    protected async Task Search()
     {
         // if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
         // {
@@ -78,11 +71,11 @@
         //     return;
         // }
         loading = true;
-        files = db.GetTdwFiles(period, selectedRegion, grantType, searchId, _context!);
+        files = await db.GetTdwFiles(period, selectedRegion, grantType, searchId, true);
         loading = false;
     }
 
-    private void ValidateReportFilter()
+    private async Task ValidateReportFilter()
     {
         try
         {
@@ -117,7 +110,7 @@
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = selectedRegion;
-            List<TdwFileLocation> result = db.GetTdwFiles(period, selectedRegion, grantType, searchId, _context!).ToList();
+            List<TdwFileLocation> result = await db.GetTdwFiles(period, selectedRegion, grantType, searchId, false);
             result.ToCsv<TdwFileLocation>(FileName, header, StaticDataService.ReportFolder);
             loading = false;
         }
@@ -129,8 +122,4 @@
 
     }
 
-    public void Dispose()
-    {
-        if (_context != null) _context.Dispose();
-    }
 }

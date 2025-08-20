@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.FluentUI.AspNetCore.Components;
 using razor.Components;
-using Sassa.Audit.Components;
+using Sassa.Audit.UI;
 using Sassa.Audit.Services;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Services;

@@ -1,22 +1,18 @@
-﻿@page "/misdata"
-
-@inject MisFileService db
-@inject IToastService toast
-
+﻿@page "/brmdata"
 @using Microsoft.EntityFrameworkCore
-@using Sassa.BRM.Data.ViewModels 
+@using Sassa.BRM.Data.ViewModels
 
 @inject Helper helper
-@* @inject SessionService sessionservice *@
+
 @inject BRMDbService db
 @inject StaticService sservice
 @inject ReportDataService rs
 @inject IToastService toast
-@inject IDbContextFactory<ModelContext> _contextFactory
 
-@implements IDisposable
 
-<BrmPageTitle Title="MIS Data" Loading="@loading"></BrmPageTitle>
+@attribute [StreamRendering]
+
+<BrmPageTitle Title="BRM Data" ></BrmPageTitle>
 <FluentStack Orientation="Orientation.Vertical">
     <WidgetTitle Title="Filter Options" />
     <FluentStack Orientation="Orientation.Horizontal">
@@ -29,18 +25,16 @@
     <WidgetTitle Title="Search" />
     <FluentStack>
         <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => SearchMis())"></FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="Search"></FluentButton>
     </FluentStack>
     <hr />
-    <FluentDataGrid Items="@misFiles" TGridItem="MisLivelinkTbl" Pagination="@pagination">
-        <PropertyColumn Width="130px" Property="@(p => p.IdNumber)" />
-        <PropertyColumn Width="100px" Property="@(p => p.Name)" Sortable="true" />
-        <PropertyColumn Width="130px" Property="@(p => p.Surname)" Sortable="true" />
+    <FluentDataGrid @ref="grid" Items="@files.AsQueryable()" TGridItem="DcFileMini" Pagination="@pagination">
+        <PropertyColumn Width="130px" Property="@(p => p.Id)" Title="Id number"/>
+        <PropertyColumn Width="100px" Property="@(p => p.Name)" Title="Name" Sortable="true" />
+        <PropertyColumn Width="130px" Property="@(p => p.Surname)" Title="Surname" Sortable="true" />
         <PropertyColumn Width="200px" Property="@(p => p.GrantType)" Sortable="true" />
-        <PropertyColumn Width="130px" Property="@(p => p.GrantDate)" Sortable="true" />
-        <PropertyColumn Width="200px" Property="@(p => p.FileNumber)" />
-        <PropertyColumn Width="100px" Property="@(p => p.RegionId)" Sortable="true" />
-        <PropertyColumn Width="100px" Property="@(p => p.RegistryType)" Sortable="true" />
+        <PropertyColumn Width="200px" Property="@(p => p.Region)" />
+        <PropertyColumn Width="100px" Property="@(p => p.RegType)" Sortable="true" />
     </FluentDataGrid>
     <FluentPaginator State="@pagination" />
 </FluentStack>
@@ -49,44 +43,43 @@
 
 @code {
     protected PaginationState pagination = new PaginationState { ItemsPerPage = 15 };
-
+    FluentDataGrid<DcFileMini>? grid;
     protected ReportDefinition report = new();
     protected UserOffice office = new();
-    protected IQueryable<MisLivelinkTbl>? misFiles;
+    protected List<DcFileMini> files = new();
 
-    protected ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddYears(-10), ToDate = DateTime.Now };
+    protected ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddYears(-1), ToDate = DateTime.Now };
 
     string grantType = "";
     string searchId = "";
 
-    protected bool loading = true;
-
-    protected ModelContext? _context;
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        _context = _contextFactory.CreateDbContext();
-        report = new ReportDefinition { ReportIndex = "1", ReportName = "Mis Data", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "GrantType" } };
-        misFiles = db.GetMisFiles(period,office.RegionId,grantType,searchId,_context);
-        loading = false;
+        grid?.SetLoadingState(true);
+        report = new ReportDefinition { ReportIndex = "1", ReportName = "Brm Data", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "GrantType" } };
+        files = await db.GetBrmFiles(period, office.RegionId, grantType, searchId, true);
+        grid?.SetLoadingState(false);
     }
 
-    protected void SearchMis()
+    protected async Task Search()
     {
         // if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
         // {
         //     toast.ShowError("Please enter a valid applicant id.");
         //     return;
         // }
-        loading = true;
-        misFiles = db.GetMisFiles(period,office.RegionId,grantType,searchId,_context!);
-        loading = false;
+        // loading = true;
+        files = await db.GetBrmFiles(period, office.RegionId, grantType, searchId, true);
+        StateHasChanged();
+        // loading = false;
     }
 
-    private void ValidateReportFilter()
+    private async Task ValidateReportFilter()
     {
         try
         {
+            grid?.SetLoadingState(true);
+            StateHasChanged();
             foreach (var option in report.FilterOptions)
             {
                 switch (option)
@@ -98,6 +91,7 @@
                         if (string.IsNullOrEmpty(office.RegionId))
                         {
                             toast.ShowError($"Please select a Region.");
+                            grid?.SetLoadingState(false);
                             return;
                         }
                         break;
@@ -115,16 +109,15 @@
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = StaticDataService.RegionName(office.RegionId);
-            List<MisLivelinkTbl> result = db.GetMisFiles(period, office.RegionId, grantType, searchId, _context!).ToList();
-            result.ToCsv<MisLivelinkTbl>(FileName, header, StaticDataService.ReportFolder);
+            List<DcFileMini> result = await db.GetBrmFiles(period, office.RegionId, grantType, searchId, false);
+            result.ToCsv<DcFileMini>(FileName, header, StaticDataService.ReportFolder);
+            grid?.SetLoadingState(false);
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
+            grid?.SetLoadingState(false);
         }
     }
-    public void Dispose()
-    {
-        if (_context != null) _context.Dispose();
-    }
+
 }

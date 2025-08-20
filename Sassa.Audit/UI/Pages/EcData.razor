@@ -1,9 +1,9 @@
 ﻿@page "/ecdata"
 @using Sassa.BRM.Data.ViewModels
 
+@inject BRMDbService db
 @inject Helper helper
 @inject IToastService toast
-@inject IDbContextFactory<ModelContext> dbContextFactory
 @inject StaticService sservice
 
 <BrmPageTitle Title="ECMIS Data" Loading="@loading"></BrmPageTitle>
@@ -19,7 +19,7 @@
     <WidgetTitle Title="Search" />
     <FluentStack>
         <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => SearchMis())"></FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="SearchMis"></FluentButton>
     </FluentStack>
     <hr />
 
@@ -28,7 +28,7 @@
         <PropertyColumn Title="Name" Property="f => f.Name" />
         <PropertyColumn Title="Surname" Property="f => f.Surname" />
         <PropertyColumn Title="Grant Type" Property="f => f.GrantType" />
-        <PropertyColumn Title="App Date" Property="f => f.AppDate" />
+        <PropertyColumn Title="App Date" Property="f => f.GrantDate" />
         <PropertyColumn Title="Date Change" Property="f => f.DateChange" />
         <PropertyColumn Title="File Number" Property="f => f.FileNumber" />
         <PropertyColumn Title="Region Id" Property="f => f.RegionId" />
@@ -40,7 +40,7 @@
 
 
 @code {
-    protected IQueryable<EcMisTbl> misFiles = Enumerable.Empty<EcMisTbl>().AsQueryable();
+    protected List<EcMisTbl> misFiles = new();
     protected string searchId = "";
     PaginationState paginationState = new PaginationState { ItemsPerPage = 15 };
     protected ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddYears(-10), ToDate = DateTime.Now };
@@ -50,26 +50,14 @@
 
     protected ReportDefinition report = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        context = dbContextFactory.CreateDbContext();
         report = new ReportDefinition { ReportIndex = "1", ReportName = "EC Mis Data", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "GrantType" } };
-        misFiles = context.SsApplications.Select(r => new EcMisTbl()
-            {
-                IdNumber = r.IdNumber,
-                Name = r.Name,
-                Surname = r.Surname,
-                GrantType = r.GrantType,
-                AppDate = r.ActionDate,
-                FileNumber = r.FormType + r.FormNumber,
-                RegionId = "2",
-                RegistryType = r.BoxType
-
-            });
+        misFiles = await db.GetEcFiles(period, grantType, searchId, true);
         loading = false;
     }
 
-    protected void SearchMis()
+    protected async Task SearchMis()
     {
         if(string.IsNullOrEmpty(searchId) || searchId.Length < 13)
         {
@@ -78,18 +66,7 @@
         }
         try
         {
-            misFiles = context.SsApplications.Where(x => x.IdNumber == searchId).Select(r => new EcMisTbl()
-                {
-                    IdNumber = r.IdNumber,
-                    Name = r.Name,
-                    Surname = r.Surname,
-                    GrantType = r.GrantType,
-                    AppDate = r.ActionDate,
-                    FileNumber = r.FormType + r.FormNumber,
-                    RegionId = "2",
-                    RegistryType = r.BoxType
-
-                });
+            misFiles = await db.GetEcFiles(period, grantType, searchId, true);
         }
         catch//(Exception ex)
         {
@@ -98,7 +75,7 @@
     }
     private ModelContext context = default!;
 
-    private void ValidateReportFilter()
+    private async Task ValidateReportFilter()
     {
         try
         {
@@ -131,18 +108,7 @@
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = StaticDataService.RegionName(office.RegionId);
             //List<MisLivelinkTbl> result = //db.GetMisFiles(period, office.RegionId, grantType, searchId, context!).ToList();
-            List<EcMisTbl> result = context.SsApplications.Where(m => m.ActionDate.ToDate("yyyy-mm-dd") >= period.FromDate && m.ActionDate.ToDate("yyyy-mm-dd") <= period.ToDate).Select(r => new EcMisTbl()
-                        {
-                            IdNumber = r.IdNumber,
-                            Name = r.Name,
-                            Surname = r.Surname,
-                            GrantType = r.GrantType,
-                            AppDate = r.ActionDate,
-                            FileNumber = r.FormType + r.FormNumber,
-                            RegionId = "2",
-                            RegistryType = r.BoxType
-
-                        }).ToList();
+            List<EcMisTbl> result = await db.GetEcFiles(period, grantType, searchId, false);
             result.ToCsv<EcMisTbl>(FileName, header, StaticDataService.ReportFolder);
         }
         catch (Exception ex)
