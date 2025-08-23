@@ -7,7 +7,7 @@ using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
 using Sassa.Brm.Health;
-using Sassa.BRM.Components;
+using Sassa.BRM.UI;
 using Sassa.BRM.Models;
 using Sassa.BRM.Services;
 using Sassa.Services;

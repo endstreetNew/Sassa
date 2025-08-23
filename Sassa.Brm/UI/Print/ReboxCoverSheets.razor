@@ -1,14 +1,9 @@
 ﻿@page "/coversheets/{BoxNo}"
 @layout PrintLayout
 
-@using Sassa.BRM.Components.Components
-
 @inject BRMDbService db
 @inject BarCodeService bcService
 @inject IJSRuntime Js
-
-
-
 
 <div>
     <button class="btn btn-primary active" @onclick="btnBack_Click">Back</button>

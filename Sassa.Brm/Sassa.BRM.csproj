@@ -37,7 +37,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Watch Remove="Components\Report\ReportDownload.razor" />
+	  <Watch Remove="UI\Report\ReportDownload.razor" />
 	  <Watch Remove="Routes.razor" />
 	</ItemGroup>
 
