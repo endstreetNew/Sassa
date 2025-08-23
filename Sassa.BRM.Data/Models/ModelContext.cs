@@ -6,7 +6,7 @@ namespace Sassa.BRM.Models;
 public partial class ModelContext : DbContext
 {
     /// <summary>
-    /// scaffold-dbcontext "DATA SOURCE=10.124.159.31:1527/ecsbrm;PERSIST SECURITY INFO=True;USER ID=CONTENTSERVER;Password=Password123;" Oracle.EntityFrameworkCore -o tmpModels -tables INPAYMENT -force
+    /// scaffold-dbcontext "DATA SOURCE=ssvsdrdbshc01.sassa.local:1527/ecsbrm;PERSIST SECURITY INFO=True;USER ID=CONTENTSERVER;Password=Password123;" Oracle.EntityFrameworkCore -o tmpModels -tables INPAYMENT -force
     /// </summary>
     public ModelContext()
     {

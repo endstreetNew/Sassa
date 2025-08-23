@@ -10,7 +10,7 @@ using Sassa.Services;
 
 namespace Sassa.BRM.Services
 {
-    public class FasttrackService(LoService loService,CoverSheetService coverSheetService,CSService csService, IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
+    public class FasttrackService(LoService loService,CoverSheetService coverSheetService,IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
     {
         public string scanFolder{ get; set; } = "";
         public async Task ProcessLoRecord(FasttrackScan scanModel,bool addCover = true)
@@ -68,7 +68,6 @@ namespace Sassa.BRM.Services
                 throw;
             }
         }
-
         public async Task RetryLoRecord(FasttrackScan scanModel, bool addCover = false)
         {
             try
@@ -192,7 +191,6 @@ namespace Sassa.BRM.Services
                 throw;
             }
         }
-
         private string AppStatus(decimal lcType, string AppStatus)
         {
             if (lcType > 0)
@@ -300,7 +298,6 @@ namespace Sassa.BRM.Services
                 throw;
             }
         }
-
         private async Task<DcFile> CreateBrmRecordAsync(DcFile file)
         {
             try
@@ -340,7 +337,6 @@ namespace Sassa.BRM.Services
                 throw;
             }
         }
-
         private async Task<DcFile> CheckForSocpenRecordAsync(DcFile file, string loReference)
         {
             try
@@ -397,34 +393,6 @@ namespace Sassa.BRM.Services
                 throw;
             }
 
-
-        }
-
-        private async Task UploadToContentserver(string csNode,string file)
-        {
-            // Retry strategy for UploadDoc
-            const int maxRetries = 3;
-            const int delayMs = 2000;
-            int attempt = 0;
-            Exception? lastException = null;
-            while (attempt < maxRetries)
-            {
-                try
-                {
-                    await csService.UploadGrantDoc(csNode, file);
-                    lastException = null;
-                    break; // Success
-                }
-                catch (Exception ex)
-                {
-                    lastException = ex;
-                    attempt++;
-                    if (attempt < maxRetries)
-                        await Task.Delay(delayMs);
-                }
-            }
-            if (lastException != null)
-                throw new Exception($"Upload to CS failed after {maxRetries} attempts. (Retry)");
 
         }
     }

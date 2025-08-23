@@ -20,12 +20,11 @@ namespace Sassa.BRM.Services
         {
             _csService = csService;
             _logger = logger;
-            _watchDirectory = _config.GetValue<string>($"Urls:ScanFolderRoot")! + "\\Processed"; 
+            _watchDirectory = Path.Combine(_config.GetValue<string>($"Urls:ScanFolderRoot")!, "Processed");
         }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            if (!Directory.Exists(_watchDirectory))
-                Directory.CreateDirectory(_watchDirectory);
+            if (!Directory.Exists(_watchDirectory))Directory.CreateDirectory(_watchDirectory);
 
             _timer = new Timer(ProcessFiles, null, TimeSpan.Zero, _pollInterval);
 

@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Oracle.ManagedDataAccess.Client;
 using Sassa.BRM.Models;
 using Sassa.Services.Cs;
 using Sassa.Services.CsDocuments;
 using System.Data;
 using System.Reflection.Metadata;
+using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Text;
 
 namespace Sassa.Services
@@ -12,27 +15,25 @@ namespace Sassa.Services
     public class CSService
     {
         private readonly CsServiceSettings _settings;
-        private readonly ModelContext _context;
+        //private readonly ModelContext _context;
         private readonly ILogger<CSService> _logger;
-        private readonly DocumentManagementClient _docClient;
-        private readonly AuthenticationClient _authClient;
+        //private readonly DocumentManagementClient _docClient;
+        //private readonly AuthenticationClient _authClient;
+        IDbContextFactory<ModelContext> _contextFactory;
+        EndpointAddress _authEndpointAddress;
+        EndpointAddress _docEndpointAddress;
         //private CsDocuments.OTAuthentication? _ota;
         public long NodeId { get; private set; }
         private string _idNumber = "";
 
-        public CSService(CsServiceSettings config, ModelContext context, ILogger<CSService> logger)
+        public CSService(CsServiceSettings config, IDbContextFactory<ModelContext> contextFactory, ILogger<CSService> logger)
         {
+            _contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
             _settings = config ?? throw new ArgumentNullException(nameof(config));
-            _context = context;
+            //_context = context;
             _logger = logger;
-            _authClient = new AuthenticationClient
-            {
-                Endpoint = { Address = new System.ServiceModel.EndpointAddress(_settings.CsWSEndpoint + "Authentication") }
-            };
-            _docClient = new DocumentManagementClient
-            {
-                Endpoint = { Address = new System.ServiceModel.EndpointAddress(_settings.CsWSEndpoint + "DocumentManagement") }
-            };
+            _authEndpointAddress = new System.ServiceModel.EndpointAddress(_settings.CsWSEndpoint + "Authentication");
+            _docEndpointAddress = new System.ServiceModel.EndpointAddress(_settings.CsWSEndpoint + "DocumentManagement");
         }
 
         /// <summary>
@@ -60,6 +61,10 @@ namespace Sassa.Services
 
             try
             {
+                AuthenticationClient _authClient = new AuthenticationClient
+                {
+                    Endpoint = { Address = _authEndpointAddress }
+                };
                 return new Sassa.Services.CsDocuments.OTAuthentication
                 {
                     AuthenticationToken = await _authClient.AuthenticateUserAsync(_settings.CsServiceUser, _settings.CsServicePass)
@@ -77,22 +82,27 @@ namespace Sassa.Services
             _idNumber = idNumber;
             try
             {
-                
-                // Get the root node for this id from the db
-                long? nodeId = await GetNodeIdForIdNumber(idNumber);
-                if (nodeId == null) return;
-
-                NodeId = nodeId.Value;
-                CsDocuments.OTAuthentication _ota = await Authenticate();
-                var result = await _docClient.GetNodesInContainerAsync(_ota, NodeId, new GetNodesInContainerOptions { MaxDepth = 1, MaxResults = 10 });
-                var nodes = result.GetNodesInContainerResult;
-                if (nodes == null) return;
-
-                //SaveFolder("/", NodeId);
-
-                foreach (var node in nodes)
+                using (DocumentManagementClient _docClient = new DocumentManagementClient
                 {
-                    await AddRecursive(node, NodeId, _ota);
+                    Endpoint = { Address = _docEndpointAddress }
+                })
+                {
+                    // Get the root node for this id from the db
+                    long? nodeId = await GetNodeIdForIdNumber(idNumber);
+                    if (nodeId == null) return;
+
+                    NodeId = nodeId.Value;
+                    CsDocuments.OTAuthentication _ota = await Authenticate();
+                    var result = await _docClient.GetNodesInContainerAsync(_ota, NodeId, new GetNodesInContainerOptions { MaxDepth = 1, MaxResults = 10 });
+                    var nodes = result.GetNodesInContainerResult;
+                    if (nodes == null) return;
+
+                    //SaveFolder("/", NodeId);
+
+                    foreach (var node in nodes)
+                    {
+                        await AddRecursive(node, NodeId, _docClient, _ota);
+                    }
                 }
             }
             catch (Exception ex)
@@ -142,7 +152,7 @@ namespace Sassa.Services
             }
         }
 
-        private async Task AddRecursive(Node node, long parentNode, CsDocuments.OTAuthentication _ota)
+        private async Task AddRecursive(Node node, long parentNode, DocumentManagementClient _docClient, CsDocuments.OTAuthentication _ota)
         {
             try
             {
@@ -153,7 +163,7 @@ namespace Sassa.Services
                     var subnodes = result.GetNodesInContainerResult;
                     if (subnodes == null) return;
                     foreach (var snode in subnodes)
-                        await AddRecursive(snode, node.ID,_ota);
+                        await AddRecursive(snode, node.ID, _docClient,_ota);
                 }
                 else if (node.VersionInfo != null)
                 {
@@ -171,72 +181,85 @@ namespace Sassa.Services
 
         private void SaveAttachment(Attachment doc, string idNo, long nodeId, long parentNode)
         {
-            //Todo to save document method
-            if (!_context.DcDocumentImages.Where(d => d.Filename == doc.FileName).ToList().Any())
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                var image = new DcDocumentImage
+
+                //Todo to save document method
+                if (!_context.DcDocumentImages.Where(d => d.Filename == doc.FileName).ToList().Any())
                 {
-                    Filename = doc.FileName,
-                    IdNo = idNo,
-                    Image = doc.Contents,
-                    Url = $"../CsImages/{doc.FileName}",
-                    Csnode = nodeId,
-                    Type = true,
-                    Parentnode = parentNode
-                };
-                _context.DcDocumentImages.Add(image);
-                _context.SaveChanges();
+                    var image = new DcDocumentImage
+                    {
+                        Filename = doc.FileName,
+                        IdNo = idNo,
+                        Image = doc.Contents,
+                        Url = $"../CsImages/{doc.FileName}",
+                        Csnode = nodeId,
+                        Type = true,
+                        Parentnode = parentNode
+                    };
+                    _context.DcDocumentImages.Add(image);
+                    _context.SaveChanges();
+                }
+                var filePath = Path.Combine(_settings.CsDocFolder, doc.FileName);
+                if (File.Exists(filePath)) return;
+                File.WriteAllBytes(filePath, doc.Contents);
             }
-            var filePath = Path.Combine(_settings.CsDocFolder, doc.FileName);
-            if (File.Exists(filePath)) return;
-            File.WriteAllBytes(filePath, doc.Contents);
         }
 
         //Redundant
         private void SaveFolder(string folderName, long nodeId)
         {
-            if (!_context.DcDocumentImages.Where(d => d.Filename == folderName && d.IdNo == _idNumber).ToList().Any())
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                var image = new DcDocumentImage
+                if (!_context.DcDocumentImages.Where(d => d.Filename == folderName && d.IdNo == _idNumber).ToList().Any())
                 {
-                    Filename = folderName,
-                    IdNo = _idNumber,
-                    Image = null,
-                    Url = $"../CsImages",
-                    Csnode = nodeId,
-                    Type = false
-                };
-                _context.DcDocumentImages.Add(image);
-                _context.SaveChanges();
+                    var image = new DcDocumentImage
+                    {
+                        Filename = folderName,
+                        IdNo = _idNumber,
+                        Image = null,
+                        Url = $"../CsImages",
+                        Csnode = nodeId,
+                        Type = false
+                    };
+                    _context.DcDocumentImages.Add(image);
+                    _context.SaveChanges();
+                }
             }
         }
 
         public Dictionary<string, string> GetFolderList(string idNumber)
         {
-            //Todo: try this code again whe Oracle fixed the boolean error..
-            //return _context.DcDocumentImages
-            //    .Where(d => d.IdNo == idNumber && !(bool)d.Type && d.Csnode != null)
-            //    .ToDictionary(d => d.Csnode.ToString()!, d => d.Filename);
-            Dictionary<string, string> folders = new Dictionary<string, string>();
-
-            var DocumentList = _context.DcDocumentImages.Where(d => d.IdNo == idNumber).ToList();
-            if (!DocumentList.Any()) return folders;
-            foreach (DcDocumentImage doc in DocumentList)
+            using (var _context = _contextFactory.CreateDbContext())
             {
-                if (doc.Type != null && doc.Csnode != null && !(bool)doc.Type)
-                {
-                    folders.Add(doc.Csnode.ToString()!, doc.Filename);
-                }
-            }
+                //Todo: try this code again whe Oracle fixed the boolean error..
+                //return _context.DcDocumentImages
+                //    .Where(d => d.IdNo == idNumber && !(bool)d.Type && d.Csnode != null)
+                //    .ToDictionary(d => d.Csnode.ToString()!, d => d.Filename);
+                Dictionary<string, string> folders = new Dictionary<string, string>();
 
-            return folders;
+                var DocumentList = _context.DcDocumentImages.Where(d => d.IdNo == idNumber).ToList();
+                if (!DocumentList.Any()) return folders;
+                foreach (DcDocumentImage doc in DocumentList)
+                {
+                    if (doc.Type != null && doc.Csnode != null && !(bool)doc.Type)
+                    {
+                        folders.Add(doc.Csnode.ToString()!, doc.Filename);
+                    }
+                }
+
+                return folders;
+            }
         }
 
         public List<DcDocumentImage> GetDocumentList(string parentId)
         {
-            if (string.IsNullOrEmpty(parentId)) return new List<DcDocumentImage>();
-            long parentNode = long.Parse(parentId);
-            return _context.DcDocumentImages.Where(d => d.Parentnode == parentNode).ToList();
+            using (var _context = _contextFactory.CreateDbContext())
+            {
+                if (string.IsNullOrEmpty(parentId)) return new List<DcDocumentImage>();
+                long parentNode = long.Parse(parentId);
+                return _context.DcDocumentImages.Where(d => d.Parentnode == parentNode).ToList();
+            }
         }
 
         public async Task UploadHealthDoc(string html)
@@ -252,10 +275,16 @@ namespace Sassa.Services
             };
             try
             {
-                await Authenticate();
-                NodeId = 94643845; // Health Checks - BRM node id
-                CsDocuments.OTAuthentication _ota = await Authenticate();
-                await _docClient.CreateDocumentAsync(_ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);
+                using (DocumentManagementClient _docClient = new DocumentManagementClient
+                {
+                    Endpoint = { Address = _docEndpointAddress }
+                })
+                {
+                    await Authenticate();
+                    NodeId = 94643845; // Health Checks - BRM node id
+                    CsDocuments.OTAuthentication _ota = await Authenticate();
+                    await _docClient.CreateDocumentAsync(_ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);
+                }
             }
             catch (Exception ex)
             {
@@ -266,24 +295,30 @@ namespace Sassa.Services
 
         public async Task UploadSharedReport(string reportContent,string fileName)
         {
-            byte[] content = System.Text.Encoding.UTF8.GetBytes(reportContent);
-            var attachment = new Attachment
+            using (DocumentManagementClient _docClient = new DocumentManagementClient
             {
-                FileName = fileName,
-                Contents = content,
-                CreatedDate = DateTime.Now,
-                FileSize = content.Length
-            };
-            try
+                Endpoint = { Address = _docEndpointAddress }
+            })
             {
-                await Authenticate();
-                NodeId = 242046960; //BRM shared Reports node id
-                CsDocuments.OTAuthentication _ota = await Authenticate();
-                await _docClient.CreateDocumentAsync(_ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
+                byte[] content = System.Text.Encoding.UTF8.GetBytes(reportContent);
+                var attachment = new Attachment
+                {
+                    FileName = fileName,
+                    Contents = content,
+                    CreatedDate = DateTime.Now,
+                    FileSize = content.Length
+                };
+                try
+                {
+                    await Authenticate();
+                    NodeId = 242046960; //BRM shared Reports node id
+                    CsDocuments.OTAuthentication _ota = await Authenticate();
+                    await _docClient.CreateDocumentAsync(_ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
 
         }
@@ -297,49 +332,51 @@ namespace Sassa.Services
         /// <exception cref="Exception"></exception>
         public async Task UploadDoc(string csNode,string filePath )
         {
-            
+
+
             try
             {
-                Attachment attachment;
-                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                using (DocumentManagementClient _docClient = new DocumentManagementClient
                 {
-                    string fileContent = reader.ReadToEnd();
-                    byte[] content = System.Text.Encoding.UTF8.GetBytes(fileContent);
-                    attachment = new Attachment
+                    Endpoint = { Address = _docEndpointAddress }
+                })
+                {
+                    Attachment attachment;
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                    using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
                     {
-                        FileName = Path.GetFileName(filePath),
-                        Contents = content,
-                        CreatedDate = DateTime.Now,
-                        FileSize = content.Length
-                    };
+                        string fileContent = reader.ReadToEnd();
+                        byte[] content = System.Text.Encoding.UTF8.GetBytes(fileContent);
+                        attachment = new Attachment
+                        {
+                            FileName = Path.GetFileName(filePath),
+                            Contents = content,
+                            CreatedDate = DateTime.Now,
+                            FileSize = content.Length
+                        };
+                    }
+
+                    //docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 3, 0);
+                    CsDocuments.OTAuthentication ota = await Authenticate();
+                    if (NodeId == 0)
+                    {
+                        //find node
+                        //QA
+                        //var response = await _docClient.GetNodeAsync(ota, 126638);
+                        var response = await _docClient.GetNodeByNameAsync(ota, 2000, "12. Beneficiaries");
+                        response = await _docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 4));
+                        response = await _docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 13));
+                        //response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode);
+                        NodeId = response.GetNodeByNameResult.ID;
+                    }
+
+
+                    await _docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "Cs Service", false, new Metadata(), attachment);
                 }
-
-                //docClient.Endpoint.Binding.SendTimeout = new TimeSpan(0, 3, 0);
-                CsDocuments.OTAuthentication ota = await Authenticate();
-                if (NodeId == 0)
-                {
-                    //find node
-                    //QA
-                    //var response = await _docClient.GetNodeAsync(ota, 126638);
-                    var response = await _docClient.GetNodeByNameAsync(ota, 2000, "12. Beneficiaries");
-                    response = await _docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 4));
-                    response = await _docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode.Substring(0, 13));
-                    //response = await docClient.GetNodeByNameAsync(ota, response.GetNodeByNameResult.ID, csNode);
-                    NodeId = response.GetNodeByNameResult.ID;
-                }
-
-
-                await _docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "Cs Service", false, new Metadata(), attachment);
-                _ = _docClient.CloseAsync();
             }
             catch (Exception ex)
             {
                 throw new Exception("Error Uploading to Content server.");
-            }
-            finally
-            {
-               
             }
         }
 
@@ -347,63 +384,68 @@ namespace Sassa.Services
         {
             try
             {
-                // Prepare the attachment
-                Attachment attachment;
-                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                using (DocumentManagementClient _docClient = new DocumentManagementClient
                 {
-                    string fileContent = reader.ReadToEnd();
-                    byte[] content = System.Text.Encoding.UTF8.GetBytes(fileContent);
-                    attachment = new Attachment
+                    Endpoint = { Address = _docEndpointAddress }
+                })
+                {
+                    // Prepare the attachment
+                    Attachment attachment;
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                    using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
                     {
-                        FileName = Path.GetFileName(filePath),
-                        Contents = content,
-                        CreatedDate = DateTime.Now,
-                        FileSize = content.Length
-                    };
+                        string fileContent = reader.ReadToEnd();
+                        byte[] content = System.Text.Encoding.UTF8.GetBytes(fileContent);
+                        attachment = new Attachment
+                        {
+                            FileName = Path.GetFileName(filePath),
+                            Contents = content,
+                            CreatedDate = DateTime.Now,
+                            FileSize = content.Length
+                        };
+                    }
+
+                    CsDocuments.OTAuthentication ota = await Authenticate();
+
+                    // Node hierarchy: Root (2000) -> "12. Beneficiaries" -> prefix -> id
+                    long rootId = 2000;
+                    string rootName = "Beneficiaries";
+                    string prefix = csNode.Substring(0, 4);
+                    string id = csNode.Substring(0, 13);
+
+                    // 1. Get or create "12. Beneficiaries"
+                    var rootResponse = await _docClient.GetNodeByNameAsync(ota, rootId, rootName);
+                    var rootNode = rootResponse.GetNodeByNameResult;
+                    if (rootNode == null || rootNode.ID == 0)
+                    {
+                        var createRootNode = await _docClient.CreateFolderAsync(ota, rootId, rootName, "Auto-created", new Metadata());
+                        rootNode = new Sassa.Services.CsDocuments.Node { ID = createRootNode.CreateFolderResult.ID, Name = rootName };
+                        //throw new Exception("12. Beneficiaries not found on CS");
+                    }
+
+                    // 2. Get or create prefix node
+                    var prefixResponse = await _docClient.GetNodeByNameAsync(ota, rootNode.ID, prefix);
+                    var prefixNode = prefixResponse.GetNodeByNameResult;
+                    if (prefixNode == null || prefixNode.ID == 0)
+                    {
+                        var createPrefix = await _docClient.CreateFolderAsync(ota, rootNode.ID, prefix, "Auto-created", new Metadata());
+                        prefixNode = new Sassa.Services.CsDocuments.Node { ID = createPrefix.CreateFolderResult.ID, Name = prefix };
+                    }
+
+                    // 3. Get or create id node
+                    var idResponse = await _docClient.GetNodeByNameAsync(ota, prefixNode.ID, id);
+                    var idNode = idResponse.GetNodeByNameResult;
+                    if (idNode == null || idNode.ID == 0)
+                    {
+                        var createId = await _docClient.CreateFolderAsync(ota, prefixNode.ID, id, "Auto-created", new Metadata());
+                        idNode = new Sassa.Services.CsDocuments.Node { ID = createId.CreateFolderResult.ID, Name = id };
+                    }
+
+                    NodeId = idNode.ID;
+
+                    // 4. Upload the document
+                    await _docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "Cs Service", false, new Metadata(), attachment);
                 }
-
-                CsDocuments.OTAuthentication ota = await Authenticate();
-
-                // Node hierarchy: Root (2000) -> "12. Beneficiaries" -> prefix -> id
-                long rootId = 2000;
-                string rootName = "Beneficiaries";
-                string prefix = csNode.Substring(0, 4);
-                string id = csNode.Substring(0, 13);
-
-                // 1. Get or create "12. Beneficiaries"
-                var rootResponse = await _docClient.GetNodeByNameAsync(ota, rootId, rootName);
-                var rootNode = rootResponse.GetNodeByNameResult;
-                if (rootNode == null || rootNode.ID == 0)
-                {
-                    var createRootNode = await _docClient.CreateFolderAsync(ota, rootId, rootName, "Auto-created", new Metadata());
-                    rootNode = new Sassa.Services.CsDocuments.Node { ID = createRootNode.CreateFolderResult.ID, Name = rootName };
-                    //throw new Exception("12. Beneficiaries not found on CS");
-                }
-
-                // 2. Get or create prefix node
-                var prefixResponse = await _docClient.GetNodeByNameAsync(ota, rootNode.ID, prefix);
-                var prefixNode = prefixResponse.GetNodeByNameResult;
-                if (prefixNode == null || prefixNode.ID == 0)
-                {
-                    var createPrefix = await _docClient.CreateFolderAsync(ota, rootNode.ID, prefix, "Auto-created", new Metadata());
-                    prefixNode = new Sassa.Services.CsDocuments.Node { ID = createPrefix.CreateFolderResult.ID, Name = prefix };
-                }
-
-                // 3. Get or create id node
-                var idResponse = await _docClient.GetNodeByNameAsync(ota, prefixNode.ID, id);
-                var idNode = idResponse.GetNodeByNameResult;
-                if (idNode == null || idNode.ID == 0)
-                {
-                    var createId = await _docClient.CreateFolderAsync(ota, prefixNode.ID, id, "Auto-created", new Metadata());
-                    idNode = new Sassa.Services.CsDocuments.Node { ID = createId.CreateFolderResult.ID, Name = id };
-                }
-
-                NodeId = idNode.ID;
-
-                // 4. Upload the document
-                await _docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "Cs Service", false, new Metadata(), attachment);
-                _ = _docClient.CloseAsync();
             }
             catch (Exception ex)
             {

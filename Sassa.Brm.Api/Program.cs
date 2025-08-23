@@ -20,11 +20,11 @@ builder.Services.AddDbContextFactory<ModelContext>(options =>
 options.UseOracle(BrmConnectionString));
 builder.Services.AddDbContextFactory<LoModelContext>(options =>
 options.UseOracle(LoConnectionString));
-builder.Services.AddScoped<StaticService>();
+builder.Services.AddSingleton<StaticService>();
 builder.Services.AddScoped<ActivityService>();
 builder.Services.AddScoped<ApplicationService>();
 builder.Services.AddScoped<FasttrackService>();
-builder.Services.AddScoped<LoService>();
+builder.Services.AddSingleton<LoService>();
 builder.Services.AddSingleton<CsServiceSettings>(c =>
 {
     CsServiceSettings csServiceSettings = new CsServiceSettings();
@@ -37,7 +37,7 @@ builder.Services.AddSingleton<CsServiceSettings>(c =>
 });
 builder.Services.AddScoped<CSService>();
 builder.Services.AddSingleton<CsUploadService>();
-builder.Services.AddScoped<CoverSheetService>();
+builder.Services.AddSingleton<CoverSheetService>();
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -49,6 +49,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
                                                                                     // serverOptions.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps()); // HTTPS
 });
 builder.Services.AddHostedService<CsFileWatcher>();
+builder.Services.AddHostedService<KofaxFileWatcher>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
