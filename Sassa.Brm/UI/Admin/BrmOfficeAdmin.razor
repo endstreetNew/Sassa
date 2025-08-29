@@ -150,6 +150,7 @@
         }
         IsLoaded = false;
         await GetRegionOffices();
+        StateHasChanged();
     }
 
     protected async void btnManualBatching_Click(RegionOffice u)
@@ -169,6 +170,7 @@
         await sservice.ChangeOfficeName(u.OfficeId.ToString(),u.OfficeName);
         IsLoaded = false;
         await GetRegionOffices();
+        StateHasChanged();
         
     }
 
@@ -188,6 +190,7 @@
             // IsLoaded = false;
             showOfficeConfirmation = false;
             await GetRegionOffices();
+            StateHasChanged();
         }
         catch (Exception ex)
         {

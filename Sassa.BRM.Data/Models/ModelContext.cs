@@ -84,6 +84,7 @@ public partial class ModelContext : DbContext
     //public virtual DbSet<TdwFileLocation> TdwFileLocations { get; set; }
     public virtual IQueryable<SsApplication> SsApplications => Set<SsApplication>().AsNoTracking();
     public virtual IQueryable<Inpayment> Inpayments => Set<Inpayment>().AsNoTracking();
+    public virtual IQueryable<Inpaymentmonthly> Inpaymentsmonthly => Set<Inpaymentmonthly>().AsNoTracking();
 
     //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -328,7 +329,7 @@ public partial class ModelContext : DbContext
                 .HasColumnName("CSURL");
             entity.Property(e => e.Filename)
                 .IsRequired()
-                .HasMaxLength(100)
+                .HasMaxLength(150)
                 .IsUnicode(false)
                 .HasColumnName("FILENAME");
             entity.Property(e => e.IdNo)
@@ -2499,6 +2500,91 @@ public partial class ModelContext : DbContext
             entity.Property(e => e.FileExists)
                 .HasMaxLength(30)
                 .HasColumnName("FILE_EXISTS");
+        });
+        modelBuilder.Entity<Inpaymentmonthly>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("INPAYMENT_PK");
+
+            entity.ToTable("INPAYMENTMONTHLY");
+
+            entity.HasIndex(e => e.ApplicantNo, "INPAYMENT_APPLICANT_NO");
+
+            entity.HasIndex(e => e.GrantType, "INPAYMENT_GRANT");
+
+            entity.HasIndex(e => e.RegionId, "INPAYMENT_REGION");
+
+            entity.Property(e => e.Id)
+                .HasPrecision(19)
+                .HasColumnName("ID");
+            entity.Property(e => e.ApplicantNo)
+                .IsRequired()
+                .HasMaxLength(13)
+                .HasColumnName("APPLICANT_NO");
+            entity.Property(e => e.Brm)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("BRM");
+            entity.Property(e => e.LoCapture)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("LO_CAPTURE");
+            entity.Property(e => e.ChildIdNo)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("CHILD_ID_NO");
+            entity.Property(e => e.Cs)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("CS");
+            entity.Property(e => e.Ecmis)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("ECMIS");
+            entity.Property(e => e.FileExists)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("FILE_EXISTS");
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(50)
+                .HasColumnName("FIRST_NAME");
+            entity.Property(e => e.GrantType)
+                .IsRequired()
+                .HasMaxLength(2)
+                .HasColumnName("GRANT_TYPE");
+            entity.Property(e => e.Lo)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("LO");
+            entity.Property(e => e.Mis)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("MIS");
+            entity.Property(e => e.Oga)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("OGA");
+            entity.Property(e => e.MisLc)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("MIS_LC");
+            entity.Property(e => e.Tdw)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("TDW");
+            entity.Property(e => e.Paypoint)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("PAYPOINT");
+            entity.Property(e => e.RegionId)
+                .IsRequired()
+                .HasMaxLength(2)
+                .HasColumnName("REGION_ID");
+            entity.Property(e => e.Surname)
+                .HasMaxLength(50)
+                .HasColumnName("SURNAME");
+            entity.Property(e => e.TransDate)
+                .HasColumnType("DATE")
+                .HasColumnName("TRANS_DATE");
         });
         modelBuilder.HasSequence("ACTIVEVIEWOVERRIDESSEQUENCE");
         modelBuilder.HasSequence("AGENTSEQUENCE");

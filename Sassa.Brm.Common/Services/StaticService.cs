@@ -297,6 +297,15 @@ namespace Sassa.Brm.Common.Services
         {
             return StaticDataService.Regions!.ToDictionary(key => key.RegionId, value => value.RegionName);
         }
+
+        /// <summary>
+        /// Used by LO capture screen on Audit Todo: uprade to use id and name
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, string> GetRegionNames()
+        {
+            return StaticDataService.Regions!.ToDictionary(key => key.RegionName, value => value.RegionName);
+        }
         /// <summary>
         /// Include 0 region for audit Report
         /// </summary>

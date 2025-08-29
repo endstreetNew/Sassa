@@ -7,11 +7,15 @@
     </HeaderSection>
 
     <SidebarSection>
-        <Sidebar Href="/"
-                  ImageSrc="https://demos.blazorbootstrap.com/images/logo/logo-white.svg"
-                  Title="LO Repair Queue"
-                  DataProvider="SidebarDataProvider"
-                  WidthUnit="Unit.Px" />
+        @if (showSidebar)
+        {
+            <Sidebar Href="/"
+                     @ref="sidebar"
+                     ImageSrc="https://demos.blazorbootstrap.com/images/logo/logo-white.svg"
+                     Title="LO Repair Queue"
+                     DataProvider="SidebarDataProvider"
+                     WidthUnit="Unit.Px" />
+        }
     </SidebarSection>
 
     <ContentSection>
@@ -24,7 +28,15 @@
 </BlazorBootstrapLayout>
 
 @code {
+    private bool showSidebar = false;
+    private Sidebar? sidebar;
+
     private IEnumerable<NavItem> navItems = default!;
+
+    private void ToggleSidebar()
+    {
+        showSidebar = !showSidebar;
+    }
     private async Task<SidebarDataProviderResult> SidebarDataProvider(SidebarDataProviderRequest request)
     {
         if (navItems is null)

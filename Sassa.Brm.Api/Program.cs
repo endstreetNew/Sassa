@@ -33,6 +33,8 @@ builder.Services.AddSingleton<CsServiceSettings>(c =>
     csServiceSettings.CsServiceUser = builder.Configuration.GetValue<string>("ContentServer:CSServiceUser")!;
     csServiceSettings.CsServicePass = builder.Configuration.GetValue<string>("ContentServer:CSServicePass")!;
     csServiceSettings.CsDocFolder = $"{builder.Environment.WebRootPath}\\{builder.Configuration.GetValue<string>("Folders:CS")}\\";
+    csServiceSettings.CsBeneficiaryRoot = builder.Configuration.GetValue<string>("ContentServer:CSBeneficiaryRoot")!;
+    csServiceSettings.CsMaxRetries = builder.Configuration.GetValue<int>("ContentServer:CsMaxRetries");
     return csServiceSettings;
 });
 builder.Services.AddScoped<CSService>();

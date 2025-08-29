@@ -83,9 +83,9 @@ public partial class CustCoversheet
 
     public string? DrpdwnStatusLc { get; set; }
 
-    public DateTime? NewCaptureDate { get; set; }
+    //public DateTime? NewCaptureDate { get; set; }
 
-    public DateTime? NewScannedDate { get; set; }
+    //public DateTime? NewScannedDate { get; set; }
 
-    public DateTime? NewApplicationDate { get; set; }
+    //public DateTime? NewApplicationDate { get; set; }
 }

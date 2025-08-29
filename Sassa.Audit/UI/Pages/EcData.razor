@@ -109,7 +109,7 @@
             header.Region = StaticDataService.RegionName(office.RegionId);
             //List<MisLivelinkTbl> result = //db.GetMisFiles(period, office.RegionId, grantType, searchId, context!).ToList();
             List<EcMisTbl> result = await db.GetEcFiles(period, grantType, searchId, false);
-            result.ToCsv<EcMisTbl>(FileName, header, StaticDataService.ReportFolder);
+            result.ToXlsx<EcMisTbl>(FileName, header, StaticDataService.ReportFolder);
         }
         catch (Exception ex)
         {

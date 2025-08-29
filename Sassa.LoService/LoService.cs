@@ -97,7 +97,36 @@ namespace Sassa.Services
             {
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
-                    return await _context.CustCoversheetValidations.Where(c => c.Validationresult!.ToLower() != "ok").OrderBy(c => c.ValidationDate).Take(100).ToListAsync();
+                    return await _context.CustCoversheetValidations.Where(c => c.Validationresult!.ToLower() != "ok").OrderBy(c => c.ValidationDate).Take(100).AsNoTracking().ToListAsync();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<CustCoversheet>> GetCoverSheets()
+        {
+            try
+            {
+                using (var _context = dbContextFactory.CreateDbContext())
+                {
+                    return await _context.CustCoversheets.Take(100).AsNoTracking().ToListAsync();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+        public async Task<List<CustCoversheet>> GetCoverSheets(string regionName)
+        {
+            try
+            {
+                using (var _context = dbContextFactory.CreateDbContext())
+                {
+                    return await _context.CustCoversheets.Where(c => c.DrpdwnRegionSo == regionName).Take(100).AsNoTracking().ToListAsync();
                 }
             }
             catch

@@ -27,6 +27,7 @@
     <ProjectReference Include="..\Sassa.Brm.Common\Sassa.Brm.Common.csproj" />
     <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
     <ProjectReference Include="..\Sassa.CsService\Sassa.CsService.csproj" />
+    <ProjectReference Include="..\Sassa.LoService\Sassa.LoService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -118,15 +118,15 @@ public partial class LoModelContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("GRANTTYPELOOKUP");
-            entity.Property(e => e.NewApplicationDate)
-                .HasColumnType("DATE")
-                .HasColumnName("NEW_APPLICATION_DATE");
-            entity.Property(e => e.NewCaptureDate)
-                .HasColumnType("DATE")
-                .HasColumnName("NEW_CAPTURE_DATE");
-            entity.Property(e => e.NewScannedDate)
-                .HasColumnType("DATE")
-                .HasColumnName("NEW_SCANNED_DATE");
+            //entity.Property(e => e.NewApplicationDate)
+            //    .HasColumnType("DATE")
+            //    .HasColumnName("NEW_APPLICATION_DATE");
+            //entity.Property(e => e.NewCaptureDate)
+            //    .HasColumnType("DATE")
+            //    .HasColumnName("NEW_CAPTURE_DATE");
+            //entity.Property(e => e.NewScannedDate)
+            //    .HasColumnType("DATE")
+            //    .HasColumnName("NEW_SCANNED_DATE");
             entity.Property(e => e.Poid)
                 .HasMaxLength(50)
                 .IsUnicode(false)

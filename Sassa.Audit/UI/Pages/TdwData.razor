@@ -25,8 +25,8 @@
     </FluentStack>
     <hr />
     <FluentDataGrid Items="@files.AsQueryable()" TGridItem="TdwFileLocation" Pagination="@pagination">
-        <PropertyColumn Width="130px" Property="@(p => p.Description)" Title="Id number" />
-        <PropertyColumn Width="100px" Property="@(p => p.Name)" Title="Name" Sortable="true" />
+        <PropertyColumn Width="140px" Property="@(p => p.Description)" Title="Id number" />
+        <PropertyColumn Width="180px" Property="@(p => p.Name)" Title="Name" Sortable="true" />
         <PropertyColumn Width="200px" Property="@(p => p.GrantType)" Sortable="true" />
         <PropertyColumn Width="200px" Property="@(p => p.Region)" Sortable="true" />
         <PropertyColumn Width="130px" Property="@(p => p.FilefolderCode)" Sortable="true" />
@@ -111,7 +111,7 @@
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = selectedRegion;
             List<TdwFileLocation> result = await db.GetTdwFiles(period, selectedRegion, grantType, searchId, false);
-            result.ToCsv<TdwFileLocation>(FileName, header, StaticDataService.ReportFolder);
+            result.ToXlsx<TdwFileLocation>(FileName, header, StaticDataService.ReportFolder);
             loading = false;
         }
         catch (Exception ex)

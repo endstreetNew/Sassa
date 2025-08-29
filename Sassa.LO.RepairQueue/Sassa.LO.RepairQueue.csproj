@@ -12,12 +12,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BlazorBootstrap\BlazorBootstrap.csproj" />
-    <ProjectReference Include="..\Sassa.LO.FasttrackService\Sassa.LO.FasttrackService.csproj" />
-    <ProjectReference Include="..\Sassa.LoService\Sassa.LoService.csproj" />
+    <ProjectReference Include="..\Sassa.Brm.Common\Sassa.Brm.Common.csproj" />
+    <ProjectReference Include="..\Sassa.LoQaService\Sassa.LoQaService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\css\fonts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.Production.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

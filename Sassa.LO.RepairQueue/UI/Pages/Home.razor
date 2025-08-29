@@ -1,19 +1,41 @@
 ﻿@page "/"
-
+@inject LoService loService
 
 <PageTitle>Capture repair queue</PageTitle>
 <h1>Welcome to the LO Repair Queue App</h1>
 <div class="container">
     <div class="LORecord">
-
+        @if(!string.IsNullOrEmpty(selectedReference))
+        {
+            <EditCoverSheet ReferenceNum="selectedReference" Saved="OnSaved" Cancelled="OnCancelled"></EditCoverSheet>
+        }
     </div>
     <div class="SOCPENperecord">
     </div>
-
     <div class="RepairQueue">
-        <h4>Repair Queue</h4>
-        <p>This is where you can manage the repair queue.</p>
-        <!-- Add your repair queue management components here -->
+    <Grid TItem="CustCoversheetValidation"
+      DataProvider="ValidationDataProvider"
+      AllowPaging="true"
+      PageSize="20"
+      PageSizeSelectorVisible="true"
+      PageSizeSelectorItems="new int[]{10,20,50,100}"
+      AllowSorting="true"
+      AllowFiltering="true"
+      AllowSelection="false"
+      FixedHeader="true"
+      EmptyText="No validation results found."
+      Class="table table-sm table-hover align-middle">
+
+    <GridColumn TItem="CustCoversheetValidation" PropertyName="ValidationDate" HeaderText="Date" >
+        @context.ValidationDate
+    </GridColumn>
+    <GridColumn TItem="CustCoversheetValidation" PropertyName="ReferenceNum" HeaderText="Reference" >
+        @context.ReferenceNum
+    </GridColumn>
+        <GridColumn TItem="CustCoversheetValidation" PropertyName="Validationresult" HeaderText="Error" >
+        @context.Validationresult
+    </GridColumn>
+</Grid>
     </div>
     <div class="preview">
 
@@ -21,3 +43,28 @@
 </div>
 
 
+@code
+{
+    protected List<CustCoversheetValidation> RepairQueue = new();
+    protected string selectedReference = string.Empty;
+
+    private async Task<GridDataProviderResult<CustCoversheetValidation>> ValidationDataProvider(GridDataProviderRequest<CustCoversheetValidation> request)
+    {
+        var data = await loService.GetRepairQueue();
+
+        return new GridDataProviderResult<CustCoversheetValidation>
+        {
+            Data = data,
+            TotalCount = 100 // Replace with actual total count if available
+        };
+    }
+    private void OnSaved(CustCoversheetQa args)
+    {
+        throw new NotImplementedException();
+        //Todo: Update ValidationTable
+    }
+    private void OnCancelled()
+    {
+        throw new NotImplementedException();
+    }
+}

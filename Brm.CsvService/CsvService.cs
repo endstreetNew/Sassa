@@ -14,7 +14,7 @@ namespace Brm.CsvService
             _context = context;
         }
 
-        public async Task ImportCsvToOracleAsync(string csvFilePath)
+        public async Task ImportSsAppToOracleAsync(string csvFilePath)
         {
             const int batchSize = 10000;
             var batch = new List<SsApp>(batchSize);
@@ -36,7 +36,7 @@ namespace Brm.CsvService
                         Surname = fields[3],
                         ApplicationDate = DateTime.TryParse(fields[4], CultureInfo.InvariantCulture, DateTimeStyles.None, out var appDate) ? appDate : (DateTime?)null,
                         GrantType = fields[5].Length > 5? "U" : fields[5],
-                        FormType = fields[6].Length > 5 ? "U" : fields[6 ],
+                        FormType = fields[6].Length > 5 ? "U" : fields[6],
                         DisabilityType = string.Empty,
                         DisabilityDesc = string.Empty,
                         MedNo = string.Empty,

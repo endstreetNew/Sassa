@@ -20,7 +20,7 @@ namespace Brm.CsvService
             using var context = new SSModelContext();
 
             var csvService = new CsvService(context);
-            await csvService.ImportCsvToOracleAsync(csvFilePath);
+            await csvService.ImportSsAppToOracleAsync(csvFilePath);
 
             Console.WriteLine("CSV import completed.");
         }

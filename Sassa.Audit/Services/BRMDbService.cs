@@ -11,6 +11,37 @@ namespace Sassa.Audit.Services
 {
     public class BRMDbService(RawSqlService _raw,IDbContextFactory<ModelContext> contextFactory)
     {
+        //Todo:implement
+        public async Task<List<MisLivelinkTbl>> GetMisLcFiles(ReportPeriod period, string region, string granttype, string idNumber, bool preview = false)
+        {
+
+            using (var _context = contextFactory.CreateDbContext())
+            {
+                IQueryable<MisLivelinkTbl> query = _context.MisLivelinkTbls.AsQueryable();
+                if (period != null)
+                {
+                    //2004-08-25 00:00:00.000
+                    query = query.Where(x => x.GrantDate <= period.ToDate && x.GrantDate >= period.FromDate);
+                }
+                if (!string.IsNullOrEmpty(region))
+                {
+                    query = query.Where(x => x.RegionId == region);
+                }
+                if (!string.IsNullOrEmpty(granttype) && granttype != "All")
+                {
+                    query = query.Where(x => x.GrantType == granttype);
+                }
+                if (!string.IsNullOrEmpty(idNumber))
+                {
+                    query = query.Where(x => x.IdNumber == idNumber);
+                }
+                if (preview)
+                {
+                    query = query.Take(100);
+                }
+                return await query.ToListAsync();
+            }
+        }
         public async Task<List<MisLivelinkTbl>> GetMisFiles(ReportPeriod period, string region, string granttype, string idNumber,bool preview = false)
         {
 

@@ -1,15 +1,16 @@
-using Microsoft.AspNetCore.Authentication.Negotiate;
+﻿using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Oracle.ManagedDataAccess.Client;
 using razor.Components;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
 using Sassa.Brm.Health;
-using Sassa.BRM.UI;
 using Sassa.BRM.Models;
 using Sassa.BRM.Services;
+using Sassa.BRM.UI;
 using Sassa.Services;
 using Sassa.Socpen.Data;
 using Serilog;
@@ -34,6 +35,19 @@ public class Program
         // connection strings   
         string BrmConnection = builder.Configuration.GetConnectionString("BrmConnection")!;
         string CsConnection = builder.Configuration.GetConnectionString("CsConnection")!;
+        //using (var conn = new OracleConnection(CsConnection))
+        //{
+        //    try
+        //    {
+        //        conn.Open();
+        //        Console.WriteLine("✅ Connection successful");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"❌ Connection failed: {ex.Message}");
+        //    }
+        //}
+
         //Options pattern for scheduled tasks
         builder.Services.Configure<ScheduleOptions>(options =>
         {
@@ -108,6 +122,8 @@ public class Program
             csServiceSettings.CsServiceUser = builder.Configuration.GetValue<string>("ContentServer:CSServiceUser")!;
             csServiceSettings.CsServicePass = builder.Configuration.GetValue<string>("ContentServer:CSServicePass")!;
             csServiceSettings.CsDocFolder = $"{builder.Environment.WebRootPath}\\{builder.Configuration.GetValue<string>("Folders:CS")}\\";
+            csServiceSettings.CsBeneficiaryRoot = builder.Configuration.GetValue<string>("ContentServer:CSBeneficaryRoot")!;
+            csServiceSettings.CsMaxRetries = builder.Configuration.GetValue<int>("ContentServer:CsMaxRetries");
             return csServiceSettings;
         });
         builder.Services.AddScoped<CSService>();

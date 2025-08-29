@@ -29,9 +29,9 @@
     </FluentStack>
     <hr />
     <FluentDataGrid @ref="grid" Items="@files.AsQueryable()" TGridItem="DcFileMini" Pagination="@pagination">
-        <PropertyColumn Width="130px" Property="@(p => p.Id)" Title="Id number"/>
-        <PropertyColumn Width="100px" Property="@(p => p.Name)" Title="Name" Sortable="true" />
-        <PropertyColumn Width="130px" Property="@(p => p.Surname)" Title="Surname" Sortable="true" />
+        <PropertyColumn Width="140px" Property="@(p => p.Id)" Title="Id number"/>
+        <PropertyColumn Width="120px" Property="@(p => p.Name)" Title="Name" Sortable="true" />
+        <PropertyColumn Width="150px" Property="@(p => p.Surname)" Title="Surname" Sortable="true" />
         <PropertyColumn Width="200px" Property="@(p => p.GrantType)" Sortable="true" />
         <PropertyColumn Width="200px" Property="@(p => p.Region)" />
         <PropertyColumn Width="100px" Property="@(p => p.RegType)" Sortable="true" />
@@ -110,7 +110,7 @@
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = StaticDataService.RegionName(office.RegionId);
             List<DcFileMini> result = await db.GetBrmFiles(period, office.RegionId, grantType, searchId, false);
-            result.ToCsv<DcFileMini>(FileName, header, StaticDataService.ReportFolder);
+            result.ToXlsx<DcFileMini>(FileName, header, StaticDataService.ReportFolder);
             grid?.SetLoadingState(false);
         }
         catch (Exception ex)

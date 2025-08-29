@@ -1,0 +1,30 @@
+﻿@* Compact label/value display block. Usage:
+   <Detail label="Beneficiary">12345</Detail>
+   <Detail label="Documents" wide="true">@someLongText</Detail>
+*@
+<div class="@RootCssClass" @attributes="AdditionalAttributes">
+    <div class="fw-semibold text-secondary small">@Label</div>
+    <div class="text-wrap">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Label { get; set; } = string.Empty;
+    // When you just supply child content (typical), ChildContent carries the value.
+    [Parameter] public bool Wide { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public Dictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string RootCssClass =>
+        string.Join(" ",
+            new[]
+            {
+                Wide ? "col-12 col-md-6" : "col-6 col-md-3",
+                Class
+            }.Where(c => !string.IsNullOrWhiteSpace(c)));
+}

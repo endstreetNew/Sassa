@@ -13,10 +13,11 @@
         @*         <FluentDatePicker Placeholder="<From Date>" @bind-Value="period.FromNullDate" />
         <FluentDatePicker Placeholder="<To Date>" @bind-Value="period.ToNullDate" /> *@
         <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetAuditRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
-        <FluentSelect TOption="KeyValuePair<string,string>" Items="@ogaStatusOptions" Placeholder="<Oga Status>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@ogaStatus" />
-        <FluentSelect TOption="KeyValuePair<string,string>" Items="@regTypeOptions" Placeholder="<Reg Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@regType" />
-        <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
-        <FluentButton Appearance="Appearance.Accent" @onclick="AllMissing">All Missing</FluentButton>
+@*         <FluentSelect TOption="KeyValuePair<string,string>" Items="@ogaStatusOptions" Placeholder="<Oga Status>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@ogaStatus" />
+        <FluentSelect TOption="KeyValuePair<string,string>" Items="@regTypeOptions" Placeholder="<Reg Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@regType" /> *@
+        <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">All records Report</FluentButton>
+        <FluentButton Appearance="Appearance.Accent" @onclick="AllMissing">Missing Report</FluentButton>
+@*         <FluentButton Appearance="Appearance.Accent" @onclick="AllMissing">All Missing</FluentButton> *@
     </FluentStack>
     <WidgetTitle Title="Search" />
     <FluentStack>
@@ -25,28 +26,26 @@
     </FluentStack>
     <hr />
 
-    <FluentDataGrid Items="@misFiles.AsQueryable()" TGridItem="Inpayment" Pagination="@paginationState" >
+    <FluentDataGrid Items="@misFiles.AsQueryable()" TGridItem="Inpaymentmonthly" Pagination="@paginationState" >
         <PropertyColumn Title="ID No" Property="f => f.ApplicantNo" />
         <PropertyColumn Title="Name" Property="f => f.FirstName" />
         <PropertyColumn Title="Surname" Property="f => f.Surname" />
         <PropertyColumn Title="Grant Type" Property="f => f.GrantType" />
-@*         <PropertyColumn Title="Child Id No" Property="f => f.ChildIdNo" /> *@
-        <PropertyColumn Title="App Date" Property="f => f.TransDate" />
-        <PropertyColumn Title="Clm No" Property="f => f.ClmNo" />
+@*         <PropertyColumn Title="App Date" Property="f => f.TransDate" /> 
+         <PropertyColumn Title="Clm No" Property="f => f.ClmNo" />
         <PropertyColumn Title="Brm Barcode" Property="f => f.BrmBarcode" />
         <PropertyColumn Title="MIS Number" Property="f => f.MisFileNo" />
         <PropertyColumn Title="ECMIS Number" Property="f => f.EcMisFile" />
-        <PropertyColumn Title="OGA satus" Property="f => f.OgaStatus" />
+        <PropertyColumn Title="OGA satus" Property="f => f.OgaStatus" /> *@
         <PropertyColumn Title="Region Id" Property="f => f.RegionId" />
-        <PropertyColumn Title="Registry Type" Property="f => f.RegType" />
-        <PropertyColumn Title="File Exists" Property="f => f.FileExists" />
+        <PropertyColumn Title="File Exists" Property="p => !(p.LoCapture == 0 && p.Brm == 0 && p.Oga ==0 && p.Cs == 0 && p.Ecmis == 0 && p.Mis ==0 && p.MisLc == 0 && p.Tdw == 0 && p.Lo == 0)" />
     </FluentDataGrid>
     <FluentPaginator State="@paginationState" />
 </FluentStack>
 
 
 @code {
-    protected List<Inpayment> misFiles = new();
+    protected List<Inpaymentmonthly> misFiles = new();
     protected string searchId = "";
     PaginationState paginationState = new PaginationState { ItemsPerPage = 15 };
 
@@ -62,11 +61,10 @@
 
     protected override void OnInitialized()
     {
-        context = dbContextFactory.CreateDbContext();
 
-        report = new ReportDefinition { ReportIndex = "1", ReportName = "In Payment Files", FilterOptions = new FilterOptions() { "Region", "OgaStatus", "RegType", } };
-        misFiles = context.Inpayments.Take(1000).ToList();
-        InitializeFilterData();
+        report = new ReportDefinition { ReportIndex = "1", ReportName = "In Payment Files", FilterOptions = new FilterOptions() { "Region", } };
+        using var dbContext = dbContextFactory.CreateDbContext();
+        misFiles = dbContext.Inpaymentsmonthly.Take(100).ToList();
         loading = false;
     }
 
@@ -82,7 +80,8 @@
         loading = true;
         try
         {
-            misFiles = await context.Inpayments.Where(x => x.ApplicantNo == searchId).ToListAsync();
+            using var dbContext = dbContextFactory.CreateDbContext();
+            misFiles = await dbContext.Inpaymentsmonthly.Where(x => x.ApplicantNo == searchId).ToListAsync();
         }
         catch(Exception ex)
         {
@@ -90,12 +89,12 @@
         }
         loading = false;
     }
-    private ModelContext context = default!;
 
-    private void ValidateReportFilter()
+    private async Task ValidateReportFilter()
     {
         loading = true;
-        var query = context.Inpayments;
+        using var dbContext = dbContextFactory.CreateDbContext();
+        var query = dbContext.Inpaymentsmonthly;
         try
         {
             foreach (var option in report.FilterOptions)
@@ -109,50 +108,6 @@
                             return;
                         }
                         query = query.Where(m => m.RegionId == office.RegionId);
-                        break;
-                    case "OgaStatus":
-                        switch (ogaStatus)
-                        {
-                            case "":
-                            case "All":
-                                break;
-                            case "CS":
-                                query = query.Where(m => m.OgaStatus == "CS");
-                                break;
-                            case "AW":
-                                query = query.Where(m => m.OgaStatus == "AW");
-                                break;
-                            case "NONE":
-                                query = query.Where(m => m.OgaStatus == "NONE");
-                                break;
-                        }
-                        break;
-                    case "RegType":
-                        switch(regType)
-                        {
-                            case "":
-                            case "All":
-                                break;
-                            case "LC":
-                                query = query.Where(m => m.RegType.ToLower().Contains("lc"));
-                                break;
-                            case "MAIN":
-                                query = query.Where(m => !m.RegType.ToLower().Contains("lc") && !m.RegType.Contains("None"));
-                                break;
-                            case "LCNOMAIN":
-
-                                var lc = query.Where(m => m.RegType.ToLower().Contains("lc"));
-                                var main = query.Where(m => !m.RegType.ToLower().Contains("lc") && !m.RegType.Contains("None"));
-
-                                query = lc.Where(i => !main.Any(n =>
-                                n.ApplicantNo == i.ApplicantNo &&
-                                n.GrantType == i.GrantType));
-
-                                break;
-                            case "None":
-                                query = query.Where(m => m.RegType == "None");
-                                break;
-                        }
                         break;
 
                 }
@@ -178,9 +133,9 @@
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = RegionName;
-            List<Inpayment> result = query.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
-            result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
-            misFiles = context.Inpayments.Take(1000).ToList(); 
+            List<Inpaymentmonthly> result = await query.ToListAsync();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
+            result.ToXlsx<Inpaymentmonthly>(FileName, header, StaticDataService.ReportFolder);
+            misFiles = await dbContext.Inpaymentsmonthly.Take(100).ToListAsync(); 
         }
         catch (Exception ex)
         {
@@ -192,19 +147,20 @@
         }
     }
 
-    private void AllMissing()
+    private async Task AllMissing()
     {
         try
         {
-
+            loading = true;
             if (string.IsNullOrEmpty(office.RegionId))
             {
                 toast.ShowError($"Please select a Region.");
                 return;
             }
-            var query = context.Inpayments.Where(m => m.RegionId == office.RegionId);
+            using var dbContext = dbContextFactory.CreateDbContext();
+            var query = dbContext.Inpaymentsmonthly.Where(m => m.RegionId == office.RegionId);
             //misFiles = misFiles.Where(m => m.BrmBarcode == null && m.ClmNo == null && m.MisFileNo == null && m.EcMisFile == null && m.OgaStatus == "None" && m.RegionId == office.RegionId);
-            query = query.Where(m => m.FileExists == null);
+            query = query.Where(p => p.LoCapture == 0 && p.Brm == 0 && p.Oga ==0 && p.Cs == 0 && p.Ecmis == 0 && p.Mis ==0 && p.MisLc == 0 && p.Tdw == 0 && p.Lo == 0);
             string RegionName;
             if (office.RegionId != "0")
             {
@@ -213,7 +169,6 @@
             else
             {
                 RegionName = "NO REGION";
-
             }
 
             string FileName = helper.GetAuditFileName(report.ReportName.Replace(" ", "_"), RegionName);
@@ -226,30 +181,17 @@
             int usernameIndex = FileName.IndexOf('-') + 1;
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = RegionName;
-            List<Inpayment> result = query.ToList();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
-            result.ToCsv<Inpayment>(FileName, header, StaticDataService.ReportFolder);
-            misFiles = context.Inpayments.Take(1000).ToList();
+            List<Inpaymentmonthly> result = await query.ToListAsync();//context.Inpayments.Where(m =>  m.RegionId == office.RegionId).ToList();
+            result.ToXlsx<Inpaymentmonthly>(FileName, header, StaticDataService.ReportFolder);
+            misFiles = await dbContext.Inpaymentsmonthly.Take(100).ToListAsync();
         }
         catch (Exception ex)
         {
             toast.ShowError(ex.Message);
         }
+        finally
+        {
+            loading = false;
+        }
     }
-    protected void InitializeFilterData()
-    {
-        //Todo: Get OgaStatus from Alicia
-        ogaStatusOptions = new List<KeyValuePair<string, string>>();
-        ogaStatusOptions.Add(new KeyValuePair<string, string>("All", "All"));
-        ogaStatusOptions.Add(new KeyValuePair<string, string>("CS", "ContentServer"));
-        ogaStatusOptions.Add(new KeyValuePair<string, string>("AW", "AppWorks"));
-        ogaStatusOptions.Add(new KeyValuePair<string, string>("NONE", "None"));
-        
-        regTypeOptions = new List<KeyValuePair<string, string>>(); 
-        regTypeOptions.Add( new KeyValuePair<string, string> ("All", "All"));
-        regTypeOptions.Add(new KeyValuePair<string, string>("LC", "LC"));
-        regTypeOptions.Add(new KeyValuePair<string, string>("MAIN", "MAIN"));
-        regTypeOptions.Add(new KeyValuePair<string, string>("LCNOMAIN", "LC NO MAIN"));
-        regTypeOptions.Add(new KeyValuePair<string, string>("None", "None"));
-    }
-    public async ValueTask DisposeAsync() => await context.DisposeAsync();
 }

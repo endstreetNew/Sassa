@@ -27,9 +27,9 @@
     </FluentStack>
     <hr />
     <FluentDataGrid Items="@misFiles.AsQueryable()" TGridItem="MisLivelinkTbl" Pagination="@pagination">
-        <PropertyColumn Width="130px" Property="@(p => p.IdNumber)" />
-        <PropertyColumn Width="100px" Property="@(p => p.Name)" Sortable="true" />
-        <PropertyColumn Width="130px" Property="@(p => p.Surname)" Sortable="true" />
+        <PropertyColumn Width="140px" Property="@(p => p.IdNumber)" />
+        <PropertyColumn Width="120px" Property="@(p => p.Name)" Sortable="true" />
+        <PropertyColumn Width="150px" Property="@(p => p.Surname)" Sortable="true" />
         <PropertyColumn Width="200px" Property="@(p => p.GrantType)" Sortable="true" />
         <PropertyColumn Width="130px" Property="@(p => p.GrantDate)" Sortable="true" />
         <PropertyColumn Width="200px" Property="@(p => p.FileNumber)" />
@@ -107,7 +107,7 @@
             header.Username = FileName.Substring(usernameIndex, FileName.Substring(usernameIndex).IndexOf("-"));//{_session.Office.RegionCode}-{_session.SamName.ToUpper()}-
             header.Region = StaticDataService.RegionName(office.RegionId);
             List<MisLivelinkTbl> result = await db.GetMisFiles(period, office.RegionId, grantType, searchId, false);
-            result.ToCsv<MisLivelinkTbl>(FileName, header, StaticDataService.ReportFolder);
+            result.ToXlsx<MisLivelinkTbl>(FileName, header, StaticDataService.ReportFolder);
         }
         catch (Exception ex)
         {

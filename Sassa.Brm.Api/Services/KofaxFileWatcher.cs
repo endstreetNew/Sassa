@@ -87,7 +87,7 @@ namespace Sassa.BRM.Services
                     FasttrackScan scanModel = new FasttrackScan
                     {
                         LoReferece = Path.GetFileNameWithoutExtension(file),
-                        BrmBarcode = Path.GetExtension(file).ToUpper(),
+                        BrmBarcode = Path.GetExtension(file).Substring(1).ToUpper(),
                     };
 
                     if (scanModel.LoReferece.Length != 16 || scanModel.BrmBarcode.Length != 8)
@@ -100,7 +100,6 @@ namespace Sassa.BRM.Services
                     try
                     {
                         DcFile dcFile = await GetDcFileFromLoAsync(scanModel);
-                        dcFile.BrmBarcode = scanModel.BrmBarcode;
                         string result = Validate(dcFile);
                         if (!string.IsNullOrEmpty(result)) throw new Exception(result);
                         dcFile = await CheckForSocpenRecordAsync(dcFile, scanModel.LoReferece);
@@ -109,8 +108,24 @@ namespace Sassa.BRM.Services
                         var newFileName = GetFilename(dcFile, _staticService.GetLocalOffice(dcFile.OfficeId));
                         string newFilePath = $@"{_processedDirectory}\" + newFileName;
                         //Just move the file
-                        File.Move(file, newFilePath);
+                        try
+                        {
+                            if (!File.Exists(newFilePath))
+                            {
+                                File.Move(file, newFilePath);
+                            }
+                            else
+                            {
+                                _logger.LogInformation("File {newFilePath} already exists in processed folder, moving to rejected", newFilePath);
+                                File.Move(file, Path.Combine(_rejectDirectory, fileName));
+                            }
+                        }
+                        catch
+                        {
+                            _logger.LogInformation("Could not move {file} to {newFilePath}", file, newFilePath);
+                        }
                         _logger.LogInformation("Processed file {File}", file);
+                        await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now, Validationresult = "ok" });
                     }
                     catch (Exception ex)
                     {

@@ -1,4 +1,4 @@
-﻿@import '/_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css';
+@import '/_content/Microsoft.FluentUI.AspNetCore.Components/css/reboot.css';
 
 
 body {
@@ -11,6 +11,7 @@ body {
     font-weight: var(--font-weight);
     color: var(--neutral-foreground-rest);
     background: var(--neutral-fill-layer-rest);
+
 }
 
 .navmenu-icon {
@@ -19,7 +20,7 @@ body {
 
 .main {
     min-height: calc(100dvh - 106px);
-    /*    color: var(--neutral-foreground-rest);*/
+/*    color: var(--neutral-foreground-rest);*/
     align-items: stretch !important;
     border-radius: 6px;
 }
@@ -256,3 +257,5 @@ code {
     background: var(--neutral-fill-layer-rest);
     display: inline-block;
 }
+
+

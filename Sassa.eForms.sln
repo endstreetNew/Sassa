@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{2EE5C454-61E
 		DeploymentOct2021.sql = DeploymentOct2021.sql
 		INDEX_BARCODE.sql = INDEX_BARCODE.sql
 		LC_MISMATCH_FIX.sql = LC_MISMATCH_FIX.sql
+		LO_LINK.sql = LO_LINK.sql
 		UPDATEISSOCPENFROMARCHIVE.sql = UPDATEISSOCPENFROMARCHIVE.sql
 	EndProjectSection
 EndProject
@@ -83,6 +84,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MIS", "MIS", "{CAD14D17-012
 	ProjectSection(SolutionItems) = preProject
 		MIS_LC.sql = MIS_LC.sql
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "INPAYMENT", "INPAYMENT", "{DE1CAC1E-4231-492E-8EA5-6C75C528E9DD}"
+	ProjectSection(SolutionItems) = preProject
+		InPaymentMonthly.sql = InPaymentMonthly.sql
+		Sassa.Audit\SQL\InsertInpayment.sql = Sassa.Audit\SQL\InsertInpayment.sql
+		INSERT_HKRecords.sql = INSERT_HKRecords.sql
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sassa.LoQaService", "Sassa.LoQaService\Sassa.LoQaService.csproj", "{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -578,6 +588,26 @@ Global
 		{AB685EC4-27B6-4462-A266-6E4C3541E6B5}.Release|x64.Build.0 = Release|Any CPU
 		{AB685EC4-27B6-4462-A266-6E4C3541E6B5}.Release|x86.ActiveCfg = Release|Any CPU
 		{AB685EC4-27B6-4462-A266-6E4C3541E6B5}.Release|x86.Build.0 = Release|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Debug|ARM.Build.0 = Debug|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Debug|x64.Build.0 = Debug|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Debug|x86.Build.0 = Debug|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Release|ARM.Build.0 = Release|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Release|ARM64.Build.0 = Release|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Release|x64.ActiveCfg = Release|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Release|x64.Build.0 = Release|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Release|x86.ActiveCfg = Release|Any CPU
+		{7E3DD65D-FC43-0353-E04E-0CBEF0C886BD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -586,6 +616,7 @@ Global
 		{2EE5C454-61EE-440F-A3E3-F7A4FC7827CE} = {A8B7B77B-A480-45F8-A09C-A7E47F16E9E8}
 		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {2EE5C454-61EE-440F-A3E3-F7A4FC7827CE}
 		{CAD14D17-012F-49B4-AC10-4EB3B5F5D401} = {2EE5C454-61EE-440F-A3E3-F7A4FC7827CE}
+		{DE1CAC1E-4231-492E-8EA5-6C75C528E9DD} = {2EE5C454-61EE-440F-A3E3-F7A4FC7827CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2C8B4780-B0AE-4962-97E1-0BFEC30FAF24}

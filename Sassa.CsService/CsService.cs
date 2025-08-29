@@ -125,7 +125,7 @@ namespace Sassa.Services
                     }
                     using var cmd = con.CreateCommand();
                     cmd.BindByName = true;
-                    //cmd.CommandTimeout = 0;
+                    cmd.CommandTimeout = 360;
                     cmd.FetchSize *= 8;
 
                     cmd.CommandText = $"select DATAID from dtree where name=:prefix and parentid = 47634";
@@ -310,7 +310,6 @@ namespace Sassa.Services
                 };
                 try
                 {
-                    await Authenticate();
                     NodeId = 242046960; //BRM shared Reports node id
                     CsDocuments.OTAuthentication _ota = await Authenticate();
                     await _docClient.CreateDocumentAsync(_ota, NodeId, fileName, "BRM Service", false, new Metadata(), attachment);

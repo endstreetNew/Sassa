@@ -1,0 +1,161 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using Sassa.BRM.Models
+@inject IDbContextFactory<ModelContext> ContextFactory
+
+@if (error is not null)
+{
+    <div class="alert alert-danger py-1 mb-2">@error</div>
+}
+else if (!isLoaded)
+{
+    <div class="text-muted small">
+        <span class="spinner-border spinner-border-sm me-2" />Loading...
+    </div>
+}
+else if (records.Count == 0)
+{
+    <div class="text-secondary fst-italic">No records for Beneficiary @BeneficiaryId.</div>
+}
+else
+{
+    <div class="table-responsive small">
+        <table class="table table-sm table-hover align-middle mb-2">
+            <thead class="table-light">
+            <tr>
+                <th style="width:1%"></th>
+                <th>Application #</th>
+                <th>Child ID</th>
+                <th>Grant</th>
+                <th>Status</th>
+                <th>App Status</th>
+                <th>App Date</th>
+                <th>Capture</th>
+                <th>Scan</th>
+                <th>Socpen</th>
+                <th>Barcode</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var r in records)
+            {
+                var selected = selectedRecord == r;
+                <tr class="@(selected ? "table-primary" : "")"
+                    role="button"
+                    @onclick="() => Select(r)">
+                    <td>
+                        @if (selected)
+                        {
+                            <Icon Name="IconName.CaretRightFill" />
+                        }
+                    </td>
+                    <td>@r.ApplicationNo</td>
+                    <td>@r.ChildId</td>
+                    <td>@r.GrantType</td>
+                    <td>@r.StatusCode</td>
+                    <td>@r.AppStatus</td>
+                    <td>@Fmt(r.ApplicationDate)</td>
+                    <td>@Fmt(r.CaptureDate)</td>
+                    <td>@Fmt(r.ScanDate)</td>
+                    <td>@Fmt(r.SocpenDate)</td>
+                    <td>@r.BrmBarcode</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    @if (selectedRecord is not null)
+    {
+        <div class="card border-0 shadow-sm mb-2">
+            <div class="card-header py-2 d-flex justify-content-between">
+                <strong>Detail: @selectedRecord.ApplicationNo</strong>
+                <button class="btn btn-outline-secondary btn-sm" @onclick="()=>selectedRecord=null">Close</button>
+            </div>
+            <div class="card-body py-2">
+                <div class="row g-2 small">
+                    <Detail label="Beneficiary">@selectedRecord.BeneficiaryId</Detail>
+                    <Detail label="Name">@($"{selectedRecord.Name} {selectedRecord.Surname}")</Detail>
+                    <Detail label="Region">@selectedRecord.RegionId</Detail>
+                    <Detail label="Local Office">@selectedRecord.LocalofficeId</Detail>
+                    <Detail label="Unique ID">@selectedRecord.UniqueId</Detail>
+                    <Detail label="SRD No">@selectedRecord.SrdNo</Detail>
+                    <Detail label="Is Socpen">@selectedRecord.IsSocpen</Detail>
+                </div>
+            </div>
+            <div class="card-footer small text-muted py-1">
+                Internal Id: @selectedRecord.Id
+            </div>
+        </div>
+    }
+}
+
+@code {
+    [Parameter] public string BeneficiaryId { get; set; } = string.Empty;
+
+    private List<DcSocpen> records = new();
+    private DcSocpen? selectedRecord;
+    private bool isLoaded;
+    private string? error;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (string.IsNullOrWhiteSpace(BeneficiaryId))
+        {
+            error = "BeneficiaryId is required.";
+            records.Clear();
+            isLoaded = true;
+            return;
+        }
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        isLoaded = false;
+        error = null;
+        selectedRecord = null;
+        try
+        {
+            await using var ctx = await ContextFactory.CreateDbContextAsync();
+            records = await ctx.DcSocpens
+                .AsNoTracking()
+                .Where(r => r.BeneficiaryId == BeneficiaryId)
+                .OrderByDescending(r => r.ApplicationDate)
+                .ThenByDescending(r => r.CaptureDate)
+                .Take(250) // cap to avoid huge payload; adjust/remove as needed
+                .ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            error = "Load failed: " + ex.Message;
+        }
+        finally
+        {
+            isLoaded = true;
+        }
+    }
+
+    private async Task Select(DcSocpen rec)
+    {
+        selectedRecord = rec;
+    }
+
+    private string Fmt(DateTime? dt) => dt?.ToString("yyyy-MM-dd") ?? "";
+
+    // Small inline component for label/value display
+    private RenderFragment Detail(string label, bool wide = false, RenderFragment? child = null) => builder =>
+    {
+        var seq = 0;
+        builder.OpenElement(seq++, "div");
+        builder.AddAttribute(seq++, "class", wide ? "col-12 col-md-6" : "col-6 col-md-3");
+        builder.OpenElement(seq++, "div");
+        builder.AddAttribute(seq++, "class", "fw-semibold text-secondary small");
+        builder.AddContent(seq++, label);
+        builder.CloseElement();
+        builder.OpenElement(seq++, "div");
+        builder.AddAttribute(seq++, "class", "text-wrap");
+        builder.AddContent(seq++, child);
+        builder.CloseElement();
+        builder.CloseElement();
+    };
+}
