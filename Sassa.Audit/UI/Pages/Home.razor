@@ -1,28 +1,118 @@
 ﻿@page "/"
-@using Microsoft.EntityFrameworkCore
-
-@inject BRMDbService db
-@inject IDbContextFactory<ModelContext> _contextFactory
+@inject AuditService auditService
+@inject StaticService ssService
 
 <BrmPageTitle Title="Home"></BrmPageTitle>
-<WidgetTitle Title="Data summary"></WidgetTitle>
+<WidgetTitle Title="Data summary (Pivot)"></WidgetTitle>
 
-<FluentDataGrid Items="@auditSummaries" TGridItem="AuditSummary">
-    <PropertyColumn Width="150px" Property="@(p => p.Datasource)" />
-    <PropertyColumn Width="130px" Property="@(p => p.StartDate)" Sortable="true" />
-    <PropertyColumn Width="130px" Property="@(p => p.EndDate)" Sortable="true" />
-    <PropertyColumn Width="200px" Property="@(p => p.Count)" Align="Align.End" />
-</FluentDataGrid>
+@if (pivotRows.Count == 0)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <FluentDataGrid Items="pivotRows.AsQueryable()" TGridItem="InpaymentSummaryPivot" >
+        <PropertyColumn Title="Region"  Align="Align.End" Width="130px" Property="@(p => p.RegionName)" />
+        <PropertyColumn Title="BRM" Align="Align.End"  Width="100px" Property="@(p => p.BrmFound)" />
+        <PropertyColumn Title="LO Capture" Align="Align.End" Width="120px" Property="@(p => p.LoCaptureFound)" />
+@*         <PropertyColumn Title="LO"   Width="100px" Property="@(p => p.LoFound)" /> *@
+        <PropertyColumn Title="MIS" Align="Align.End"  Width="100px" Property="@(p => p.MisFound)" />
+        <PropertyColumn Title="ECMIS" Align="Align.End" Width="100px" Property="@(p => p.EcmisFound)" />
+        <PropertyColumn Title="OGA" Align="Align.End"  Width="100px" Property="@(p => p.OgaFound)" />
+        <PropertyColumn Title="CS" Align="Align.End"   Width="100px" Property="@(p => p.CsFound)" />
+        <PropertyColumn Title="Found" Align="Align.End" Width="100px" Property="@(p => p.TotalFound)" />
+        <PropertyColumn Title="Total" Align="Align.End" Width="100px" Property="@(p => p.Total)" />
+    </FluentDataGrid>
+}
 
 @code
 {
-    protected IQueryable<AuditSummary>? auditSummaries;
-    protected ModelContext? _context;
+    // Raw summaries (RegionId, FlagName, Found, Missing)
+    private List<InpaymentSummary> auditSummaries = new();
+    private List<InpaymentTotal> auditTotals = new();
+    // Pivoted rows
+    private List<InpaymentSummaryPivot> pivotRows = new();
+    private Dictionary<string,string> regions = new();
 
-    protected override void OnInitialized()
+    private static readonly string[] FlagOrder = ["BRM","LO_CAPTURE","LO","MIS","ECMIS","OGA","CS"];
+
+    protected override async Task OnInitializedAsync()
     {
-        _context = _contextFactory.CreateDbContext();
-       // auditSummaries = db.GetSummary(_context).AsQueryable();
+        regions = ssService.GetAuditRegions();
+        auditSummaries = await auditService.GetInpaymentSummaryAsync();
+        auditTotals = await auditService.GetInpaymentTotalsAsync();
+        BuildPivot();
     }
 
+    private void BuildPivot()
+    {
+        // Group by RegionId then map each flag into the pivot object
+        pivotRows = auditSummaries
+            .GroupBy(r => r.RegionId)
+            .Select(g =>
+            {
+                var dict = g.ToDictionary(x => x.FlagName, x => x);
+                var row = new InpaymentSummaryPivot
+                {
+                    RegionId = g.Key ?? string.Empty,
+                    RegionName = regions.TryGetValue(g.Key ?? string.Empty, out var name) ? name : g.Key ?? string.Empty,
+
+                    BrmFound = GetFound(dict, "BRM"),
+
+                    LoCaptureFound = GetFound(dict, "LO_CAPTURE"),
+
+                    LoFound = GetFound(dict, "LO"),
+
+                    MisFound = GetFound(dict, "MIS"),
+
+                    EcmisFound = GetFound(dict, "ECMIS"),
+
+                    OgaFound = GetFound(dict, "OGA"),
+
+                    CsFound = GetFound(dict, "CS"),
+                };
+
+                row.TotalFound = row.BrmFound + row.LoCaptureFound + row.LoFound + row.MisFound +
+                                 row.EcmisFound + row.OgaFound + row.CsFound;
+
+                row.Total = auditTotals.Where(r => r.RegionId == row.RegionId).First().Total;
+
+                return row;
+            })
+            .OrderBy(r => r.RegionId)
+            .ToList();
+    }
+
+    private static decimal GetFound(Dictionary<string, InpaymentSummary> dict, string flag)
+        => dict.TryGetValue(flag, out var v) ? v.Found ?? 0 : 0;
+
+    private static decimal GetMissing(Dictionary<string, InpaymentSummary> dict, string flag)
+        => dict.TryGetValue(flag, out var v) ? v.Missing ?? 0 : 0;
+
+    // Pivot row model
+    private class InpaymentSummaryPivot
+    {
+        public string RegionId { get; set; } = string.Empty;
+        public string RegionName { get; set; } = string.Empty;
+
+        public decimal BrmFound { get; set; }
+        // public decimal BrmMissing { get; set; }
+        public decimal LoCaptureFound { get; set; }
+        // public decimal LoCaptureMissing { get; set; }
+        public decimal LoFound { get; set; }
+        // public decimal LoMissing { get; set; }
+        public decimal MisFound { get; set; }
+        // public decimal MisMissing { get; set; }
+        public decimal EcmisFound { get; set; }
+        // public decimal EcmisMissing { get; set; }
+        public decimal OgaFound { get; set; }
+        // public decimal OgaMissing { get; set; }
+        public decimal CsFound { get; set; }
+        // public decimal CsMissing { get; set; }
+
+        public decimal Total { get; set; }
+        public decimal TotalFound { get; set; }
+        public int Missing { get; set; }
+
+    }
 }

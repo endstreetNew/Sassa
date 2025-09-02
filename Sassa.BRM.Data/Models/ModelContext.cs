@@ -85,6 +85,8 @@ public partial class ModelContext : DbContext
     public virtual IQueryable<SsApplication> SsApplications => Set<SsApplication>().AsNoTracking();
     public virtual IQueryable<Inpayment> Inpayments => Set<Inpayment>().AsNoTracking();
     public virtual IQueryable<Inpaymentmonthly> Inpaymentsmonthly => Set<Inpaymentmonthly>().AsNoTracking();
+    public virtual IQueryable<InpaymentSummary> InpaymentSummaries => Set<InpaymentSummary>().AsNoTracking();
+    public virtual IQueryable<InpaymentTotal> InpaymentTotals => Set<InpaymentTotal>().AsNoTracking();
 
     //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -2500,6 +2502,15 @@ public partial class ModelContext : DbContext
             entity.Property(e => e.FileExists)
                 .HasMaxLength(30)
                 .HasColumnName("FILE_EXISTS");
+        });
+        modelBuilder.Entity<InpaymentSummary>(entity =>
+        {
+            entity.HasKey(e => new { e.RegionId, e.FlagName });
+
+        });
+        modelBuilder.Entity<InpaymentTotal>(entity =>
+        {
+            entity.HasKey(e => new { e.RegionId });
         });
         modelBuilder.Entity<Inpaymentmonthly>(entity =>
         {

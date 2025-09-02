@@ -35,18 +35,7 @@ public class Program
         // connection strings   
         string BrmConnection = builder.Configuration.GetConnectionString("BrmConnection")!;
         string CsConnection = builder.Configuration.GetConnectionString("CsConnection")!;
-        //using (var conn = new OracleConnection(CsConnection))
-        //{
-        //    try
-        //    {
-        //        conn.Open();
-        //        Console.WriteLine("✅ Connection successful");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"❌ Connection failed: {ex.Message}");
-        //    }
-        //}
+
 
         //Options pattern for scheduled tasks
         builder.Services.Configure<ScheduleOptions>(options =>

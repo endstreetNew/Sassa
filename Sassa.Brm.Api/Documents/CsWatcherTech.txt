@@ -1,0 +1,100 @@
+﻿# CsFileWatcher – Technical Design & Operational Guide
+
+## 1. Purpose
+`CsFileWatcher` is a background service that:
+- Polls a “Processed” directory for BRM-generated PDF documents.
+- Derives a Content Server (CS) node key from the filename.
+- Uploads each PDF to Content Server using `CsUploadService.UploadGrantDoc`.
+- Deletes the PDF only on confirmed successful upload.
+- Logs failures; failed files remain for retry on the next poll cycle.
+
+It is the second stage of a pipeline:
+1. Fasttrack / Kofax ingestion generates validated PDFs into `<ScanFolderRoot>\Processed`.
+2. `CsFileWatcher` lifts them into Content Server.
+
+## 2. Hosting & Lifetime
+- Inherits `BackgroundService`; started automatically with the ASP.NET Core host.
+- Uses `System.Threading.Timer` to trigger work on a fixed interval (configured).
+- Continues until application shutdown or fatal initialization failure.
+
+## 3. Key Collaborators
+| Component | Role |
+|----------|------|
+| `CsUploadService` | Performs the actual CS web service upload. |
+| Configuration (`IConfiguration`) | Supplies scan root and poll interval. |
+| `ILogger<CsFileWatcher>` | Structured logging. |
+| File system | Source of staged PDFs. |
+
+## 4. Configuration Inputs
+| Setting Key | Description | Example |
+|-------------|-------------|---------|
+| `Urls:ScanFolderRoot` | Root path where scanned LO PDFs are stored. | `C:\Scan` |
+| `Functions:CsPollIntervalSeconds` | Polling interval (seconds). | `120` |
+
+Effective watch directory:
+
+## 5. Directory & File Assumptions
+- All target upload files have extension `.pdf`.
+- Filenames start with a 13-character identifier (beneficiary/applicant number).
+- Remaining filename structure is not validated here.
+- Files may still be in flux (copied) when first detected; readiness is verified.
+
+## 6. Current Class Structure (Relevant Excerpts)
+
+## 7. Execution Flow (Single Cycle)
+1. Timer fires `ProcessFiles`.
+2. Re-entrancy guard prevents overlapping execution:
+3. Timer is paused:
+4. Enumerate `*.pdf` files.
+5. For each file:
+- Attempt exclusive open (up to 100 tries * 500 ms = max ~50s).
+- Extract `csNode = fileName.Substring(0, 13)`.
+- Call `UploadToContentserver` (retry up to 3 attempts, 10s delay).
+- On success: delete file.
+- On failure: leave file in place.
+6. Resume timer (if not stopping) and release re-entrancy flag.
+
+## 8. File Readiness Logic
+Pros: Simple, avoids partial file consumption.  
+Con: Busy-wait; no back-off; 50s upper wait may delay cycle completion.
+
+## 9. Upload & Retry Algorithm
+Limitations:
+- Wraps final exception, losing original stack unless inner exception is attached (currently not).
+- No jitter (risk of retry synchronization if many files fail simultaneously).
+- Not cancellation-aware (does not pass cancellation token to delay).
+
+## 10. Logging Behavior
+| Event | Level | Example Template |
+|-------|-------|------------------|
+| Successful upload & delete | Information | `Uploaded and deleted file {File}` |
+| Upload failure | Error | `Error uploading file {File}` |
+| Enumeration failure | Error | `Failed to enumerate files in {Dir}` |
+| Outer loop failure | Error | `Error processing files in directory {Dir}` |
+
+Enhancement ideas:
+- Log retry attempt counts.
+- Log file count per cycle.
+- Emit metrics (e.g., success/failure counters).
+
+## 11. Concurrency & Re-Entrancy
+- Intended guard: `_isProcessing`.
+- Timer is paused while processing to prevent stacking callbacks.
+- Missing field declarations will cause runtime/compile issues—must add fields (see Section 6).
+- Without guard, long-running cycles could overlap leading to double processing.
+
+## 12. Cancellation & Shutdown
+Current code:
+- Accepts `stoppingToken` only in `ExecuteAsync` (not captured in snippet; should assign `_stoppingToken = stoppingToken`).
+- Internal loops do not respect cancellation except top-level early return—improvement recommended:
+  - Propagate `CancellationToken` into delay calls: `Task.Delay(500, _stoppingToken)`.
+  - Abort retry loop on cancellation.
+
+## 13. Observability Enhancements (Recommended)
+Add counters / gauges:
+- `csfilewatcher_files_pending`
+- `csfilewatcher_upload_success_total`
+- `csfilewatcher_upload_failure_total`
+Latency histogram:
+- `csfilewatcher_upload_duration_ms`
+Log structured properties:

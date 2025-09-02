@@ -23,7 +23,7 @@
     <WidgetTitle Title="Search" />
     <FluentStack>
         <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => SearchMis())"></FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="SearchMis"></FluentButton>
     </FluentStack>
     <hr />
     <FluentDataGrid Items="@Files.AsQueryable()" TGridItem="CustCoversheet" Pagination="@pagination">
@@ -48,28 +48,29 @@
 
     protected ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddYears(-10), ToDate = DateTime.Now };
 
-    string grantType = "";
+    //string grantType = "";
     string searchId = "";
 
     protected bool loading = true;
 
     protected override async Task OnInitializedAsync()
     {
-        report = new ReportDefinition { ReportIndex = "1", ReportName = "Mis Data", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "GrantType" } };
+        report = new ReportDefinition { ReportIndex = "1", ReportName = "LO Data", FilterOptions = new FilterOptions() { "Region" } };
         Files = await db.GetCoverSheets();
         loading = false;
     }
 
     protected async Task SearchMis()
     {
-        // if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
-        // {
-        //     toast.ShowError("Please enter a valid applicant id.");
-        //     return;
-        // }
+        if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
+        {
+            toast.ShowError("Please enter a valid applicant id.");
+            return;
+        }
         loading = true;
-        Files = await db.GetCoverSheets();
+        Files = await db.SearchCoverSheets(searchId);
         loading = false;
+        StateHasChanged();
     }
 
     private async Task ValidateReportFilter()

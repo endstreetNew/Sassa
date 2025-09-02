@@ -6,10 +6,13 @@ using Sassa.BRM.Api.Services;
 using Sassa.BRM.Models;
 using Sassa.Models;
 using Sassa.Services;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+bool EnableCsWatcher = builder.Configuration.GetValue<bool>("Functions:CsFileWatcher");
+bool EnableKofaxWatcher = builder.Configuration.GetValue<bool>("Functions:KofaxFileWatcher");
 
 string BrmConnectionString = builder.Configuration.GetConnectionString("BrmConnection")!;
 string LoConnectionString = builder.Configuration.GetConnectionString("LoConnection")!;
@@ -40,6 +43,8 @@ builder.Services.AddSingleton<CsServiceSettings>(c =>
 builder.Services.AddScoped<CSService>();
 builder.Services.AddSingleton<CsUploadService>();
 builder.Services.AddSingleton<CoverSheetService>();
+
+
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -50,8 +55,20 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
     serverOptions.ListenAnyIP(builder.Configuration.GetValue<int>("Urls:AppPort")); // HTTP
                                                                                     // serverOptions.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps()); // HTTPS
 });
-builder.Services.AddHostedService<CsFileWatcher>();
-builder.Services.AddHostedService<KofaxFileWatcher>();
+if (EnableCsWatcher)
+{
+    builder.Services.AddSingleton<CsFileWatcher>();
+}
+if (EnableKofaxWatcher)
+{
+    builder.Services.AddSingleton<KofaxFileWatcher>();
+}
+Log.Logger = new LoggerConfiguration()
+.WriteTo.File("Logs/FastTrack-Error.log", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
+.CreateLogger();
+
+builder.Host.UseSerilog();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

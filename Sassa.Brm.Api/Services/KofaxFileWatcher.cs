@@ -22,13 +22,15 @@ namespace Sassa.BRM.Services
         private readonly string _processedDirectory;
         private readonly string _rejectDirectory;
         private Timer? _timer;
-        private readonly TimeSpan _pollInterval = TimeSpan.FromSeconds(120);
+        private readonly TimeSpan _pollInterval;
         private readonly LoService _loService;
         private readonly CoverSheetService _coverSheetService;  
         private readonly IDbContextFactory<ModelContext> _dbContextFactory;
         private readonly StaticService _staticService;
 
-
+        // Re-entrancy guard (0 = idle, 1 = running)
+        private int _isProcessing;
+        private CancellationToken _stoppingToken;
         public KofaxFileWatcher(
             ILogger<KofaxFileWatcher> logger,
             IConfiguration config,LoService loService, CoverSheetService coverSheetService, IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
@@ -37,6 +39,7 @@ namespace Sassa.BRM.Services
             _watchDirectory = config.GetValue<string>($"Urls:ScanFolderRoot")!;
             _processedDirectory = Path.Combine(_watchDirectory, "Processed");
             _rejectDirectory = Path.Combine(_watchDirectory, "Rejected");
+            _pollInterval = TimeSpan.FromSeconds(config.GetValue<int>("Functions:KofaxPollIntervalSeconds"));
             _loService = loService;
             _coverSheetService = coverSheetService;
             _dbContextFactory = dbContextFactory;
@@ -45,9 +48,18 @@ namespace Sassa.BRM.Services
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            if (!Directory.Exists(_watchDirectory))Directory.CreateDirectory(_watchDirectory);
-            if (!Directory.Exists(_processedDirectory)) Directory.CreateDirectory(_processedDirectory);
-            if (!Directory.Exists(_rejectDirectory)) Directory.CreateDirectory(_rejectDirectory);
+            _stoppingToken = stoppingToken;
+            try
+            {
+                if (!Directory.Exists(_watchDirectory)) Directory.CreateDirectory(_watchDirectory);
+                if (!Directory.Exists(_processedDirectory)) Directory.CreateDirectory(_processedDirectory);
+                if (!Directory.Exists(_rejectDirectory)) Directory.CreateDirectory(_rejectDirectory);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating directories");
+                throw;
+            }
 
             _timer = new Timer(ProcessFiles, null, TimeSpan.Zero, _pollInterval);
 
@@ -56,9 +68,28 @@ namespace Sassa.BRM.Services
 
         private async void ProcessFiles(object? state)
         {
+            // Prevent overlapping executions
+            if (Interlocked.Exchange(ref _isProcessing, 1) == 1)
+            {
+                // Another run is still active
+                return;
+            }
+
+            // Pause timer while we work (avoid piling callbacks)
+            _timer?.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
             try
             {
-                var files = Directory.GetFiles(_watchDirectory, "*.*");
+                if (_stoppingToken.IsCancellationRequested) return;
+                string[] files;
+                try
+                {
+                    files = Directory.GetFiles(_watchDirectory, "*.*");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to enumerate files in {Dir}", _watchDirectory);
+                    return;
+                }
                 if (files.Length == 0)
                 {
                     // No files, stop timer until next interval
@@ -137,6 +168,15 @@ namespace Sassa.BRM.Services
             {
                 
                 _logger.LogError(ex, "Error processing files in directory {Dir}", _watchDirectory);
+            }
+            finally
+            {
+                // Resume timer only if not stopping
+                if (!_stoppingToken.IsCancellationRequested)
+                {
+                    _timer?.Change(_pollInterval, _pollInterval);
+                }
+                Interlocked.Exchange(ref _isProcessing, 0);
             }
         }
         private string GetFilename(DcFile doc, DcLocalOffice office)

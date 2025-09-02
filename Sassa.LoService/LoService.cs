@@ -112,7 +112,24 @@ namespace Sassa.Services
             {
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
-                    return await _context.CustCoversheets.Take(100).AsNoTracking().ToListAsync();
+
+                        return await _context.CustCoversheets.AsNoTracking().Take(100).ToListAsync();
+
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<CustCoversheet>> SearchCoverSheets(string idNumber)
+        {
+            try
+            {
+                using (var _context = dbContextFactory.CreateDbContext())
+                {
+                        return await _context.CustCoversheets.Where(c => c.TxtIdNumber == idNumber).AsNoTracking().ToListAsync();
                 }
             }
             catch
@@ -126,7 +143,7 @@ namespace Sassa.Services
             {
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
-                    return await _context.CustCoversheets.Where(c => c.DrpdwnRegionSo == regionName).Take(100).AsNoTracking().ToListAsync();
+                    return await _context.CustCoversheets.Where(c => c.DrpdwnRegionSo == regionName).AsNoTracking().ToListAsync();
                 }
             }
             catch

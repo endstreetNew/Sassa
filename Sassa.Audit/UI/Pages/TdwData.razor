@@ -21,7 +21,7 @@
     <WidgetTitle Title="Search" />
     <FluentStack>
         <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => Search())"></FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="Search"></FluentButton>
     </FluentStack>
     <hr />
     <FluentDataGrid Items="@files.AsQueryable()" TGridItem="TdwFileLocation" Pagination="@pagination">
@@ -61,18 +61,20 @@
         report = new ReportDefinition { ReportIndex = "1", ReportName = "Tdw Data", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "GrantType" } };
         files = await db.GetTdwFiles(period, selectedRegion, grantType, searchId, true);
         loading = false;
+        StateHasChanged();
     }
 
     protected async Task Search()
     {
-        // if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
-        // {
-        //     toast.ShowError("Please enter a valid applicant id.");
-        //     return;
-        // }
+        if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
+        {
+            toast.ShowError("Please enter a valid applicant id.");
+            return;
+        }
         loading = true;
-        files = await db.GetTdwFiles(period, selectedRegion, grantType, searchId, true);
+        files = await db.GetTdwFiles(period, selectedRegion, grantType, searchId, false);
         loading = false;
+        StateHasChanged();
     }
 
     private async Task ValidateReportFilter()

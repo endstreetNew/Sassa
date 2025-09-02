@@ -23,7 +23,7 @@
     <WidgetTitle Title="Search" />
     <FluentStack>
         <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
-        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="@(async () => SearchMis())"></FluentButton>
+        <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="SearchMis"></FluentButton>
     </FluentStack>
     <hr />
     <FluentDataGrid Items="@misFiles.AsQueryable()" TGridItem="MisLivelinkTbl" Pagination="@pagination">
@@ -64,14 +64,15 @@
 
     protected async Task SearchMis()
     {
-        // if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
-        // {
-        //     toast.ShowError("Please enter a valid applicant id.");
-        //     return;
-        // }
+        if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
+        {
+            toast.ShowError("Please enter a valid applicant id.");
+            return;
+        }
         loading = true;
         misFiles = await db.GetMisFiles(period,office.RegionId,grantType,searchId,true);
         loading = false;
+        StateHasChanged();
     }
 
     private async Task ValidateReportFilter()

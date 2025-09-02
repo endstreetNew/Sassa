@@ -12,7 +12,7 @@
 
 @attribute [StreamRendering]
 
-<BrmPageTitle Title="BRM Data" ></BrmPageTitle>
+<BrmPageTitle Title="BRM Data" Loading="loading"></BrmPageTitle>
 <FluentStack Orientation="Orientation.Vertical">
     <WidgetTitle Title="Filter Options" />
     <FluentStack Orientation="Orientation.Horizontal">
@@ -47,6 +47,7 @@
     protected ReportDefinition report = new();
     protected UserOffice office = new();
     protected List<DcFileMini> files = new();
+    protected bool loading = true;
 
     protected ReportPeriod period = new ReportPeriod { FromDate = DateTime.Now.AddYears(-1), ToDate = DateTime.Now };
 
@@ -59,19 +60,21 @@
         report = new ReportDefinition { ReportIndex = "1", ReportName = "Brm Data", FilterOptions = new FilterOptions() { "FromDate", "ToDate", "Region", "GrantType" } };
         files = await db.GetBrmFiles(period, office.RegionId, grantType, searchId, true);
         grid?.SetLoadingState(false);
+        loading = false;
     }
 
     protected async Task Search()
     {
-        // if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
-        // {
-        //     toast.ShowError("Please enter a valid applicant id.");
-        //     return;
-        // }
-        // loading = true;
+        if (string.IsNullOrEmpty(searchId) || searchId.Length < 13)
+        {
+            toast.ShowError("Please enter a valid applicant id.");
+            return;
+        }
+        loading = true;
         files = await db.GetBrmFiles(period, office.RegionId, grantType, searchId, true);
+        loading = false;
         StateHasChanged();
-        // loading = false;
+        
     }
 
     private async Task ValidateReportFilter()

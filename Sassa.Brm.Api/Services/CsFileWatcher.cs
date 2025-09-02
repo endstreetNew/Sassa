@@ -12,18 +12,23 @@ namespace Sassa.BRM.Services
         private readonly ILogger<CsFileWatcher> _logger;
         private readonly string _watchDirectory;
         private Timer? _timer;
-        private readonly TimeSpan _pollInterval = TimeSpan.FromSeconds(120);
+        private readonly TimeSpan _pollInterval;
         CsUploadService _csService;
-
+        // Re-entrancy guard (0 = idle, 1 = running)
+        private int _isProcessing;
+        private CancellationToken _stoppingToken;
         public CsFileWatcher(
             ILogger<CsFileWatcher> logger,IConfiguration _config, CsUploadService csService)
         {
             _csService = csService;
             _logger = logger;
             _watchDirectory = Path.Combine(_config.GetValue<string>($"Urls:ScanFolderRoot")!, "Processed");
+            _pollInterval = TimeSpan.FromSeconds(_config.GetValue<int>("Functions:CsPollIntervalSeconds"));
         }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            _stoppingToken = stoppingToken;
+
             if (!Directory.Exists(_watchDirectory))Directory.CreateDirectory(_watchDirectory);
 
             _timer = new Timer(ProcessFiles, null, TimeSpan.Zero, _pollInterval);
@@ -33,9 +38,28 @@ namespace Sassa.BRM.Services
 
         private async void ProcessFiles(object? state)
         {
+            // Prevent overlapping executions
+            if (Interlocked.Exchange(ref _isProcessing, 1) == 1)
+            {
+                // Another run is still active
+                return;
+            }
+
+            // Pause timer while we work (avoid piling callbacks)
+            _timer?.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
             try
             {
-                var files = Directory.GetFiles(_watchDirectory, "*.pdf");
+                if (_stoppingToken.IsCancellationRequested) return;
+                string[] files;
+                try
+                {
+                    files = Directory.GetFiles(_watchDirectory, "*.pdf");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to enumerate files in {Dir}", _watchDirectory);
+                    return;
+                }
                 if (files.Length == 0)
                 {
                     // No files, stop timer until next interval
@@ -78,6 +102,15 @@ namespace Sassa.BRM.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error processing files in directory {Dir}", _watchDirectory);
+            }
+            finally
+            {
+                // Resume timer only if not stopping
+                if (!_stoppingToken.IsCancellationRequested)
+                {
+                    _timer?.Change(_pollInterval, _pollInterval);
+                }
+                Interlocked.Exchange(ref _isProcessing, 0);
             }
         }
 

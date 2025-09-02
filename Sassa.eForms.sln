@@ -87,6 +87,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MIS", "MIS", "{CAD14D17-012
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "INPAYMENT", "INPAYMENT", "{DE1CAC1E-4231-492E-8EA5-6C75C528E9DD}"
 	ProjectSection(SolutionItems) = preProject
+		AUDITSUMMARY.sql = AUDITSUMMARY.sql
 		InPaymentMonthly.sql = InPaymentMonthly.sql
 		Sassa.Audit\SQL\InsertInpayment.sql = Sassa.Audit\SQL\InsertInpayment.sql
 		INSERT_HKRecords.sql = INSERT_HKRecords.sql

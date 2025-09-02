@@ -16,7 +16,7 @@
         <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetReportGrants().ToList()" Placeholder="<Grant Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@grantType" /> 
         <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">Save Report</FluentButton>
     </FluentStack>
-    <WidgetTitle Title="Search" />
+    <WidgetTitle Title="Search" Loading="loading"/>
     <FluentStack>
         <FluentTextField @bind-Value="@searchId" Placeholder="Enter Id/Filenumber..." />
         <FluentButton Appearance="Appearance.Accent" IconEnd="@(new Microsoft.FluentUI.AspNetCore.Components.Icons.Regular.Size16.Search())" Title="Search" OnClick="SearchMis"></FluentButton>
@@ -59,11 +59,13 @@
 
     protected async Task SearchMis()
     {
+
         if(string.IsNullOrEmpty(searchId) || searchId.Length < 13)
         {
             toast.ShowError("Please enter a valid applicant id.");
             return;
         }
+        loading = true;
         try
         {
             misFiles = await db.GetEcFiles(period, grantType, searchId, true);
@@ -72,6 +74,8 @@
         {
             toast.ShowError("Please enter a valid applicant id.");
         }
+        loading = false;
+        StateHasChanged();
     }
     private ModelContext context = default!;
 

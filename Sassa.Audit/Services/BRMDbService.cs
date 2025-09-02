@@ -160,6 +160,16 @@ namespace Sassa.Audit.Services
             using (var _context = contextFactory.CreateDbContext())
             {
                 IQueryable<TdwFileLocation> query = _context.TdwFileLocations.AsQueryable();
+                if (preview)
+                {
+                    query = query.Take(100);
+                    return await query.ToListAsync();
+                }
+                if (!string.IsNullOrEmpty(idNumber))
+                {
+                    query = query.Where(x => x.Description == idNumber);
+                    return await query.ToListAsync();
+                }
                 if (!string.IsNullOrEmpty(region))
                 {
                     query = query.Where(x => x.Region == region);
@@ -167,14 +177,6 @@ namespace Sassa.Audit.Services
                 if (!string.IsNullOrEmpty(granttype) && granttype != "All")
                 {
                     query = query.Where(x => x.GrantType == granttype);
-                }
-                if (!string.IsNullOrEmpty(idNumber))
-                {
-                    query = query.Where(x => x.Description == idNumber);
-                }
-                if (preview)
-                {
-                    query = query.Take(100);
                 }
                 return await query.ToListAsync();
             }

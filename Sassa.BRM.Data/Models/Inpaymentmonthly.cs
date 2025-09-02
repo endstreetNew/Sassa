@@ -22,6 +22,7 @@ public partial class Inpaymentmonthly
     public decimal? Cs { get; set; }
 
     public decimal? Brm { get; set; }
+
     public decimal? LoCapture { get; set; }
 
     public decimal? Lo { get; set; }

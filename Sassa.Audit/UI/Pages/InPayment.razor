@@ -10,14 +10,9 @@
 <FluentStack Orientation="Orientation.Vertical">
     <WidgetTitle Title="Filter Options" />
     <FluentStack Orientation="Orientation.Horizontal">
-        @*         <FluentDatePicker Placeholder="<From Date>" @bind-Value="period.FromNullDate" />
-        <FluentDatePicker Placeholder="<To Date>" @bind-Value="period.ToNullDate" /> *@
         <FluentSelect TOption="KeyValuePair<string,string>" Items="@sservice.GetAuditRegions().ToList()" Placeholder="<Region>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@office.RegionId" />
-@*         <FluentSelect TOption="KeyValuePair<string,string>" Items="@ogaStatusOptions" Placeholder="<Oga Status>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@ogaStatus" />
-        <FluentSelect TOption="KeyValuePair<string,string>" Items="@regTypeOptions" Placeholder="<Reg Type>" OptionValue="@(p => p.Key)" OptionText="@(p => p.Value)" @bind-Value="@regType" /> *@
         <FluentButton Appearance="Appearance.Accent" @onclick="ValidateReportFilter">All records Report</FluentButton>
         <FluentButton Appearance="Appearance.Accent" @onclick="AllMissing">Missing Report</FluentButton>
-@*         <FluentButton Appearance="Appearance.Accent" @onclick="AllMissing">All Missing</FluentButton> *@
     </FluentStack>
     <WidgetTitle Title="Search" />
     <FluentStack>
@@ -31,12 +26,13 @@
         <PropertyColumn Title="Name" Property="f => f.FirstName" />
         <PropertyColumn Title="Surname" Property="f => f.Surname" />
         <PropertyColumn Title="Grant Type" Property="f => f.GrantType" />
-@*         <PropertyColumn Title="App Date" Property="f => f.TransDate" /> 
-         <PropertyColumn Title="Clm No" Property="f => f.ClmNo" />
-        <PropertyColumn Title="Brm Barcode" Property="f => f.BrmBarcode" />
-        <PropertyColumn Title="MIS Number" Property="f => f.MisFileNo" />
-        <PropertyColumn Title="ECMIS Number" Property="f => f.EcMisFile" />
-        <PropertyColumn Title="OGA satus" Property="f => f.OgaStatus" /> *@
+         <PropertyColumn Title="LO Capture" Property="f => f.LoCapture" /> 
+         <PropertyColumn Title="BRM" Property="f => f.Brm" />
+        <PropertyColumn Title="TDW" Property="f => f.Tdw" />
+        <PropertyColumn Title="MIS" Property="f => f.Mis" />
+        <PropertyColumn Title="ECMIS" Property="f => f.Ecmis" />
+        <PropertyColumn Title="OGA" Property="f => f.Oga" /> 
+        <PropertyColumn Title="Cs" Property="f => f.Cs" /> 
         <PropertyColumn Title="Region Id" Property="f => f.RegionId" />
         <PropertyColumn Title="File Exists" Property="p => !(p.LoCapture == 0 && p.Brm == 0 && p.Oga ==0 && p.Cs == 0 && p.Ecmis == 0 && p.Mis ==0 && p.MisLc == 0 && p.Tdw == 0 && p.Lo == 0)" />
     </FluentDataGrid>
