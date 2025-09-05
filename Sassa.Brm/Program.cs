@@ -55,11 +55,11 @@ public class Program
         builder.Services.AddScoped<BRMDbService>();
         builder.Services.AddSingleton<StaticService>();
         builder.Services.AddScoped<SessionService>();
-
+        builder.Services.AddScoped<SocpenService>();
         builder.Services.AddSingleton<BrmApiService>();
         builder.Services.AddScoped<MisFileService>();
         builder.Services.AddScoped<DestructionService>();
-        builder.Services.AddScoped<SocpenService>();
+
         //builder.Services.AddScoped<LoggingService>();
         builder.Services.AddScoped<TdwBatchService>();
         builder.Services.AddScoped<CoverSheetService>();
@@ -112,7 +112,7 @@ public class Program
             csServiceSettings.CsServicePass = builder.Configuration.GetValue<string>("ContentServer:CSServicePass")!;
             csServiceSettings.CsDocFolder = $"{builder.Environment.WebRootPath}\\{builder.Configuration.GetValue<string>("Folders:CS")}\\";
             csServiceSettings.CsBeneficiaryRoot = builder.Configuration.GetValue<string>("ContentServer:CSBeneficaryRoot")!;
-            csServiceSettings.CsMaxRetries = builder.Configuration.GetValue<int>("ContentServer:CsMaxRetries");
+            csServiceSettings.CsMaxRetries = builder.Configuration.GetValue<int>("ContentServer:CSMaxRetries");
             return csServiceSettings;
         });
         builder.Services.AddScoped<CSService>();
@@ -171,8 +171,13 @@ public class Program
         .CreateLogger();
 
         builder.Host.UseSerilog();
-        //Hosted Services(Socpen Task Scheduler)
-        builder.Services.AddHostedService<ScheduleService>();
+        builder.Services.AddSingleton<SocpenUpdateService>(sp =>
+        {
+            var logger = sp.GetRequiredService<ILogger<SocpenUpdateService>>();
+            return new SocpenUpdateService( logger, CsConnection);
+        });
+        builder.Services.AddSingleton<ScheduleService>();
+        builder.Services.AddHostedService(sp => sp.GetRequiredService<ScheduleService>());
 
         var app = builder.Build();
         // --- Database connectivity check on startup ---

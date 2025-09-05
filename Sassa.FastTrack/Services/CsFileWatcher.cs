@@ -10,7 +10,7 @@ namespace Sassa.BRM.Services
     public class CsFileWatcher : BackgroundService
     {
         private readonly ILogger<CsFileWatcher> _logger;
-        private readonly string _watchDirectory;
+        private readonly string _processedDirectory;
         private Timer? _timer;
         private readonly TimeSpan _pollInterval;
         CsUploadService _csService;
@@ -22,14 +22,14 @@ namespace Sassa.BRM.Services
         {
             _csService = csService;
             _logger = logger;
-            _watchDirectory = Path.Combine(_config.GetValue<string>($"Urls:ScanFolderRoot")!, "Processed");
+            _processedDirectory = Path.Combine(_config.GetValue<string>($"Urls:ScanFolderRoot")!, "Processed");
             _pollInterval = TimeSpan.FromSeconds(_config.GetValue<int>("Functions:CsPollIntervalSeconds"));
         }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _stoppingToken = stoppingToken;
 
-            if (!Directory.Exists(_watchDirectory))Directory.CreateDirectory(_watchDirectory);
+            if (!Directory.Exists(_processedDirectory))Directory.CreateDirectory(_processedDirectory);
 
             _timer = new Timer(ProcessFiles, null, TimeSpan.Zero, _pollInterval);
 
@@ -53,11 +53,11 @@ namespace Sassa.BRM.Services
                 string[] files;
                 try
                 {
-                    files = Directory.GetFiles(_watchDirectory, "*.pdf");
+                    files = Directory.GetFiles(_processedDirectory, "*.pdf");
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, "Failed to enumerate files in {Dir}", _watchDirectory);
+                    _logger.LogError(ex, "Failed to enumerate files in {Dir}", _processedDirectory);
                     return;
                 }
                 if (files.Length == 0)
@@ -80,7 +80,7 @@ namespace Sassa.BRM.Services
                         }
                         catch (IOException)
                         {
-                            await Task.Delay(500);
+                            await Task.Delay(1000);
 }
                     }
 
@@ -101,7 +101,7 @@ namespace Sassa.BRM.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error processing files in directory {Dir}", _watchDirectory);
+                _logger.LogError(ex, "Error processing files in directory {Dir}", _processedDirectory);
             }
             finally
             {

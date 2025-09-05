@@ -83,7 +83,7 @@ namespace Sassa.BRM.Services
                 string[] files;
                 try
                 {
-                    files = Directory.GetFiles(_watchDirectory, "*.*");
+                    files = Directory.GetFiles(_watchDirectory, "*.pdf");
                 }
                 catch (Exception ex)
                 {
@@ -110,15 +110,16 @@ namespace Sassa.BRM.Services
                         }
                         catch (IOException)
                         {
-                            await Task.Delay(500);
+                            await Task.Delay(1000);
                         }
                     }
 
-                    var fileName = Path.GetFileName(file);
+                    var fileName = Path.GetFileNameWithoutExtension(file);
+                    var fileParts = fileName.Split('.');
                     FasttrackScan scanModel = new FasttrackScan
                     {
-                        LoReferece = Path.GetFileNameWithoutExtension(file),
-                        BrmBarcode = Path.GetExtension(file).Substring(1).ToUpper(),
+                        LoReferece = fileParts[0],
+                        BrmBarcode = fileParts[1].ToUpper(),
                     };
 
                     if (scanModel.LoReferece.Length != 16 || scanModel.BrmBarcode.Length != 8)

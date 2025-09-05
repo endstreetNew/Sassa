@@ -1,0 +1,19 @@
+﻿.widgetTitle {
+    background-color: aliceblue;
+    border-radius: 4px;
+    width: 100%;
+    text-align: center;
+    padding:  7px 3px 0px 3px;
+}
+
+.heading {
+    width: 80%;
+    display: inline-block;
+}
+
+.loading {
+    width: 20px;
+    height: 20px;
+    align-content: end;
+    display: inline-block;
+}

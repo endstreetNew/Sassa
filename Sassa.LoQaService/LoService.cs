@@ -97,7 +97,7 @@ namespace Sassa.Services
             {
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
-                    return await _context.CustCoversheetValidations.Where(c => c.Validationresult!.ToLower() != "ok").OrderBy(c => c.ValidationDate).Take(100).AsNoTracking().ToListAsync();
+                    return await _context.CustCoversheetValidations.Where(c => c.Validationresult!.ToLower() != "ok").OrderBy(c => c.ValidationDate).Take(20).AsNoTracking().ToListAsync();
                 }
             }
             catch
@@ -105,6 +105,7 @@ namespace Sassa.Services
                 throw;
             }
         }
+
 
         public async Task<List<CustCoversheetQa>> GetCoverSheets()
         {

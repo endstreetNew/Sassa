@@ -2596,6 +2596,9 @@ public partial class ModelContext : DbContext
             entity.Property(e => e.TransDate)
                 .HasColumnType("DATE")
                 .HasColumnName("TRANS_DATE");
+            entity.Property(e => e.AppDate)
+                .HasColumnType("DATE")
+                .HasColumnName("APP_DATE");
         });
         modelBuilder.HasSequence("ACTIVEVIEWOVERRIDESSEQUENCE");
         modelBuilder.HasSequence("AGENTSEQUENCE");

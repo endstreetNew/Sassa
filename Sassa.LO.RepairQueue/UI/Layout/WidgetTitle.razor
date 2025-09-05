@@ -1,0 +1,14 @@
+﻿<div class="widgetTitle">
+    <div class="heading"><h5>@Title</h5></div>
+   @if (Loading)
+        {
+    <span class="loading spinner-border text-primary"></span>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "";
+    [Parameter]
+    public bool Loading { get; set; }
+}

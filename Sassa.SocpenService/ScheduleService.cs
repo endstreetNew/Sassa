@@ -10,15 +10,15 @@ namespace Sassa.Services
     public class ScheduleService : BackgroundService
     {
         private readonly ILogger<ScheduleService> _logger;
-        private readonly SocpenService _socpen;
+        private readonly SocpenUpdateService _socpen;
         IOptions<ScheduleOptions> _scheduleOptions;
         //private Timer? _timer;
 
-        public ScheduleService(ILogger<ScheduleService> logger, IOptions<ScheduleOptions> options)
+        public ScheduleService(ILogger<ScheduleService> logger, IOptions<ScheduleOptions> options,SocpenUpdateService socpenService)
         {
             _logger = logger;
             _scheduleOptions = options;
-            _socpen = new SocpenService(options.Value.ConnectionString);
+            _socpen = socpenService;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Oracle.ManagedDataAccess.Client;
 using System;
 using System;
@@ -8,11 +9,13 @@ using System.Linq;
 
 namespace Sassa.Services
 {
-    public class SocpenService
+    public class SocpenUpdateService
     {
         string connectionString;
-        public SocpenService(string connectionstring) 
+        private readonly ILogger<SocpenUpdateService> _logger;
+        public SocpenUpdateService(ILogger<SocpenUpdateService> logger, string connectionstring) 
         {
+            _logger = logger;
             connectionString = connectionstring;
         }
         public void SyncSocpen()
@@ -27,12 +30,14 @@ namespace Sassa.Services
                         cmd.Connection = conn;  
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "UPDATE_DC_SOCPEN";
+                        _logger.LogInformation("Starting Socpen Sync");
                         cmd.ExecuteNonQueryAsync();
+                        _logger.LogInformation("Socpen Sync Completed");
                     }
                 }
-                catch 
+                catch (Exception ex)
                 {
-                    throw;
+                    _logger.LogError("Socpen Sync [ERR] :" + ex.Message);
                 }
             }
         }

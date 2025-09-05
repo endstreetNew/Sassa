@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Sassa.BRM.Models
 {
@@ -30,11 +31,13 @@ namespace Sassa.BRM.Models
         public string Clm_No { get; set; }
         public string TDW_BOXNO { get; set; }
         public int MiniBox { get; set; }
+        [Column("BATCH_NO", TypeName = "NUMBER")]
         public decimal BatchNo { get; set; }
         [JsonIgnore]
         public string IdHistory { get; set; }
         [JsonIgnore]
         public bool IsRMC { get; set; }
+        [Column("TRANS_TYPE", TypeName = "NUMBER")]
         public decimal? TRANS_TYPE { get; set; }
         [JsonIgnore]
         public bool IsNew { get; set; }
@@ -46,6 +49,7 @@ namespace Sassa.BRM.Models
         [JsonIgnore]
         public bool IsCombinationCandidate { get; set; }
         public string BrmUserName { get; set; }
+        [Column("FSP_ID", TypeName = "NUMBER")]
         public decimal? FspId { get; set; }
         [JsonIgnore]
         public bool IsSelected { get; set; }

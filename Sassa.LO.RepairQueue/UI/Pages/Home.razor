@@ -1,18 +1,20 @@
 ﻿@page "/"
 @inject LoService loService
+@inject DocumentService docService
+@inject HttpClient Http
 
-<PageTitle>Capture repair queue</PageTitle>
-<h1>Welcome to the LO Repair Queue App</h1>
-<div class="container">
+
+<WidgetTitle Title="Capture repair queue"></WidgetTitle>
+<div class="gridContainer">
     <div class="LORecord">
-        @if(!string.IsNullOrEmpty(selectedReference))
+        @if(selectedValidation is not null)
         {
-            <EditCoverSheet ReferenceNum="selectedReference" Saved="OnSaved" Cancelled="OnCancelled"></EditCoverSheet>
+            <EditCoverSheet ReferenceNum="@selectedValidation.ReferenceNum" Saved="OnSaved" Cancelled="OnCancelled"></EditCoverSheet>
         }
     </div>
     <div class="SOCPENperecord">
     </div>
-    <div class="RepairQueue">
+    <div class="Queue">
     <Grid TItem="CustCoversheetValidation"
       DataProvider="ValidationDataProvider"
       AllowPaging="true"
@@ -21,24 +23,35 @@
       PageSizeSelectorItems="new int[]{10,20,50,100}"
       AllowSorting="true"
       AllowFiltering="true"
-      AllowSelection="false"
+      AllowSelection="true"
+      SelectedItemsChanged="OnSelectedItemsChanged"
+      SelectionMode="GridSelectionMode.Single"
       FixedHeader="true"
       EmptyText="No validation results found."
-      Class="table table-sm table-hover align-middle">
+      Class="table table-sm table-hover align-left">
 
-    <GridColumn TItem="CustCoversheetValidation" PropertyName="ValidationDate" HeaderText="Date" >
+@*     <GridColumn TItem="CustCoversheetValidation" PropertyName="ValidationDate" HeaderText="Date" >
         @context.ValidationDate
     </GridColumn>
     <GridColumn TItem="CustCoversheetValidation" PropertyName="ReferenceNum" HeaderText="Reference" >
         @context.ReferenceNum
-    </GridColumn>
-        <GridColumn TItem="CustCoversheetValidation" PropertyName="Validationresult" HeaderText="Error" >
+    </GridColumn> *@
+     <GridColumn TItem="CustCoversheetValidation" PropertyName="Validationresult" HeaderText="Error" >
         @context.Validationresult
     </GridColumn>
 </Grid>
     </div>
-    <div class="preview">
-
+    <div class="Preview">
+        @if(selectedValidation is null)
+        {
+            <p>Select a record to preview the document</p>
+        }
+        else
+        {
+            <embed src="@($"documents/pdf/{selectedValidation.ReferenceNum}")" type="application/pdf" />
+@* 
+            <PdfViewer Url="@selectedFile" ></PdfViewer> *@
+        }
     </div>
 </div>
 
@@ -46,7 +59,8 @@
 @code
 {
     protected List<CustCoversheetValidation> RepairQueue = new();
-    protected string selectedReference = string.Empty;
+    protected CustCoversheetValidation? selectedValidation;
+    protected string? selectedFile;
 
     private async Task<GridDataProviderResult<CustCoversheetValidation>> ValidationDataProvider(GridDataProviderRequest<CustCoversheetValidation> request)
     {
@@ -67,4 +81,22 @@
     {
         throw new NotImplementedException();
     }
+
+    private async Task OnSelectedItemsChanged(HashSet<CustCoversheetValidation> validations)
+    {
+        if (validations.Count != 1)
+        {
+            selectedValidation = null;
+            selectedFile = null;
+            return;
+        }
+        selectedValidation = validations.First();
+        StateHasChanged();
+    }
+
+   public class DocumentResponse
+    {
+        public string? Message { get; set; }
+    }
+
 }
