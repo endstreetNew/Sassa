@@ -117,7 +117,7 @@ namespace Sassa.Services
             }
             catch (Exception ex)
             {
-                throw new Exception("Error Uploading to Content server.", ex);
+                throw new Exception(ex.Message);
             }
         }
     }

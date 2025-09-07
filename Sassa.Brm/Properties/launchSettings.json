@@ -7,7 +7,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:54699"
+      "applicationUrl": "http://localhost:52998/"
     },
     "Sassa.BRM": {
       "commandName": "Project",

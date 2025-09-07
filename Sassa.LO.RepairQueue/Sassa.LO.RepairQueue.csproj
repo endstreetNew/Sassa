@@ -13,7 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\BlazorBootstrap\BlazorBootstrap.csproj" />
     <ProjectReference Include="..\Sassa.Brm.Common\Sassa.Brm.Common.csproj" />
-    <ProjectReference Include="..\Sassa.LoQaService\Sassa.LoQaService.csproj" />
+    <ProjectReference Include="..\Sassa.LoService\Sassa.LoService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

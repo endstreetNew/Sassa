@@ -1,0 +1,303 @@
+﻿@using Microsoft.EntityFrameworkCore
+@using System.ComponentModel.DataAnnotations
+@inject StaticService staticService
+
+@inject IDbContextFactory<LoModelContext> ContextFactory
+@inject ILogger<EditLoRecord> logger
+
+<EditForm Model="@model" OnValidSubmit="SaveAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+
+    @if (loadError is not null)
+    {
+        <div class="alert alert-danger py-2">@loadError</div>
+    }
+    else if (!isLoaded)
+    {
+        <div class="text-secondary small">
+            <span class="spinner-border spinner-border-sm me-2" /> Loading...
+        </div>
+    }
+    else
+    {
+        <div class="captureContainer">
+            <div class="colOne">
+                <div class="form-group mb-2">
+                    <div class="form-check">
+                        <input id="rbApplication" class="form-check-input" type="radio" name="flexRadioDefault" @onclick="(() => { model.TransactionType = 0;})" checked="@(model.TransactionType == 0)">
+                        <label class="form-check-label" for="rbApplication"> Application</label>
+                    </div>
+                    <div class="form-check">
+                        <input id="rbLC" class="form-check-input" type="radio" name="flexRadioDefault" @onclick="(() => { model.TransactionType = 1;})" checked="@(model.TransactionType == 1)">
+                        <label class="form-check-label" for="rbLC"> Loose Correspondence</label>
+                    </div>
+                    <div class="form-check">
+                        <input id="rbReview" class="form-check-input" type="radio" name="flexRadioDefault" @onclick="(() => { model.TransactionType = 2;})" checked="@(model.TransactionType == 2)">
+                        <label class="form-check-label" for="rbReview"> Review</label>
+                    </div>
+                </div>
+                @if (model.TransactionType == 1)
+                {
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Loose Correspondence Type</span>
+                        <select class="form-select" @bind="@model.LcType">
+                            <option selected>select...</option>
+                            @foreach (var lctype in staticService.GetLcTypes())
+                            {
+                                <option value=@lctype.Key>@lctype.Value</option>
+                            }
+                        </select>
+                    </div>
+                }
+                <div class="input-group mb-3">
+                    <span class="input-group-text">App Status</span>
+                    <InputSelect class="form-select" @bind-Value="model.AppStatus">
+                        <option selected>select...</option>
+                        <option value="MAIN">ACTIVE</option>
+                        <option value="ARCHIVE">INACTIVE</option>
+                    </InputSelect>
+                </div>
+
+            </div>
+            <div class="colTwo">
+                  <div class="input-group mb-2">
+                    <label class="input-group-text">ID Number</label>
+                    <InputText class="form-control form-control-sm" @bind-Value="model.TxtIdNumber" />
+                </div>
+                <div class="input-group mb-2">
+                    <label class="input-group-text">Name</label>
+                    <InputText class="form-control form-control-sm" @bind-Value="model.TxtName" />
+                </div>
+                <div class="input-group mb-2">
+                    <label class="input-group-text">Surname</label>
+                    <InputText class="form-control form-control-sm" @bind-Value="model.TxtSurname" />
+                </div>
+               <div class="input-group mb-2">
+                    <label class="input-group-text">Grant Type</label>
+                    <InputSelect class="form-select form-select-sm" @bind-Value="model.GrantType">
+                        <option value="">select...</option>
+                        @foreach (var gt in staticService.GetGrantTypes())
+                        {
+                            <option value="@gt.Key">@gt.Value</option>
+                        }
+                    </InputSelect>
+                </div>
+                @if ("6C59".Contains(model.GrantType))//•	Any child grant can change to CSG, FCG and CDG - •	When you see CSG and you want to capture FCG
+                {
+                    <div class="input-group mb-2">
+                        <label class="input-group-text">Child Id</label>
+                        <InputText class="form-control form-control-sm" @bind-Value="model.ChildtIdNumber" />
+                    </div>
+                }
+                @if(model.GrantType.ToLower() =="s")
+                {
+                    <div class="input-group mb-2">
+                        <span class="input-group-text">Srd Number</span>
+                        <InputText class="form-control form-control-sm"  @bind-Value="model.SrdNumber"/>
+                    </div>
+                }
+
+            </div>
+            <div class="colThree">
+                  <div class="input-group mb-2">
+                    <span class="input-group-text">Region</span>
+                        <InputSelect class="form-select form-select-sm" @bind-Value="@model.Office.RegionId" >@*Value="@office.RegionId"  ValueChanged="@((string value) => SelectRegion(value))"> *@
+                        <option selected>select...</option>
+                        @foreach (var region in staticService.GetRegions())
+                        {
+                            <option value="@region.Key">@region.Value</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text">Office</span>
+                    <InputSelect class="form-select form-select-sm" @bind-Value="@model.Office.OfficeId"> @* Value="@model.Office.OfficeId"  ValueChanged="@((string value) => SelectOffice(value))"> *@
+                            <option selected>select...</option>
+                        @foreach (var val in staticService.GetOffices(model.Office.RegionId).Where(o => o.ActiveStatus == "A"))
+                        {
+
+                            <option value="@val.OfficeId">@val.OfficeName</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+            <div class="mt-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary btn-sm" disabled="@isSaving">
+                    @if (isSaving)
+                    {
+                        <span class="spinner-border spinner-border-sm me-1" />
+                    }
+                    Save
+                </button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="Cancel" disabled="@isSaving">Cancel</button>
+                @if (saveMessage is not null)
+                {
+                    <span class="text-success small">@saveMessage</span>
+                }
+            </div>
+         </div>
+    }
+</EditForm>
+
+@code {
+    [Parameter] public string ReferenceNum { get; set; } = string.Empty;
+    [Parameter] public EventCallback<CustCoversheet> Saved { get; set; }
+    [Parameter] public EventCallback Cancelled { get; set; }
+
+
+    private EditModel model = new();
+    private CustCoversheet? entity;
+    private bool isLoaded;
+    private bool isSaving;
+    private string? loadError;
+    private string? saveMessage;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (string.IsNullOrWhiteSpace(ReferenceNum))
+        {
+            loadError = "Reference number is required.";
+            return;
+        }
+
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        isLoaded = false;
+        loadError = null;
+        saveMessage = null;
+        try
+        {
+            await using var ctx = await ContextFactory.CreateDbContextAsync();
+            entity = await ctx.CustCoversheets.FindAsync(ReferenceNum);
+
+
+            if (entity is null)
+            {
+                loadError = "Record not found.";
+            }
+            else
+            {
+                model = new EditModel
+                {
+                    ReferenceNum = entity.ReferenceNum,
+                    AppStatus = entity.DrpdwnStatus,
+                    TransactionType = int.Parse(entity.DrpdwnTransaction),
+                    LcType = entity.DrpdwnLcType,
+                    BrmBarCode = entity.BrmNumber,
+                    SrdNumber = entity.TxtSrdRefNumber,
+                    TxtIdNumber = entity.TxtIdNumber,
+                    TxtName = entity.TxtName,
+                    TxtSurname = entity.TxtSurname,
+                    ChildtIdNumber = entity.TxtIdNumberChild,
+                    GrantType = entity.DrpdwnGrantTypes ?? "",
+                    Office = staticService.GetLocalOfficeFromOfficeName(entity.DrpdwnLocalOfficeSo) ?? new DcLocalOffice(),
+                };
+            }
+        }
+        catch (Exception ex)
+        {
+            loadError = "Failed to load. ";
+            logger.LogError(ex, "Load failed for ReferenceNum {ReferenceNum}", ReferenceNum);
+        }
+        finally
+        {
+            isLoaded = true;
+            
+        }
+    }
+
+    private async Task SaveAsync()
+    {
+        if (entity is null) return;
+        isSaving = true;
+        saveMessage = null;
+        try
+        {
+            await using var ctx = await ContextFactory.CreateDbContextAsync();
+            CustCoversheet? current = await ctx.CustCoversheets.FindAsync(model.ReferenceNum);
+
+            if (current is null)
+            {
+                loadError = "Record disappeared.";
+                logger.LogError($"LO Record disappeared for ReferenceNum {ReferenceNum}");
+                return;
+            }
+            if (!string.IsNullOrEmpty(model.LcType.Trim('0'))  )
+            {
+                if (!model.AppStatus.StartsWith("LC-"))
+                {
+                    model.AppStatus = "LC-" + model.AppStatus;
+                }
+            }
+            current.TxtIdNumber = model.TxtIdNumber;
+            current.TxtName = model.TxtName;
+            current.TxtSurname = model.TxtSurname;
+            // current.DrpdwnGrantTypes = model.DrpdwnGrantTypes;
+            // current.DrpdwnStatus = model.DrpdwnStatus;
+            current.NewCaptureDate = model.NewCaptureDate;
+
+            CustCoversheetValidation? validation = await ctx.CustCoversheetValidations.FindAsync(model.ReferenceNum);
+            validation!.Validationresult = "UPDATED";
+
+
+            await ctx.SaveChangesAsync();
+            saveMessage = "Saved.";
+            await Saved.InvokeAsync(current);
+        }
+        catch (Exception ex)
+        {
+            loadError = "Save failed: " + ex.Message;
+            logger.LogError(ex, "Save failed: ReferenceNum {ReferenceNum}", ReferenceNum);
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task Cancel()
+    {
+        await Cancelled.InvokeAsync();
+        await LoadAsync();
+    }
+
+    private class EditModel
+    {
+        [Required]
+        public string ReferenceNum { get; set; } = string.Empty;
+        public string AppStatus { get; set; } = "MAIN";
+        public int TransactionType { get; set; }
+        public string LcType { get; set; }
+        [StringLength(8)]
+        public string? BrmBarCode { get; set; }
+        [StringLength(12)]
+        public string? SrdNumber { get; set; }
+        [Required]
+        [StringLength(13)]
+        public string TxtIdNumber { get; set; }
+        [Required]
+        [StringLength(80)]
+        public string TxtName { get; set; }
+        [Required]
+        [StringLength(80)]
+        public string TxtSurname { get; set; }
+        [Required]
+        [StringLength(13)]
+        public string ChildtIdNumber { get; set; }
+        [Required]
+        [StringLength(1)] //DrpdwnGrantTypes
+        public string GrantType { get; set; }
+        [Required]
+        public DcLocalOffice Office { get; set; } = new();
+
+        public DateTime NewCaptureDate { get; } = DateTime.Now;
+        // public DateTime? NewApplicationDate { get; set; }
+
+        // [StringLength(255)]
+        // public string? Docsubmitted { get; set; }
+    }
+}

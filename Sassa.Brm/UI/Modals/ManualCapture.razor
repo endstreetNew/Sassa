@@ -21,9 +21,9 @@
                         <span type="text" class="form-control">@br.Id</span>
                     </div><!--!-->
                     <div class="input-group mb-1">
-                        <!--!--><span class="input-group-text">Srd Number</span>
+                        <span class="input-group-text">Srd Number</span>
                         <span type="text" class="form-control">@br.Srd_No</span>
-                    </div><!--!-->
+                    </div>
                     <div class="input-group mb-1">
                         <span class="input-group-text">Grant Type</span>
                         <select class="form-select" @bind="@br.GrantType" disabled>
@@ -176,20 +176,20 @@
             //•	When you see a CSG, but you are looking for CDG, users must be able to add the CDG(grant type).
             //•	When you are looking CSG and the system is showing active FCG, the user must be able to add the CSG.
             grantTypes = sservice.GetGrantTypes().Where(i => "6C59".Contains(i.Key)).ToDictionary(i => i.Key, i => i.Value);
-            //ddlGtype.SelectedValue = result.GrantType;
             grantTypeVisible = true;
             //Allow capture of missing child Id
             //•	When the child ID is not showing, you can scan it(then column under child Id No is blank)
             //if (string.IsNullOrEmpty(br.ChildId))
             //{
             childIdVisible = true;
-            //}
+
         }
         SelectedAppDate = br.AppDate.ToDate("dd/MMM/yy");
         ready = true;
         base.OnInitialized();
 
     }
+
     private void OnDocsChanged(string docspresent)
     {
         br.DocsPresent = docspresent;

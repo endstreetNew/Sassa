@@ -90,13 +90,13 @@
 
 @code {
     [Parameter] public string ReferenceNum { get; set; } = string.Empty;
-    [Parameter] public EventCallback<CustCoversheetQa> Saved { get; set; }
+    [Parameter] public EventCallback<CustCoversheet> Saved { get; set; }
     [Parameter] public EventCallback Cancelled { get; set; }
     [Parameter] public IEnumerable<string>? GrantTypeOptions { get; set; } = new[] { "OAG", "CSG", "DG", "FG" };
     [Parameter] public IEnumerable<string>? StatusOptions { get; set; } = new[] { "New", "Processing", "Complete", "Rejected" };
 
     private EditModel model = new();
-    private CustCoversheetQa? entity;
+    private CustCoversheet? entity;
     private bool isLoaded;
     private bool isSaving;
     private string? loadError;
@@ -121,7 +121,7 @@
         try
         {
             await using var ctx = await ContextFactory.CreateDbContextAsync();
-            entity = await ctx.CustQaCoversheets.AsNoTracking()
+            entity = await ctx.CustCoversheets.AsNoTracking()
                 .FirstOrDefaultAsync(c => c.ReferenceNum == ReferenceNum);
 
             if (entity is null)
@@ -139,7 +139,6 @@
                     DrpdwnGrantTypes = entity.DrpdwnGrantTypes,
                     DrpdwnStatus = entity.DrpdwnStatus,
                     NewCaptureDate = entity.NewCaptureDate,
-                    NewApplicationDate = entity.NewApplicationDate,
                     Docsubmitted = entity.Docsubmitted
                 };
             }
@@ -162,7 +161,7 @@
         try
         {
             await using var ctx = await ContextFactory.CreateDbContextAsync();
-            var current = await ctx.CustQaCoversheets
+            var current = await ctx.CustCoversheets
                 .FirstOrDefaultAsync(c => c.ReferenceNum == model.ReferenceNum);
 
             if (current is null)
@@ -177,7 +176,6 @@
             current.DrpdwnGrantTypes = model.DrpdwnGrantTypes;
             current.DrpdwnStatus = model.DrpdwnStatus;
             current.NewCaptureDate = model.NewCaptureDate;
-            current.NewApplicationDate = model.NewApplicationDate;
             current.Docsubmitted = model.Docsubmitted;
 
             await ctx.SaveChangesAsync();

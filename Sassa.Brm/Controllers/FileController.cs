@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Sassa.BRM.Controller
+namespace Sassa.BRM.Controllers
 {
     [Route("[controller]")]
     [ApiController]

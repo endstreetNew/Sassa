@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Sassa.BRM.Models;
 using Sassa.Models;
 
 namespace Sassa.Services
 {
-    public class LoService(IDbContextFactory<LoModelContext> dbContextFactory)
+    public class LoService(IDbContextFactory<LoModelContext> dbContextFactory,ILogger<LoService> logger)
     {
+
         public async Task<CustCoversheet> GetCoversheetAsync(string reference)
         {
             try
@@ -20,6 +22,7 @@ namespace Sassa.Services
             }
             catch 
             {
+                
                 throw;
             }
         }
@@ -98,6 +101,37 @@ namespace Sassa.Services
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
                     return await _context.CustCoversheetValidations.Where(c => c.Validationresult!.ToLower() != "ok").OrderBy(c => c.ValidationDate).Take(100).AsNoTracking().ToListAsync();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<CustCoversheetValidation> GetValidationRecord(string reference)
+        {
+            try
+            {
+                using (var _context = dbContextFactory.CreateDbContext())
+                {
+                    return await _context.CustCoversheetValidations.FindAsync(reference);
+                }
+            }
+            catch
+            {
+                logger.LogError($"Error retrieving coversheet for reference {reference}");
+                throw;
+            }
+        }
+
+        public async Task<CustCoversheet> GetEcover(string reference)
+        {
+            try
+            {
+                using (var _context = dbContextFactory.CreateDbContext())
+                {
+                    return await _context.CustCoversheets.Where(c => c.ReferenceNum == reference).FirstOrDefaultAsync();
                 }
             }
             catch

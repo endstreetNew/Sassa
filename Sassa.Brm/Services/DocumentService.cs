@@ -1,4 +1,4 @@
-﻿namespace Sassa.LO.RepairQueue.Services
+﻿namespace Sassa.Services
 {
     public class DocumentService
     {
@@ -12,7 +12,7 @@
         {
             if (!Directory.Exists(_rootFolder))
                 return string.Empty;
-            var files = Directory.GetFiles(_rootFolder, $"{reference}*.*", SearchOption.TopDirectoryOnly)
+            var files = Directory.GetFiles(_rootFolder, $"{reference}**", SearchOption.TopDirectoryOnly)
                                  .OrderBy(f => f)
                                  .ToList();
             return files.FirstOrDefault() ?? string.Empty;

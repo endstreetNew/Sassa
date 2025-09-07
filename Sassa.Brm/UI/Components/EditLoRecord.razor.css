@@ -1,0 +1,23 @@
+﻿.captureContainer {
+    display: grid;
+    box-sizing: border-box;
+    grid-template-columns: 3fr 3fr 3fr;
+    grid-template-rows: 5fr 1fr ;
+    gap: 5px;
+    grid-template-areas:
+        "colOne colTwo colThree"
+        "buttonPanel buttonPanel buttonPanel";
+}
+
+.colOne {
+    grid-area: colOne;
+}
+.colTwo {
+    grid-area: colTwo;
+}
+.colThree {
+    grid-area: colThree;
+}
+.buttonPanel {
+    grid-area: buttonPanel;
+}

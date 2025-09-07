@@ -12,14 +12,14 @@ public class BrmApiService(IHttpClientFactory _httpClientFactory, IConfiguration
     #region Application
     public async Task<DcFile?> PostApplication(Application application)
     {
-        var client = _httpClientFactory.CreateClient("BrmApplication");
+        var client = _httpClientFactory.CreateClient("BrmApi");
         var serializationOptions = new JsonSerializerOptions()
         {
             WriteIndented = true,
             IgnoreReadOnlyProperties = true,
             IgnoreReadOnlyFields = true
         };
-        var result = await client.PostAsJsonAsync(_brmApiUrl + "ApplicationV2", application, serializationOptions);
+        var result = await client.PostAsJsonAsync("ApplicationV2", application, serializationOptions);
 
         var apiResponse = await result.Content.ReadFromJsonAsync<ApiResponse<DcFile>>();
         if (apiResponse is null) throw new Exception("Fatal APi Error.");
@@ -33,7 +33,7 @@ public class BrmApiService(IHttpClientFactory _httpClientFactory, IConfiguration
     #region DcFile
     public async Task<DcFile?> PostDcFile(DcFile dcfile)
     {
-        var client = _httpClientFactory.CreateClient("BrmApplication");
+        var client = _httpClientFactory.CreateClient("BrmApi");
         var serializationOptions = new JsonSerializerOptions()
         {
             WriteIndented = true,
@@ -56,8 +56,8 @@ public class BrmApiService(IHttpClientFactory _httpClientFactory, IConfiguration
 
     public void PostActivity(DcActivity activity)
     {
-        var client = _httpClientFactory.CreateClient("BrmActivity");
-        _ = client.PostAsJsonAsync(_brmApiUrl + "Activity", activity);
+        var client = _httpClientFactory.CreateClient("BrmApi");
+        _ = client.PostAsJsonAsync("Activity", activity);
     }
 
     public void CreateActivity(string action, string srdNo, decimal? lcType, string Activity, string regionId, decimal officeId, string samName, string UniqueFileNo = "")

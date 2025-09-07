@@ -131,6 +131,11 @@ namespace Sassa.BRM.Services
                 }
                 catch (Exception ex)
                 {
+                    if(ex.Message.EndsWith("exists."))
+                    {
+                        File.Delete(file);
+                        break;
+                    }
                     lastException = ex;
                     attempt++;
                     if (attempt < maxRetries)

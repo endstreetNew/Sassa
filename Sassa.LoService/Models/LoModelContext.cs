@@ -121,9 +121,9 @@ public partial class LoModelContext : DbContext
             //entity.Property(e => e.NewApplicationDate)
             //    .HasColumnType("DATE")
             //    .HasColumnName("NEW_APPLICATION_DATE");
-            //entity.Property(e => e.NewCaptureDate)
-            //    .HasColumnType("DATE")
-            //    .HasColumnName("NEW_CAPTURE_DATE");
+            entity.Property(e => e.NewCaptureDate)
+                .HasColumnType("DATE")
+                .HasColumnName("NEW_CAPTURE_DATE");
             //entity.Property(e => e.NewScannedDate)
             //    .HasColumnType("DATE")
             //    .HasColumnName("NEW_SCANNED_DATE");

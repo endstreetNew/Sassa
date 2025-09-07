@@ -11,6 +11,7 @@ using Sassa.Brm.Health;
 using Sassa.BRM.Models;
 using Sassa.BRM.Services;
 using Sassa.BRM.UI;
+using Sassa.Models;
 using Sassa.Services;
 using Sassa.Socpen.Data;
 using Serilog;
@@ -35,8 +36,10 @@ public class Program
         // connection strings   
         string BrmConnection = builder.Configuration.GetConnectionString("BrmConnection")!;
         string CsConnection = builder.Configuration.GetConnectionString("CsConnection")!;
-
-
+        string LoConnectionString = builder.Configuration.GetConnectionString("LoConnection")!;
+        //Factory pattern LO
+        builder.Services.AddDbContextFactory<LoModelContext>(options =>
+        options.UseOracle(LoConnectionString));
         //Options pattern for scheduled tasks
         builder.Services.Configure<ScheduleOptions>(options =>
         {
@@ -121,25 +124,35 @@ public class Program
         builder.Services.AddScoped<ReportDataService>();
         builder.Services.AddScoped<ProgressService>();
         builder.Services.AddScoped<Helper>();
-        
+        // LO RepaairQueue services
+        builder.Services.AddScoped<LoService>();
+        builder.Services.AddSingleton<DocumentService>(sp =>
+        {
+            var root = builder.Configuration["Urls:ScanFolderRoot"]; // fallback
+            root = root ?? throw new InvalidOperationException("Urls:ScanFolderRoot missing.");
+            return new DocumentService(root);
+        });
+
+        builder.Services.AddScoped(sp =>
+        new HttpClient { BaseAddress = new Uri(builder.Configuration["Urls:LocalApi"] )});
+
+        //Brm Api Http Client
+        builder.Services.AddHttpClient("BrmApi", client =>
+        {
+            client.BaseAddress = new Uri(builder.Configuration["Urls:BrmApi"]);
+        });
+
+        builder.Services.AddControllers();
+
+        //General items
         builder.Services.AddScoped<DailyCheck>();
         builder.Services.AddScoped<ActiveUser>();
         builder.Services.AddSingleton<ActiveUserList>();
 
-        builder.Services.AddHttpClient();
-        //builder.Services.AddHttpClient("BrmApi", client =>
-        //{
-        //    client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("BrmApi:BaseAddress")!);
-        //});
         // UI Services
         builder.Services.AddRazorComponents().AddInteractiveServerComponents();
         builder.Services.AddQuickGridEntityFrameworkAdapter();
 
-        //builder.Services.ConfigureApplicationCookie(options =>
-        //{
-        //    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
-        //    options.SlidingExpiration = true;
-        //});
         builder.Services.AddRazorPages().AddRazorPagesOptions(options =>
         {
             options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
@@ -171,6 +184,9 @@ public class Program
         .CreateLogger();
 
         builder.Host.UseSerilog();
+
+        builder.Services.AddLogging();
+
         builder.Services.AddSingleton<SocpenUpdateService>(sp =>
         {
             var logger = sp.GetRequiredService<ILogger<SocpenUpdateService>>();
@@ -194,7 +210,7 @@ public class Program
             }
             catch (Exception ex)
             {
-                logger.LogCritical(ex, "Database connectivity check failed. Application will terminate.");
+                logger.LogCritical("Database connectivity check failed. Application will terminate.");
                 Log.CloseAndFlush();
                 Environment.Exit(1);
             }
@@ -217,7 +233,8 @@ public class Program
 
         app.UseStaticFiles();
         //app.UseAntiforgery();
-
+        app.UseRouting();
+        app.MapControllers();
         app.MapRazorComponents<App>()
             .DisableAntiforgery()
             .AddInteractiveServerRenderMode();
