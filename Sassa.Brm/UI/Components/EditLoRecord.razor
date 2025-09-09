@@ -3,6 +3,7 @@
 @inject StaticService staticService
 
 @inject IDbContextFactory<LoModelContext> ContextFactory
+@inject IDbContextFactory<ModelContext> brmContextFactory
 @inject ILogger<EditLoRecord> logger
 
 <EditForm Model="@model" OnValidSubmit="SaveAsync">
@@ -94,10 +95,18 @@
 
                 @if ("6C59".Contains(model.GrantType))
                 {
-                    <div class="input-group mb-2">
+                      <InputSelect class="form-select form-select-sm"
+                                 @bind-Value="model.ChildtIdNumber">
+                        <option value="">select...</option>
+                        @foreach (var val in children)
+                        {
+                            <option value="@val">@val</option>
+                        }
+                    </InputSelect>
+@*                     <div class="input-group mb-2">
                         <label class="input-group-text">Child Id</label>
                         <InputText class="form-control form-control-sm" @bind-Value="model.ChildtIdNumber" />
-                    </div>
+                    </div> *@
 
                 }
 
@@ -170,6 +179,8 @@
     private string? loadError;
     private string? saveMessage;
 
+    private List<string> children = new();
+
     protected override async Task OnParametersSetAsync()
     {
         if (string.IsNullOrWhiteSpace(ReferenceNum))
@@ -220,9 +231,13 @@
             {
                 model.Office = new DcLocalOffice();
             }
-            // offices = staticService.GetOffices(model.Office.RegionId)
-            //                        .Where(o => o.ActiveStatus == "A")
-            //                        .ToList();
+            await using var brmctx = await brmContextFactory.CreateDbContextAsync();
+            children = await brmctx.DcSocpens
+                                .Where(c => c.BeneficiaryId == entity.TxtIdNumber && !string.IsNullOrWhiteSpace(c.ChildId))
+                                .Select(c => c.ChildId!)
+                                .Distinct()
+                                .AsNoTracking()
+                                .ToListAsync();
         }
         catch (Exception ex)
         {

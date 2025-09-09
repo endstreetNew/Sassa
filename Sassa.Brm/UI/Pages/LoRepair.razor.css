@@ -3,11 +3,12 @@
     box-sizing: border-box;
     height: 100vh;
     grid-template-columns: 0.2fr 0.7fr 0.1fr;
-    grid-template-rows: 1.3fr 2fr 6fr;
+    grid-template-rows: 1.3fr 1fr 2fr 6fr;
     gap: 5px;
     grid-template-areas:
         "search status status"
         "LORecord LORecord LORecord"
+        "SPRecord SPRecord SPRecord"
         "Preview Preview Preview";
 }
 
@@ -19,9 +20,9 @@
     grid-area: LORecord;
 }
 
-/*.SOCPENRecord {
-    grid-area: SOCPENRecord;
-}*/
+.SPRecord {
+    grid-area: SPRecord;
+}
 
 .Preview {
     grid-area: Preview;

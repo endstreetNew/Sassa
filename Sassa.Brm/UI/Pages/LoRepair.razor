@@ -41,17 +41,16 @@
             <p>No LO Record ..</p>
         }
     </div>
-@*     <div class="Queue">
-     <QuickGrid Items="RepairQueue.AsQueryable()" Class="table-sm">
-     <TemplateColumn Context="validation">
-        <tr @onclick="() => OnSelectedItemChanged(validation)" style="cursor:pointer;">
-            <td>@validation.ReferenceNum</td>
-        </tr>
-    </TemplateColumn>
-
-            <PropertyColumn Title="Error" Property="@(u => u.Validationresult)" />
-    </QuickGrid>
-    </div> *@
+    <div class="SPRecord">
+        @if(selectedCover is not null)
+        {
+            <ViewDcSocpen SearchId="@selectedCover.TxtIdNumber"/>
+        }
+        else
+        {
+            <p>No SOCPEN Records ..</p>
+        }
+    </div>
     <div class="Preview">
         @if (selectedValidation is null)
         {

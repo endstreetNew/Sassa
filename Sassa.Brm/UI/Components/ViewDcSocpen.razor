@@ -1,0 +1,63 @@
+﻿@inject BRMDbService db
+@inject StaticService sservice
+@inject IAlertService toast
+
+<div class="card my-2">
+    <div class="card-header">
+        <button class="btn btn-link" type="button" @onclick="ToggleGrid">
+            @(isGridCollapsed ? "Show Socpen Results" : "Hide Socpen Results")
+        </button>
+    </div>
+    <div class="collapse @(isGridCollapsed ? "" : "show")">
+        <div class="card-body p-2">
+            <QuickGrid Items="DTSocPen.AsQueryable()" Class="table-sm">
+                <PropertyColumn Title="ID No" Property="@(u => u.Id)" />
+                <PropertyColumn Title="Child ID No" Property="@(u => u.ChildId)" />
+                <PropertyColumn Title="Grant Type" Property="@(u => u.GrantName)" />
+                <PropertyColumn Title="Srd No" Property="@(u => u.Srd_No)" />
+                <PropertyColumn Title="Status" Property="@(u => u.Status)" />
+                <PropertyColumn Title="Name" Property="@(u => u.Name)" />
+                <PropertyColumn Title="Surname" Property="@(u => u.SurName)" />
+@*                 <PropertyColumn Title="Application Date" Property="@(u => u.AppDate)"  />
+                <PropertyColumn Title="Archive Year" Property="@(u => u.ARCHIVE_YEAR)" /> *@
+            </QuickGrid>
+        </div>
+    </div>
+</div>
+
+@code {
+[Parameter]
+public string SearchId { get; set; } = string.Empty;
+
+protected List<Application> DTSocPen = new();
+private bool isGridCollapsed = false;
+
+protected override async Task OnInitializedAsync()
+{
+    await Search();
+}
+
+private void ToggleGrid()
+{
+    isGridCollapsed = !isGridCollapsed;
+}
+
+private async Task Search()
+{
+    try
+    {
+
+        if (!string.IsNullOrEmpty(SearchId))
+        {
+            string txtSearchId = SearchId.Trim();
+            if (!txtSearchId.IsNumeric() || txtSearchId.Length != 13) throw new Exception("Id is Invalid.");
+            DTSocPen = await db.SearchSocpenId(txtSearchId);
+            if (!DTSocPen.Any()) toast.Info("No Socpen results");
+        }
+    }
+    catch (Exception exception)
+    {
+        toast.Error("Error: " + exception.Message);
+    }
+}
+}
