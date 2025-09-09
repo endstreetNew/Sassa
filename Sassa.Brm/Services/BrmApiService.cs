@@ -6,9 +6,9 @@ using System.Text.Json;
 
 namespace Sassa.BRM.Services;
 
-public class BrmApiService(IHttpClientFactory _httpClientFactory, IConfiguration config)
+public class BrmApiService(IHttpClientFactory _httpClientFactory)//, IConfiguration config)
 {
-    string _brmApiUrl = config["Urls:BrmApi"]!;
+    //string _brmApiUrl = config["Urls:BrmApi"]!;
     #region Application
     public async Task<DcFile?> PostApplication(Application application)
     {
@@ -40,7 +40,7 @@ public class BrmApiService(IHttpClientFactory _httpClientFactory, IConfiguration
             IgnoreReadOnlyProperties = true,
             IgnoreReadOnlyFields = true
         };
-        var result = await client.PostAsJsonAsync(_brmApiUrl + "DcFile", dcfile, serializationOptions);
+        var result = await client.PostAsJsonAsync("DcFile", dcfile, serializationOptions);
         try
         {
             return await result.Content.ReadFromJsonAsync<DcFile>();

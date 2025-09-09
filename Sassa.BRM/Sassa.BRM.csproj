@@ -70,10 +70,11 @@
     <ProjectReference Include="..\Sassa.BRM.Data\Sassa.BRM.Data.csproj" />
     <ProjectReference Include="..\Sassa.Brm.Health\Sassa.Brm.Health.csproj" />
     <ProjectReference Include="..\Sassa.CsService\Sassa.CsService.csproj" />
+    <ProjectReference Include="..\Sassa.LoService\Sassa.LoService.csproj" />
     <ProjectReference Include="..\Sassa.PdfServices\Sassa.PdfServices.csproj" />
     <ProjectReference Include="..\Sassa.QrCoder\Sassa.QrCoder.csproj" />
     <ProjectReference Include="..\Sassa.Socpen.Data\Sassa.Socpen.Data.csproj" />
-    <ProjectReference Include="..\Sassa.SocpenService\Sassa.SocpenService.csproj" />
+    <ProjectReference Include="..\Sassa.SocpenService\Sassa.SocpenUpdateService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -81,6 +82,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="appsettings.Training.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Update="appsettings.Development.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>

@@ -46,7 +46,7 @@ namespace Sassa.BRM.Controllers
             else
             {
                 // return error if file not found
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status404NotFound);
             }
 
         }

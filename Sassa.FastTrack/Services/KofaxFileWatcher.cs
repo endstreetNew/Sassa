@@ -176,6 +176,7 @@ namespace Sassa.BRM.Services
                 if (!_stoppingToken.IsCancellationRequested)
                 {
                     _timer?.Change(_pollInterval, _pollInterval);
+                    _logger.LogInformation("I am alive..!");
                 }
                 Interlocked.Exchange(ref _isProcessing, 0);
             }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sassa.Services;
 
@@ -30,6 +31,22 @@ namespace Sassa.BRM.Controllers
                 return Problem("Failed to read the requested file.");
             }
         }
-
+        //[AllowAnonymous]
+        //[HttpGet("reject/{reference}")]
+        //public IActionResult RejectPdf(string reference)
+        //{
+        //    try
+        //    {
+        //        string fileName = _docService.GetFirstDocument(reference);
+        //        //System.IO.File.Move(fileName, fileName.Replace("Pending", "Rejected"));
+        //        System.IO.File.Move(fileName, Path.Combine(_rejectedDirectory, fileName));
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "Failed to serve PDF for reference {Reference}", reference);
+        //        return Problem("Failed to read the requested file.");
+        //    }
+        //}
     }
 }

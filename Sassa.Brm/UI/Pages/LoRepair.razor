@@ -21,13 +21,20 @@
     <div class="status">
         @if (selectedValidation is not null)
         {
-            <div class="alert alert-danger">@(selectedValidation is not null ? selectedValidation.Validationresult : "No Validation Error.")</div>
+            if(selectedValidation.Validationresult == "UPDATED" || selectedValidation.Validationresult == "ok")
+            {
+              <div class="alert alert-info">@(selectedValidation.Validationresult)</div>  
+            }
+            else
+            {
+                <div class="alert alert-danger">@(selectedValidation.Validationresult)</div>
+            }
         }
     </div>
     <div class="LORecord">
         @if(selectedCover is not null)
         {
-            <EditLoRecord ReferenceNum="@txtSearchRef" Saved="OnSaved" Cancelled="OnCancelled"></EditLoRecord>
+            <EditLoRecord ReferenceNum="@txtSearchRef" Saved="OnSaved" Cancelled="OnCancelled" Rejected="OnRejected"></EditLoRecord>
         }
         else
         {
@@ -46,9 +53,13 @@
     </QuickGrid>
     </div> *@
     <div class="Preview">
-        @if(selectedValidation is null)
+        @if (selectedValidation is null)
         {
             <p>No Document ..</p>
+        }
+        else if (!pdfExists)
+        {
+            <p class="text-danger">PDF not found for this reference.</p>
         }
         else
         {
@@ -65,7 +76,7 @@
     protected string? selectedFile;
 
     private string txtSearchRef = string.Empty;
-
+    private bool pdfExists = false;
 
     // protected override async Task OnInitializedAsync()
     // {
@@ -78,6 +89,7 @@
         {
             selectedValidation = await loService.GetValidationRecord(txtSearchRef);
             selectedCover = await loService.GetEcover(txtSearchRef);
+            pdfExists = !string.IsNullOrWhiteSpace(docService.GetFirstDocument(txtSearchRef));
             Logger.LogInformation("Fetched LO Record and Validation Record for reference {Reference}", txtSearchRef);
         }
         catch (Exception ex)
@@ -85,6 +97,7 @@
             Logger.LogError(ex, "Error fetching LO Record or Validation Record for reference {Reference}", txtSearchRef);
             selectedValidation = null;
             selectedCover = null;
+            pdfExists = false;
         }// /documents/pdf/2907202510360972 and check HTTP 200 with Content-Type: application/pdf.
     }
 
@@ -94,6 +107,13 @@
     }
     private async Task OnCancelled()
     {
+        txtSearchRef = string.Empty;
+        await SearchRef();
+    }
+
+    private async Task OnRejected()
+    {
+        docService.RejectDocument(txtSearchRef);
         txtSearchRef = string.Empty;
         await SearchRef();
     }

@@ -4,10 +4,26 @@
 @inject SessionService session
 @inject IAlertService toast
 @inject TdwBatchService batchService
+@inject IHttpClientFactory _httpClientFactory
 
 
 <button class="btn btn-primary btn-sm active" @onclick="() => SaveReport()">Save Health check</button>
 <button class="btn btn-primary btn-sm active" @onclick="() => TdwEmailTest()">Tdw Email Test</button>
+<div class="status-widget">
+    @if (isBrmApiHealthy)
+    {
+        <div class="alert alert-success">
+            <span class="checkmark">✔</span> Brm Api Online
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-error">
+            <span class="crossmark">✖</span> Brm Api Offline
+        </div>
+    }
+</div>
+
 <hr />
 <ErrorLog/>
 
@@ -15,6 +31,23 @@
  *@
     @code {
         [Inject] IWebHostEnvironment? Env { get; set; }
+
+        private bool isBrmApiHealthy = true; // Replace with actual health check logic
+
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                // Example health check logic, replace with actual API call
+                var client = _httpClientFactory.CreateClient("BrmApi");
+                var response = await client.GetAsync("ApplicationV2/healthcheck");
+                isBrmApiHealthy = response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                isBrmApiHealthy = false;
+            }
+        }
 
     public async Task SaveReport()
     {

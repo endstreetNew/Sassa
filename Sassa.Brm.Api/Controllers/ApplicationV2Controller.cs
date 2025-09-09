@@ -22,6 +22,7 @@ namespace Sassa.BRM.Controller
             _config = config;
         }
 
+
         [HttpPost]
         [AllowAnonymous]
         public async Task<ActionResult<ApiResponse<DcFile>>> PostApplication(Application app)
@@ -59,5 +60,12 @@ namespace Sassa.BRM.Controller
             return BadRequest(response);
 
         }
+        [HttpGet("healthcheck")]
+        [AllowAnonymous]
+        public ActionResult<ApiResponse<bool>> Healthcheck()
+        {
+            return Ok(true);
+        }
+
     }
 }
