@@ -74,7 +74,7 @@
     <ProjectReference Include="..\Sassa.PdfServices\Sassa.PdfServices.csproj" />
     <ProjectReference Include="..\Sassa.QrCoder\Sassa.QrCoder.csproj" />
     <ProjectReference Include="..\Sassa.Socpen.Data\Sassa.Socpen.Data.csproj" />
-    <ProjectReference Include="..\Sassa.SocpenService\Sassa.SocpenService.csproj" />
+    <ProjectReference Include="..\Sassa.SocpenService\Sassa.SocpenUpdateService.csproj" />
   </ItemGroup>
 
   <ItemGroup>
