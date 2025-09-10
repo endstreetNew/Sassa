@@ -14,13 +14,13 @@ namespace Sassa.Services
             {
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
-                    var result = await _context.CustCoversheets.Where(c => c.ReferenceNum == reference).ToListAsync();
-                    if(result.Count() == 0)throw new Exception($"Reference NUM {reference} not found.");
-                    if (result.Count() > 1) throw new Exception($"Multiple records found for Reference NUM {reference}.");
-                    return result.First();
+                    return await _context.CustCoversheets.FindAsync(reference);
+                    //if(result.Count() == 0)throw new Exception($"Reference NUM {reference} not found.");
+                    //if (result.Count() > 1) throw new Exception($"Multiple records found for Reference NUM {reference}.");
+                    //return result.First();
                 }
             }
-            catch 
+            catch (Exception ex)
             {
                 
                 throw;
@@ -59,15 +59,11 @@ namespace Sassa.Services
             {
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
-                    var result = await _context.CustCoversheets.Where(c => c.ReferenceNum == reference).ToListAsync();
-                    if (result.Count() == 0) throw new Exception($"Reference NUM {reference} not found ");
-                    if (result.Count() > 1) throw new Exception($"Multiple records found for Reference NUM {reference}");
-                    foreach (var cover in result)
-                    {
-                        cover.Clmnumber = file.UnqFileNo;
-                        cover.BrmNumber = file.BrmBarcode;
-                        cover.ScannedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                    }
+                    var cover = await _context.CustCoversheets.FindAsync(reference);
+                    if (cover is null) throw new Exception("Could not update cover sheet");
+                    cover.Clmnumber = file.UnqFileNo;
+                    cover.BrmNumber = file.BrmBarcode;
+                    cover.ScannedDate = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
                     await _context.SaveChangesAsync();
                 }
             }
@@ -131,7 +127,7 @@ namespace Sassa.Services
             {
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
-                    return await _context.CustCoversheets.Where(c => c.ReferenceNum == reference).FirstOrDefaultAsync();
+                    return await _context.CustCoversheets.FindAsync(reference);
                 }
             }
             catch

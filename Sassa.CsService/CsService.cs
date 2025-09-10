@@ -15,14 +15,10 @@ namespace Sassa.Services
     public class CSService
     {
         private readonly CsServiceSettings _settings;
-        //private readonly ModelContext _context;
         private readonly ILogger<CSService> _logger;
-        //private readonly DocumentManagementClient _docClient;
-        //private readonly AuthenticationClient _authClient;
         IDbContextFactory<ModelContext> _contextFactory;
         EndpointAddress _authEndpointAddress;
         EndpointAddress _docEndpointAddress;
-        //private CsDocuments.OTAuthentication? _ota;
         public long NodeId { get; private set; }
         private string _idNumber = "";
 
@@ -36,25 +32,6 @@ namespace Sassa.Services
             _docEndpointAddress = new System.ServiceModel.EndpointAddress(_settings.CsWSEndpoint + "DocumentManagement");
         }
 
-        /// <summary>
-        /// CS Webservice authentication
-        /// </summary>
-        //private async Task Authenticate()
-        //{
-
-        //    try
-        //    {
-        //        _ota = new Sassa.Services.CsDocuments.OTAuthentication
-        //        {
-        //            AuthenticationToken = await _authClient.AuthenticateUserAsync(_settings.CsServiceUser, _settings.CsServicePass)
-        //        };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Failed to Authenticate Contentserver WS.");
-        //        throw new Exception("Failed to Authenticate Contentserver WS.");
-        //    }
-        //}
 
         private async Task<CsDocuments.OTAuthentication> Authenticate()
         {
@@ -449,6 +426,50 @@ namespace Sassa.Services
             catch (Exception ex)
             {
                 throw new Exception("Error Uploading to Content server.", ex);
+            }
+        }
+
+        /// <summary>
+        /// CS Webservice authentication
+        /// </summary>
+        public async Task<bool> CheckService()
+        {
+
+            try
+            {
+                AuthenticationClient _authClient = new AuthenticationClient
+                {
+                    Endpoint = { Address = _authEndpointAddress }
+                };
+
+                var AuthenticationToken = await _authClient.AuthenticateUserAsync(_settings.CsServiceUser, _settings.CsServicePass);
+                _authClient.Close();
+                return true;
+
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> CheckDBConnection()
+        {
+            try
+            {
+                using (var con = new OracleConnection(_settings.CsConnection))
+                {
+                    if (con.State != ConnectionState.Open)
+                    {
+                        con.Open();
+                    }
+                    return await Task.FromResult(true);
+                }
+            }
+            catch 
+            {
+                return await Task.FromResult(false);
             }
         }
     }

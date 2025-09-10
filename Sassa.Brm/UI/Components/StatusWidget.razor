@@ -1,0 +1,22 @@
+﻿<div class="status-widget">
+    @if (Status)
+    {
+        <div class="alert alert-success">
+            <span class="checkmark">✔</span> @ServiceName Online
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-error">
+            <span class="crossmark">✖</span> @ServiceName Offline
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string ServiceName { get; set; } = "";
+    [Parameter] 
+    public bool Status { get; set; }
+
+}

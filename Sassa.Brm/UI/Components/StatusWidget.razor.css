@@ -1,0 +1,23 @@
+﻿.status-widget {
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 200px;
+    font-family: Segoe UI, sans-serif;
+    background-color: #f9f9f9;
+}
+
+.status-ok {
+    color: green;
+    font-weight: bold;
+}
+
+.status-fail {
+    color: red;
+    font-weight: bold;
+}
+
+.checkmark, .crossmark {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}

@@ -116,6 +116,7 @@ namespace Sassa.BRM.Services
 
                     var fileName = Path.GetFileNameWithoutExtension(file);
                     var fileParts = fileName.Split('.');
+                    fileName = fileName + ".pdf";
                     FasttrackScan scanModel = new FasttrackScan
                     {
                         LoReferece = fileParts[0],
@@ -125,13 +126,19 @@ namespace Sassa.BRM.Services
                     if (scanModel.LoReferece.Length != 16 || scanModel.BrmBarcode.Length != 8)
                     {
                         _logger.LogError("Invalid file name format: {FileName}. Expected format: <16-digit LO Reference>.<8-digit BRM Barcode>", fileName);
-                        File.Move(file, Path.Combine(_rejectDirectory, fileName));
+                        File.Move(file, Path.Combine(_rejectDirectory, "InvalidFileName." + fileName));
                         continue;
                     }
-
+                    using var brmctx = _dbContextFactory.CreateDbContext();
+                    if(!(await brmctx.DcFiles.Where(f => f.BrmBarcode == scanModel.BrmBarcode).AnyAsync()))
+                    {
+                        _logger.LogError("Duplicate BRM Barcode", fileName);
+                        File.Move(file, Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName));
+                        continue;
+                    }
                     try
                     {
-                        DcFile dcFile = await GetDcFileFromLoAsync(scanModel);
+                        DcFile dcFile = await GetDcFileFromLoAsync(scanModel,file,fileName);
                         string result = Validate(dcFile);
                         if (!string.IsNullOrEmpty(result)) throw new Exception(result);
                         dcFile = await CheckForSocpenRecordAsync(dcFile, scanModel.LoReferece);
@@ -188,12 +195,18 @@ namespace Sassa.BRM.Services
             string lcTxt = doc.Lctype > 0 ? $"_LC" : "";
             return $"{doc.ApplicantNo}_{_staticService.GetGrantType(doc.GrantType)}_{doc.UnqFileNo}_{officeName}_{_staticService.GetRegionCode(office.RegionId)}_{office.OfficeType}{lcTxt}.pdf";
         }
-        private async Task<DcFile> GetDcFileFromLoAsync(FasttrackScan scanModel)
+        private async Task<DcFile> GetDcFileFromLoAsync(FasttrackScan scanModel,string fileN,string fileName)
         {
             try
             {
 
                 CustCoversheet coverSheet = await _loService.GetCoversheetAsync(scanModel.LoReferece);
+                if(coverSheet is null)
+                {
+                    _logger.LogError("LOReferenceNotFound", fileName);
+                    File.Move(fileN, Path.Combine(_rejectDirectory, "LOReferencNotFound." + fileName));
+                    throw new Exception($"Coversheet with reference {scanModel.LoReferece} not found.");
+                }
                 if (!decimal.TryParse(coverSheet.DrpdwnTransaction, out decimal decTrnType))
                 {
                     throw new Exception($"Invalid Transaction Type {coverSheet.DrpdwnTransaction} , expected 0,1 or 2");

@@ -89,6 +89,7 @@
             selectedValidation = await loService.GetValidationRecord(txtSearchRef);
             selectedCover = await loService.GetEcover(txtSearchRef);
             pdfExists = !string.IsNullOrWhiteSpace(docService.GetFirstDocument(txtSearchRef));
+            StateHasChanged();
             Logger.LogInformation("Fetched LO Record and Validation Record for reference {Reference}", txtSearchRef);
         }
         catch (Exception ex)

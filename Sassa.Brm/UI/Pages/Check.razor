@@ -5,23 +5,21 @@
 @inject IAlertService toast
 @inject TdwBatchService batchService
 @inject IHttpClientFactory _httpClientFactory
+@inject CSService csService
+@inject IDbContextFactory<ModelContext> _brmcontextFactory
+@inject IDbContextFactory<LoModelContext> _locontextFactory
+
 
 
 <button class="btn btn-primary btn-sm active" @onclick="() => SaveReport()">Save Health check</button>
 <button class="btn btn-primary btn-sm active" @onclick="() => TdwEmailTest()">Tdw Email Test</button>
-<div class="status-widget">
-    @if (isBrmApiHealthy)
-    {
-        <div class="alert alert-success">
-            <span class="checkmark">✔</span> Brm Api Online
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-error">
-            <span class="crossmark">✖</span> Brm Api Offline
-        </div>
-    }
+
+<div class="status-row">
+    <StatusWidget ServiceName="BRM Api" Status="@isBrmApiHealthy"/>
+    <StatusWidget ServiceName="CS WebService" Status="@isCsWsHealthy"/>
+    <StatusWidget ServiceName="CS Database" Status="@isCsDbHealthy"/>
+    <StatusWidget ServiceName="BRM Database" Status="@isBrmDbHealthy"/>
+    <StatusWidget ServiceName="LO Database" Status="@isLoDbHealthy"/>
 </div>
 
 <hr />
@@ -32,13 +30,18 @@
     @code {
         [Inject] IWebHostEnvironment? Env { get; set; }
 
-        private bool isBrmApiHealthy = true; // Replace with actual health check logic
+        private bool isBrmApiHealthy = false; // Replace with actual health check logic
+        private bool isCsWsHealthy = false; // Replace with actual health check logic
+        //Dbs
+        private bool isBrmDbHealthy = false; // Replace with actual health check logic
+        private bool isLoDbHealthy = false;
+        private bool isCsDbHealthy = false;
+        private bool isSocpenDbHealthy = false;
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                // Example health check logic, replace with actual API call
                 var client = _httpClientFactory.CreateClient("BrmApi");
                 var response = await client.GetAsync("ApplicationV2/healthcheck");
                 isBrmApiHealthy = response.IsSuccessStatusCode;
@@ -47,6 +50,13 @@
             {
                 isBrmApiHealthy = false;
             }
+            isCsWsHealthy = await csService.CheckService();
+            isCsDbHealthy = await csService.CheckDBConnection();
+            using var brmctx = _brmcontextFactory.CreateDbContext();
+            isBrmDbHealthy = await brmctx.DcBoxTypes.AsNoTracking().CountAsync() == 18;
+            using var loctx = _locontextFactory.CreateDbContext();
+            isLoDbHealthy = ((await loctx.CustCoversheetValidations.FindAsync("2907202508110947")) != null);
+
         }
 
     public async Task SaveReport()
