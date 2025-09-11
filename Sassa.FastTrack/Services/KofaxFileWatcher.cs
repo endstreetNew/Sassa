@@ -129,13 +129,17 @@ namespace Sassa.BRM.Services
                         File.Move(file, Path.Combine(_rejectDirectory, "InvalidFileName." + fileName));
                         continue;
                     }
+                    //Check for dupliate Barcode
                     using var brmctx = _dbContextFactory.CreateDbContext();
-                    if(!(await brmctx.DcFiles.Where(f => f.BrmBarcode == scanModel.BrmBarcode).AnyAsync()))
+                    var barcodes = await brmctx.DcFiles.Where(f => f.BrmBarcode == scanModel.BrmBarcode).ToListAsync();
+
+                    if (barcodes.Any())
                     {
                         _logger.LogError("Duplicate BRM Barcode", fileName);
                         File.Move(file, Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName));
                         continue;
                     }
+                   //---------------------------------
                     try
                     {
                         DcFile dcFile = await GetDcFileFromLoAsync(scanModel,file,fileName);
@@ -235,6 +239,15 @@ namespace Sassa.BRM.Services
                     throw new Exception("ApplicationDate is invalid or missing.");
                 }
 
+                //if (localoffice.ManualBatch == "A" || coverSheet.Clmnumber.Length == 12)
+                //{
+                //    application.BatchNo = 0;
+                //}
+                //else
+                //{
+                //    throw new Exception("Manual batching not set for this office.");
+                //}
+
                 DcFile file = new DcFile()
                 {
                     UnqFileNo = coverSheet.Clmnumber,
@@ -242,7 +255,7 @@ namespace Sassa.BRM.Services
                     BrmBarcode = scanModel.BrmBarcode,
                     BatchAddDate = DateTime.Now,
                     TransType = decTrnType,
-                    //BatchNo = application.BatchNo, Todo: set to 0 if manual batch or fail
+                    BatchNo = 0,//application.BatchNo, Todo: set to 0 if manual batch or fail
                     GrantType = coverSheet.DrpdwnGrantTypes,
                     OfficeId = localoffice.OfficeId,
                     RegionId = localoffice.RegionId,
