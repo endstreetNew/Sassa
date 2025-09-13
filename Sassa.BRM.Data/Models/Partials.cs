@@ -22,7 +22,7 @@ namespace Sassa.BRM.Models
 
             modelBuilder.Entity<IdResult>().HasNoKey();
 
-            modelBuilder.Entity<Application>().HasNoKey();
+            modelBuilder.Entity<ApplicationModel>().HasNoKey();
         }
     }
     public partial class DcFileDeleted

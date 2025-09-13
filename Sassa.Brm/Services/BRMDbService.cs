@@ -33,7 +33,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
         return result;
     }
-    public async Task EditBarCode(Application brm, string barCode)
+    public async Task EditBarCode(ApplicationModel brm, string barCode)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
@@ -44,7 +44,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
 
     }
-    public async Task<DcFile> CreateBRM(Application application, string reason)
+    public async Task<DcFile> CreateBRM(ApplicationModel application, string reason)
     {
         //Moved to the Api
         //await RemoveBRM(application.Brm_BarCode, reason);
@@ -103,7 +103,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
             }
         }
     }
-    public async Task AutoMerge(Application app, List<Application> parents)
+    public async Task AutoMerge(ApplicationModel app, List<ApplicationModel> parents)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
@@ -1173,14 +1173,14 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
     /// <param name="SearchId"></param>
     /// <param name="FullSearch"></param>
     /// <returns></returns>
-    public async Task<List<Application>> SearchSocpenId(string SearchId)
+    public async Task<List<ApplicationModel>> SearchSocpenId(string SearchId)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
-            List<Application> idquery;
-            List<Application> oldidquery = new List<Application>();
+            List<ApplicationModel> idquery;
+            List<ApplicationModel> oldidquery = new List<ApplicationModel>();
             var pselect = await _context.DcSocpens.Where(d => d.BeneficiaryId == SearchId).AsNoTracking().ToListAsync();
-            idquery = pselect.Select(d => new Application
+            idquery = pselect.Select(d => new ApplicationModel
             {
                 SocpenIsn = (long)d.Id,
                 Id = d.BeneficiaryId,
@@ -1215,12 +1215,12 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
 
-    public async Task<List<Application>> SearchSocpenSrd(long srd)
+    public async Task<List<ApplicationModel>> SearchSocpenSrd(long srd)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
             var result = await _context.DcSocpens.Where(d => d.SrdNo == srd).AsNoTracking().ToListAsync();
-            List<Application> srdsquery = result.Select(d => new Application
+            List<ApplicationModel> srdsquery = result.Select(d => new ApplicationModel
             {
                 SocpenIsn = (long)d.Id,
                 Id = d.BeneficiaryId,
@@ -1249,7 +1249,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
 
-    public async Task<List<Application>> SearchBRMID(string SearchId)
+    public async Task<List<ApplicationModel>> SearchBRMID(string SearchId)
     {
         using (var _context = _contextFactory.CreateDbContext())
         {
@@ -1258,7 +1258,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 .Where(f => f.ApplicantNo == SearchId)
                 .GroupJoin(_context.DcMerges, fgm => fgm.BrmBarcode, merge => merge.BrmBarcode, (fgm, merge) => new { file = fgm, merge = merge }).AsNoTracking().ToListAsync();
 
-            return pselect.SelectMany(x => x.merge.DefaultIfEmpty(), (f, merge) => new Application
+            return pselect.SelectMany(x => x.merge.DefaultIfEmpty(), (f, merge) => new ApplicationModel
             {
                 Id = f.file.ApplicantNo,
                 Name = f.file.UserFirstname,
@@ -1419,7 +1419,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
         }
     }
 
-    public async Task DeleteSocpenRecord(Application a)
+    public async Task DeleteSocpenRecord(ApplicationModel a)
     {
         if (string.IsNullOrEmpty(a.Clm_No)) return;
         using (var _context = _contextFactory.CreateDbContext())

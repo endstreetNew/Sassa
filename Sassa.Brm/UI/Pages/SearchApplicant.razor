@@ -126,13 +126,13 @@
     string regionChangeMessage = "";
     string manualGrantType = "";
 
-    protected List<Application> DTSocPen = new();
-    protected List<Application> DTBrm = new();
-    protected List<Application> DTBrmParents = new();
-    protected List<Application> DTMerged = new();
+    protected List<ApplicationModel> DTSocPen = new();
+    protected List<ApplicationModel> DTBrm = new();
+    protected List<ApplicationModel> DTBrmParents = new();
+    protected List<ApplicationModel> DTMerged = new();
     protected Dictionary<string, int> Unmerged = new();
 
-    protected Application SelectedApplication = new();
+    protected ApplicationModel SelectedApplication = new();
 
     bool showConfirmRegion = false;
     bool showBrmModal = false;
@@ -252,7 +252,7 @@
         }
     }
 
-    private async Task btnNewCover_Click(Application a)
+    private async Task btnNewCover_Click(ApplicationModel a)
     {
         rebox.BoxNo = rebox.BoxNo.ToUpper();
         if (string.IsNullOrEmpty(rebox.BoxNo))
@@ -314,7 +314,7 @@
             toast.Error("a Srd record requires an SRD no.");
             return;
         }
-        SelectedApplication = new Application
+        SelectedApplication = new ApplicationModel
         {
             TRANS_TYPE = 0,
             TDW_BOXNO = rebox.BoxNo,
@@ -381,7 +381,7 @@
         nav.NavigateTo($"boxing/{rebox.BoxNo}");
     }
 
-    private async Task btnDelete_Click(Application a)
+    private async Task btnDelete_Click(ApplicationModel a)
     {
         await db.DeleteSocpenRecord(a);
     }

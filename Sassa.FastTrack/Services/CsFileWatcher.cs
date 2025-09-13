@@ -11,7 +11,7 @@ namespace Sassa.BRM.Services
     {
         private readonly ILogger<CsFileWatcher> _logger;
         private readonly string _processedDirectory;
-        private Timer? _timer;
+        private System.Threading.Timer? _timer;
         private readonly TimeSpan _pollInterval;
         CsUploadService _csService;
         // Re-entrancy guard (0 = idle, 1 = running)
@@ -31,7 +31,7 @@ namespace Sassa.BRM.Services
 
             if (!Directory.Exists(_processedDirectory))Directory.CreateDirectory(_processedDirectory);
 
-            _timer = new Timer(ProcessFiles, null, TimeSpan.Zero, _pollInterval);
+            _timer = new System.Threading.Timer(ProcessFiles, null, TimeSpan.Zero, _pollInterval);
 
             return Task.CompletedTask;
         }

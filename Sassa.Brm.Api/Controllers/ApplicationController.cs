@@ -28,7 +28,7 @@ namespace Sassa.BRM.Controller
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
         [AllowAnonymous]
-        public async Task<ActionResult<DcFile>> PostApplication(Application app)
+        public async Task<ActionResult<DcFile>> PostApplication(ApplicationModel app)
         {
             DcFile result = new DcFile();
 

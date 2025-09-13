@@ -10,7 +10,7 @@ public class BrmApiService(IHttpClientFactory _httpClientFactory)//, IConfigurat
 {
     //string _brmApiUrl = config["Urls:BrmApi"]!;
     #region Application
-    public async Task<DcFile?> PostApplication(Application application)
+    public async Task<DcFile?> PostApplication(ApplicationModel application)
     {
         var client = _httpClientFactory.CreateClient("BrmApi");
         var serializationOptions = new JsonSerializerOptions()

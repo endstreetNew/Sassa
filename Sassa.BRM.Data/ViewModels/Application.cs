@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Sassa.BRM.Models
 {
-    public class Application
+    public class ApplicationModel
     {
         public long SocpenIsn { get; set; }
         public string ARCHIVE_YEAR { get; set; }

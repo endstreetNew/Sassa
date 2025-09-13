@@ -186,21 +186,21 @@
 
 @code {
     [Parameter]
-    public List<Application> DTBrm { get; set; } = new();
+    public List<ApplicationModel> DTBrm { get; set; } = new();
     [Parameter]
-    public List<Application> DTMerges { get; set; } = new();
+    public List<ApplicationModel> DTMerges { get; set; } = new();
     [Parameter]
     public EventCallback<int> Changed { get; set; }
 
     protected string deleteReason = "";
     protected bool showConfirmation;
     protected bool showEditBarcodeConfirmation;
-    protected Application selectedApp = new();
+    protected ApplicationModel selectedApp = new();
 
     protected string? NewBarCode;
 
 
-    protected async Task btnBatch_Click(Application app)
+    protected async Task btnBatch_Click(ApplicationModel app)
     {
         //Navigate.NavigateTo($"coversheet/{app.Brm_BarCode}");
         try
@@ -219,7 +219,7 @@
             toast.Error(ex.Message);
         }
     }
-    protected async Task btnView_Click(Application app)
+    protected async Task btnView_Click(ApplicationModel app)
     {
         //Navigate.NavigateTo($"coversheet/{app.Brm_BarCode}");
         try
@@ -233,7 +233,7 @@
     }
 
 
-    protected void btnDelete_Click(Application app)
+    protected void btnDelete_Click(ApplicationModel app)
     {
         if (DTMerges != null && DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
         {
@@ -245,13 +245,13 @@
             showConfirmation = true;
         }
     }
-    protected void btnPdf_Click(Application app)
+    protected void btnPdf_Click(ApplicationModel app)
     {
         string html = coverSheetService.getCoverHtml(app.Clm_No);
         PdfService.ToPdfFile(html, helper.GetFileName("Cover", sessionservice.session), StaticDataService.ReportFolder);
     }
 
-    protected void btnEditBarcode_Click(Application app)
+    protected void btnEditBarcode_Click(ApplicationModel app)
     {
         if (DTMerges != null && DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
         {

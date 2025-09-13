@@ -184,10 +184,10 @@
     protected string deleteReason = "";
     protected bool showConfirmation;
     protected bool showEditBarcodeConfirmation;
-    protected Application selectedApp = new();
+    protected ApplicationModel selectedApp = new();
 
-    protected List<Application> DTBrm { get; set; } = new List<Application>();
-    protected List<Application> DTMerges { get; set; } = new List<Application>();
+    protected List<ApplicationModel> DTBrm { get; set; } = new List<ApplicationModel>();
+    protected List<ApplicationModel> DTMerges { get; set; } = new List<ApplicationModel>();
 
     protected string NewBarCode = "";
 
@@ -197,7 +197,7 @@
     }
 
 
-    protected async Task btnBatch_Click(Application app)
+    protected async Task btnBatch_Click(ApplicationModel app)
     {
         //Navigate.NavigateTo($"coversheet/{app.Brm_BarCode}");
         try
@@ -216,7 +216,7 @@
             toast.Error(ex.Message);
         }
     }
-    protected async Task btnView_Click(Application app)
+    protected async Task btnView_Click(ApplicationModel app)
     {
         //Navigate.NavigateTo($"coversheet/{app.Brm_BarCode}");
         try
@@ -230,7 +230,7 @@
     }
 
 
-    protected void btnDelete_Click(Application app)
+    protected void btnDelete_Click(ApplicationModel app)
     {
         if (DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
         {
@@ -243,7 +243,7 @@
         }
     }
 
-    protected void btnEditBarcode_Click(Application app)
+    protected void btnEditBarcode_Click(ApplicationModel app)
     {
         if (DTMerges.Where(b => b.Brm_Parent == app.Brm_BarCode).Any())
         {

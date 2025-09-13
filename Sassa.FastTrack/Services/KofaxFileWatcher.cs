@@ -21,7 +21,7 @@ namespace Sassa.BRM.Services
         private readonly string _watchDirectory;
         private readonly string _processedDirectory;
         private readonly string _rejectDirectory;
-        private Timer? _timer;
+        private System.Threading.Timer? _timer;
         private readonly TimeSpan _pollInterval;
         private readonly LoService _loService;
         private readonly CoverSheetService _coverSheetService;  
@@ -61,7 +61,7 @@ namespace Sassa.BRM.Services
                 throw;
             }
 
-            _timer = new Timer(ProcessFiles, null, TimeSpan.Zero, _pollInterval);
+            _timer = new System.Threading.Timer(ProcessFiles, null, TimeSpan.Zero, _pollInterval);
 
             return Task.CompletedTask;
         }

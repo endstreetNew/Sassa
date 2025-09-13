@@ -7,6 +7,12 @@ using Sassa.Models;
 using Sassa.Services;
 using Serilog;
 using Serilog.Events;
+using System.Diagnostics;
+using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows.Forms;
+using Svg;
 
 var builder = WebApplication.CreateBuilder(args);
 // Ensure detailed startup info
@@ -93,6 +99,126 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
 }
 
+if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.UserInteractive)
+{
+    var port = builder.Configuration.GetValue<int>("Urls:AppPort");
+    StartTrayIcon(app.Lifetime, port, builder.Environment.WebRootPath);
+}
+
+app.UseAntiforgery();
+
+app.MapStaticAssets();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+app.Run();
+static void StartTrayIcon(IHostApplicationLifetime lifetime, int port, string webRootPath)
+{
+    var thread = new Thread(() =>
+    {
+        Application.Run(new TrayContext(lifetime, port, webRootPath));
+        });
+        thread.SetApartmentState(ApartmentState.STA);
+        thread.IsBackground = true;
+        thread.Start();
+}
+
+sealed class TrayContext : ApplicationContext
+{
+    private readonly NotifyIcon _tray;
+    private readonly IHostApplicationLifetime _lifetime;
+    private readonly string _homeUrl;
+    private readonly string _webRoot;
+
+    public TrayContext(IHostApplicationLifetime lifetime, int port, string webRootPath)
+    {
+        _lifetime = lifetime;
+        _homeUrl = $"http://localhost:{port}/";
+        _webRoot = webRootPath;
+
+        var menu = new ContextMenuStrip { ImageScalingSize = new Size(16, 16) };
+        var imgHome = LoadSvgImage("open-iconic/svg/home.svg", 16);
+        var imgStart = LoadSvgImage("open-iconic/svg/media-play.svg", 16);
+        var imgStop = LoadSvgImage("open-iconic/svg/media-stop.svg", 16);
+
+        menu.Items.Add(new ToolStripMenuItem("Home", imgHome, (_, __) => Open(_homeUrl)));
+        menu.Items.Add(new ToolStripSeparator());
+        menu.Items.Add(new ToolStripMenuItem("Start", imgStart, async (_, __) => await RestartAsync()));
+        menu.Items.Add(new ToolStripMenuItem("Stop", imgStop, (_, __) => _lifetime.StopApplication()));
+
+        var contentDir = Path.Combine(AppContext.BaseDirectory, "images");
+        var icoPath = Path.Combine(contentDir, "trayIcon.ico");
+
+        _tray = new NotifyIcon
+        {
+            Icon = new Icon(icoPath, SystemInformation.SmallIconSize),
+            Text = "Sassa.FastTrack",
+            Visible = true,
+            ContextMenuStrip = menu
+        };
+        _tray.DoubleClick += (_, __) => Open(_homeUrl);
+
+        _lifetime.ApplicationStopping.Register(() =>
+        {
+            try { _tray.Visible = false; _tray.Dispose(); } catch { }
+            Application.ExitThread();
+        });
+    }
+
+    private string PathFromWebRoot(string relative)
+        => System.IO.Path.Combine(_webRoot, relative.Replace('/', System.IO.Path.DirectorySeparatorChar));
+
+    private Image? LoadSvgImage(string rel, int size)
+    {
+        try
+        {
+            var doc = SvgDocument.Open(PathFromWebRoot(rel));
+            return doc.Draw(size, size);
+        }
+        catch { return null; }
+    }
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    private static extern bool DestroyIcon(IntPtr handle);
+
+    private Icon LoadSvgIcon(string rel, int size)
+    {
+       
+        var doc = SvgDocument.Open(PathFromWebRoot(rel));
+        using var bmp = doc.Draw(size, size) as Bitmap ?? new Bitmap(size, size);
+        var hIcon = bmp.GetHicon();
+        var icon = Icon.FromHandle(hIcon);
+        var clone = (Icon)icon.Clone();
+        DestroyIcon(hIcon); // avoid handle leak
+        icon.Dispose();
+        return clone;
+    }
+
+    private static void Open(string url)
+    {
+        try { Process.Start(new ProcessStartInfo(url) { UseShellExecute = true }); } catch { }
+    }
+
+    private async Task RestartAsync()
+    {
+        try
+        {
+            var exe = Environment.ProcessPath!;
+            var args = string.Join(' ', Environment.GetCommandLineArgs().Skip(1).Select(a => a.Contains(' ') ? $"\"{a}\"" : a));
+            Process.Start(new ProcessStartInfo("cmd.exe", $"/C timeout /T 1 /NOBREAK >NUL & \"{exe}\" {args}")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true
+            });
+        }
+        catch { }
+        finally
+        {
+            _lifetime.StopApplication();
+        }
+    }
+}
+
+
 
 //app.UseAntiforgery();
 
@@ -100,4 +226,7 @@ if (!app.Environment.IsDevelopment())
 //app.MapRazorComponents<App>()
 //    .AddInteractiveServerRenderMode();
 
-app.Run();
+//app.Run();
+
+
+

@@ -1,0 +1,47 @@
+﻿.centered {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.printme {
+    width: 800px;
+/*    margin: 10mm 10mm 10mm 0mm;*/
+}
+
+
+qrcode{
+    width:100px;
+    height:100px;
+}
+
+.rotate {
+    -webkit-transform: rotate(90deg);
+    -webkit-transform-origin: 0% 100%;
+    /* Saf3.1+, Chrome */
+    -moz-transform: rotate(90deg);
+    -moz-transform-origin: 0% 100%;
+    /* FF3.5+ */
+    -ms-transform: rotate(90deg);
+    -ms-transform-origin: 0% 100%;
+    /* IE9 */
+    -o-transform: rotate(90deg);
+    -o-transform-origin: 0% 100%;
+    /* Opera 10.5 */
+    transform: rotate(90deg);
+    transform-origin: 0% 100%;
+    /*    filter: progid:DXImageTransform.Microsoft.Matrix( M11=0, M12=1, M21=-1, M22=0, direction=135, sizingMethod='auto expand');*/
+    zoom: 1;
+    position: absolute;
+    left:110px;
+    height: 10px;
+    width: 200px;
+}
+.chkboxLabel {
+    display: inline;
+    padding-left: 5px;
+    font-size: 10px;
+    font-weight: normal;
+}

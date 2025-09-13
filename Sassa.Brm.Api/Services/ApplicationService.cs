@@ -13,7 +13,7 @@ namespace Sassa.BRM.Api.Services;
 public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
 {
 
-    public string ValidateApplcation(Application app)
+    public string ValidateApplcation(ApplicationModel app)
     {
         if (app.Id.Length != 13)
         {
@@ -104,7 +104,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         return "";
     }
     #region BRM Records
-    public async Task<DcFile> ValidateApiAndInsert(Application application, string reason)
+    public async Task<DcFile> ValidateApiAndInsert(ApplicationModel application, string reason)
     {
         while (!staticService.IsInitialized) { }
 
@@ -165,7 +165,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
     /// <param name="application"></param>
     /// <param name="reason"></param>
     /// <returns></returns>
-    public async Task<DcFile> CreateBRM(Application application, string reason)
+    public async Task<DcFile> CreateBRM(ApplicationModel application, string reason)
     {
 
         await RemoveBRM(application.Brm_BarCode, reason);
@@ -347,7 +347,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
     /// <param name="application"></param>
     /// <param name="reason"></param>
     /// <returns></returns>
-    public async Task<DcFile> ScanBRM(Application application, string reason)
+    public async Task<DcFile> ScanBRM(ApplicationModel application, string reason)
     {
         DcFile? file = null;
 
