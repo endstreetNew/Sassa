@@ -71,6 +71,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 }
                 break;
             case "S":
+            case "s":
                 if (string.IsNullOrEmpty(app.Srd_No))
                 {
                     return "A Srd No is required for this application.";

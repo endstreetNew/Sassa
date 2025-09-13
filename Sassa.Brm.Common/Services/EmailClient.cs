@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
@@ -10,19 +11,21 @@ namespace Sassa.Brm.Common.Services
     {
         //private bool disposed;
         private NetworkCredential _credential;
+        private ILogger<EmailClient> _logger;
 
         private string _SMTPServer;
         private int _SMTPPort;
         private string _SMTPUser;
         private string _SMTPPassword;
 
-        public EmailClient(IConfiguration config)
+        public EmailClient(IConfiguration config, ILogger<EmailClient> logger)
         {
             _SMTPServer = config.GetValue<string>("Email:SMTPServer")!;
             _SMTPUser = config.GetValue<string>("Email:SMTPUser")!;
             _SMTPPassword = config.GetValue<string>("Email:SMTPPassword")!;
             _SMTPPort = config.GetValue<int>("Email:SMTPPort")!;
             _credential = new NetworkCredential(_SMTPUser, _SMTPPassword);
+            _logger = logger;
         }
         public void SendMail(string from, string to, string subject, string body, List<string>? attachments)
         {
@@ -55,11 +58,7 @@ namespace Sassa.Brm.Common.Services
                 }
                 catch (Exception ex)
                 {
-                    using (EventLog eventLog = new EventLog("Application"))
-                    {
-                        eventLog.Source = "BRM Application";
-                        eventLog.WriteEntry($"From {from} to {to} err: {ex.Message}", EventLogEntryType.Error, 101, 1);
-                    }
+                    _logger.LogError(ex, $"Error sending email to {to}.");
                 }
             }
         }

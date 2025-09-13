@@ -8,6 +8,7 @@
 @inject CSService csService
 @inject IDbContextFactory<ModelContext> _brmcontextFactory
 @inject IDbContextFactory<LoModelContext> _locontextFactory
+@inject ILogger<Check> logger
 
 
 
@@ -84,8 +85,9 @@
             batchService.SendTdwMailTest(Path.Combine(Env.WebRootPath, "TestFile.csv"));
             toast.Success("TestMail sent please check the log for any error.");
         }
-        catch
+        catch(Exception ex)
         {
+            logger.LogError(ex, "Error in Email client test");
             toast.Error("Error consumed in Email client...");
         }
     }

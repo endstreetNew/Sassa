@@ -123,7 +123,7 @@ namespace Sassa.BRM.Services
                         BrmBarcode = fileParts[1].ToUpper(),
                     };
 
-                    if (scanModel.LoReferece.Length != 16 || scanModel.BrmBarcode.Length != 8)
+                    if (scanModel.LoReferece.Length != 16 || scanModel.BrmBarcode.Length != 8 || !scanModel.LoReferece.IsNumeric())
                     {
                         _logger.LogError("Invalid file name format: {FileName}. Expected format: <16-digit LO Reference>.<8-digit BRM Barcode>", fileName);
                         File.Move(file, Path.Combine(_rejectDirectory, "InvalidFileName." + fileName));
@@ -139,10 +139,17 @@ namespace Sassa.BRM.Services
                         File.Move(file, Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName));
                         continue;
                     }
-                   //---------------------------------
+                    //---------------------------------
+                    CustCoversheet coverSheet = await _loService.GetCoversheetAsync(scanModel.LoReferece);
+                    if (coverSheet is null)
+                    {
+                        _logger.LogError("LOReferenceNotFound", fileName);
+                        File.Move(file, Path.Combine(_rejectDirectory, "LOReferencNotFound." + fileName));
+                        continue;
+                    }
                     try
                     {
-                        DcFile dcFile = await GetDcFileFromLoAsync(scanModel,file,fileName);
+                        DcFile dcFile = await GetDcFileFromLoAsync(coverSheet,scanModel, file,fileName);
                         string result = Validate(dcFile);
                         if (!string.IsNullOrEmpty(result)) throw new Exception(result);
                         dcFile = await CheckForSocpenRecordAsync(dcFile, scanModel.LoReferece);
@@ -151,21 +158,14 @@ namespace Sassa.BRM.Services
                         var newFileName = GetFilename(dcFile, _staticService.GetLocalOffice(dcFile.OfficeId));
                         string newFilePath = $@"{_processedDirectory}\" + newFileName;
                         //Just move the file
-                        try
+                        if (!File.Exists(newFilePath))
                         {
-                            if (!File.Exists(newFilePath))
-                            {
-                                File.Move(file, newFilePath);
-                            }
-                            else
-                            {
-                                _logger.LogInformation("File {newFilePath} already exists in processed folder, moving to rejected", newFilePath);
-                                File.Move(file, Path.Combine(_rejectDirectory, fileName));
-                            }
+                            File.Move(file, newFilePath);
                         }
-                        catch
+                        else
                         {
-                            _logger.LogInformation("Could not move {file} to {newFilePath}", file, newFilePath);
+                            _logger.LogInformation("File {newFilePath} already exists in processed folder, Deleting duplicate", newFilePath);
+                            File.Delete(file);
                         }
                         _logger.LogInformation("Processed file {File}", file);
                         await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now, Validationresult = "ok" });
@@ -199,18 +199,10 @@ namespace Sassa.BRM.Services
             string lcTxt = doc.Lctype > 0 ? $"_LC" : "";
             return $"{doc.ApplicantNo}_{_staticService.GetGrantType(doc.GrantType)}_{doc.UnqFileNo}_{officeName}_{_staticService.GetRegionCode(office.RegionId)}_{office.OfficeType}{lcTxt}.pdf";
         }
-        private async Task<DcFile> GetDcFileFromLoAsync(FasttrackScan scanModel,string fileN,string fileName)
+        private async Task<DcFile> GetDcFileFromLoAsync(CustCoversheet coverSheet,FasttrackScan scanModel, string fileN,string fileName)
         {
             try
             {
-
-                CustCoversheet coverSheet = await _loService.GetCoversheetAsync(scanModel.LoReferece);
-                if(coverSheet is null)
-                {
-                    _logger.LogError("LOReferenceNotFound", fileName);
-                    File.Move(fileN, Path.Combine(_rejectDirectory, "LOReferencNotFound." + fileName));
-                    throw new Exception($"Coversheet with reference {scanModel.LoReferece} not found.");
-                }
                 if (!decimal.TryParse(coverSheet.DrpdwnTransaction, out decimal decTrnType))
                 {
                     throw new Exception($"Invalid Transaction Type {coverSheet.DrpdwnTransaction} , expected 0,1 or 2");
