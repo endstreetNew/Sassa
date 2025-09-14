@@ -27,10 +27,12 @@ namespace Sassa.BRM.Services
         private readonly CoverSheetService _coverSheetService;  
         private readonly IDbContextFactory<ModelContext> _dbContextFactory;
         private readonly StaticService _staticService;
-
         // Re-entrancy guard (0 = idle, 1 = running)
         private int _isProcessing;
         private CancellationToken _stoppingToken;
+        // Pause flag (0 = running, 1 = paused)
+        private int _isPaused;
+
         public KofaxFileWatcher(
             ILogger<KofaxFileWatcher> logger,
             IConfiguration config,LoService loService, CoverSheetService coverSheetService, IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
@@ -46,6 +48,28 @@ namespace Sassa.BRM.Services
             _staticService = staticService;
         }
 
+        // Public pause that can be called from any thread
+        public void Pause()
+        {
+            Interlocked.Exchange(ref _isPaused, 1);
+            _timer?.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+            _logger.LogInformation("KofaxFileWatcher paused.");
+        }
+
+        // Public resume that can be called from any thread
+        public void Resume()
+        {
+            // If we were paused, clear the flag and restart the timer
+            var wasPaused = Interlocked.Exchange(ref _isPaused, 0);
+            if (wasPaused == 0) return; // already running
+            if (_stoppingToken.IsCancellationRequested) return;
+
+            if (_timer != null)
+            {
+                _timer.Change(TimeSpan.Zero, _pollInterval);
+            }
+            _logger.LogInformation("KofaxFileWatcher resumed.");
+        }
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _stoppingToken = stoppingToken;
@@ -61,13 +85,19 @@ namespace Sassa.BRM.Services
                 throw;
             }
 
-            _timer = new System.Threading.Timer(ProcessFiles, null, TimeSpan.Zero, _pollInterval);
+            var dueTime = Volatile.Read(ref _isPaused) == 1 ? Timeout.InfiniteTimeSpan : TimeSpan.Zero;
+            _timer = new System.Threading.Timer(ProcessFiles, null, dueTime, _pollInterval);
 
             return Task.CompletedTask;
         }
 
         private async void ProcessFiles(object? state)
         {
+            // If paused, do nothing
+            if (Volatile.Read(ref _isPaused) == 1)
+            {
+                return;
+            }
             // Prevent overlapping executions
             if (Interlocked.Exchange(ref _isProcessing, 1) == 1)
             {
@@ -187,7 +217,7 @@ namespace Sassa.BRM.Services
                 if (!_stoppingToken.IsCancellationRequested)
                 {
                     _timer?.Change(_pollInterval, _pollInterval);
-                    _logger.LogInformation("I am alive..!");
+                    _logger.LogInformation("Kofax Files: I am alive..!");
                 }
                 Interlocked.Exchange(ref _isProcessing, 0);
             }

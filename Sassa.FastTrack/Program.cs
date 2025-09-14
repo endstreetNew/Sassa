@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Svg;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 // Ensure detailed startup info
@@ -72,19 +73,17 @@ builder.Services.AddScoped<CSService>();
 builder.Services.AddSingleton<CsUploadService>();
 builder.Services.AddSingleton<CoverSheetService>();
 // Add services to the container.
-builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.ListenAnyIP(builder.Configuration.GetValue<int>("Urls:AppPort")); // HTTP
                                                                                     // serverOptions.ListenAnyIP(5001, listenOptions => listenOptions.UseHttps()); // HTTPS
 });
-if (EnableCsWatcher)
-{
-    builder.Services.AddSingleton<CsFileWatcher>();
-    builder.Services.AddHostedService(sp => sp.GetRequiredService<CsFileWatcher>());
-    Log.Information("CsFileWatcher registered.");
-}
+
+builder.Services.AddSingleton<CsFileWatcher>();
+builder.Services.AddHostedService(sp => sp.GetRequiredService<CsFileWatcher>());
+Log.Information("CsFileWatcher registered.");
+
 if (EnableKofaxWatcher)
 {
     builder.Services.AddSingleton<KofaxFileWatcher>();
@@ -102,7 +101,7 @@ if (!app.Environment.IsDevelopment())
 if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.UserInteractive)
 {
     var port = builder.Configuration.GetValue<int>("Urls:AppPort");
-    StartTrayIcon(app.Lifetime, port, builder.Environment.WebRootPath);
+    StartTrayIcon(app.Lifetime, port, builder.Environment.WebRootPath, app.Services);
 }
 
 app.UseAntiforgery();
@@ -111,11 +110,12 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 app.Run();
-static void StartTrayIcon(IHostApplicationLifetime lifetime, int port, string webRootPath)
+
+static void StartTrayIcon(IHostApplicationLifetime lifetime, int port, string webRootPath, IServiceProvider services)
 {
     var thread = new Thread(() =>
     {
-        Application.Run(new TrayContext(lifetime, port, webRootPath));
+        Application.Run(new TrayContext(lifetime, port, webRootPath, services));
         });
         thread.SetApartmentState(ApartmentState.STA);
         thread.IsBackground = true;
@@ -128,22 +128,42 @@ sealed class TrayContext : ApplicationContext
     private readonly IHostApplicationLifetime _lifetime;
     private readonly string _homeUrl;
     private readonly string _webRoot;
+    private readonly CsFileWatcher? _csWatcher;
+    private readonly KofaxFileWatcher? _kofaxWatcher;
 
-    public TrayContext(IHostApplicationLifetime lifetime, int port, string webRootPath)
+    public TrayContext(IHostApplicationLifetime lifetime, int port, string webRootPath, IServiceProvider services)
     {
         _lifetime = lifetime;
         _homeUrl = $"http://localhost:{port}/";
         _webRoot = webRootPath;
+        _csWatcher = services.GetService<CsFileWatcher>();
+        _kofaxWatcher = services.GetService<KofaxFileWatcher>();
 
         var menu = new ContextMenuStrip { ImageScalingSize = new Size(16, 16) };
         var imgHome = LoadSvgImage("open-iconic/svg/home.svg", 16);
         var imgStart = LoadSvgImage("open-iconic/svg/media-play.svg", 16);
         var imgStop = LoadSvgImage("open-iconic/svg/media-stop.svg", 16);
+        var imgPause = LoadSvgImage("open-iconic/svg/media-pause.svg", 16);
 
         menu.Items.Add(new ToolStripMenuItem("Home", imgHome, (_, __) => Open(_homeUrl)));
         menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add(new ToolStripMenuItem("Start", imgStart, async (_, __) => await RestartAsync()));
+
+        // App lifecycle
+        //menu.Items.Add(new ToolStripMenuItem("Start", imgStart, async (_, __) => await RestartAsync()));
         menu.Items.Add(new ToolStripMenuItem("Stop", imgStop, (_, __) => _lifetime.StopApplication()));
+
+        // CS File Watcher controls
+        var pauseWatcher = new ToolStripMenuItem("Pause CS Watcher", imgPause, (_, __) => PauseCsFileWatcher()) { Enabled = _csWatcher is not null };
+        var resumeWatcher = new ToolStripMenuItem("Resume CS Watcher", imgStart, (_, __) => ResumeCsFileWatcher()) { Enabled = _csWatcher is not null };
+        // CS File Watcher controls
+        var pauseKofaxWatcher = new ToolStripMenuItem("Pause Kofax Watcher", imgPause, (_, __) => PauseKofaxFileWatcher()) { Enabled = _csWatcher is not null };
+        var resumeKofaxWatcher = new ToolStripMenuItem("Resume Kofax Watcher", imgStart, (_, __) => ResumeKofaxFileWatcher()) { Enabled = _csWatcher is not null };
+        menu.Items.Add(new ToolStripSeparator());
+        menu.Items.Add(pauseWatcher);
+        menu.Items.Add(resumeWatcher);
+        menu.Items.Add(new ToolStripSeparator());
+        menu.Items.Add(pauseKofaxWatcher);
+        menu.Items.Add(resumeKofaxWatcher);
 
         var contentDir = Path.Combine(AppContext.BaseDirectory, "images");
         var icoPath = Path.Combine(contentDir, "trayIcon.ico");
@@ -163,6 +183,13 @@ sealed class TrayContext : ApplicationContext
             Application.ExitThread();
         });
     }
+
+    // Public functions to control CsFileWatcher from external threads or menu handlers
+    public void PauseCsFileWatcher() => _csWatcher?.Pause();
+    public void ResumeCsFileWatcher() => _csWatcher?.Resume();
+    public void PauseKofaxFileWatcher() => _kofaxWatcher?.Pause();
+    public void ResumeKofaxFileWatcher() => _kofaxWatcher?.Resume();
+
 
     private string PathFromWebRoot(string relative)
         => System.IO.Path.Combine(_webRoot, relative.Replace('/', System.IO.Path.DirectorySeparatorChar));

@@ -17,6 +17,9 @@ namespace Sassa.BRM.Services
         // Re-entrancy guard (0 = idle, 1 = running)
         private int _isProcessing;
         private CancellationToken _stoppingToken;
+        // Pause flag (0 = running, 1 = paused)
+        private int _isPaused;
+
         public CsFileWatcher(
             ILogger<CsFileWatcher> logger,IConfiguration _config, CsUploadService csService)
         {
@@ -25,19 +28,50 @@ namespace Sassa.BRM.Services
             _processedDirectory = Path.Combine(_config.GetValue<string>($"Urls:ScanFolderRoot")!, "Processed");
             _pollInterval = TimeSpan.FromSeconds(_config.GetValue<int>("Functions:CsPollIntervalSeconds"));
         }
+
+        // Public pause that can be called from any thread
+        public void Pause()
+        {
+            Interlocked.Exchange(ref _isPaused, 1);
+            _timer?.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+            _logger.LogInformation("CsFileWatcher paused.");
+        }
+
+        // Public resume that can be called from any thread
+        public void Resume()
+        {
+            // If we were paused, clear the flag and restart the timer
+            var wasPaused = Interlocked.Exchange(ref _isPaused, 0);
+            if (wasPaused == 0) return; // already running
+            if (_stoppingToken.IsCancellationRequested) return;
+
+            if (_timer != null)
+            {
+                _timer.Change(TimeSpan.Zero, _pollInterval);
+            }
+            _logger.LogInformation("CsFileWatcher resumed.");
+        }
+
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _stoppingToken = stoppingToken;
 
             if (!Directory.Exists(_processedDirectory))Directory.CreateDirectory(_processedDirectory);
 
-            _timer = new System.Threading.Timer(ProcessFiles, null, TimeSpan.Zero, _pollInterval);
+            var dueTime = Volatile.Read(ref _isPaused) == 1 ? Timeout.InfiniteTimeSpan : TimeSpan.Zero;
+            _timer = new System.Threading.Timer(ProcessFiles, null, dueTime, _pollInterval);
 
             return Task.CompletedTask;
         }
 
         private async void ProcessFiles(object? state)
         {
+            // If paused, do nothing
+            if (Volatile.Read(ref _isPaused) == 1)
+            {
+                return;
+            }
+
             // Prevent overlapping executions
             if (Interlocked.Exchange(ref _isProcessing, 1) == 1)
             {
@@ -105,10 +139,11 @@ namespace Sassa.BRM.Services
             }
             finally
             {
-                // Resume timer only if not stopping
-                if (!_stoppingToken.IsCancellationRequested)
+                // Resume timer only if not stopping and not paused
+                if (!_stoppingToken.IsCancellationRequested && Volatile.Read(ref _isPaused) == 0)
                 {
                     _timer?.Change(_pollInterval, _pollInterval);
+                    _logger.LogInformation("Cs Files: I am alive..!");
                 }
                 Interlocked.Exchange(ref _isProcessing, 0);
             }
