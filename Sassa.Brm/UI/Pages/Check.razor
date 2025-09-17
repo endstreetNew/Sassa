@@ -8,6 +8,7 @@
 @inject CSService csService
 @inject IDbContextFactory<ModelContext> _brmcontextFactory
 @inject IDbContextFactory<LoModelContext> _locontextFactory
+@inject IDbContextFactory<SocpenContext> _socpencontextFactory
 @inject ILogger<Check> logger
 @inject EmailClient emailClient
 
@@ -23,6 +24,7 @@
     <StatusWidget ServiceName="CS Database" Status="@isCsDbHealthy"/>
     <StatusWidget ServiceName="BRM Database" Status="@isBrmDbHealthy"/>
     <StatusWidget ServiceName="LO Database" Status="@isLoDbHealthy"/>
+    <StatusWidget ServiceName="SOCPEN Database" Status="@isSocpenDbHealthy"/>
 </div>
 
 <hr />
@@ -44,6 +46,7 @@
 
         protected override async Task OnInitializedAsync()
         {
+            // BRM API Health Check
             try
             {
                 var client = _httpClientFactory.CreateClient("BrmApi");
@@ -54,14 +57,69 @@
             {
                 isBrmApiHealthy = false;
             }
-            isMaiServerHealthy = emailClient.SMTPServerTest();
-            isCsWsHealthy = await csService.CheckService();
-            isCsDbHealthy = await csService.CheckDBConnection();
-            using var brmctx = _brmcontextFactory.CreateDbContext();
-            isBrmDbHealthy = await brmctx.DcBoxTypes.AsNoTracking().CountAsync() == 18;
-            using var loctx = _locontextFactory.CreateDbContext();
-            isLoDbHealthy = ((await loctx.CustCoversheetValidations.FindAsync("2907202508110947")) != null);
 
+            // Email Server Health Check
+            try
+            {
+                isMaiServerHealthy = emailClient.SMTPServerTest();
+            }
+            catch
+            {
+                isMaiServerHealthy = false;
+            }
+
+            // CS WebService Health Check
+            try
+            {
+                isCsWsHealthy = await csService.CheckService();
+            }
+            catch
+            {
+                isCsWsHealthy = false;
+            }
+
+            // CS Database Health Check
+            try
+            {
+                isCsDbHealthy = await csService.CheckDBConnection();
+            }
+            catch
+            {
+                isCsDbHealthy = false;
+            }
+
+            // BRM Database Health Check
+            try
+            {
+                using var brmctx = _brmcontextFactory.CreateDbContext();
+                isBrmDbHealthy = await brmctx.DcBoxTypes.AsNoTracking().CountAsync() == 18;
+            }
+            catch
+            {
+                isBrmDbHealthy = false;
+            }
+
+            // LO Database Health Check
+            try
+            {
+                using var loctx = _locontextFactory.CreateDbContext();
+                isLoDbHealthy = ((await loctx.CustCoversheetValidations.FindAsync("2907202508110947")) != null);
+            }
+            catch
+            {
+                isLoDbHealthy = false;
+            }
+
+            // SOCPEN Database Health Check
+            try
+            {
+                using var socpenctx = _socpencontextFactory.CreateDbContext();
+                isSocpenDbHealthy = await socpenctx.CustRescodes.AsNoTracking().Take(1).CountAsync() == 1;
+            }
+            catch
+            {
+                isSocpenDbHealthy = false;
+            }
         }
 
     public async Task SaveReport()
