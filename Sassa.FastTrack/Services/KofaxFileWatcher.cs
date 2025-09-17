@@ -156,6 +156,7 @@ namespace Sassa.BRM.Services
                         else
                         {
                             File.Delete(file);
+                            continue;
                         }
 
                     }
@@ -172,7 +173,9 @@ namespace Sassa.BRM.Services
                         }
                         else
                         {
+                            await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now, Validationresult = "Duplicate Barcode(ok)" });
                             File.Delete(file);
+                            continue;
                         }
                     }
                     //---------------------------------
@@ -187,6 +190,7 @@ namespace Sassa.BRM.Services
                         else
                         {
                             File.Delete(file);
+                            continue;
                         }
                     }
                     try

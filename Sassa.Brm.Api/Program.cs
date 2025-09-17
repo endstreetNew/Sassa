@@ -23,7 +23,7 @@ Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
     .WriteTo.Debug(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
-    .WriteTo.File("Logs/fasttrack-.log",
+    .WriteTo.File("Logs/Sassa.Brm.Api-.log",
         rollingInterval: RollingInterval.Day,
         retainedFileCountLimit: 14,
         shared: true,
@@ -85,17 +85,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 //.WriteTo.File("Logs/FastTrack-Error.log", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
 //.CreateLogger();
 
-
-
-
 var app = builder.Build();
-
-// Windows tray icon (only on Windows desktop sessions)
-if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-{
-    var appPort = builder.Configuration.GetValue<int>("Urls:AppPort");
-    StartTrayIcon(app.Lifetime, app, appPort);
-}
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
@@ -112,103 +102,3 @@ app.MapControllers();
 
 app.Run();
 
-// ---------- Tray icon helpers ----------
-
-static void StartTrayIcon(IHostApplicationLifetime lifetime, IHost host, int port)
-{
-    var trayThread = new Thread(() =>
-    {
-        Application.Run(new TrayApplicationContext(lifetime, host, port));
-    })
-    {
-        IsBackground = true,
-        Name = "TrayIconThread",
-        Priority = ThreadPriority.BelowNormal
-    };
-    trayThread.SetApartmentState(ApartmentState.STA);
-    trayThread.Start();
-}
-
-sealed class TrayApplicationContext : ApplicationContext
-{
-    private readonly NotifyIcon _notifyIcon;
-    private readonly IHostApplicationLifetime _lifetime;
-    private readonly IHost _host;
-    private readonly string _swaggerUrl;
-
-
-    public TrayApplicationContext(IHostApplicationLifetime lifetime, IHost host, int port)
-    {
-        _lifetime = lifetime;
-        _host = host;
-        _swaggerUrl = $"http://localhost:{port}/swagger";
-
-        // Menu
-        var menu = new ContextMenuStrip();
-        var openSwagger = new ToolStripMenuItem("Open Swagger", null, (_, __) => OpenSwagger());
-        var restart = new ToolStripMenuItem("Restart API", null, async (_, __) => await RestartAsync());
-        var stop = new ToolStripMenuItem("Stop API (Exit)", null, (_, __) => StopAndExit());
-        menu.Items.Add(openSwagger);
-        menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add(restart);
-        menu.Items.Add(stop);
-
-        var contentDir = Path.Combine(AppContext.BaseDirectory, "images");
-        var icoPath = Path.Combine(contentDir, "trayIcon.ico");
-
-        _notifyIcon = new NotifyIcon
-        {
-            Icon = new Icon(icoPath, SystemInformation.SmallIconSize),
-            Text = "Sassa.Brm.Api",
-            Visible = true,
-            ContextMenuStrip = menu
-        };
-        _notifyIcon.DoubleClick += (_, __) => OpenSwagger();
-
-        // Clean up icon when the app is stopping
-        _lifetime.ApplicationStopping.Register(() =>
-        {
-            try
-            {
-                _notifyIcon.Visible = false;
-                _notifyIcon.Dispose();
-            }
-            catch { /* ignore */ }
-            Application.ExitThread(); // end tray thread loop
-        });
-    }
-
-    private void OpenSwagger()
-    {
-        try
-        {
-            Process.Start(new ProcessStartInfo(_swaggerUrl) { UseShellExecute = true });
-        }
-        catch { /* ignore */ }
-    }
-
-    private async Task RestartAsync()
-    {
-        try
-        {
-            // Start a new instance of the same executable with same args
-            var exe = Environment.ProcessPath!;
-            var args = string.Join(' ', Environment.GetCommandLineArgs().Skip(1).Select(QuoteArg));
-            Process.Start(new ProcessStartInfo(exe, args) { UseShellExecute = true });
-        }
-        catch { /* ignore */ }
-        finally
-        {
-            StopAndExit();
-        }
-
-        static string QuoteArg(string a) => a.Contains(' ') ? $"\"{a}\"" : a;
-    }
-
-    private void StopAndExit()
-    {
-        // Triggers graceful shutdown; Program.app.Run() will return and the process exits.
-        _lifetime.StopApplication();
-    }
-
-}
