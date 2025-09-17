@@ -9,6 +9,7 @@
 @inject IDbContextFactory<ModelContext> _brmcontextFactory
 @inject IDbContextFactory<LoModelContext> _locontextFactory
 @inject ILogger<Check> logger
+@inject EmailClient emailClient
 
 
 
@@ -17,6 +18,7 @@
 
 <div class="status-row">
     <StatusWidget ServiceName="BRM Api" Status="@isBrmApiHealthy"/>
+    <StatusWidget ServiceName="Email Server" Status="@isMaiServerHealthy"/>
     <StatusWidget ServiceName="CS WebService" Status="@isCsWsHealthy"/>
     <StatusWidget ServiceName="CS Database" Status="@isCsDbHealthy"/>
     <StatusWidget ServiceName="BRM Database" Status="@isBrmDbHealthy"/>
@@ -31,13 +33,15 @@
     @code {
         [Inject] IWebHostEnvironment? Env { get; set; }
 
-        private bool isBrmApiHealthy = false; // Replace with actual health check logic
-        private bool isCsWsHealthy = false; // Replace with actual health check logic
+        private bool isBrmApiHealthy = false;
+        private bool isCsWsHealthy = false;
+        private bool isMaiServerHealthy = false;
         //Dbs
-        private bool isBrmDbHealthy = false; // Replace with actual health check logic
+        private bool isBrmDbHealthy = false; 
         private bool isLoDbHealthy = false;
         private bool isCsDbHealthy = false;
         private bool isSocpenDbHealthy = false;
+
 
         protected override async Task OnInitializedAsync()
         {
@@ -51,6 +55,7 @@
             {
                 isBrmApiHealthy = false;
             }
+            isMaiServerHealthy = emailClient.SMTPServerTest();
             isCsWsHealthy = await csService.CheckService();
             isCsDbHealthy = await csService.CheckDBConnection();
             using var brmctx = _brmcontextFactory.CreateDbContext();

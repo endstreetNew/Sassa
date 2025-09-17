@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sassa.Brm.Common.Helpers;
-using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
 using Sassa.BRM.Models;
 using Sassa.Services;
@@ -12,13 +11,13 @@ namespace Sassa.BRM.Services
     {
         public void AddCoverSheetToFile(string unqFileNo, string fileName, string targetFileName)
         {
-            try 
+            try
             {
                 using var context = _contextFactory.CreateDbContext();
                 var file = context.DcFiles.FirstOrDefault(x => x.UnqFileNo == unqFileNo);
                 if (file == null) throw new Exception($"File {unqFileNo} not found.(BRM)");
                 string coverSHtml = getCoverHtml(file);
-                PdfService.AddFileToCover(coverSHtml, fileName,targetFileName);
+                PdfService.AddFileToCover(coverSHtml, fileName, targetFileName);
                 File.Delete(fileName);
             }
             catch

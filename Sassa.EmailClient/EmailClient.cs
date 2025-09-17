@@ -1,8 +1,6 @@
 ﻿using Serilog;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
-using System.Net.NetworkInformation;
 using System.Text;
 
 namespace Sassa.BRM.Services

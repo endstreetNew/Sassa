@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using System.Net.Sockets;
 using System.Text;
 
 namespace Sassa.Brm.Common.Services
@@ -20,7 +20,7 @@ namespace Sassa.Brm.Common.Services
 
         public EmailClient(IConfiguration config, ILogger<EmailClient> logger)
         {
-            _SMTPServer = config.GetValue<string>("Email:SMTPServer")!;
+            _SMTPServer = config.GetValue<string>("Email:SMTPHost")!;
             _SMTPUser = config.GetValue<string>("Email:SMTPUser")!;
             _SMTPPassword = config.GetValue<string>("Email:SMTPPassword")!;
             _SMTPPort = config.GetValue<int>("Email:SMTPPort")!;
@@ -64,28 +64,20 @@ namespace Sassa.Brm.Common.Services
         }
 
 
-        //public void Dispose()
-        //{
-        //    Dispose(true);
-        //    GC.SuppressFinalize(this);
-        //}
-        //protected virtual void Dispose(bool disposing)
-        //{
-        //    if (disposed)
-        //    {
-        //        return;
-        //    }
+        public bool SMTPServerTest()
+        {
 
-        //    if (disposing)
-        //    {
-        //        // Dispose managed objects
-        //        if (client != null)
-        //        {
-        //            client.Dispose();
-        //        }
-        //    }
-        //    // Dispose unmanaged objects
-        //    disposed = true;
-        //}
+            try
+            {
+                using var client = new TcpClient();
+                client.Connect(_SMTPServer, _SMTPPort);
+                return true;
+            }
+            catch (SocketException ex)
+            {
+                return false;
+            }
+
+        }
     }
 }

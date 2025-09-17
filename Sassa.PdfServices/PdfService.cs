@@ -2,7 +2,6 @@
 using iText.Kernel.Geom;
 using iText.Kernel.Pdf;
 using iText.Kernel.Utils;
-using iText.Layout.Element;
 using iText.StyledXmlParser.Css.Media;
 
 namespace Sassa.Services

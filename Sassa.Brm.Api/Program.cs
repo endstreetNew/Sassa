@@ -7,10 +7,7 @@ using Sassa.Services;
 using Serilog;
 using Serilog.Events;
 using System.Diagnostics;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Windows.Forms;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,15 +32,15 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 string? BrmConnectionString = builder.Configuration.GetConnectionString("BrmConnection");
-string? LoConnectionString  = builder.Configuration.GetConnectionString("LoConnection");
-string? CsConnectionString  = builder.Configuration.GetConnectionString("CsConnection");
+string? LoConnectionString = builder.Configuration.GetConnectionString("LoConnection");
+string? CsConnectionString = builder.Configuration.GetConnectionString("CsConnection");
 
 static string Require(string? v, string name)
     => !string.IsNullOrWhiteSpace(v) ? v : throw new InvalidOperationException($"Missing connection string: {name}");
 
 BrmConnectionString = Require(BrmConnectionString, "BrmConnection");
-LoConnectionString  = Require(LoConnectionString, "LoConnection");
-CsConnectionString  = Require(CsConnectionString, "CsConnection");
+LoConnectionString = Require(LoConnectionString, "LoConnection");
+CsConnectionString = Require(CsConnectionString, "CsConnection");
 // Add services to the container.
 //Factory pattern
 builder.Services.AddDbContextFactory<ModelContext>(options =>
@@ -157,7 +154,7 @@ sealed class TrayApplicationContext : ApplicationContext
         menu.Items.Add(stop);
 
         var contentDir = Path.Combine(AppContext.BaseDirectory, "images");
-        var icoPath    = Path.Combine(contentDir, "trayIcon.ico");
+        var icoPath = Path.Combine(contentDir, "trayIcon.ico");
 
         _notifyIcon = new NotifyIcon
         {

@@ -10,7 +10,7 @@
         public string CsBeneficiaryRoot { get; set; } = string.Empty;
         public int CsMaxRetries { get; set; } = 3;
         public CsServiceSettings() { }
-        public CsServiceSettings(string user, string pass, string endpoint, string connection, string csdocfolder, string csBenificaryRoot, int maxRetries )      
+        public CsServiceSettings(string user, string pass, string endpoint, string connection, string csdocfolder, string csBenificaryRoot, int maxRetries)
         {
             CsServiceUser = user;
             CsServicePass = pass;

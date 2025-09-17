@@ -1,7 +1,7 @@
 ﻿//using DocumentFormat.OpenXml.VariantTypes;
 using Microsoft.EntityFrameworkCore;
-using Sassa.Brm.Common.Services;
 using Sassa.Brm.Common.Helpers;
+using Sassa.Brm.Common.Services;
 using Sassa.BRM.Models;
 //using Sassa.BRM.Pages.Components;
 using System.Data;
@@ -31,7 +31,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
         {
             return "LcType specified without LC status.";
         }
-        if(!"LC-MAIN|LC-ARCHIVE|MAIN|ARCHIVE".Contains(app.AppStatus))
+        if (!"LC-MAIN|LC-ARCHIVE|MAIN|ARCHIVE".Contains(app.AppStatus))
         {
             return "Invalid Application Status.";
         }
@@ -209,7 +209,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
                 _context.DcFiles.Add(file);
                 await _context.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -227,7 +227,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             _context.DcSocpens.Where(s => s.BrmBarcode == application.Brm_BarCode).ToList().ForEach(s => s.BrmBarcode = null);
             await _context.SaveChangesAsync();
             var result = new List<DcSocpen>();
-            if ("C95".Contains(application.GrantType) )//child Grant
+            if ("C95".Contains(application.GrantType))//child Grant
             {
                 result = await _context.DcSocpens.Where(s => s.BeneficiaryId == application.Id && s.GrantType == application.GrantType && s.ChildId == application.ChildId).ToListAsync();
             }
@@ -272,7 +272,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             {
                 await _context.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 //SaveActivity("Capture", file.SrdNo, file.Lctype, "Error:" + ex.Message.Substring(0, 200), file.RegionId, decimal.Parse(file.OfficeId), file.UpdatedByAd, file.UnqFileNo);
                 //throw;
@@ -407,7 +407,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
 
                 await _context.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -471,7 +471,7 @@ public class ApplicationService(IDbContextFactory<ModelContext> dbContextFactory
             {
                 await _context.SaveChangesAsync();
             }
-            catch 
+            catch
             {
                 //SaveActivity("Capture", file.SrdNo, file.Lctype, "Error:" + ex.Message.Substring(0, 200), file.RegionId, decimal.Parse(file.OfficeId), file.UpdatedByAd, file.UnqFileNo);
                 //throw;

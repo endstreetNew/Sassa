@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Oracle.ManagedDataAccess.Client;
-using razor.Components;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Models;
 using Sassa.Brm.Common.Services;
@@ -134,7 +132,7 @@ public class Program
         });
 
         builder.Services.AddScoped(sp =>
-        new HttpClient { BaseAddress = new Uri(builder.Configuration["Urls:LocalApi"] )});
+        new HttpClient { BaseAddress = new Uri(builder.Configuration["Urls:LocalApi"]) });
 
         //Brm Api Http Client
         builder.Services.AddHttpClient("BrmApi", client =>
@@ -180,7 +178,7 @@ public class Program
         });
 
         Log.Logger = new LoggerConfiguration()
-        .WriteTo.File("Logs/app-Brm-Error.log", rollingInterval: RollingInterval.Day,restrictedToMinimumLevel:Serilog.Events.LogEventLevel.Error)
+        .WriteTo.File("Logs/app-Brm-Error.log", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
         .CreateLogger();
 
         builder.Host.UseSerilog();
@@ -190,7 +188,7 @@ public class Program
         builder.Services.AddSingleton<SocpenUpdateService>(sp =>
         {
             var logger = sp.GetRequiredService<ILogger<SocpenUpdateService>>();
-            return new SocpenUpdateService( logger, CsConnection);
+            return new SocpenUpdateService(logger, CsConnection);
         });
         builder.Services.AddSingleton<ScheduleService>();
         builder.Services.AddHostedService(sp => sp.GetRequiredService<ScheduleService>());

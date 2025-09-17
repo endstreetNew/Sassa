@@ -5,9 +5,7 @@ using Sassa.BRM.Models;
 using Sassa.Services.Cs;
 using Sassa.Services.CsDocuments;
 using System.Data;
-using System.Reflection.Metadata;
 using System.ServiceModel;
-using System.ServiceModel.Description;
 using System.Text;
 
 namespace Sassa.Services
@@ -140,7 +138,7 @@ namespace Sassa.Services
                     var subnodes = result.GetNodesInContainerResult;
                     if (subnodes == null) return;
                     foreach (var snode in subnodes)
-                        await AddRecursive(snode, node.ID, _docClient,_ota);
+                        await AddRecursive(snode, node.ID, _docClient, _ota);
                 }
                 else if (node.VersionInfo != null)
                 {
@@ -270,7 +268,7 @@ namespace Sassa.Services
 
         }
 
-        public async Task UploadSharedReport(string reportContent,string fileName)
+        public async Task UploadSharedReport(string reportContent, string fileName)
         {
             using (DocumentManagementClient _docClient = new DocumentManagementClient
             {
@@ -306,7 +304,7 @@ namespace Sassa.Services
         /// <param name="filePath"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task UploadDoc(string csNode,string filePath )
+        public async Task UploadDoc(string csNode, string filePath)
         {
 
 
@@ -467,7 +465,7 @@ namespace Sassa.Services
                     return await Task.FromResult(true);
                 }
             }
-            catch 
+            catch
             {
                 return await Task.FromResult(false);
             }

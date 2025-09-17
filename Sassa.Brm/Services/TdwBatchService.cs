@@ -249,7 +249,7 @@ public class TdwBatchService(IDbContextFactory<ModelContext> _contextFactory, St
         }
         catch (Exception ex)
         {
-            logger.LogError(ex,"Error sending TDW email failed.");
+            logger.LogError(ex, "Error sending TDW email failed.");
         }
     }
 

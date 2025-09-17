@@ -1,9 +1,4 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
-using DocumentFormat.OpenXml.Drawing;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
-using DocumentFormat.OpenXml.ExtendedProperties;
-using DocumentFormat.OpenXml.Spreadsheet;
-using Sassa.Brm.Common.Services;
+﻿using Sassa.Brm.Common.Services;
 using Sassa.BRM.Data.ViewModels;
 using Sassa.BRM.Models;
 using System.Data;
@@ -178,25 +173,25 @@ namespace Sassa.Brm.Common.Helpers
             //int nextResult = 0;
             //do
             //{
-                var filePath = Path.Combine(string.IsNullOrEmpty(path) ? Path.GetTempPath() : path, string.Format("{0}.{1}", filename, extension));
-                using (StreamWriter writer = new StreamWriter(filePath))
+            var filePath = Path.Combine(string.IsNullOrEmpty(path) ? Path.GetTempPath() : path, string.Format("{0}.{1}", filename, extension));
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                writer.WriteLine(string.Join(",", Enumerable.Range(0, reader.FieldCount).Select(reader.GetName).ToList()));
+
+                int count = 0;
+                while (reader.Read())
                 {
-                    writer.WriteLine(string.Join(",", Enumerable.Range(0, reader.FieldCount).Select(reader.GetName).ToList()));
-
-                    int count = 0;
-                    while (reader.Read())
+                    writer.WriteLine(string.Join(",", Enumerable.Range(0, reader.FieldCount).Select(reader.GetValue).ToList()));
+                    if (++count % 100 == 0)
                     {
-                        writer.WriteLine(string.Join(",", Enumerable.Range(0, reader.FieldCount).Select(reader.GetValue).ToList()));
-                        if (++count % 100 == 0)
-                        {
-                            writer.Flush();
-                        }
+                        writer.Flush();
                     }
-                    writer.WriteLine($"");
-                    writer.WriteLine($"{header.Region}|{header.Username}|{header.FromDate}|{header.ToDate}|{count}");
                 }
+                writer.WriteLine($"");
+                writer.WriteLine($"{header.Region}|{header.Username}|{header.FromDate}|{header.ToDate}|{count}");
+            }
 
-                //filename = string.Format("{0}-{1}", filename, ++nextResult);
+            //filename = string.Format("{0}-{1}", filename, ++nextResult);
             //}
             //while (reader.NextResult());
         }
@@ -214,7 +209,7 @@ namespace Sassa.Brm.Common.Helpers
                 }
                 count++;
             }
-            while (reader.NextResult()) ;
+            while (reader.NextResult());
             //Username, Region, Date Range and number of application
             lines.Add($"");
             lines.Add($"{header.Region}|{header.Username}|{header.FromDate}|{header.ToDate}|{count}");
@@ -230,7 +225,7 @@ namespace Sassa.Brm.Common.Helpers
         /// <param name="list"></param>
         /// <param name="fileName"></param>
         /// <param name="extension"></param>
-        public static void ToXlsx<T>(this List<T> list,string fileName, string extension = "xlsx")
+        public static void ToXlsx<T>(this List<T> list, string fileName, string extension = "xlsx")
         {
             var properties = typeof(T).GetProperties().Where(p => !(p.GetGetMethod()?.IsVirtual ?? false)).ToList();
 
@@ -254,7 +249,7 @@ namespace Sassa.Brm.Common.Helpers
             List<string> lines = new();
             lines.Add(line.ToString());
             int count = 0;
-            
+
             foreach (var item in list)
             {
                 line = new StringBuilder();
@@ -296,7 +291,7 @@ namespace Sassa.Brm.Common.Helpers
             lines.Add(line.ToString());
             int count = 0;
 
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 line = new StringBuilder();
                 for (int i = 0; i < properties.Length - 1; i++)

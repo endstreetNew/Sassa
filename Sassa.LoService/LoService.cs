@@ -5,7 +5,7 @@ using Sassa.Models;
 
 namespace Sassa.Services
 {
-    public class LoService(IDbContextFactory<LoModelContext> dbContextFactory,ILogger<LoService> logger)
+    public class LoService(IDbContextFactory<LoModelContext> dbContextFactory, ILogger<LoService> logger)
     {
 
         public async Task<CustCoversheet> GetCoversheetAsync(string reference)
@@ -22,7 +22,7 @@ namespace Sassa.Services
             }
             catch (Exception ex)
             {
-                
+
                 throw;
             }
         }
@@ -47,13 +47,13 @@ namespace Sassa.Services
 
                 }
             }
-            catch 
+            catch
             {
                 throw;
             }
         }
 
-        public async Task UpdateLOCover(string reference,DcFile file)
+        public async Task UpdateLOCover(string reference, DcFile file)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Sassa.Services
                     await _context.SaveChangesAsync();
                 }
             }
-            catch 
+            catch
             {
                 throw;
             }
@@ -84,7 +84,7 @@ namespace Sassa.Services
                     return result.Count() > 0;
                 }
             }
-            catch 
+            catch
             {
                 throw new Exception("LO may be offline. (Retry)");
             }
@@ -143,7 +143,7 @@ namespace Sassa.Services
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
 
-                        return await _context.CustCoversheets.AsNoTracking().Take(100).ToListAsync();
+                    return await _context.CustCoversheets.AsNoTracking().Take(100).ToListAsync();
 
                 }
             }
@@ -159,7 +159,7 @@ namespace Sassa.Services
             {
                 using (var _context = dbContextFactory.CreateDbContext())
                 {
-                        return await _context.CustCoversheets.Where(c => c.TxtIdNumber == idNumber).AsNoTracking().ToListAsync();
+                    return await _context.CustCoversheets.Where(c => c.TxtIdNumber == idNumber).AsNoTracking().ToListAsync();
                 }
             }
             catch

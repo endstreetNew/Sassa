@@ -1,17 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Sassa.Brm.Common.Helpers;
 using Sassa.Brm.Common.Services;
 using Sassa.BRM.Data.ViewModels;
 using Sassa.BRM.Models;
 using Sassa.Models;
 using Sassa.Services;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web.Services.Description;
 
 namespace Sassa.BRM.Services
 {
@@ -24,7 +17,7 @@ namespace Sassa.BRM.Services
         private System.Threading.Timer? _timer;
         private readonly TimeSpan _pollInterval;
         private readonly LoService _loService;
-        private readonly CoverSheetService _coverSheetService;  
+        private readonly CoverSheetService _coverSheetService;
         private readonly IDbContextFactory<ModelContext> _dbContextFactory;
         private readonly StaticService _staticService;
         // Re-entrancy guard (0 = idle, 1 = running)
@@ -35,7 +28,7 @@ namespace Sassa.BRM.Services
 
         public KofaxFileWatcher(
             ILogger<KofaxFileWatcher> logger,
-            IConfiguration config,LoService loService, CoverSheetService coverSheetService, IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
+            IConfiguration config, LoService loService, CoverSheetService coverSheetService, IDbContextFactory<ModelContext> dbContextFactory, StaticService staticService)
         {
             _logger = logger;
             _watchDirectory = config.GetValue<string>($"Urls:ScanFolderRoot")!;
@@ -156,8 +149,15 @@ namespace Sassa.BRM.Services
                     if (scanModel.LoReferece.Length != 16 || scanModel.BrmBarcode.Length != 8 || !scanModel.LoReferece.IsNumeric())
                     {
                         _logger.LogError("Invalid file name format: {FileName}. Expected format: <16-digit LO Reference>.<8-digit BRM Barcode>", fileName);
-                        File.Move(file, Path.Combine(_rejectDirectory, "InvalidFileName." + fileName));
-                        continue;
+                        if (!File.Exists(Path.Combine(_rejectDirectory, "InvalidFileName." + fileName)))
+                        {
+                            File.Move(file, Path.Combine(_rejectDirectory, "InvalidFileName." + fileName));
+                        }
+                        else
+                        {
+                            File.Delete(file);
+                        }
+
                     }
                     //Check for dupliate Barcode
                     using var brmctx = _dbContextFactory.CreateDbContext();
@@ -166,20 +166,32 @@ namespace Sassa.BRM.Services
                     if (barcodes.Any())
                     {
                         _logger.LogError("Duplicate BRM Barcode", fileName);
-                        File.Move(file, Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName));
-                        continue;
+                        if (!File.Exists(Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName)))
+                        {
+                            File.Move(file, Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName));
+                        }
+                        else
+                        {
+                            File.Delete(file);
+                        }
                     }
                     //---------------------------------
                     CustCoversheet coverSheet = await _loService.GetCoversheetAsync(scanModel.LoReferece);
                     if (coverSheet is null)
                     {
                         _logger.LogError("LOReferenceNotFound", fileName);
-                        File.Move(file, Path.Combine(_rejectDirectory, "LOReferencNotFound." + fileName));
-                        continue;
+                        if (!File.Exists(Path.Combine(_rejectDirectory, "LOReferencNotFound." + fileName)))
+                        {
+                            File.Move(file, Path.Combine(_rejectDirectory, "LOReferencNotFound." + fileName));
+                        }
+                        else
+                        {
+                            File.Delete(file);
+                        }
                     }
                     try
                     {
-                        DcFile dcFile = await GetDcFileFromLoAsync(coverSheet,scanModel, file,fileName);
+                        DcFile dcFile = await GetDcFileFromLoAsync(coverSheet, scanModel, file, fileName);
                         string result = Validate(dcFile);
                         if (!string.IsNullOrEmpty(result)) throw new Exception(result);
                         dcFile = await CheckForSocpenRecordAsync(dcFile, scanModel.LoReferece);
@@ -208,7 +220,7 @@ namespace Sassa.BRM.Services
             }
             catch (Exception ex)
             {
-                
+
                 _logger.LogError(ex, "Error processing files in directory {Dir}", _watchDirectory);
             }
             finally
@@ -227,9 +239,10 @@ namespace Sassa.BRM.Services
             //0110040430081_Child Support Grant_KZNC31572469_UMZIMKHULU_KZN_LO_LC.pdf
             string officeName = office.OfficeName.Replace("(", "_").Replace(")", "").Replace("  ", "").Replace(" ", "").Replace("/", "_").ToUpper();
             string lcTxt = doc.Lctype > 0 ? $"_LC" : "";
-            return $"{doc.ApplicantNo}_{_staticService.GetGrantType(doc.GrantType)}_{doc.UnqFileNo}_{officeName}_{_staticService.GetRegionCode(office.RegionId)}_{office.OfficeType}{lcTxt}.pdf";
+            var filename = $"{doc.ApplicantNo}_{_staticService.GetGrantType(doc.GrantType)}_{doc.UnqFileNo}_{officeName}_{_staticService.GetRegionCode(office.RegionId)}_{office.OfficeType}{lcTxt}.pdf";
+            return SanitizeFileName(filename);
         }
-        private async Task<DcFile> GetDcFileFromLoAsync(CustCoversheet coverSheet,FasttrackScan scanModel, string fileN,string fileName)
+        private async Task<DcFile> GetDcFileFromLoAsync(CustCoversheet coverSheet, FasttrackScan scanModel, string fileN, string fileName)
         {
             try
             {
@@ -511,6 +524,12 @@ namespace Sassa.BRM.Services
             }
 
 
+        }
+        private string SanitizeFileName(string text)
+        {
+            foreach (char c in Path.GetInvalidFileNameChars())
+                text = text.Replace(c, '_');
+            return text;
         }
     }
 }

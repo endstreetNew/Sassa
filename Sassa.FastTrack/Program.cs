@@ -7,13 +7,9 @@ using Sassa.Models;
 using Sassa.Services;
 using Serilog;
 using Serilog.Events;
-using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Windows.Forms;
 using Svg;
-using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 var builder = WebApplication.CreateBuilder(args);
 // Ensure detailed startup info
@@ -92,7 +88,6 @@ if (EnableKofaxWatcher)
 }
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
@@ -107,8 +102,7 @@ if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Environment.UserInter
 app.UseAntiforgery();
 
 app.MapStaticAssets();
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
+app.MapRazorComponents<App>().AddInteractiveServerRenderMode();
 app.Run();
 
 static void StartTrayIcon(IHostApplicationLifetime lifetime, int port, string webRootPath, IServiceProvider services)
@@ -116,10 +110,10 @@ static void StartTrayIcon(IHostApplicationLifetime lifetime, int port, string we
     var thread = new Thread(() =>
     {
         Application.Run(new TrayContext(lifetime, port, webRootPath, services));
-        });
-        thread.SetApartmentState(ApartmentState.STA);
-        thread.IsBackground = true;
-        thread.Start();
+    });
+    thread.SetApartmentState(ApartmentState.STA);
+    thread.IsBackground = true;
+    thread.Start();
 }
 
 sealed class TrayContext : ApplicationContext
@@ -155,9 +149,9 @@ sealed class TrayContext : ApplicationContext
         // CS File Watcher controls
         var pauseWatcher = new ToolStripMenuItem("Pause CS Watcher", imgPause, (_, __) => PauseCsFileWatcher()) { Enabled = _csWatcher is not null };
         var resumeWatcher = new ToolStripMenuItem("Resume CS Watcher", imgStart, (_, __) => ResumeCsFileWatcher()) { Enabled = _csWatcher is not null };
-        // CS File Watcher controls
-        var pauseKofaxWatcher = new ToolStripMenuItem("Pause Kofax Watcher", imgPause, (_, __) => PauseKofaxFileWatcher()) { Enabled = _csWatcher is not null };
-        var resumeKofaxWatcher = new ToolStripMenuItem("Resume Kofax Watcher", imgStart, (_, __) => ResumeKofaxFileWatcher()) { Enabled = _csWatcher is not null };
+        // Kofax File Watcher controls
+        var pauseKofaxWatcher = new ToolStripMenuItem("Pause Kofax Watcher", imgPause, (_, __) => PauseKofaxFileWatcher()) { Enabled = _kofaxWatcher is not null };
+        var resumeKofaxWatcher = new ToolStripMenuItem("Resume Kofax Watcher", imgStart, (_, __) => ResumeKofaxFileWatcher()) { Enabled = _kofaxWatcher is not null };
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add(pauseWatcher);
         menu.Items.Add(resumeWatcher);
@@ -209,7 +203,7 @@ sealed class TrayContext : ApplicationContext
 
     private Icon LoadSvgIcon(string rel, int size)
     {
-       
+
         var doc = SvgDocument.Open(PathFromWebRoot(rel));
         using var bmp = doc.Draw(size, size) as Bitmap ?? new Bitmap(size, size);
         var hIcon = bmp.GetHicon();
@@ -245,15 +239,6 @@ sealed class TrayContext : ApplicationContext
     }
 }
 
-
-
-//app.UseAntiforgery();
-
-//app.MapStaticAssets();
-//app.MapRazorComponents<App>()
-//    .AddInteractiveServerRenderMode();
-
-//app.Run();
 
 
 

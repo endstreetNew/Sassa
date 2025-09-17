@@ -4,7 +4,7 @@
     {
         private string _rootFolder;
         private string _rejectedDirectory;
-        public DocumentService(string rootfolder) 
+        public DocumentService(string rootfolder)
         {
             _rootFolder = rootfolder;
             _rejectedDirectory = Path.Combine(_rootFolder, "Rejected");
@@ -27,7 +27,7 @@
         {
             string filePath = GetFirstDocument(reference);
             string fileName = Path.GetFileName(filePath);
-            System.IO.File.Move(filePath, Path.Combine(_rejectedDirectory, fileName),true);
+            System.IO.File.Move(filePath, Path.Combine(_rejectedDirectory, fileName), true);
         }
     }
 }

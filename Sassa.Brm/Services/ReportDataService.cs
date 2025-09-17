@@ -47,7 +47,7 @@ public class ReportDataService
         _ogs = ogs;
     }
 
-    public async Task SaveReport(string dateFrom, string dateTo, string rIndex, string office_id, string office_type, string region_id, string grant_type, string filename,string fileFormat, string status = "", string sql = "")
+    public async Task SaveReport(string dateFrom, string dateTo, string rIndex, string office_id, string office_type, string region_id, string grant_type, string filename, string fileFormat, string status = "", string sql = "")
     {
         ReportHeader header = new ReportHeader();
         header.FromDate = dateFrom;
@@ -264,7 +264,7 @@ public class ReportDataService
                     con.Open();
                     using (OracleDataReader reader = (OracleDataReader)await cmd.ExecuteReaderAsync())
                     {
-                        switch(fileFormat)
+                        switch (fileFormat)
                         {
                             case "csv":
                                 reader.ToCsv(filename, header, StaticDataService.ReportFolder);
@@ -276,7 +276,7 @@ public class ReportDataService
                                 throw new Exception("Invalid file format specified.");
                         }
                         //
-                        
+
                     }
                 }
                 con.Close();
@@ -288,7 +288,7 @@ public class ReportDataService
         }
     }
 
-    public async Task SaveReport(string rIndex, ReportPeriod from, ReportPeriod to, string regionId, string fileName,string fileFormat)
+    public async Task SaveReport(string rIndex, ReportPeriod from, ReportPeriod to, string regionId, string fileName, string fileFormat)
     {
         ReportHeader header = new ReportHeader();
         header.FromDate = from.FromDate.ToShortDateString();
@@ -301,12 +301,12 @@ public class ReportDataService
         {
             case "8"://Missing Summary
                 List<MissingFile> result = await _ogs.MissingProgress(from, to, regionId);
-                switch(fileFormat)
+                switch (fileFormat)
                 {
                     case "csv":
                         result.ToCsv<MissingFile>(fileName, header, StaticDataService.ReportFolder);
                         break;
-                        case "xlsx":
+                    case "xlsx":
                         result.ToXlsx<MissingFile>(fileName, header, StaticDataService.ReportFolder);
                         break;
                     default:

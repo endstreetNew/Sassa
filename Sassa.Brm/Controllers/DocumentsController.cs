@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Sassa.Services;
 
 namespace Sassa.BRM.Controllers
@@ -15,7 +13,7 @@ namespace Sassa.BRM.Controllers
         {
             _docService = docService;
             _logger = logger;
-        }   
+        }
         [HttpGet("pdf/{reference}")]
         public IActionResult GetPdf(string reference)
         {

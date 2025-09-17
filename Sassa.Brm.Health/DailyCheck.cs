@@ -8,7 +8,7 @@ namespace Sassa.Brm.Health
 
         private readonly ILogger<DailyCheck> _logger;
         private readonly CSService _csService;
-        public DailyCheck(ILogger<DailyCheck> logger,CSService csService)
+        public DailyCheck(ILogger<DailyCheck> logger, CSService csService)
         {
             _logger = logger;
             _csService = csService ?? throw new ArgumentNullException(nameof(csService));

@@ -1,15 +1,7 @@
 ﻿//using DocumentFormat.OpenXml;
 //using DocumentFormat.OpenXml.Packaging;
 //using DocumentFormat.OpenXml.Spreadsheet;
-using Oracle.ManagedDataAccess.Client;
-using Sassa.BRM.Models;
-using System.Data;
 //using System.Data.Entity.Core.Objects;
-using System.Globalization;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-
 //namespace Sassa.BRM.Common.Helpers
 //{
 //    public static class Extentions

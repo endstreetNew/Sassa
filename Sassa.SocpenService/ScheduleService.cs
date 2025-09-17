@@ -1,9 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Sassa.Services
 {
@@ -14,7 +11,7 @@ namespace Sassa.Services
         IOptions<ScheduleOptions> _scheduleOptions;
         //private Timer? _timer;
 
-        public ScheduleService(ILogger<ScheduleService> logger, IOptions<ScheduleOptions> options,SocpenUpdateService socpenService)
+        public ScheduleService(ILogger<ScheduleService> logger, IOptions<ScheduleOptions> options, SocpenUpdateService socpenService)
         {
             _logger = logger;
             _scheduleOptions = options;
@@ -30,7 +27,7 @@ namespace Sassa.Services
 
         private void RunScheduledTask(object? state)
         {
-            
+
             if (_scheduleOptions.Value.Enabled)
             {
                 _logger.LogInformation("Executing SyncSocpen() task at: {Time}", DateTime.Now);

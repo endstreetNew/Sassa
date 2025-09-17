@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Oracle.ManagedDataAccess.Client;
-using System;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace Sassa.Services
 {
@@ -13,7 +8,7 @@ namespace Sassa.Services
     {
         string connectionString;
         private readonly ILogger<SocpenUpdateService> _logger;
-        public SocpenUpdateService(ILogger<SocpenUpdateService> logger, string connectionstring) 
+        public SocpenUpdateService(ILogger<SocpenUpdateService> logger, string connectionstring)
         {
             _logger = logger;
             connectionString = connectionstring;
@@ -27,7 +22,7 @@ namespace Sassa.Services
                     conn.Open();
                     using (OracleCommand cmd = new OracleCommand())
                     {
-                        cmd.Connection = conn;  
+                        cmd.Connection = conn;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = "UPDATE_DC_SOCPEN";
                         _logger.LogInformation("Starting Socpen Sync");

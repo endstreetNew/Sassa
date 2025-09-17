@@ -1,12 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Oracle.ManagedDataAccess.Client;
-using Sassa.BRM.Models;
 using Sassa.Services.Cs;
 using Sassa.Services.CsDocuments;
-using System.Data;
-using System.Reflection.Metadata;
 using System.ServiceModel;
-using System.ServiceModel.Description;
 using System.Text;
 
 namespace Sassa.Services
@@ -55,8 +50,10 @@ namespace Sassa.Services
         {
             try
             {
-                using (DocumentManagementClient _docClient = new DocumentManagementClient {
-                Endpoint = { Address = _docEndpointAddress } })
+                using (DocumentManagementClient _docClient = new DocumentManagementClient
+                {
+                    Endpoint = { Address = _docEndpointAddress }
+                })
                 {
                     // Prepare the attachment
                     Attachment attachment;

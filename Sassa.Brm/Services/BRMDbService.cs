@@ -26,7 +26,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 result = interim.Any();
             }
         }
-        catch 
+        catch
         {
             return true;
             //throw new Exception("Duplicate BarCode");
@@ -2391,7 +2391,7 @@ public class BRMDbService(IDbContextFactory<ModelContext> _contextFactory, Stati
                 await _context.SaveChangesAsync();
             }
         }
-        catch 
+        catch
         {
             throw;
         }

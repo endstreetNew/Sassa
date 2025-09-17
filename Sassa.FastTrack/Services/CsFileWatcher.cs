@@ -1,9 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Sassa.Services;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Sassa.Services;
 
 namespace Sassa.BRM.Services
 {
@@ -21,12 +16,13 @@ namespace Sassa.BRM.Services
         private int _isPaused;
 
         public CsFileWatcher(
-            ILogger<CsFileWatcher> logger,IConfiguration _config, CsUploadService csService)
+            ILogger<CsFileWatcher> logger, IConfiguration _config, CsUploadService csService)
         {
             _csService = csService;
             _logger = logger;
             _processedDirectory = Path.Combine(_config.GetValue<string>($"Urls:ScanFolderRoot")!, "Processed");
             _pollInterval = TimeSpan.FromSeconds(_config.GetValue<int>("Functions:CsPollIntervalSeconds"));
+            _isPaused = _config.GetValue<bool>($"Functions:CsFileWatcher") ? 0 : 1;
         }
 
         // Public pause that can be called from any thread
@@ -56,7 +52,7 @@ namespace Sassa.BRM.Services
         {
             _stoppingToken = stoppingToken;
 
-            if (!Directory.Exists(_processedDirectory))Directory.CreateDirectory(_processedDirectory);
+            if (!Directory.Exists(_processedDirectory)) Directory.CreateDirectory(_processedDirectory);
 
             var dueTime = Volatile.Read(ref _isPaused) == 1 ? Timeout.InfiniteTimeSpan : TimeSpan.Zero;
             _timer = new System.Threading.Timer(ProcessFiles, null, dueTime, _pollInterval);
@@ -103,7 +99,7 @@ namespace Sassa.BRM.Services
                 foreach (var file in files)
                 {
                     // Wait for file to be ready
-                    for (int i = 0; i< 100; i++)
+                    for (int i = 0; i < 100; i++)
                     {
                         try
                         {
@@ -115,7 +111,7 @@ namespace Sassa.BRM.Services
                         catch (IOException)
                         {
                             await Task.Delay(1000);
-}
+                        }
                     }
 
                     var fileName = Path.GetFileNameWithoutExtension(file);
@@ -166,7 +162,7 @@ namespace Sassa.BRM.Services
                 }
                 catch (Exception ex)
                 {
-                    if(ex.Message.EndsWith("exists."))
+                    if (ex.Message.EndsWith("exists."))
                     {
                         File.Delete(file);
                         break;
@@ -181,5 +177,7 @@ namespace Sassa.BRM.Services
                 throw new Exception($"Upload to CS failed after {maxRetries} attempts. (Retry)");
 
         }
+
     }
+
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Brm.CsvService.Models;
+﻿namespace Brm.CsvService.Models;
 
 public partial class SsApp
 {

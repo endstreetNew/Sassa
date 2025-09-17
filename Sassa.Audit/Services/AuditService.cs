@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Sassa.BRM.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Sassa.Audit.Services
 {
