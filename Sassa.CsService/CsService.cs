@@ -350,6 +350,7 @@ namespace Sassa.Services
             }
             catch (Exception ex)
             {
+                _ = ex;
                 throw new Exception("Error Uploading to Content server.");
             }
         }
@@ -448,6 +449,7 @@ namespace Sassa.Services
             }
             catch (Exception ex)
             {
+                _ = ex;
                 return false;
             }
         }

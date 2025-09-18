@@ -6,7 +6,7 @@
 @layout NoLayout
 @inject IAlertService toast
 
-<h5>BRM Office Admin</h5>
+<WidgetTitle Title="BRM Office Admin" Loading="@loading"/>
 
 <div class="row">
 
@@ -102,6 +102,8 @@
     protected int SelectedOfficeId;
     protected string fromOfficeId = "";
 
+    protected bool loading = true;
+
     protected bool showOfficeConfirmation;
     protected string OfficeConfirmationMessage ="";
 
@@ -109,16 +111,19 @@
     {
         regionId = sessionservice.session.Office.RegionId;
         await GetRegionOffices();
+
     }
 
     protected async Task btnLoad_Click()
     {
+
         await GetRegionOffices();
 
     }
 
     protected async Task GetRegionOffices()
     {
+        loading = true;
         List<CustRescode> ResCodes = await ss.GetResCodes(regionId);
         regionOffices = StaticDataService.LocalOffices.Where(o => o.RegionId == regionId).Select(o =>
         new RegionOffice
@@ -133,11 +138,13 @@
         regionOffices = regionOffices.OrderBy(o => o.OfficeName).ToList();
         //unlinkedSpOffices = regionOffices.Where(r => r.OfficeId == 0).ToList();
         IsLoaded = true;
+        loading = false;
         StateHasChanged();
     }
 
     protected async void  btnActive_Click(RegionOffice u)
     {
+        loading = true;
         //toggle current Status
         string status  = u.Status == "A" ? "I" : "A";
         if (u.OfficeId > 0)
@@ -150,11 +157,13 @@
         }
         IsLoaded = false;
         await GetRegionOffices();
+        loading = false;
         StateHasChanged();
     }
 
     protected async void btnManualBatching_Click(RegionOffice u)
     {
+        loading = true;
         //toggle current Status
         string status = u.ManualBatch == "A" ? "A" : "I";
         if (u.OfficeId > 0)
@@ -167,6 +176,7 @@
 
     protected async void  btnRename_Click(RegionOffice u)
     {
+        loading = true;
         await sservice.ChangeOfficeName(u.OfficeId.ToString(),u.OfficeName);
         IsLoaded = false;
         await GetRegionOffices();
@@ -186,15 +196,20 @@
     {
         try
         {
+            loading = true;
+            showOfficeConfirmation = false;
+            StateHasChanged();
             await sservice.MoveOffice(fromOfficeId, SelectedOfficeId.ToString());
             // IsLoaded = false;
-            showOfficeConfirmation = false;
             await GetRegionOffices();
             StateHasChanged();
         }
         catch (Exception ex)
         {
             toast.Error(ex.Message);
+        }
+        finally{
+          loading = false;
         }
 
     }

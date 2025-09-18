@@ -156,8 +156,8 @@ namespace Sassa.BRM.Services
                         else
                         {
                             File.Delete(file);
-                            continue;
                         }
+                        continue;
 
                     }
                     //Check for dupliate Barcode
@@ -175,11 +175,12 @@ namespace Sassa.BRM.Services
                         {
                             await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now, Validationresult = "Duplicate Barcode(ok)" });
                             File.Delete(file);
-                            continue;
+                           
                         }
+                        continue;
                     }
                     //---------------------------------
-                    CustCoversheet coverSheet = await _loService.GetCoversheetAsync(scanModel.LoReferece);
+                    CustCoversheet? coverSheet = await _loService.GetCoversheetAsync(scanModel.LoReferece);
                     if (coverSheet is null)
                     {
                         _logger.LogError("LOReferenceNotFound", fileName);
@@ -190,12 +191,12 @@ namespace Sassa.BRM.Services
                         else
                         {
                             File.Delete(file);
-                            continue;
-                        }
+                         }
+                        continue;
                     }
                     try
                     {
-                        DcFile dcFile = await GetDcFileFromLoAsync(coverSheet, scanModel, file, fileName);
+                        DcFile dcFile = await GetDcFileFromLoAsync(coverSheet!, scanModel, file, fileName);
                         string result = Validate(dcFile);
                         if (!string.IsNullOrEmpty(result)) throw new Exception(result);
                         dcFile = await CheckForSocpenRecordAsync(dcFile, scanModel.LoReferece);

@@ -2531,6 +2531,10 @@ public partial class ModelContext : DbContext
                 .IsRequired()
                 .HasMaxLength(13)
                 .HasColumnName("APPLICANT_NO");
+            entity.Property(e => e.OfficeId)
+                .HasDefaultValueSql("0 ")
+                .HasColumnType("NUMBER(38)")
+                .HasColumnName("OFFICE_ID");
             entity.Property(e => e.Brm)
                 .HasDefaultValueSql("0 ")
                 .HasColumnType("NUMBER(38)")

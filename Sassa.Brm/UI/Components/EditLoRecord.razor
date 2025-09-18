@@ -225,7 +225,7 @@
                 TxtSurname = entity.TxtSurname ?? string.Empty,
                 ChildtIdNumber = entity.TxtIdNumberChild ?? string.Empty,
                 GrantType = entity.DrpdwnGrantTypes ?? string.Empty,
-                Office = staticService.GetLocalOfficeFromOfficeName(entity.DrpdwnLocalOfficeSo) ?? new DcLocalOffice()
+                Office = staticService.GetLocalOfficeFromOfficeName(entity.DrpdwnLocalOfficeSo ?? string.Empty) ?? new DcLocalOffice()
             };
             if(model.Office is null)
             {

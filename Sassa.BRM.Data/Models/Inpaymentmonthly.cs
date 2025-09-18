@@ -16,6 +16,8 @@ public partial class Inpaymentmonthly
 
     public decimal? ChildIdNo { get; set; }
 
+    public decimal? OfficeId { get; set; }
+
     public DateTime? TransDate { get; set; }
     public DateTime? AppDate { get; set; }
 

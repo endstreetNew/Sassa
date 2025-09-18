@@ -219,24 +219,24 @@ sealed class TrayContext : ApplicationContext
         try { Process.Start(new ProcessStartInfo(url) { UseShellExecute = true }); } catch { }
     }
 
-    private async Task RestartAsync()
-    {
-        try
-        {
-            var exe = Environment.ProcessPath!;
-            var args = string.Join(' ', Environment.GetCommandLineArgs().Skip(1).Select(a => a.Contains(' ') ? $"\"{a}\"" : a));
-            Process.Start(new ProcessStartInfo("cmd.exe", $"/C timeout /T 1 /NOBREAK >NUL & \"{exe}\" {args}")
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true
-            });
-        }
-        catch { }
-        finally
-        {
-            _lifetime.StopApplication();
-        }
-    }
+    //private async Task RestartAsync()
+    //{
+    //    try
+    //    {
+    //        var exe = Environment.ProcessPath!;
+    //        var args = string.Join(' ', Environment.GetCommandLineArgs().Skip(1).Select(a => a.Contains(' ') ? $"\"{a}\"" : a));
+    //        Process.Start(new ProcessStartInfo("cmd.exe", $"/C timeout /T 1 /NOBREAK >NUL & \"{exe}\" {args}")
+    //        {
+    //            UseShellExecute = false,
+    //            CreateNoWindow = true
+    //        });
+    //    }
+    //    catch { }
+    //    finally
+    //    {
+    //        _lifetime.StopApplication();
+    //    }
+    //}
 }
 
 

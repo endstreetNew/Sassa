@@ -75,6 +75,7 @@ namespace Sassa.Brm.Common.Services
             }
             catch (SocketException ex)
             {
+                _ = ex;
                 return false;
             }
 

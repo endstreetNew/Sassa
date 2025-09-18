@@ -22,6 +22,7 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
+    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
     .WriteTo.Debug(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
     .WriteTo.File("Logs/Sassa.Brm.Api-.log",
         rollingInterval: RollingInterval.Day,
@@ -86,6 +87,9 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 //.CreateLogger();
 
 var app = builder.Build();
+
+// Log startup status to terminal
+Log.Information($"Sassa.Brm.Api started. Environment: {app.Environment.EnvironmentName}, Port: {builder.Configuration.GetValue<int>("Urls:AppPort")}");
 
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())

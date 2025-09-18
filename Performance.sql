@@ -1,0 +1,8 @@
+﻿MERGE /*+ parallel(m 4) parallel(o 4) use_hash(o) */ 
+INTO INPAYMENTMONTHLY m
+USING (
+  SELECT /*+ parallel(4) */ RES_CODE, OFFICE_ID FROM SASSA.CUST_RESCODES
+) o
+ON (o.RES_CODE = m.PAYPOINT AND o.OFFICE_ID is not null)
+WHEN MATCHED THEN
+  UPDATE SET m.OFFICE_ID = o.OFFICE_ID

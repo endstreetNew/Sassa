@@ -393,7 +393,7 @@
             if (string.IsNullOrEmpty(rebox.SelectedType)) throw new Exception("Please select a boxtype.");
             if (rebox.MiniBox > 5) throw new Exception("Only 5 Miniboxes allowed.");
             rebox.BrmBarcode = string.Empty;
-            DcFile file = await AddFile();
+            DcFile? file = await AddFile();
 
         }
         catch (Exception ex)

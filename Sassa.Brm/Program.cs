@@ -132,12 +132,12 @@ public class Program
         });
 
         builder.Services.AddScoped(sp =>
-        new HttpClient { BaseAddress = new Uri(builder.Configuration["Urls:LocalApi"]) });
+        new HttpClient { BaseAddress = new Uri(builder.Configuration["Urls:LocalApi"]!) });
 
         //Brm Api Http Client
         builder.Services.AddHttpClient("BrmApi", client =>
         {
-            client.BaseAddress = new Uri(builder.Configuration["Urls:BrmApi"]);
+            client.BaseAddress = new Uri(builder.Configuration["Urls:BrmApi"]!);
         });
 
         builder.Services.AddControllers();
@@ -208,6 +208,7 @@ public class Program
             }
             catch (Exception ex)
             {
+                _=ex;
                 logger.LogCritical("Database connectivity check failed. Application will terminate.");
                 Log.CloseAndFlush();
                 Environment.Exit(1);

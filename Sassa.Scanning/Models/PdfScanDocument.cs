@@ -5,6 +5,11 @@ namespace Sassa.Scanning.Models
 {
     public class PdfScanDocument
     {
+        public PdfScanDocument()
+        {
+            Content = Array.Empty<byte>();
+            OutputFile = string.Empty;
+        }
         public int startPage { get; set; }
         public int endPage { get; set; }
         public byte[] Content { get; set; }
@@ -15,6 +20,7 @@ namespace Sassa.Scanning.Models
     {
         public PdfScanPage()
         {
+            ps = new iText.Kernel.Geom.Rectangle(0, 0);
             Content = Array.Empty<byte>();
             PageSize = new PageSize(0, 0);
         }

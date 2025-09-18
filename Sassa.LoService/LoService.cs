@@ -8,7 +8,7 @@ namespace Sassa.Services
     public class LoService(IDbContextFactory<LoModelContext> dbContextFactory, ILogger<LoService> logger)
     {
 
-        public async Task<CustCoversheet> GetCoversheetAsync(string reference)
+        public async Task<CustCoversheet?> GetCoversheetAsync(string reference)
         {
             try
             {
@@ -22,7 +22,7 @@ namespace Sassa.Services
             }
             catch (Exception ex)
             {
-
+                _ = ex;
                 throw;
             }
         }
@@ -105,7 +105,7 @@ namespace Sassa.Services
             }
         }
 
-        public async Task<CustCoversheetValidation> GetValidationRecord(string reference)
+        public async Task<CustCoversheetValidation?> GetValidationRecord(string reference)
         {
             try
             {
@@ -121,7 +121,7 @@ namespace Sassa.Services
             }
         }
 
-        public async Task<CustCoversheet> GetEcover(string reference)
+        public async Task<CustCoversheet?> GetEcover(string reference)
         {
             try
             {

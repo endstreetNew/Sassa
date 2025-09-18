@@ -2,6 +2,7 @@
 using Docnet.Core.Models;
 using iText.Kernel.Pdf;
 using Sassa.Scanning.Models;
+using Sassa.Scanning.Services;
 using Sassa.Scanning.Settings;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -11,107 +12,20 @@ using ZXing.Windows.Compatibility;
 
 public class PdfBarcodeSplitter
 {
-    // Preview window plumbing
-    private Thread? _previewThread;
-    private Form? _previewForm;
-    private PictureBox? _previewPictureBox;
-    private ManualResetEventSlim? _previewReady;
-    private CheckBox? _previewToggle;
-    private volatile bool _previewEnabled;
-
-    private void StartPreviewWindow(int width, int height, string title = "Preview")
+    ProgressWindow _window;
+    public PdfBarcodeSplitter(ProgressWindow window)
     {
-        _previewReady = new ManualResetEventSlim(false);
-        _previewThread = new Thread(() =>
-        {
-            Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            _previewForm = new Form
-            {
-                Text = title,
-                Width = width,
-                Height = height
-            };
-            _previewToggle = new CheckBox
-            {
-                Dock = DockStyle.Top,
-                AutoSize = true,
-                Checked = _previewEnabled,
-                Text = _previewEnabled ? "Preview On" : "Preview Off",
-                Padding = new Padding(8)
-            };
-            _previewToggle.CheckedChanged += (s, e) =>
-            {
-                _previewEnabled = _previewToggle.Checked;
-                _previewToggle.Text = _previewEnabled ? "Preview On" : "Preview Off";
-            };
-            _previewPictureBox = new PictureBox
-            {
-                Dock = DockStyle.Fill,
-                SizeMode = PictureBoxSizeMode.Zoom
-            };
-            _previewForm.Controls.Add(_previewPictureBox);
-            _previewForm.Controls.Add(_previewToggle);
-            _previewReady!.Set();
-            Application.Run(_previewForm);
-        });
-        _previewThread.SetApartmentState(ApartmentState.STA);
-        _previewThread.IsBackground = true;
-        _previewThread.Start();
-        _previewReady.Wait();
+        _window = window;
+        _window.Initialize();
     }
-
-    private void UpdatePreviewImage(Bitmap bmp)
-    {
-        if (_previewPictureBox == null || !_previewEnabled) return;
-
-        void SetImage()
-        {
-            if (!_previewEnabled) return;
-            // Clone to avoid disposing in caller affecting UI
-            var clone = (Bitmap)bmp.Clone();
-            var old = _previewPictureBox!.Image;
-            _previewPictureBox.Image = clone;
-            old?.Dispose();
-        }
-
-        if (_previewPictureBox.InvokeRequired)
-            _previewPictureBox.BeginInvoke(new Action(SetImage));
-        else
-            SetImage();
-    }
-
-    private void StopPreviewWindow()
-    {
-        if (_previewForm == null) return;
-        try
-        {
-            if (_previewForm.InvokeRequired)
-                _previewForm.BeginInvoke(new Action(() => _previewForm.Close()));
-            else
-                _previewForm.Close();
-            _previewThread?.Join(2000);
-        }
-        catch { /* ignore */ }
-        finally
-        {
-            _previewThread = null;
-            _previewForm = null;
-            _previewPictureBox = null;
-            _previewToggle = null;
-            _previewReady?.Dispose();
-            _previewReady = null;
-        }
-    }
-
+    //KZN: \\ssvsqakfshc05.sassa.local\KZN_E_Coversheet
+    //MPU: \\ssvsqakfshc05.sassa.local\MPU_E_Coversheet
+    //GAU: \\ssvsqakfshc05.sassa.local\GAU_E_Coversheet
     public void SplitPdfByTwoBarcodes(PdfScanDocument inputDocument, string outputFolder, ScanningSettings settings)
     {
         Bitmap bmp = new Bitmap(100, 100);
 
-        // Start preview window (non-blocking) if enabled
-        if (settings.PreviewWindow.Enabled)
-        {
-            StartPreviewWindow(settings.PreviewWindow.Width, settings.PreviewWindow.Height, "Preview");
-        }
+
 
         var barcodeReader = new BarcodeReaderGeneric
         {
@@ -140,16 +54,33 @@ public class PdfBarcodeSplitter
                 // Convert pdf page to bitmap
                 bmp = ConvertBgraToBitmap(page.Content, page.ps, settings.ScanDpi);
 
-                if (settings.PreviewWindow.Enabled)
+
+                int rectWidth = (int)(bmp.Width * 0.35);
+                int rectHeight = (int)(bmp.Height * 0.22);
+                int rectX = bmp.Width - rectWidth;
+                int rectY = 0;
+
+                using (Graphics g = Graphics.FromImage(bmp))
                 {
-                    UpdatePreviewImage(bmp);
+                    using (var pen = new Pen(System.Drawing.Color.Red, 3))
+                    {
+                        g.DrawRectangle(pen, rectX, rectY, rectWidth, rectHeight);
+                    }
+                }
+                Bitmap pmap = (Bitmap)bmp.Clone();
+                //Draw red rectangle arounf the barcode area
+                // Copy the rectangle region into a new bitmap
+                Bitmap barcodeBitmap = new Bitmap(rectWidth, rectHeight);
+                using (Graphics g = Graphics.FromImage(barcodeBitmap))
+                {
+                    g.DrawImage(bmp, new System.Drawing.Rectangle(0, 0, rectWidth, rectHeight), new System.Drawing.Rectangle(rectX, rectY, rectWidth, rectHeight), GraphicsUnit.Pixel);
                 }
 
-                BitmapLuminanceSource ls = new BitmapLuminanceSource(bmp);
+                BitmapLuminanceSource ls = new BitmapLuminanceSource(barcodeBitmap);
 
-                var results = barcodeReader.DecodeMultiple(ls);
+                var result = barcodeReader.Decode(ls);
 
-                if (results != null && results.Length > 0)
+                if (result != null && result.Text.Length == 8)
                 {
                     if (!string.IsNullOrEmpty(outputDocument.OutputFile))
                     {
@@ -157,10 +88,14 @@ public class PdfBarcodeSplitter
                         outputDocument = new PdfScanDocument();
                         outputDocument.startPage = page.PageNumber;
                     }
-                    string barcode1 = SanitizeFileName(results[0].Text);
+                    string barcode1 = SanitizeFileName(result.Text);
                     string barcode2 = SanitizeFileName("Dummy"); // or results[1].Text
 
                     outputDocument.OutputFile = System.IO.Path.Combine(outputFolder, $"{barcode2}.{barcode1}.pdf");
+                    if (settings.PreviewWindow.Enabled)
+                    {
+                        _window.UpdatePreviewImage(pmap);
+                    }
                 }
 
                 outputDocument.endPage = page.PageNumber;
@@ -172,10 +107,9 @@ public class PdfBarcodeSplitter
 
             SavePdf(inputDocument.Content, outputDocument);
         }
-        finally
+        catch (Exception ex)
         {
-            if (settings.PreviewWindow.Enabled)
-                StopPreviewWindow();
+            _ = ex;
         }
     }
 

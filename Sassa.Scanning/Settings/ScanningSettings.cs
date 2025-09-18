@@ -4,6 +4,8 @@ public sealed class ScanningSettings
 {
     public string PdfPath { get; init; } = string.Empty;
     public string OutputPath { get; init; } = string.Empty;
+    public string ScannedPath { get; init; } = string.Empty;
+    public string RejectPath { get; init; } = string.Empty;
     public int ScanDpi { get; init; } = 300;
     //public PageDimensionsSettings PageDimensions { get; init; } = new();
     public BarcodeSettings Barcode { get; init; } = new();
@@ -21,6 +23,6 @@ public sealed class BarcodeSettings
 public sealed class PreviewSettings
 {
     public bool Enabled { get; init; } = true;
-    public int Width { get; init; } = 800;
+    public int Width { get; init; } = 400;
     public int Height { get; init; } = 600;
 }
