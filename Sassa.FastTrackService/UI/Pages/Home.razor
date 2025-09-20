@@ -1,0 +1,48 @@
+﻿@page "/"
+
+@inject LoService loService;
+
+<PageTitle>Home</PageTitle>
+
+<h4>Fasttrack Statistics</h4>
+
+@if (statistics == null)
+{
+    <p>Loading...</p>
+}
+else if (!statistics.Any())
+{
+    <p>No statistics available.</p>
+}
+else
+{
+<Card>
+    <CardHeader>
+        All processing statistics
+    </CardHeader>
+    <CardBody>
+        <Grid Data="@statistics"
+              AllowFiltering="true"
+              AllowPaging="true"
+              AllowSorting="true"
+              Responsive="true">
+            <GridColumn TItem="FasttrackStatistic" PropertyName="ValidationCategory" HeaderText="Category" SortString="ValidationCategory">
+                @context.ValidationCategory
+            </GridColumn>
+            <GridColumn TItem="FasttrackStatistic" PropertyName="ResultCount" HeaderText="Count" SortString="ResultCount">
+                @context.ResultCount
+            </GridColumn>
+        </Grid>
+    </CardBody>
+</Card>
+}
+
+@code {
+    private List<FasttrackStatistic>? statistics;
+
+    protected override async Task OnInitializedAsync()
+    {
+        statistics = await loService.GetFasttrackStatistics();
+    }
+
+}

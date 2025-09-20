@@ -169,13 +169,12 @@ namespace Sassa.BRM.Services
                         _logger.LogError("Duplicate BRM Barcode", fileName);
                         if (!File.Exists(Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName)))
                         {
+                            await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now, Validationresult = "Duplicate Barcode(ok)" });
                             File.Move(file, Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName));
                         }
                         else
                         {
-                            await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now, Validationresult = "Duplicate Barcode(ok)" });
                             File.Delete(file);
-                           
                         }
                         continue;
                     }
@@ -186,6 +185,7 @@ namespace Sassa.BRM.Services
                         _logger.LogError("LOReferenceNotFound", fileName);
                         if (!File.Exists(Path.Combine(_rejectDirectory, "LOReferencNotFound." + fileName)))
                         {
+                            await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now, Validationresult = "LO Reference not found." });
                             File.Move(file, Path.Combine(_rejectDirectory, "LOReferencNotFound." + fileName));
                         }
                         else
@@ -219,6 +219,7 @@ namespace Sassa.BRM.Services
                     }
                     catch (Exception ex)
                     {
+                        _logger.LogInformation("Repair Queue file {File}", file);
                         await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now, Validationresult = ex.Message });
                     }
                 }

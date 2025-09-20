@@ -103,6 +103,7 @@
 
     private async Task OnSaved(CustCoversheet args)
     {
+        docService.RepairDocument(txtSearchRef);
         await SearchRef();
     }
     private async Task OnCancelled()

@@ -31,6 +31,7 @@ Log.Logger = new LoggerConfiguration()
         buffered: false)
     .CreateLogger();
 builder.Host.UseSerilog();
+builder.Host.UseWindowsService();
 
 bool EnableCsWatcher = builder.Configuration.GetValue<bool>("Functions:CsFileWatcher");
 bool EnableKofaxWatcher = builder.Configuration.GetValue<bool>("Functions:KofaxFileWatcher");
@@ -61,7 +62,7 @@ builder.Services.AddSingleton<CsServiceSettings>(c =>
     csServiceSettings.CsServiceUser = builder.Configuration.GetValue<string>("ContentServer:CSServiceUser")!;
     csServiceSettings.CsServicePass = builder.Configuration.GetValue<string>("ContentServer:CSServicePass")!;
     csServiceSettings.CsDocFolder = $"{builder.Environment.WebRootPath}\\{builder.Configuration.GetValue<string>("Folders:CS")}\\";
-    csServiceSettings.CsBeneficiaryRoot = builder.Configuration.GetValue<string>("ContentServer:CSBeneficiaryRoot")!;
+    csServiceSettings.CsBeneficiaryRoot = builder.Configuration.GetValue<string>("ContentServer:CSBeneficaryRoot")!;
     csServiceSettings.CsMaxRetries = builder.Configuration.GetValue<int>("ContentServer:CSMaxRetries");
     return csServiceSettings;
 });
@@ -238,7 +239,3 @@ sealed class TrayContext : ApplicationContext
     //    }
     //}
 }
-
-
-
-

@@ -112,7 +112,7 @@ public class Program
             csServiceSettings.CsServiceUser = builder.Configuration.GetValue<string>("ContentServer:CSServiceUser")!;
             csServiceSettings.CsServicePass = builder.Configuration.GetValue<string>("ContentServer:CSServicePass")!;
             csServiceSettings.CsDocFolder = $"{builder.Environment.WebRootPath}\\{builder.Configuration.GetValue<string>("Folders:CS")}\\";
-            csServiceSettings.CsBeneficiaryRoot = builder.Configuration.GetValue<string>("ContentServer:CSBeneficaryRoot")!;
+            csServiceSettings.CsBeneficiaryRoot = builder.Configuration.GetValue<string>("ContentServer:CSBeneficiaryRoot")!;
             csServiceSettings.CsMaxRetries = builder.Configuration.GetValue<int>("ContentServer:CSMaxRetries");
             return csServiceSettings;
         });
@@ -122,7 +122,7 @@ public class Program
         builder.Services.AddScoped<ReportDataService>();
         builder.Services.AddScoped<ProgressService>();
         builder.Services.AddScoped<Helper>();
-        // LO RepaairQueue services
+        // LO RepairQueue services
         builder.Services.AddScoped<LoService>();
         builder.Services.AddSingleton<DocumentService>(sp =>
         {

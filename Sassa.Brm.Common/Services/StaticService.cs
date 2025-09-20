@@ -18,10 +18,19 @@ namespace Sassa.Brm.Common.Services
         public StaticService(IDbContextFactory<ModelContext> contextFactory, IConfiguration config, IWebHostEnvironment env, ILogger<StaticService> logger)
         {
             _logger = logger;
-            StaticDataService.SupportUsers = config.GetRequiredSection("SupportUsers").GetChildren().Select(c => c.Value!.ToLower()).ToList()!;
+            var supportUsersSection = config.GetSection("SupportUsers");
+            if (supportUsersSection.Exists())
+            {
+                StaticDataService.SupportUsers = supportUsersSection.GetChildren().Select(c => c.Value!.ToLower()).ToList();
+            }
+            else
+            {
+                StaticDataService.SupportUsers = new List<string>();
+                _logger.LogWarning("SupportUsers section not found in configuration.");
+            }
             _contextFactory = contextFactory;
-            StaticDataService.ReportFolder = Path.Combine(env.ContentRootPath, @$"wwwroot\{config["Folders:Reports"]!}\");
-            StaticDataService.DocumentFolder = $"{env.WebRootPath}\\{config.GetValue<string>("Folders:CS")}\\";
+            StaticDataService.ReportFolder = Path.Combine(env.ContentRootPath, @$"wwwroot\{config["Folders:Reports"]??""}\");
+            StaticDataService.DocumentFolder = $"{env.WebRootPath}\\{config.GetValue<string>("Folders:CS")??""}\\";
             Folders.CleanFolderHistory(StaticDataService.ReportFolder);
             Folders.CleanFolderHistory(StaticDataService.DocumentFolder);
             Initialize();

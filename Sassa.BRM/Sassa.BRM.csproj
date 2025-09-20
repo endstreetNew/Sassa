@@ -70,7 +70,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appsettings.Training.json">
+    <Content Update="appsettings.Deploy.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
     <Content Update="appsettings.Development.json">

@@ -144,7 +144,6 @@ namespace Sassa.BRM.Services
                 Interlocked.Exchange(ref _isProcessing, 0);
             }
         }
-
         private async Task UploadToContentserver(string csNode, string file)
         {
             // Retry strategy for UploadDoc

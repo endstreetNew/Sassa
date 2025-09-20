@@ -181,5 +181,27 @@ namespace Sassa.Services
                 throw;
             }
         }
+
+        public async Task<List<FasttrackStatistic>> GetFasttrackStatistics()
+        {
+            using var _context = dbContextFactory.CreateDbContext();
+            var stats = await _context.CustCoversheetValidations
+                .AsNoTracking()
+                .GroupBy(v => 
+                    v.Validationresult != null && v.Validationresult.StartsWith("No Socpen record found") ? "Waiting Socpen match."
+                    : v.Validationresult != null && v.Validationresult.StartsWith("Reference NUM") ? "LO Reference not found."
+                    : v.Validationresult ?? "Unknown"
+                )
+                .Select(g => new FasttrackStatistic
+                {
+                    ValidationCategory = g.Key,
+                    ResultCount = g.Count()
+                })
+                .ToListAsync();
+
+            return stats;
+        }
+
+
     }
 }
