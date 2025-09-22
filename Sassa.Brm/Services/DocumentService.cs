@@ -25,17 +25,53 @@
             return files.FirstOrDefault() ?? string.Empty;
         }
 
+        //This file should just be deleted
         public void RejectDocument(string reference)
         {
             string filePath = GetFirstDocument(reference);
             string fileName = Path.GetFileName(filePath);
-            System.IO.File.Move(filePath, Path.Combine(_rejectedDirectory, fileName), true);
+            System.IO.File.Move(filePath, Path.Combine(_rejectedDirectory, "delete." + fileName), true);
         }
         public void RepairDocument(string reference)
         {
             string filePath = GetFirstDocument(reference);
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new Exception("This file needs to be re-scanned due to a scanning error.");
+            }
             string fileName = Path.GetFileName(filePath);
+
+            int maxRetries = 5;
+            int delayMs = 1000;
+            int attempt = 0;
+            bool fileReady = false;
+
+            while (attempt < maxRetries && !fileReady)
+            {
+                try
+                {
+                    using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None))
+                    {
+                        fileReady = true;
+                    }
+                }
+                catch (IOException)
+                {
+                    attempt++;
+                    if (attempt < maxRetries)
+                    {
+                        Thread.Sleep(delayMs);
+                    }
+                    else
+                    {
+                        throw new IOException($"File {filePath} is currently in use and cannot be moved after {maxRetries} attempts.");
+                    }
+                }
+            }
+
             System.IO.File.Move(filePath, Path.Combine(_rootDirectory, fileName), true);
+
+
         }
     }
 }

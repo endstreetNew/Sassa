@@ -181,6 +181,8 @@ public class Program
         .WriteTo.File("Logs/app-Brm-Error.log", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
         .CreateLogger();
 
+        Log.Information("Test log entry: application started.");
+
         builder.Host.UseSerilog();
 
         builder.Services.AddLogging();
@@ -189,6 +191,12 @@ public class Program
         {
             var logger = sp.GetRequiredService<ILogger<SocpenUpdateService>>();
             return new SocpenUpdateService(logger, CsConnection);
+        });
+        builder.Services.AddSingleton<RepairService>(sp =>
+        {
+            var root = builder.Configuration["Urls:ScanFolderRoot"]; // fallback
+            root = root ?? throw new InvalidOperationException("Urls:ScanFolderRoot missing.");
+            return new RepairService(root);
         });
         builder.Services.AddSingleton<ScheduleService>();
         builder.Services.AddHostedService(sp => sp.GetRequiredService<ScheduleService>());

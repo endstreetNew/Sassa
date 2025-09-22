@@ -9,13 +9,16 @@ namespace Sassa.Services
         private readonly ILogger<ScheduleService> _logger;
         private readonly SocpenUpdateService _socpen;
         IOptions<ScheduleOptions> _scheduleOptions;
+        RepairService _repairService;
+
         //private Timer? _timer;
 
-        public ScheduleService(ILogger<ScheduleService> logger, IOptions<ScheduleOptions> options, SocpenUpdateService socpenService)
+        public ScheduleService(ILogger<ScheduleService> logger, IOptions<ScheduleOptions> options, SocpenUpdateService socpenService,RepairService repairService)
         {
             _logger = logger;
             _scheduleOptions = options;
             _socpen = socpenService;
+            _repairService = repairService;
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,6 +37,7 @@ namespace Sassa.Services
                 try
                 {
                     _socpen.SyncSocpen();
+                    _repairService.RetryAllRepairs();
                 }
                 catch (Exception ex)
                 {

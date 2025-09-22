@@ -17,6 +17,7 @@ namespace Sassa.Scanning.Services
         public ProgressWindow(ScanningSettings settings)
         {
             _settings = settings;
+            _previewEnabled = settings.PreviewWindow.Enabled;
         }
 
 
@@ -38,9 +39,34 @@ namespace Sassa.Scanning.Services
                 _previewForm = new Form
                 {
                     Text = title,
-                    Width = width,
-                    Height = height
+                    Width = (int)(width * 1.5),
+                    Height = (int)(height * 1.5)
                 };
+
+                // Header panel with logo
+                var headerPanel = new Panel
+                {
+                    Dock = DockStyle.Top,
+                    Height = 80,
+                    BackColor = Color.White
+                };
+                var logoBox = new PictureBox
+                {
+                    SizeMode = PictureBoxSizeMode.Zoom, // Ensures the image fits the box
+                    Dock = DockStyle.Fill,
+                    BackColor = Color.Transparent
+                };
+                try
+                {
+                    var logoPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "images", "sassa_logoSmall.jpg");
+                    if (File.Exists(logoPath))
+                    {
+                        logoBox.Image = Image.FromFile(logoPath);
+                    }
+                }
+                catch { /* ignore image load errors */ }
+                headerPanel.Controls.Add(logoBox);
+
                 _previewToggle = new CheckBox
                 {
                     Dock = DockStyle.Top,
@@ -61,6 +87,7 @@ namespace Sassa.Scanning.Services
                 };
                 _previewForm.Controls.Add(_previewPictureBox);
                 _previewForm.Controls.Add(_previewToggle);
+                _previewForm.Controls.Add(headerPanel); // Add header at the top
                 _previewReady!.Set();
                 Application.Run(_previewForm);
             });

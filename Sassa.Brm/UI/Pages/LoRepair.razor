@@ -19,7 +19,11 @@
         </div>
     </div>
     <div class="status">
-        @if (selectedValidation is not null)
+        @if(!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <div class="alert alert-danger">@errorMessage</div>
+        }
+        else if(selectedValidation is not null)
         {
             if(selectedValidation.Validationresult == "UPDATED" || selectedValidation.Validationresult == "ok")
             {
@@ -32,13 +36,21 @@
         }
     </div>
     <div class="LORecord">
-        @if(selectedCover is not null)
+        @if(string.IsNullOrEmpty(txtSearchRef))
+        {
+           
+        }
+        else if(selectedValidation is not null && selectedValidation.Validationresult == "ok")
+        {
+            <div class="alert alert-info">File sucessfully processed.</div>  
+        }
+        else if(selectedCover is not null && selectedValidation is not null && pdfExists)
         {
             <EditLoRecord ReferenceNum="@txtSearchRef" Saved="OnSaved" Cancelled="OnCancelled" Rejected="OnRejected"></EditLoRecord>
         }
         else
         {
-            <p>No LO Record ..</p>
+            <div class="alert alert-danger">Scan has not been processed yet or the scan for this document has failed.</div>
         }
     </div>
     <div class="SPRecord">
@@ -54,7 +66,11 @@
     <div class="Preview">
         @if (selectedValidation is null)
         {
-            <p>No Document ..</p>
+             <p>No Document ..</p>
+        }
+        else if (selectedValidation.Validationresult != "ok" && !pdfExists)
+        {
+             <div class="alert alert-danger">Please rescan this document.</div>
         }
         else if (!pdfExists)
         {
@@ -77,15 +93,13 @@
     private string txtSearchRef = string.Empty;
     private bool pdfExists = false;
 
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     //RepairQueue = await loService.GetRepairQueue();
-    // }
+    private string? errorMessage;
 
     private async Task SearchRef()
     {
         try
         {
+            errorMessage = string.Empty;
             selectedValidation = await loService.GetValidationRecord(txtSearchRef);
             selectedCover = await loService.GetEcover(txtSearchRef);
             pdfExists = !string.IsNullOrWhiteSpace(docService.GetFirstDocument(txtSearchRef));
@@ -103,8 +117,20 @@
 
     private async Task OnSaved(CustCoversheet args)
     {
-        docService.RepairDocument(txtSearchRef);
-        await SearchRef();
+        try
+        {
+           docService.RepairDocument(txtSearchRef);
+        }
+        catch(Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            txtSearchRef = string.Empty;
+            await SearchRef();
+        }
+        
     }
     private async Task OnCancelled()
     {

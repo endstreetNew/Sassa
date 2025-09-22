@@ -467,7 +467,7 @@ namespace Sassa.Services
                     return await Task.FromResult(true);
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 return await Task.FromResult(false);
             }
