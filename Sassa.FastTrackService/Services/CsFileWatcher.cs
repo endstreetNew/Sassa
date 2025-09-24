@@ -161,7 +161,7 @@ namespace Sassa.Services
                 }
                 catch (Exception ex)
                 {
-                    if (ex.Message.EndsWith("exists."))
+                    if (ex.Message.Contains("Duplicate"))
                     {
                         File.Delete(file);
                         break;

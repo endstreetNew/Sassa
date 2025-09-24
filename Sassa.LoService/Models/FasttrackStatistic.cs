@@ -8,7 +8,7 @@ namespace Sassa.Models
 {
     public class FasttrackStatistic
     {
-        public string ValidationCategory { get; set; }
+        public string? ValidationCategory { get; set; }
         public int ResultCount { get; set; }
     }
 }

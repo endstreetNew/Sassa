@@ -12,9 +12,8 @@
                 <svg style="display:block; margin:auto; vertical-align:central;" height="@height" width="@width" viewBox="0, 0, 2000, 2000">
                     @foreach (var p in PieData.Segments)
                     {
-                        //todo:changed 100 to totalitems
                         @(RotAngle = RotAngle + (((p.Percent / 100) * 360.0) - 90))
-                        <path d="@GenerateArc(1000, 1000, 800, p.Percent)" fill="@p.Color" transform="rotate(@RotAngle.ToString().Replace(",","."),1000,1000)"></path>
+                        <path d="@GenerateArc(1000, 1000, 800, p.Percent)" fill="@p.Color" transform="rotate(@RotAngle.ToString(System.Globalization.CultureInfo.InvariantCulture),1000,1000)"></path>
                         @(RotAngle += 90)
                     }
                 </svg>
@@ -77,8 +76,9 @@
             Cartesian.y += 1.0;
         }
         string ad = angledeg > 180 ? "1" : "0";
-        string M = $"M {cx.ToD()} {cy.ToD()} {(cx + r).ToD()},{cy.ToD()} A{r.ToD()} {r.ToD()}, 0, {ad}, 0, {Cartesian.x.ToD()},{Cartesian.y.ToD()} ";
-        return $"M {cx.ToD()} {cy.ToD()} {(cx + r).ToD()},{cy.ToD()} A{r.ToD()} {r.ToD()}, 0, {ad}, 0, {Cartesian.x.ToD()},{Cartesian.y.ToD()} ";
+        return string.Format(System.Globalization.CultureInfo.InvariantCulture,
+            "M {0} {1} {2},{3} A{4} {4}, 0, {5}, 0, {6},{7} ",
+            cx, cy, cx + r, cy, r, ad, Cartesian.x, Cartesian.y);
     }
     #endregion
 }

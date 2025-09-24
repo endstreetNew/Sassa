@@ -469,6 +469,7 @@ namespace Sassa.Services
             }
             catch(Exception ex)
             {
+                _ = ex;
                 return await Task.FromResult(false);
             }
         }

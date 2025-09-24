@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Sassa.Services.Cs;
 using Sassa.Services.CsDocuments;
+using System;
+using System.Data;
 using System.ServiceModel;
 using System.Text;
 
@@ -16,7 +18,7 @@ namespace Sassa.Services
         EndpointAddress _docEndpointAddress;
         public long NodeId { get; private set; }
         //private string _idNumber = "";
-
+    
         public CsUploadService(CsServiceSettings config, ILogger<CSService> logger)
         {
             _settings = config ?? throw new ArgumentNullException(nameof(config));
@@ -55,21 +57,15 @@ namespace Sassa.Services
                     Endpoint = { Address = _docEndpointAddress }
                 })
                 {
-                    // Prepare the attachment
-                    Attachment attachment;
-                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-                    using (StreamReader reader = new StreamReader(fs, Encoding.UTF8))
+                    // Prepare the attachment - read raw bytes to preserve binary files (e.g. PDF/images)
+                    byte[] content = await File.ReadAllBytesAsync(filePath);
+                    Attachment attachment = new Attachment
                     {
-                        string fileContent = reader.ReadToEnd();
-                        byte[] content = System.Text.Encoding.UTF8.GetBytes(fileContent);
-                        attachment = new Attachment
-                        {
-                            FileName = Path.GetFileName(filePath),
-                            Contents = content,
-                            CreatedDate = DateTime.Now,
-                            FileSize = content.Length
-                        };
-                    }
+                        FileName = Path.GetFileName(filePath),
+                        Contents = content,
+                        CreatedDate = DateTime.Now,
+                        FileSize = content.Length
+                    };
 
                     CsDocuments.OTAuthentication ota = await Authenticate();
 
@@ -108,13 +104,48 @@ namespace Sassa.Services
                     }
 
                     NodeId = idNode.ID;
-                    // 4. Upload the document
-                    await _docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "Cs Service", false, new Metadata(), attachment);
+
+                    // 4. Check if a document with the same name already exists under this node
+                    var existingResp = await _docClient.GetNodeByNameAsync(ota, NodeId, attachment.FileName);
+                    var existingNode = existingResp?.GetNodeByNameResult;
+
+                    if (existingNode != null && existingNode.ID > 0 && !existingNode.IsContainer)
+                    {
+                        // Add a new version instead of creating a duplicate
+                        //await _docClient.AddVersionAsync(ota, existingNode.ID, new Metadata(), attachment);
+                        throw new Exception($"Duplicate CS File." );
+                    }
+                    else
+                    {
+                        // Create new document
+                        await _docClient.CreateDocumentAsync(ota, NodeId, attachment.FileName, "Cs Service", false, new Metadata(), attachment);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task DeleteForDataId(long DataId)
+        {
+            try
+            {
+                using (DocumentManagementClient _docClient = new DocumentManagementClient
+                {
+                    Endpoint = { Address = _docEndpointAddress }
+                })
+                {
+                    CsDocuments.OTAuthentication ota = await Authenticate();
+
+                    await _docClient.DeleteNodeAsync(ota, DataId);
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = ex;
+                throw;
             }
         }
     }

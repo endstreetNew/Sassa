@@ -36,7 +36,7 @@ builder.Host.UseWindowsService();
 
 var settings = builder.Configuration.Get<FastTrackServiceSettings>();
 builder.Services.AddSingleton(settings ?? new FastTrackServiceSettings());
-if (settings.ContentServer.CSBeneficiaryRoot == "Default")
+if (settings!.ContentServer.CSBeneficiaryRoot == "Default")
 {
     Log.Warning("Content Server Beneficiary Root is set to 'Default'. Please update the configuration to the correct root folder name.");
     Application.Exit();

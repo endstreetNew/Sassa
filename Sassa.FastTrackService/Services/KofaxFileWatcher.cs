@@ -158,21 +158,7 @@ namespace Sassa.Services
                         continue;
 
                     }
-                    //Check for dupliate Barcode
-                    if (_validation.BrmRecordExists(scanModel.BrmBarcode))
-                    {
-                        _logger.LogError("Duplicate BRM Barcode", fileName);
-                        if (!File.Exists(Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName)))
-                        {
-                            await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now, Validationresult = "Duplicate Barcode(ok)" });
-                            File.Move(file, Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName));
-                        }
-                        else
-                        {
-                            File.Delete(file);
-                        }
-                        continue;
-                    }
+
                     //---------------------------------
                     CustCoversheet? coverSheet = await _loService.GetCoversheetAsync(scanModel.LoReferece);
                     if (coverSheet is null)
@@ -189,9 +175,31 @@ namespace Sassa.Services
                          }
                         continue;
                     }
+                    //Check for dupliate Barcode
+                    if (_validation.BrmRecordExists(scanModel.BrmBarcode))
+                    {
+                        //TODO: Enable this duplicate validation code when we have good SOCPEN Data
+                        //await _validation.CheckBrmMatch(scanModel, coverSheet);
+                        //if (coverSheet.BrmNumber != scanModel.BrmBarcode || string.IsNullOrEmpty(coverSheet.Clmnumber))
+                        //{
+                            _logger.LogError("Duplicate BRM Barcode.", fileName);
+                            if (!File.Exists(Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName)))
+                            {
+                                await _loService.UpdateValidation(new CustCoversheetValidation { ReferenceNum = scanModel.LoReferece, ValidationDate = DateTime.Now, Validationresult = "Duplicate Barcode(ok)" });
+                                File.Move(file, Path.Combine(_rejectDirectory, "DuplicateBarcode." + fileName));
+                            }
+                            else
+                            {
+                                File.Delete(file);
+                            }
+                            continue;
+                        //}
+
+                    }
+                    //-------------------------------------------------------------
                     try
                     {
-                        DcFile dcFile = await _validation.GetDcFileFromLoAsync(coverSheet!, scanModel, file, fileName);
+                        DcFile dcFile = await _validation.GetDcFileFromLoAsync(coverSheet!, scanModel);//, file, fileName);
                         string result = _validation.Validate(dcFile);
                         if (!string.IsNullOrEmpty(result)) throw new Exception(result);
                         dcFile = await _validation.CheckForSocpenRecordAsync(dcFile, scanModel.LoReferece);
@@ -245,6 +253,7 @@ namespace Sassa.Services
                 Interlocked.Exchange(ref _isProcessing, 0);
             }
         }
+
 
     }
 }

@@ -187,16 +187,25 @@ namespace Sassa.Services
             using var _context = dbContextFactory.CreateDbContext();
             var stats = await _context.CustCoversheetValidations
                 .AsNoTracking()
-                .GroupBy(v => 
-                    v.Validationresult != null && v.Validationresult.StartsWith("No Socpen record found") ? "Waiting Socpen match."
-                    : v.Validationresult != null && v.Validationresult.StartsWith("Reference NUM") ? "LO Reference not found."
-                    : v.Validationresult ?? "Unknown"
+                .GroupBy(v =>
+                    v.Validationresult != null && v.Validationresult.StartsWith("No Socpen record found") ? "Waiting Socpen match." :
+                    v.Validationresult != null && v.Validationresult.StartsWith("Reference NUM") ? "LO Reference not found." :
+                    v.Validationresult != null && (
+                        v.Validationresult.StartsWith("A Child ID") ||
+                        v.Validationresult.StartsWith("Office ") ||
+                        v.Validationresult.StartsWith("Local Office ") ||
+                        v.Validationresult.StartsWith("Invalid ") ||
+                        v.Validationresult.StartsWith("ApplicationDate ") ||
+                        v.Validationresult.StartsWith("LC status ")
+                    ) ? "Data capture Error." :
+                    v.Validationresult ?? "Unknown"
                 )
                 .Select(g => new FasttrackStatistic
                 {
                     ValidationCategory = g.Key,
                     ResultCount = g.Count()
                 })
+                .OrderByDescending(x => x.ResultCount)
                 .ToListAsync();
 
             return stats;

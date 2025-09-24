@@ -31,8 +31,23 @@ namespace Sassa.Services
                 throw;
             }
         }
-
-        public async Task<DcFile> GetDcFileFromLoAsync(CustCoversheet coverSheet, FasttrackScan scanModel, string fileN, string fileName)
+        public async Task CheckBrmMatch(FasttrackScan scanModel, CustCoversheet coversheet)
+        {
+            using (var _context = _brmContextFactory.CreateDbContext())
+            {
+                //Get the brm record and compare the essential data with the brm record 
+                //Set the clm_no if its a match
+                var existingFile = await  _context.DcFiles.FirstOrDefaultAsync(x => x.BrmBarcode == scanModel.BrmBarcode);
+                if (existingFile != null)
+                {
+                    if(existingFile.ApplicantNo == coversheet.TxtIdNumber && existingFile.GrantType == coversheet.DrpdwnGrantTypes)
+                    {
+                        coversheet.Clmnumber = existingFile.UnqFileNo;
+                    }
+                }
+            }
+        }
+        public async Task<DcFile> GetDcFileFromLoAsync(CustCoversheet coverSheet, FasttrackScan scanModel)//, string fileN, string fileName)
         {
             try
             {
@@ -64,14 +79,6 @@ namespace Sassa.Services
                     throw new Exception("ApplicationDate is invalid or missing.");
                 }
 
-                //if (localoffice.ManualBatch == "A" || coverSheet.Clmnumber.Length == 12)
-                //{
-                //    application.BatchNo = 0;
-                //}
-                //else
-                //{
-                //    throw new Exception("Manual batching not set for this office.");
-                //}
 
                 DcFile file = new DcFile()
                 {
